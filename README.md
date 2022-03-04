@@ -1,4 +1,4 @@
-# Dev Studio - Sample Template repo
+# Helix
 
 This repo contains the content for tenants of Developer Studio.
 
