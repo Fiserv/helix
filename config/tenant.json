@@ -36,6 +36,7 @@
     "documentation": "/v1/docs/Helix",
     "documenttree": "/v1/docs/Helix",
     "documenttreeV2": "/v2/docs/Helix",
+    "sandbox": "/v1/sandboxrun/Helix",
     "feature":[
       {
         "name": "sandBox",
