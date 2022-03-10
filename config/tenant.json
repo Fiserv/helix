@@ -31,11 +31,12 @@
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
     "description": "To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
     "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "apiSpecification": "/v1/apis",
-    "layout": "/v1/layouts",
-    "documentation": "/v1/docs",
-    "documenttree": "/v1/docs",
-    "documenttreeV2": "/v2/docs",
+    "apiSpecification": "/v1/apis/Helix",
+    "layout": "/v1/layouts/Helix",
+    "documentation": "/v1/docs/Helix",
+    "documenttree": "/v1/docs/Helix",
+    "documenttreeV2": "/v2/docs/Helix",
+    "sandbox": "/v1/sandboxrun/Helix",
     "feature":[
       {
         "name": "sandBox",
@@ -57,19 +58,19 @@
   },
    "supportConfig": [{ 
 		"bug": {
-			"label": "bug",
+			"label": "bug,REPLACEME",
 			"template": "bug.md",
-			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
+			"assignees": "abhishek.singh3@fiserv.com"
 		},
 		"feedback": {
-			"label": "feedback",
+			"label": "feedback,REPLACEME",
 			"template": "feedback.md",
-			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
+			"assignees": "abhishek.singh3@fiserv.com"
 		},
 		"enhancement": {
 			"label": "enhancement,REPLACEME",
 			"template": "feature.md",
-			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
+			"assignees": "abhishek.singh3@fiserv.com"
 		}
 	}]
 }
