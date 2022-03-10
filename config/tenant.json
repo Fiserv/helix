@@ -1,6 +1,6 @@
 {
-  "title": "REPLACE ME > Developer Studio",
-  "name": "REPLACE ME > DeveloperPortal",
+  "title": "Helix",
+  "name": "Helix",
   "brand": "Fiserv",
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["financial-institutions"],
@@ -23,7 +23,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["api-1.0.0"]
+        "apiSpecFileNames": ["api-1.0.0", "fi-directory-1.0.0"]
       }
   ],
   "product": {
@@ -57,19 +57,19 @@
   },
    "supportConfig": [{ 
 		"bug": {
-			"label": "bug,REPLACEME",
+			"label": "bug",
 			"template": "bug.md",
-			"assignees": "awaneesh.srivastava@fiserv.com,palani.p@fiserv.com"
+			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
 		},
 		"feedback": {
-			"label": "feedback,REPLACEME",
+			"label": "feedback",
 			"template": "feedback.md",
-			"assignees": "awaneesh.srivastava@fiserv.com"
+			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
 		},
 		"enhancement": {
 			"label": "enhancement,REPLACEME",
 			"template": "feature.md",
-			"assignees": "awaneesh.srivastava@fiserv.com"
+			"assignees": "roni.rajan@fiserv.com,tejomurthy.tangirala@Fiserv.com"
 		}
 	}]
 }

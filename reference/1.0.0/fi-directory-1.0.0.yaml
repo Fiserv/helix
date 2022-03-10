@@ -1,0 +1,519 @@
+---
+openapi: 3.0.3
+info:
+  title: fi-directory
+  version: 1.1.48
+tags:
+- name: BQ - Brand
+- name: Financial Institution Brand Details
+- name: Financial Institution Create
+- name: Financial Institution Detail
+- name: Financial Institution Details
+paths:
+  /Helix/V1/Cache/ClearAll:
+    get:
+      tags:
+      - Cache Refresh Resource
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Cache/{cacheName}/Clear:
+    put:
+      tags:
+      - Cache Refresh Resource
+      parameters:
+      - name: cacheName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Cache/{cacheName}/{cacheKey}/Clear:
+    put:
+      tags:
+      - Cache Refresh Resource
+      parameters:
+      - name: cacheKey
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: cacheName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/FinancialInstitutionDirectory/Register:
+    post:
+      tags:
+      - Financial Institution Create
+      summary: This method is used to create financial institution details
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FiRegisterRequest"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "413":
+          description: Payload Too large
+        "415":
+          description: Unsupported Media Type
+        "422":
+          description: Unprocessable Entity
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/FinancialInstitutionDirectory/Retrieve:
+    get:
+      tags:
+      - Financial Institution Details
+      summary: This method is used to return the financial institution details
+      operationId: get
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "415":
+          description: Unsupported Media Type
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/Register:
+    post:
+      tags:
+      - BQ - Brand
+      summary: InBQ Register a new product or service operations details in the catalog
+      operationId: RegisterOperations
+      parameters:
+      - name: fiDirectoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FiDirectoryBrandEntryAddRequest"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "413":
+          description: Payload Too large
+        "415":
+          description: Unsupported Media Type
+        "422":
+          description: Unprocessable Entity
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/Retrieve:
+    get:
+      tags:
+      - Financial Institution Details
+      summary: This method is used to return the financial institution details
+      operationId: get
+      parameters:
+      - name: fiDirectoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "415":
+          description: Unsupported Media Type
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/{fiBrandId}/Retrieve:
+    get:
+      tags:
+      - Financial Institution Brand Details
+      summary: This method is used to return the financial institution Brand details
+      operationId: get
+      parameters:
+      - name: fiBrandId
+        in: path
+        required: true
+        schema:
+          maxLength: 10
+          type: string
+      - name: fiDirectoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "415":
+          description: Unsupported Media Type
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Retrieve:
+    get:
+      tags:
+      - Financial Institution Detail
+      summary: This method is used to return the financial institution details for
+        the given identification
+      operationId: get
+      parameters:
+      - name: fiDirectoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "415":
+          description: Unsupported Media Type
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
+  /Helix/V1/Logger/LoggingLevel:
+    put:
+      tags:
+      - Logger Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/LoggerRequest"
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    FiBrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    FiDirectoryBrandEntry:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of the Brand
+        Email:
+          description: Email of the Brand
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+    FiDirectoryBrandEntryAddRequest:
+      required:
+      - Name
+      - FinancialInstitutionIdentification
+      - ReportingCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of the Brand
+        Email:
+          description: Email of the Brand
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
+          nullable: false
+        ReportingCurrency:
+          description: Reporting Currency
+          pattern: \S
+          type: string
+          nullable: false
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+    FiDirectoryEntry:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of Financial Institution
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+    FiRegisterRequest:
+      required:
+      - Name
+      - InvoiceCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of Financial Institution
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          pattern: \S
+          type: string
+          nullable: false
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          minLength: 5
+          type: string
+    FiRegisterResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of Financial Institution
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+        Name:
+          description: Name of Financial Institution
+          type: string
+    LoggerRequest:
+      type: object
+      properties:
+        scope:
+          type: string
+        level:
+          type: string
+    RegistrationAddress:
+      description: Registered Address
+      required:
+      - Country
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          pattern: \S
+          type: string
+          nullable: false
