@@ -4,56 +4,16 @@ info:
   title: fi-directory
   version: 1.1.48
 tags:
-- name: BQ - Brand
-- name: Financial Institution Brand Details
-- name: Financial Institution Create
-- name: Financial Institution Detail
-- name: Financial Institution Details
+- name: Product Management
 paths:
-  /Helix/V1/Cache/ClearAll:
-    get:
-      tags:
-      - Cache Refresh Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Cache/{cacheName}/Clear:
-    put:
-      tags:
-      - Cache Refresh Resource
-      parameters:
-      - name: cacheName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Cache/{cacheName}/{cacheKey}/Clear:
-    put:
-      tags:
-      - Cache Refresh Resource
-      parameters:
-      - name: cacheKey
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: cacheName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
   /Helix/V1/FinancialInstitutionDirectory/Register:
     post:
       tags:
-      - Financial Institution Create
+      - Product Management
       summary: This method is used to create financial institution details
       operationId: create
+      x-group-name: Product Management
+      x-proxy-name: Add a Financial Institute
       requestBody:
         content:
           application/json:
@@ -89,9 +49,11 @@ paths:
   /Helix/V1/FinancialInstitutionDirectory/Retrieve:
     get:
       tags:
-      - Financial Institution Details
+      - Product Management
       summary: This method is used to return the financial institution details
       operationId: get
+      x-group-name: Product Management
+      x-proxy-name: Get all Financial Institutes
       responses:
         "200":
           description: OK
@@ -116,9 +78,11 @@ paths:
   /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/Register:
     post:
       tags:
-      - BQ - Brand
+      - Product Management
       summary: InBQ Register a new product or service operations details in the catalog
       operationId: RegisterOperations
+      x-group-name: Product Management
+      x-proxy-name: Add a Brand
       parameters:
       - name: fiDirectoryId
         in: path
@@ -160,9 +124,11 @@ paths:
   /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/Retrieve:
     get:
       tags:
-      - Financial Institution Details
+      - Product Management
       summary: This method is used to return the financial institution details
       operationId: get
+      x-group-name: Product Management
+      x-proxy-name: Get Brands under an FI
       parameters:
       - name: fiDirectoryId
         in: path
@@ -193,9 +159,11 @@ paths:
   /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Brands/{fiBrandId}/Retrieve:
     get:
       tags:
-      - Financial Institution Brand Details
+      - Product Management
       summary: This method is used to return the financial institution Brand details
       operationId: get
+      x-group-name: Product Management
+      x-proxy-name: Get a Brand by Id
       parameters:
       - name: fiBrandId
         in: path
@@ -232,10 +200,12 @@ paths:
   /Helix/V1/FinancialInstitutionDirectory/{fiDirectoryId}/Retrieve:
     get:
       tags:
-      - Financial Institution Detail
+      - Product Management
       summary: This method is used to return the financial institution details for
         the given identification
       operationId: get
+      x-group-name: Product Management
+      x-proxy-name: Get a Financial Institute
       parameters:
       - name: fiDirectoryId
         in: path
@@ -263,20 +233,6 @@ paths:
           description: Service Unavailable
         "504":
           description: Gateway Timeout
-  /Helix/V1/Logger/LoggingLevel:
-    put:
-      tags:
-      - Logger Resource
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/LoggerRequest"
-      responses:
-        "200":
-          description: OK
 components:
   schemas:
     FiBrandRegisterResponse:
