@@ -2,12 +2,52 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.42
+  version: 1.1.50
 tags:
 - name: Customer Management
   x-proxy-name: Add a Person
   x-group-name: Customer Management
+- name: Organisation
 paths:
+  /Helix/V1/Organisation/Register:
+    post:
+      tags:
+      - Organisation
+      summary: InCR Register a new Organisation. Fiserv Enterprise Organisation ID
+        (FEOID)
+      operationId: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterOrganisationRequest"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Not Authorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "413":
+          description: Payload Too large
+        "415":
+          description: Unsupported Media Type
+        "422":
+          description: Unprocessable Entity
+        "429":
+          description: Too Many Request
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable
+        "504":
+          description: Gateway Timeout
   /Helix/V1/Organisation/{partyId}/Retrieve:
     get:
       tags:
@@ -28,7 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PersonGetResponse"
+                $ref: "#/components/schemas/RetrievePersonResponse"
         "401":
           description: Not Authorized
         "403":
@@ -60,25 +100,41 @@ paths:
       tags:
       - Customer Management
       summary: Register a new person or service operations details in the catalog
+      description: "This service is used to add a new customer (person) to the system,\
+        \ that will be associated with a card and/or account. This service will also\
+        \ store demographic information supplied and will return a unique FECID, which\
+        \ is the ID that will identify the customer within the system."
       operationId: RegisterOperations
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PersonAddRequest"
+              $ref: "#/components/schemas/RegisterPersonRequest"
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PersonAddResponse"
+                $ref: "#/components/schemas/RegisterPersonResponse"
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -87,12 +143,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -101,10 +173,22 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Add a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
@@ -127,11 +211,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PersonGetResponse"
+                $ref: "#/components/schemas/RetrievePersonResponse"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -140,8 +232,16 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -150,10 +250,22 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve a Person
       x-group-name: Customer Management
 components:
@@ -165,65 +277,11 @@ components:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
-    ElectronicAddress:
-      required:
-      - Email
-      type: object
-      properties:
-        Email:
-          description: Address for electronic mail
-          type: string
-    FiBrandRegisterResponse:
-      type: object
-      properties:
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        Name:
-          description: Name of Brand
-          type: string
-    FiDirectoryBrandEntry:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 225
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          maxLength: 35
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
-    FiDirectoryBrandEntryAddRequest:
+    BrandEntryAddRequest:
       required:
       - Name
       - FinancialInstitutionIdentification
+      - Identification
       - ReportingCurrency
       type: object
       properties:
@@ -254,6 +312,12 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Identification:
+          description: Identification of the Brand
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
         ReportingCurrency:
           description: Reporting Currency
           pattern: \S
@@ -262,7 +326,62 @@ components:
         CountryOfOperation:
           description: Country of Operation
           type: string
-    FiDirectoryEntry:
+    BrandEntryDto:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of the Brand
+        Email:
+          description: Email of the Brand
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    ElectronicAddress:
+      required:
+      - Email
+      type: object
+      properties:
+        Email:
+          description: Address for electronic mail
+          type: string
+    FiDirectoryEntryDto:
       required:
       - Name
       type: object
@@ -300,6 +419,7 @@ components:
     FiRegisterRequest:
       required:
       - Name
+      - Identification
       - InvoiceCurrency
       type: object
       properties:
@@ -324,6 +444,12 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
+        Identification:
+          description: Identification of the financial institution
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
         InvoiceCurrency:
           description: Invoice Currency
           pattern: \S
@@ -369,7 +495,64 @@ components:
           type: string
         instance:
           type: string
-    PersonAddRequest:
+    Phone:
+      required:
+      - Number
+      type: object
+      properties:
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services"
+          type: string
+        Extension:
+          description: Phone extension number
+          type: string
+    RegisterOrganisationRequest:
+      required:
+      - FinancialInstitution
+      - TradingName
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the organisation
+          maxLength: 37
+          type: string
+        ExternalIdentification:
+          description: Identification of the customer issued by the client financial
+            institution (CRM/CIS/CIF)
+          type: string
+        LegalName:
+          description: Official name under which an organisation is registered
+          type: string
+        TradingName:
+          description: "Name used by a business for commercial purposes, although\
+            \ its registered legal name, used for contracts and other formal situations,\
+            \ may be another"
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationDate:
+          description: Date on which a given organisation was officially registered
+          type: string
+        ElectronicAddress:
+          description: Address which is accessed by electronic means
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
+        Phone:
+          description: Collection of information that identifies a phone address
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+    RegisterPersonRequest:
       required:
       - FinancialInstitution
       - GivenName
@@ -429,112 +612,12 @@ components:
           description: Reminder set by the person to remember the memorable word
           maxLength: 35
           type: string
-    PersonAddResponse:
+    RegisterPersonResponse:
       type: object
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
           type: string
-    PersonGetResponse:
-      type: object
-      properties:
-        FECID:
-          description: Fiserv Enterprise Customer ID - Unique identifier for the person
-          type: string
-        Status:
-          description: Status of the person record in the system
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          type: string
-        Brand:
-          description: Identification of the brand associated with the person
-          type: string
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          type: string
-        NamePrefix:
-          description: Specifies the terms used to formally address a person
-          type: string
-        GivenName:
-          description: First name of a person
-          type: string
-        MiddleName:
-          description: Second name of a person
-          type: string
-        Surname:
-          description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
-          type: string
-        BirthDate:
-          format: date
-          description: Date on which a person is born
-          type: string
-        Language:
-          description: Language in which a person communicates
-          type: string
-        Email:
-          description: Address for electronic mail (e-mail)
-          type: string
-        MemorableWord:
-          description: Memorable word selected by the customer to be used for customer
-            authentication
-          type: string
-        MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
-          type: string
-    Phone:
-      required:
-      - Number
-      type: object
-      properties:
-        Number:
-          description: "Collection of information that identifies a phone number,\
-            \ as defined by telecom services"
-          type: string
-        Extension:
-          description: Phone extension number
-          type: string
-    RegisterOrganisationRequest:
-      required:
-      - FinancialInstitution
-      - TradingName
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          type: string
-        Brand:
-          description: Identification of the brand associated with the organisation
-          type: string
-        ExternalIdentification:
-          description: Identification of the customer issued by the client financial
-            institution (CRM/CIS/CIF)
-          type: string
-        LegalName:
-          description: Official name under which an organisation is registered
-          type: string
-        TradingName:
-          description: "Name used by a business for commercial purposes, although\
-            \ its registered legal name, used for contracts and other formal situations,\
-            \ may be another"
-          type: string
-        RegistrationDate:
-          description: Date on which a given organisation was officially registered
-          type: string
-        ElectronicAddress:
-          description: Address which is accessed by electronic means
-          type: array
-          items:
-            $ref: "#/components/schemas/ElectronicAddress"
-        Phone:
-          description: Collection of information that identifies a phone address
-          type: array
-          items:
-            $ref: "#/components/schemas/Phone"
     RegistrationAddress:
       description: Registered Address
       required:
@@ -602,9 +685,13 @@ components:
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the organisation
+          maxLength: 37
+          pattern: \S
           type: string
+          nullable: false
         Brand:
           description: Identification of the brand associated with the organisation
+          maxLength: 37
           type: string
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
@@ -617,7 +704,10 @@ components:
           description: "Name used by a business for commercial purposes, although\
             \ its registered legal name, used for contracts and other formal situations,\
             \ may be another"
+          maxLength: 35
+          pattern: \S
           type: string
+          nullable: false
         RegistrationDate:
           description: Date on which a given organisation was officially registered
           type: string
@@ -637,4 +727,54 @@ components:
           type: string
         Status:
           description: Status of the organisation record in the system
+          type: string
+    RetrievePersonResponse:
+      type: object
+      properties:
+        FECID:
+          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          type: string
+        Status:
+          description: Status of the person record in the system
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          type: string
+        Brand:
+          description: Identification of the brand associated with the person
+          type: string
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          type: string
+        NamePrefix:
+          description: Specifies the terms used to formally address a person
+          type: string
+        GivenName:
+          description: First name of a person
+          type: string
+        MiddleName:
+          description: Second name of a person
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name"
+          type: string
+        BirthDate:
+          format: date
+          description: Date on which a person is born
+          type: string
+        Language:
+          description: Language in which a person communicates
+          type: string
+        Email:
+          description: Address for electronic mail (e-mail)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word
           type: string
