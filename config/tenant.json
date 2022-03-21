@@ -23,7 +23,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["fi-directory-1.0.0", "party-directory-1.0.0"]
+        "apiSpecFileNames": ["fi-directory-1.0.0", "party-directory-1.0.0", "issued-device-admin-1.0.0"]
       }
   ],
   "product": {
