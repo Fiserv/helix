@@ -2,64 +2,12 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.136
+  version: 1.1.140
 tags:
 - name: Helix Core
   x-proxy-name: 'Update IssuedDevice Info '
-  x-group-name: PaymentInstrumentFacility
+  x-group-name: Card Management
 paths:
-  /Helix/V1/Cache/ClearAll:
-    get:
-      tags:
-      - Cache Refresh Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Cache/{cacheName}/Clear:
-    put:
-      tags:
-      - Cache Refresh Resource
-      parameters:
-      - name: cacheName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Cache/{cacheName}/{cacheKey}/Clear:
-    put:
-      tags:
-      - Cache Refresh Resource
-      parameters:
-      - name: cacheKey
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: cacheName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Logger/LoggingLevel:
-    put:
-      tags:
-      - Logger Resource
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/LoggerRequest"
-      responses:
-        "200":
-          description: OK
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
@@ -83,8 +31,16 @@ paths:
                   $ref: "#/components/schemas/PaymentInstrumentResponse"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -93,8 +49,16 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -103,12 +67,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Get PaymentInstrument List
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/Initiate:
     post:
       tags:
@@ -141,10 +117,22 @@ paths:
                     type: string
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -153,12 +141,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -167,12 +171,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Adding a card
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
     post:
       tags:
@@ -187,12 +203,28 @@ paths:
       responses:
         "201":
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -201,12 +233,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -215,12 +263,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Reissue-Card
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
@@ -251,10 +311,22 @@ paths:
                     - description: Unique identifier of the payment instrument (FEPID)
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -263,12 +335,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -277,12 +365,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Activate a card
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
@@ -320,10 +420,22 @@ paths:
                     - description: Unique identifier of the payment instrument (FEPID)
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -332,12 +444,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -346,12 +474,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Block a card
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
@@ -386,10 +526,22 @@ paths:
                     - description: Unique identifier of the payment instrument (FEPID)
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -398,12 +550,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -412,12 +580,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Replace a card
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
       tags:
@@ -521,8 +701,16 @@ paths:
                     type: string
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -531,8 +719,16 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -541,12 +737,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve details for given FepID
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
       tags:
@@ -580,10 +788,22 @@ paths:
                     - description: Unique identifier of the payment instrument (FEPID)
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
@@ -592,12 +812,28 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
@@ -606,12 +842,24 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: 'Update IssuedDevice Info '
-      x-group-name: PaymentInstrumentFacility
+      x-group-name: Card Management
 components:
   schemas:
     Account:
@@ -721,7 +969,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
           allOf:
@@ -790,6 +1038,24 @@ components:
         Status:
           description: Banking Product Status
           type: string
+        BankCardType:
+          allOf:
+          - $ref: "#/components/schemas/BankCardType"
+          - description: Bank Card Type
+        ChipDataConfig:
+          $ref: "#/components/schemas/ChipDataConfig"
+        ReissuePeriod:
+          format: int32
+          description: Banking Product Reissue Period
+          type: integer
+        CardTechnology:
+          allOf:
+          - $ref: "#/components/schemas/CardTechnology"
+          - description: default Card Technology
+        activationControls:
+          type: object
+          additionalProperties:
+            type: boolean
     BankingProduct1:
       type: object
       properties:
@@ -811,20 +1077,6 @@ components:
         Status:
           description: Banking Product Status
           type: string
-        BankCardType:
-          allOf:
-          - $ref: "#/components/schemas/BankCardType"
-          - description: Bank Card Type
-        ChipDataConfig:
-          $ref: "#/components/schemas/ChipDataConfig"
-        ReissuePeriod:
-          format: int32
-          description: Banking Product Reissue Period
-          type: integer
-        activationControls:
-          type: object
-          additionalProperties:
-            type: boolean
     BlockIssuedDeviceRequest:
       required:
       - BlockReason
@@ -835,6 +1087,16 @@ components:
           pattern: \S
           type: string
           nullable: false
+    CardTechnology:
+      enum:
+      - ContactChip
+      - ContactlessChip
+      - ContactlessMagStripe
+      - MagneticStripe
+      - MobileContactlessChip
+      - MobileContactlessMagStripe
+      - NonPhysical
+      type: string
     ChipDataConfig:
       type: object
       properties:
@@ -1213,13 +1475,6 @@ components:
           maximum: 26
           minimum: 2
           type: string
-    LoggerRequest:
-      type: object
-      properties:
-        scope:
-          type: string
-        level:
-          type: string
     MagneticStripeImageSecurityCode:
       enum:
       - CvvCvcCav
@@ -1545,7 +1800,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RegisterOrganisationRequest:
       type: object
@@ -1644,7 +1899,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       type: object
