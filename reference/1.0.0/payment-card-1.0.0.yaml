@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.41
+  version: 1.1.44
 tags:
 - name: Account Management
-  x-proxy-name: Retrieve an Account
+  x-proxy-name: Retrieve Account List
   x-group-name: Account Management
 paths:
   /Helix/V1/PaymentCardFacility/GetList/Request:
@@ -95,6 +95,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Account List
+      x-group-name: Account Management
   /Helix/V1/PaymentCardFacility/Initiate:
     post:
       tags:
@@ -288,82 +290,7 @@ components:
         Status:
           description: Banking Product Status
           type: string
-    ElectronicAddress:
-      required:
-      - Email
-      type: object
-      properties:
-        Email:
-          description: Address for electronic mail
-          type: string
-    ExternalAccount:
-      description: Provide Link to External Accounts
-      required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
-      type: object
-      properties:
-        ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
-          minLength: 1
-          type: string
-          nullable: false
-        AccountIdentification:
-          description: Account number associated with External Clearing System
-          maxLength: 37
-          pattern: \S
-          type: string
-          nullable: false
-    FiBrandRegisterResponse:
-      type: object
-      properties:
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        Name:
-          description: Name of Brand
-          type: string
-    FiDirectoryBrandEntry:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 225
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          maxLength: 35
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
-    FiDirectoryBrandEntryAddRequest:
+    BrandEntryAddRequest:
       required:
       - Name
       - FinancialInstitutionIdentification
@@ -412,7 +339,85 @@ components:
         CountryOfOperation:
           description: Country of Operation
           type: string
-    FiDirectoryEntry:
+    BrandEntryDto:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+          - description: Registered address of the Brand
+        Email:
+          description: Email of the Brand
+          maxLength: 225
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          maxLength: 35
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    ElectronicAddress:
+      required:
+      - Email
+      type: object
+      properties:
+        Email:
+          description: Address for electronic mail
+          maxLength: 225
+          pattern: \S
+          type: string
+          nullable: false
+    ExternalAccount:
+      description: Provide Link to External Accounts
+      required:
+      - ClearingSystemIdentificationCode
+      - AccountIdentification
+      type: object
+      properties:
+        ClearingSystemIdentificationCode:
+          description: Specifies the clearing system identification code. E.g. Sort
+            Code for BACS ( Bank Branch code in other countries )
+          maxLength: 13
+          minLength: 1
+          type: string
+          nullable: false
+        AccountIdentification:
+          description: Account number associated with External Clearing System
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+    FiDirectoryEntryDto:
       required:
       - Name
       type: object
@@ -587,7 +592,7 @@ components:
       description: Role played by a party in the context of PaymentCardFacility operations.
       required:
       - PartyIdentification
-      - partyRole
+      - PartyRole
       type: object
       properties:
         PartyIdentification:
@@ -595,7 +600,7 @@ components:
           pattern: \S
           type: string
           nullable: false
-        partyRole:
+        PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
             \ values are : <br> AccountHolder"
           pattern: \S
@@ -604,15 +609,22 @@ components:
     Phone:
       required:
       - Number
+      - Extension
       type: object
       properties:
         Number:
           description: "Collection of information that identifies a phone number,\
             \ as defined by telecom services"
+          maxLength: 35
+          pattern: \S
           type: string
+          nullable: false
         Extension:
           description: Phone extension number
+          maxLength: 10
+          pattern: \S
           type: string
+          nullable: false
     RegisterOrganisationRequest:
       required:
       - FinancialInstitution
@@ -636,6 +648,7 @@ components:
           type: string
         LegalName:
           description: Official name under which an organisation is registered
+          maxLength: 35
           type: string
         TradingName:
           description: "Name used by a business for commercial purposes, although\
@@ -681,7 +694,9 @@ components:
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
           type: string
         NamePrefix:
-          description: Specifies the terms used to formally address a person
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
           type: string
         GivenName:
           description: First name of a person
@@ -815,6 +830,7 @@ components:
           type: string
         LegalName:
           description: Official name under which an organisation is registered
+          maxLength: 35
           type: string
         TradingName:
           description: "Name used by a business for commercial purposes, although\
@@ -890,7 +906,8 @@ components:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
           type: string
         Status:
-          description: Status of the person record in the system
+          description: "Status of the person record in the system <br> Valid values\
+            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -904,7 +921,9 @@ components:
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
           type: string
         NamePrefix:
-          description: Specifies the terms used to formally address a person
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
           type: string
         GivenName:
           description: First name of a person
