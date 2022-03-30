@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.140
+  version: 1.1.165
 tags:
 - name: Helix Core
-  x-proxy-name: 'Update IssuedDevice Info '
+  x-proxy-name: Update Name on a Card
   x-group-name: Card Management
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
@@ -83,7 +83,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Get PaymentInstrument List
+      x-proxy-name: Retrieve List of Cards
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/Initiate:
     post:
@@ -187,7 +187,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Adding a card
+      x-proxy-name: Add a New Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
     post:
@@ -279,7 +279,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Reissue-Card
+      x-proxy-name: Reissue a Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
@@ -309,6 +309,15 @@ paths:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment instrument (FEPID)
+                  NewFepId:
+                    allOf:
+                    - $ref: "#/components/schemas/UUID"
+                    - description: Unique identifier of the new payment instrument
+                        (FEPID)
+                  ActivationStatus:
+                    description: Indicates whether card activation needs to occur
+                      for the most recently issued card.
+                    type: string
         "400":
           description: Bad Request
           content:
@@ -381,7 +390,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Activate a card
+      x-proxy-name: Activate a Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
@@ -405,7 +414,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BlockIssuedDeviceRequest"
+              $ref: "#/components/schemas/IssuedDeviceActionRequest"
       responses:
         "201":
           description: Created
@@ -418,6 +427,15 @@ paths:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment instrument (FEPID)
+                  NewFepId:
+                    allOf:
+                    - $ref: "#/components/schemas/UUID"
+                    - description: Unique identifier of the new payment instrument
+                        (FEPID)
+                  ActivationStatus:
+                    description: Indicates whether card activation needs to occur
+                      for the most recently issued card.
+                    type: string
         "400":
           description: Bad Request
           content:
@@ -490,20 +508,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Block a card
+      x-proxy-name: Report a Card as Lost or Stolen
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
       - Helix Core
-      summary: This method is used to replace a card
+      summary: This method is used to replace a damaged card
       description: "This service allows the replacement of a card due to damage or\
         \ fault and is not intended for a lost or stolen scenario. The FEPID is to\
         \ be provided in the request message, and a successful request will result\
         \ in an identical card being sent to the customer, including PAN, PIN and\
         \ Expiry Date (your company's config may result in a new Expiry Date being\
         \ calculated if the card is due to expire soon)."
-      operationId: replaceCard
+      operationId: replaceDamagedCard
       parameters:
       - name: paymentInstrumentId
         in: path
@@ -524,6 +542,15 @@ paths:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment instrument (FEPID)
+                  NewFepId:
+                    allOf:
+                    - $ref: "#/components/schemas/UUID"
+                    - description: Unique identifier of the new payment instrument
+                        (FEPID)
+                  ActivationStatus:
+                    description: Indicates whether card activation needs to occur
+                      for the most recently issued card.
+                    type: string
         "400":
           description: Bad Request
           content:
@@ -596,7 +623,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Replace a card
+      x-proxy-name: Replace a Damaged Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
@@ -653,8 +680,10 @@ paths:
                     description: Party entitled to use the payment instrument (FECID)
                     type: string
                   CardholderType:
-                    description: Indicates if the card holder is a primary account
-                      holder or an additional cardholder to the account
+                    description: Indicates if the card holder of the account is a
+                      Primary account Holder or an Additional Account Holder. Accepted
+                      Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
+                      </EM></LI></UL>
                     type: string
                   NameLine1:
                     description: Cardholder name as it appears on the card.
@@ -680,7 +709,8 @@ paths:
                     type: string
                   BlockedReason:
                     description: Specifies the reason for which the payment instrument
-                      is blocked.
+                      is blocked. Accepted Values are <UL><LI><EM> Lost </EM></LI>
+                      <LI><EM> Stolen </EM></LI></UL>
                     type: string
                   BlockedDateTime:
                     format: date-time
@@ -697,7 +727,8 @@ paths:
                     type: string
                   PAN:
                     description: Long number that appears on the front of the card
-                      (Primary Account Number)
+                      (Primary Account Number) in masked form showing only the last
+                      4 digits
                     type: string
         "401":
           description: Not Authorized
@@ -753,7 +784,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve details for given FepID
+      x-proxy-name: Inquire on Card Details
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
@@ -786,6 +817,15 @@ paths:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment instrument (FEPID)
+                  NewFepId:
+                    allOf:
+                    - $ref: "#/components/schemas/UUID"
+                    - description: Unique identifier of the new payment instrument
+                        (FEPID)
+                  ActivationStatus:
+                    description: Indicates whether card activation needs to occur
+                      for the most recently issued card.
+                    type: string
         "400":
           description: Bad Request
           content:
@@ -858,7 +898,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: 'Update IssuedDevice Info '
+      x-proxy-name: Update Name on a Card
       x-group-name: Card Management
 components:
   schemas:
@@ -932,7 +972,9 @@ components:
           type: string
           nullable: false
         CardholderType:
-          description: Indicates if the card being added is of type Primary or Additional
+          description: Indicates if the card being added is of type Primary or Additional.
+            Accepted Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
+            </EM></LI></UL>
           pattern: \S
           type: string
           nullable: false
@@ -951,10 +993,16 @@ components:
           maxLength: 10
           type: string
         DigitalCardType:
-          description: Indicates the type of digital card
+          description: Indicates the type of digital card. Accepted Values are <UL><LI><EM>
+            FullTerm </EM></LI> <EM><LI> ShortTerm </EM></LI> <EM><LI> Transient </EM></LI>
+            <EM><LI> NonDigital </EM></LI></UL>
           type: string
         CardTechnology:
-          description: Indicates the  technology type supported by the physical card
+          description: Indicates the  technology type supported by the physical card.
+            Accepted Values are <UL><LI><EM> MagneticStripe </EM></LI> <EM><LI> ContactChip
+            </EM></LI> <EM><LI> ContactlessMagStripe </EM></LI> <EM><LI> ContactlessChip
+            </EM></LI> <EM><LI> MobileContactlessMagStripe </EM></LI> <EM><LI> MobileContactlessChip
+            </EM></LI> <EM><LI> NonPhysical </EM></LI></UL>
           type: string
         DeviceFormFactor:
           description: Indicates the type of device (form factor) written to the track
@@ -1077,16 +1125,6 @@ components:
         Status:
           description: Banking Product Status
           type: string
-    BlockIssuedDeviceRequest:
-      required:
-      - BlockReason
-      type: object
-      properties:
-        BlockReason:
-          description: To set the type of loss status on the selected card
-          pattern: \S
-          type: string
-          nullable: false
     CardTechnology:
       enum:
       - ContactChip
@@ -1455,6 +1493,34 @@ components:
         Identification:
           description: Identification of Financial Institution
           type: string
+    IssuedDeviceActionRequest:
+      required:
+      - BlockReason
+      - ReplaceCard
+      - GenerateNewPin
+      type: object
+      properties:
+        BlockReason:
+          description: To set the type of loss status on the selected card. Accepted
+            Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
+          pattern: \S
+          type: string
+          nullable: false
+        ReplaceCard:
+          description: To identify whether a replacement card need to be created and
+            sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
+            No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
+        GenerateNewPin:
+          description: To identify whether a replacement PIN needs to be generated
+            and sent to the cardholder when PIN is compromised or whether the existing
+            PIN will be reused when PIN is not compromised.Accepted Values are <UL><LI><EM>
+            Yes </EM></LI> <LI><EM> No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
     IssuedDeviceActionResponse:
       type: object
       properties:
@@ -1462,6 +1528,14 @@ components:
           allOf:
           - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
+        NewFepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the new payment instrument (FEPID)
+        ActivationStatus:
+          description: Indicates whether card activation needs to occur for the most
+            recently issued card.
+          type: string
     IssuedDeviceUpdateRequest:
       type: object
       properties:
@@ -1629,8 +1703,9 @@ components:
           description: Party entitled to use the payment instrument (FECID)
           type: string
         CardholderType:
-          description: Indicates if the card holder is a primary account holder or
-            an additional cardholder to the account
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Accepted Values are <UL><LI><EM>
+            Primary </EM></LI> <LI><EM> Additional </EM></LI></UL>
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -1655,6 +1730,7 @@ components:
           type: string
         BlockedReason:
           description: Specifies the reason for which the payment instrument is blocked.
+            Accepted Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           type: string
         BlockedDateTime:
           format: date-time
@@ -1670,7 +1746,7 @@ components:
           type: string
         PAN:
           description: Long number that appears on the front of the card (Primary
-            Account Number)
+            Account Number) in masked form showing only the last 4 digits
           type: string
     PersonAddRequest:
       required:
