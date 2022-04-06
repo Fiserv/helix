@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.165
+  version: 1.1.182
 tags:
 - name: Helix Core
   x-proxy-name: Update Name on a Card
@@ -90,9 +90,9 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to create new card
-      description: Add a new card API allows the user to add a new card to the platform.
-        The new card will be linked to the Person ID and Account ID provided in the
-        request message. It is not intended to be used to replace an existing card.
+      description: ' This API allows the user to add a new card to the platform. The
+        new card will be linked to the Person ID and Account ID provided in the request
+        message. It is not intended to be used to replace an existing card.'
       operationId: create
       requestBody:
         content:
@@ -286,8 +286,8 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to activate a card
-      description: "Activating a card API allows the user to activate a card, when\
-        \ a card requires activation prior to first use."
+      description: "This API allows the user to activate a card, when a card requires\
+        \ activation prior to first use."
       operationId: activateCard
       parameters:
       - name: paymentInstrumentId
@@ -308,16 +308,7 @@ paths:
                   FepId:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
-                  NewFepId:
-                    allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
-                  ActivationStatus:
-                    description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
-                    type: string
+                    - description: Unique identifier of the payment card (FEPID)
         "400":
           description: Bad Request
           content:
@@ -541,16 +532,7 @@ paths:
                   FepId:
                     allOf:
                     - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
-                  NewFepId:
-                    allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
-                  ActivationStatus:
-                    description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
-                    type: string
+                    - description: Unique identifier of the payment card (FEPID)
         "400":
           description: Bad Request
           content:
@@ -631,8 +613,8 @@ paths:
       - Helix Core
       summary: This method is used to return the issued device details for the given
         FEPID
-      description: Inquire on card details API allows the user to retrieve details
-        of a specific card in the platform.
+      description: This API allows the user to retrieve details of a specific card
+        in the platform.
       operationId: getIssuedDevice
       parameters:
       - name: paymentInstrumentId
@@ -659,10 +641,6 @@ paths:
                     type: string
                   RelatedAccount:
                     description: Account linked to the payment instrument. (FEAID)
-                    type: string
-                  SequenceNumber:
-                    description: Identifies a card inside a set of cards with the
-                      same number (or PAN).
                     type: string
                   Status:
                     description: Status of the payment instrument in the system
@@ -1025,7 +1003,7 @@ components:
           - description: Identification of the account
         Cardholder:
           allOf:
-          - $ref: "#/components/schemas/PersonGetResponse"
+          - $ref: "#/components/schemas/RetrievePersonResponse"
           - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
@@ -1059,6 +1037,8 @@ components:
       type: object
       properties:
         FEOID:
+          description: Fiserv Enterprise Organisation ID - Unique identifier for the
+            organisation
           type: string
     BankCardType:
       enum:
@@ -1182,9 +1162,32 @@ components:
       - Visa
       type: string
     ElectronicAddress:
+      required:
+      - Type
+      - Email
+      - ContactPreference
       type: object
       properties:
+        Type:
+          description: Type of email
+          pattern: \S
+          type: string
+          nullable: false
         Email:
+          description: Address for electronic mail (e-mail)
+          maxLength: 256
+          pattern: \S
+          type: string
+          nullable: false
+        ContactPreference:
+          description: Indicates whether the person prefer to be contacted on this
+            phone number
+          pattern: \S
+          type: string
+          nullable: false
+        DateTime:
+          description: Time stamp when this email is set as the current electronic
+            address
           type: string
     ErrorEvent:
       type: object
@@ -1209,6 +1212,20 @@ components:
           format: date-time
           description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+    ExecuteActivateCardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
+    ExecuteReplacecardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -1683,10 +1700,6 @@ components:
         RelatedAccount:
           description: Account linked to the payment instrument. (FEAID)
           type: string
-        SequenceNumber:
-          description: Identifies a card inside a set of cards with the same number
-            (or PAN).
-          type: string
         Status:
           description: Status of the payment instrument in the system
           type: string
@@ -1748,7 +1761,181 @@ components:
           description: Long number that appears on the front of the card (Primary
             Account Number) in masked form showing only the last 4 digits
           type: string
-    PersonAddRequest:
+    Phone:
+      required:
+      - Type
+      - Number
+      - ContactPreference
+      type: object
+      properties:
+        Type:
+          description: Type of phone
+          pattern: \S
+          type: string
+          nullable: false
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. It is recommended to use only numbers\
+            \ and limited punctuation +,-.(.)."
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Extension:
+          description: Phone extension number
+          maxLength: 10
+          type: string
+        ContactPreference:
+          description: Indicates whether the person prefer to be contacted on this
+            phone number
+          pattern: \S
+          type: string
+          nullable: false
+        SmsPreference:
+          description: Indicates whether the person prefer to be receive SMS on this
+            mobile number
+          type: string
+        DateTime:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    PostalAddress:
+      required:
+      - AddressType
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: Type of address
+          pattern: \S
+          type: string
+          nullable: false
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Number that identifies the position of a building on a street
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of a building or house
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: "AddressLine1 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: Nation with its own government occupying a particular territory
+          pattern: \S
+          type: string
+          nullable: false
+        ContactPreference:
+          description: Indicates whether the person prefer to be contacted on this
+            address
+          pattern: \S
+          type: string
+          nullable: false
+        DateTime:
+          description: Time stamp when this address is set as the current address
+          type: string
+    ProductReissueEvent:
+      type: object
+      properties:
+        Product:
+          allOf:
+          - $ref: "#/components/schemas/BankingProduct"
+          - description: Identification of the product
+    RegisterOrganisationRequest:
+      required:
+      - FinancialInstitution
+      - TradingName
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the organisation
+          maxLength: 37
+          type: string
+        ExternalIdentification:
+          description: Identification of the customer issued by the client financial
+            institution (CRM/CIS/CIF)
+          maxLength: 35
+          type: string
+        LegalName:
+          description: Official name under which an organisation is registered
+          maxLength: 35
+          type: string
+        TradingName:
+          description: "Name used by a business for commercial purposes, although\
+            \ its registered legal name, used for contracts and other formal situations,\
+            \ may be another"
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationDate:
+          description: Date on which a given organisation was officially registered
+            <br/> Format must be ISO Date format (YYYY-MM-DD)
+          type: string
+        ElectronicAddress:
+          description: Address which is accessed by electronic means
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
+        Phone:
+          description: Collection of information that identifies a phone address
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+    RegisterPersonRequest:
       required:
       - FinancialInstitution
       - GivenName
@@ -1769,9 +1956,12 @@ components:
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
           type: string
         NamePrefix:
-          description: Specifies the terms used to formally address a person
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
           type: string
         GivenName:
           description: First name of a person
@@ -1791,13 +1981,11 @@ components:
           type: string
           nullable: false
         BirthDate:
-          description: Date on which a person is born
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD)
           type: string
         Language:
           description: Language in which a person communicates
-          type: string
-        Email:
-          description: Address for electronic mail (e-mail)
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
@@ -1808,99 +1996,27 @@ components:
           description: Reminder set by the person to remember the memorable word
           maxLength: 35
           type: string
-    PersonAddResponse:
-      type: object
-      properties:
-        FECID:
-          description: Fiserv Enterprise Customer ID - Unique identifier for the person
-          type: string
-    PersonGetResponse:
-      type: object
-      properties:
-        FECID:
-          description: Fiserv Enterprise Customer ID - Unique identifier for the person
-          type: string
-        Status:
-          description: Status of the person record in the system
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          type: string
-        Brand:
-          description: Identification of the brand associated with the person
-          type: string
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          type: string
-        NamePrefix:
-          description: Specifies the terms used to formally address a person
-          type: string
-        GivenName:
-          description: First name of a person
-          type: string
-        MiddleName:
-          description: Second name of a person
-          type: string
-        Surname:
-          description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
-          type: string
-        BirthDate:
-          format: date
-          description: Date on which a person is born
-          type: string
-        Language:
-          description: Language in which a person communicates
-          type: string
-        Email:
-          description: Address for electronic mail (e-mail)
-          type: string
-        MemorableWord:
-          description: Memorable word selected by the customer to be used for customer
-            authentication
-          type: string
-        MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
-          type: string
-    Phone:
-      type: object
-      properties:
-        Number:
-          type: string
-        Extension:
-          type: string
-    ProductReissueEvent:
-      type: object
-      properties:
-        Product:
-          allOf:
-          - $ref: "#/components/schemas/BankingProduct"
-          - description: Identification of the product
-    RegisterOrganisationRequest:
-      type: object
-      properties:
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        ExternalIdentification:
-          type: string
-        LegalName:
-          type: string
-        TradingName:
-          type: string
-        RegistrationDate:
-          type: string
-        ElectronicAddress:
+        PostalAddress:
+          description: Current postal address of the person.
           type: array
           items:
-            $ref: "#/components/schemas/ElectronicAddress"
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
+          description: Collection of information that identifies a phone address.
           type: array
           items:
             $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
+    RegisterPersonResponse:
+      type: object
+      properties:
+        FECID:
+          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          type: string
     RegistrationAddress:
       description: Registered Address
       required:
@@ -1978,31 +2094,59 @@ components:
           - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RetrieveOrganisationResponse:
+      required:
+      - FinancialInstitution
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          maxLength: 37
+          pattern: \S
           type: string
+          nullable: false
         Brand:
+          description: Identification of the brand associated with the organisation
+          maxLength: 37
           type: string
         ExternalIdentification:
+          description: Identification of the customer issued by the client financial
+            institution (CRM/CIS/CIF)
+          maxLength: 35
           type: string
         LegalName:
+          description: Official name under which an organisation is registered
+          maxLength: 35
           type: string
         TradingName:
+          description: "Name used by a business for commercial purposes, although\
+            \ its registered legal name, used for contracts and other formal situations,\
+            \ may be another"
+          maxLength: 35
+          pattern: \S
           type: string
+          nullable: false
         RegistrationDate:
+          description: Date on which a given organisation was officially registered
+            <br/> Format must be ISO Date format (YYYY-MM-DD)
           type: string
         ElectronicAddress:
+          description: Address which is accessed by electronic means
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
         Phone:
+          description: Collection of information that identifies a phone address
           type: array
           items:
             $ref: "#/components/schemas/Phone"
         Identification:
+          description: Fiserv Enterprise Organisation ID - Unique identifier for the
+            organisation
           type: string
         Status:
+          description: Status of the organisation record in the system
           type: string
     RetrievePaymentCardFacilityResponse:
       required:
@@ -2055,6 +2199,85 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+    RetrievePersonListRequest:
+      type: object
+      properties:
+        FepId:
+          description: Unique identifier of the payment instrument (FEPID)
+          maxLength: 37
+          type: string
+        CrmId:
+          description: External identifier of the person (CRMID)
+          maxLength: 35
+          type: string
+    RetrievePersonResponse:
+      type: object
+      properties:
+        FECID:
+          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          type: string
+        Status:
+          description: "Status of the person record in the system <br> Valid values\
+            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          type: string
+        Brand:
+          description: Identification of the brand associated with the person
+          type: string
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          type: string
+        NamePrefix:
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
+          type: string
+        GivenName:
+          description: First name of a person
+          type: string
+        MiddleName:
+          description: Second name of a person
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name"
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD)
+          type: string
+        Language:
+          description: Language in which a person communicates
+          type: string
+        Email:
+          description: Address for electronic mail (e-mail)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
