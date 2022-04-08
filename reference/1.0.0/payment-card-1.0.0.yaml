@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.44
+  version: 1.1.55
 tags:
 - name: Account Management
   x-proxy-name: Retrieve Account List
@@ -120,7 +120,32 @@ paths:
               schema:
                 $ref: "#/components/schemas/InitiatePaymentCardFacilityResponse"
         "400":
-          description: Bad Request
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+            \ : Financial Institution - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Financial Institution - Must be a valid Financial Institution Identification</em></li><li><em>HLXPCFDIN001\
+            \ : Financial Institution - Mandatory field - Maximum field length of\
+            \ 37 characters exceeded</em></li><li><em>HLXPCFDIN001 : Brand - Mandatory\
+            \ field - Please provide value</em></li><li><em>HLXPCFDIN001 : Brand-\
+            \ Mandatory field - Must be a valid Brand ID</em></li><li><em>HLXPCFDIN001\
+            \ : Brand - Mandatory field - Maximum field length of 37 characters exceeded</em></li><li><em>HLXPCFDIN001\
+            \ : Product - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Product- Mandatory field - Must be a valid Product ID</em></li><li><em>HLXPCFDIN001\
+            \ : Product - Mandatory field - Maximum field length of 37 characters\
+            \ exceeded</em></li><li><em>HLXPCFDIN001 : Payment Card Involvement -\
+            \ Mandatory field - Should not be null or empty</em></li><li><em>HLXPCFDIN001\
+            \ : Opening Date - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Opening Date - Mandatory field - Please provide valid Date</em></li><li><em>HLXPCFDIN001\
+            \ : Opening Date - Mandatory field - Please provide a current/today's\
+            \ Date in YYYY-MM-DD format</em></li><li><em>HLXPCFDIN001 : Party (FECID)\
+            \ - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Party role - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Clearing System Identification Code - Mandatory field - Please provide\
+            \ value</em></li><li><em>HLXPCFDIN001 : Clearing System Identification\
+            \ Code - Mandatory field - Please provide valid value</em></li><li><em>HLXPCFDIN001\
+            \ : Clearing System Identification Code - Mandatory field - Maximum field\
+            \ length exceeded</em></li><li><em>HLXPCFDIN001 : Account Identification\
+            \ - Mandatory field - Please provide value</em></li><li><em>HLXPCFDIN001\
+            \ : Account Identification - Mandatory field - Maximum field length exceeded</em></li></ul>"
           content:
             application/json:
               schema:
@@ -138,7 +163,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: Not Found
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+            \ : Financial Institution - Mandatory field - Does not exist in the system</em></li><li><em>HLXPCFDIN001\
+            \ : Brand - Mandatory field - Does not exist in the system</em></li><li><em>HLXPCFDIN001\
+            \ : Product - Mandatory field - Does not exist in the system</em></li><li><em>HLXPCFDIN003\
+            \ : Party - Mandatory field - Does not exist in the system</em></li></ul>"
           content:
             application/json:
               schema:
@@ -156,7 +185,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: Unprocessable Entity
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDST002\
+            \ : Financial Institution - Mandatory field - Not Active in the system</em></li><li><em>HLXPCFDST002\
+            \ : Brand - Mandatory field - Not Active in the system</em></li><li><em>HLXPCFDST002\
+            \ : Product - Mandatory field - Not Active in the system</em></li><li><em>HLXPCFDIN002\
+            \ : Party - Mandatory field - Not Active in the system</em></li></ul>"
           content:
             application/json:
               schema:
@@ -168,7 +201,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: Internal Server Error
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+            \ : Error While Initiate Payment Card Facility</em></li></ul>"
           content:
             application/json:
               schema:
@@ -573,7 +607,8 @@ components:
             $ref: "#/components/schemas/PaymentCardInvolvement"
         OpeningDate:
           description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner
+            are effectively operational for the Account owner <br/> Format must be
+            ISO Date format (YYYY-MM-DD)
           pattern: \S
           type: string
           nullable: false
@@ -893,7 +928,8 @@ components:
             $ref: "#/components/schemas/PaymentCardInvolvement"
         OpeningDate:
           description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner
+            are effectively operational for the Account owner <br/> Format must be
+            ISO Date format (YYYY-MM-DD)
           type: string
         ExternalAccount:
           type: array
