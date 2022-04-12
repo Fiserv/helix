@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.182
+  version: 1.1.194
 tags:
 - name: Helix Core
   x-proxy-name: Update Name on a Card
@@ -90,9 +90,9 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to create new card
-      description: ' This API allows the user to add a new card to the platform. The
+      description: This API allows the user to add a new card to the platform. The
         new card will be linked to the Person ID and Account ID provided in the request
-        message. It is not intended to be used to replace an existing card.'
+        message. It is not intended to be used to replace an existing card.
       operationId: create
       requestBody:
         content:
@@ -298,7 +298,7 @@ paths:
           maxLength: 37
           type: string
       responses:
-        "201":
+        "202":
           description: Created
           content:
             application/json:
@@ -639,6 +639,10 @@ paths:
                   Product:
                     description: Banking product associated with the payment instrument
                     type: string
+                  ProductName:
+                    description: Name of the banking product associated with the payment
+                      instrument
+                    type: string
                   RelatedAccount:
                     description: Account linked to the payment instrument. (FEAID)
                     type: string
@@ -707,6 +711,11 @@ paths:
                     description: Long number that appears on the front of the card
                       (Primary Account Number) in masked form showing only the last
                       4 digits
+                    type: string
+                  PlasticCreationDateTime:
+                    format: date-time
+                    description: "Date and time at which plastic created for the payment\
+                      \ instrument (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
         "401":
           description: Not Authorized
@@ -1051,6 +1060,9 @@ components:
         ProductId:
           description: Id of the Banking Product
           type: string
+        ProductName:
+          description: Name of the Banking Product
+          type: string
         CardExpiryMinTerm:
           format: int32
           description: Card Expiry Minimum Term
@@ -1219,7 +1231,7 @@ components:
           allOf:
           - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
-    ExecuteReplacecardResponse:
+    ExecuteReplaceCardResponse:
       type: object
       properties:
         FepId:
@@ -1697,6 +1709,9 @@ components:
         Product:
           description: Banking product associated with the payment instrument
           type: string
+        ProductName:
+          description: Name of the banking product associated with the payment instrument
+          type: string
         RelatedAccount:
           description: Account linked to the payment instrument. (FEAID)
           type: string
@@ -1760,6 +1775,11 @@ components:
         PAN:
           description: Long number that appears on the front of the card (Primary
             Account Number) in masked form showing only the last 4 digits
+          type: string
+        PlasticCreationDateTime:
+          format: date-time
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     Phone:
       required:
