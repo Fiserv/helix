@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.194
+  version: 1.1.199
 tags:
 - name: Helix Core
   x-proxy-name: Update Name on a Card
@@ -298,8 +298,8 @@ paths:
           maxLength: 37
           type: string
       responses:
-        "202":
-          description: Created
+        "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1004,7 +1004,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
         Account:
           allOf:
@@ -1060,6 +1060,27 @@ components:
         ProductId:
           description: Id of the Banking Product
           type: string
+        CardExpiryMinTerm:
+          format: int32
+          description: Card Expiry Minimum Term
+          type: integer
+        CardExpiryMaxTerm:
+          format: int32
+          description: Card Expiry Maximum Term
+          type: integer
+        PinLength:
+          format: int32
+          description: Pin Length
+          type: integer
+        Status:
+          description: Banking Product Status
+          type: string
+    BankingProduct1:
+      type: object
+      properties:
+        ProductId:
+          description: Id of the Banking Product
+          type: string
         ProductName:
           description: Name of the Banking Product
           type: string
@@ -1096,27 +1117,6 @@ components:
           type: object
           additionalProperties:
             type: boolean
-    BankingProduct1:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
     CardTechnology:
       enum:
       - ContactChip
@@ -1905,7 +1905,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -2111,7 +2111,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
