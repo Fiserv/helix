@@ -41,30 +41,30 @@ featuredFeatures:
     bullets: ["REPLACEME", "REPLACEME" ]  
     relatedDocs:
       - relatedDoc: 
-        title: REPLACEME1
-        description: REPLACEME
+        title: Card Management
+        description: Allows management of payment instruments that are used to perform financial transaction.
         link: ./docs/REPLACE-ME1.md
       - relatedDoc: 
-        title: REPLACEME2
-        description: REPLACEME
+        title: Customer Management
+        description: Allows management of a cardholder's demographic information like name, address, phone numbers.
         link: ./docs/REPLACE-ME2.md
       - relatedDoc: 
-        title: REPLACEME3
-        description: REPLACEME
+        title: Account Management
+        description: Allows management of the account related to the card.
         link: ./docs/REPLACE-ME3.md
     relatedAPIs:
       - relatedAPI: 
-        title: REPLACEME4
-        description: REPLACEME
-        type: "patch"        
-        path: "/v1/REPLACEME1"
-      - relatedAPI: 
-        title: REPLACEME5
-        description: REPLACEME
+        title: Add a new card
+        description: Add a new card to an existing customer and account.
         type: "post"        
-        path: "/v1/REPLACEME2"
+        path: "/Helix/V1/PaymentInstrument/Initiate"
       - relatedAPI: 
-        title: REPLACEME6
-        description: REPLACEME
-        type: "get"        
-        path: "/v1/REPLACEME3"
+        title: Activate a card
+        description: Activate a card prior to first usage.
+        type: "put"        
+        path: "/Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute"
+      - relatedAPI: 
+        title: Report a lost or stolen card
+        description: Block a card due to it having been lost or stolen.
+        type: "put"        
+        path: "/Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute"
