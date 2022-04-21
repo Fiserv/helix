@@ -29,42 +29,42 @@
 ################################################################################
 header:
   productName: REPLACEME
-  productionDescription: REPLACEME
-  whoIsItFor: REPLACEME
+  productionDescription: Helix is our state-of-the-art card management solution - a cloud native system that uses event driven architecture to drive your business forward at the speed you need it to.  
+  whoIsItFor: Helix is a card management solution used by banks and card processors to issue debit cards (with more coming soon).
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
     altText: REPLACEME™
 featuredFeatures:
-  - title: REPLACE ME
-    description:  REPLACE ME
+  - title: Debit Issuance
+    description:  Helix allows Financial Institutions to issue and manage Debit Card products to and for their end customers.
     tags: ["REPLACEME", "REPLACEME", "REPLACEME"]
     bullets: ["REPLACEME", "REPLACEME" ]  
     relatedDocs:
       - relatedDoc: 
-        title: REPLACEME
+        title: REPLACEME1
         description: REPLACEME
         link: ./docs/REPLACE-ME1.md
       - relatedDoc: 
-        title: REPLACEME
+        title: REPLACEME2
         description: REPLACEME
         link: ./docs/REPLACE-ME2.md
       - relatedDoc: 
-        title: REPLACEME
+        title: REPLACEME3
         description: REPLACEME
         link: ./docs/REPLACE-ME3.md
     relatedAPIs:
       - relatedAPI: 
-        title: REPLACEME
+        title: REPLACEME4
         description: REPLACEME
         type: "patch"        
         path: "/v1/REPLACEME1"
       - relatedAPI: 
-        title: REPLACEME
+        title: REPLACEME5
         description: REPLACEME
         type: "post"        
         path: "/v1/REPLACEME2"
       - relatedAPI: 
-        title: REPLACEME
+        title: REPLACEME6
         description: REPLACEME
         type: "get"        
         path: "/v1/REPLACEME3"
