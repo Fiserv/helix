@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.96
+  version: 1.1.139
 tags:
 - name: Customer Management
-  x-proxy-name: Retrieve a Person List using FEPID or CRMID
+  x-proxy-name: Validate a Person
   x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
@@ -21,6 +21,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -277,79 +279,65 @@ paths:
                 $ref: "#/components/schemas/RegisterPersonResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIN001\
-            \ : Financial Institution Identification - Mandatory field - Please provide\
-            \ value</em></li><li><em>HLXPTDTIN001 : Financial Institution Identification\
-            \ - Mandatory field - Please provide valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Financial Institution Identification - Mandatory field - Maximum field\
-            \ length of 37 characters exceeded</em></li><li><em>HLXPTDTIN001 : Brand\
-            \ Identification - Optional field - Please enter valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Brand Identification - Optional field - Maximum field length of 37\
-            \ characters exceeded</em></li><li><em>HLXPTDTIN001 : External Identification\
-            \ - Optional field - Maximum field length of 35 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Name Prefix - Optional field - Must be Text</em></li><li><em>HLXPTDTIN001\
-            \ : Name Prefix - Optional field - Must be a valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Given Name - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Given Name - Mandatory field - Must be Text</em></li><li><em>HLXPTDTIN001\
-            \ : Given Name - Mandatory field - Maximum field length of 35 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Middle Name - Optional field\
-            \ - Must be Text</em></li><li><em>HLXPTDTIN001 : Middle Name - Optional\
-            \ field - Maximum field length of 35 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Surname - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Surname - Mandatory field - Must be Text</em></li><li><em>HLXPTDTIN001\
-            \ : Surname - Mandatory field - Maximum field length of 35 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Birth Date - Optional field\
-            \ - Can't be a future date</em></li><li><em>HLXPTDTIN001 : Birth Date\
-            \  - Optional field - Must be a valid date</em></li><li><em>HLXPTDTIN001\
-            \ : Birth Date - Optional field - Must be a valid date in YYYY-MM-DD format</em></li><li><em>HLXPTDTIN001\
-            \ : Language - Optional field - Must be a valid ISO language code</em></li><li><em>HLXPTDTIN001\
-            \ : Memorable word - Optional field - Must be Text</em></li><li><em>HLXPTDTIN001\
-            \ : Memorable word - Optional field - Maximum field length of 20 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Memorable word reminder - Optional\
-            \ field - Must be Text</em></li><li><em>HLXPTDTIN001 : Memorable word\
-            \ reminder - Optional field - Maximum field length of 35 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Address Type - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Address Type - Mandatory field - Please provide valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Street Name - Optional field - Maximum field length of 70 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Building Number - Optional\
-            \ field - Maximum field length of 35 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Building Name - Optional field - Maximum field length of 70 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Post Office Box - Optional\
-            \ field - Maximum field length of 16 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : PostalCode - Optional field - Maximum field length of 16 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Address Line1 - Optional field\
-            \ - Maximum field length of 70 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line2 - Optional field - Maximum field length of 70 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Address Line3 - Optional field\
-            \ - Maximum field length of 70 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line4 - Optional field - Maximum field length of 70 characters\
-            \ exceeded</em></li><li><em>HLXPTDTIN001 : Town Name - Optional field\
-            \ - Maximum field length of 35 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Country Sub Division - Optional field - Maximum field length of 35\
-            \ characters exceeded</em></li><li><em>HLXPTDTIN001 : Country - Mandatory\
-            \ field - Please provide value</em></li><li><em>HLXPTDTIN001 : Country\
-            \ - Mandatory field - Please provide valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Postal Address - Contact Preference - Mandatory field - Please provide\
-            \ value</em></li><li><em>HLXPTDTIN001 : Postal Address - Contact Preference\
-            \ - Mandatory field - Please provide valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Type - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Type - Mandatory field - Please provide valid value</em></li><li><em>HLXPTDTIN001\
-            \ : Phone/Mobile Number - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Phone/Mobile number - Mandatory field - Maximum field length of 35\
-            \ characters exceeded</em></li><li><em>HLXPTDTIN001 : Extension - Mandatory\
-            \ field - Maximum field length of 10 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Contact Preference - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Contact Preference - Mandatory field - Please provide valid\
-            \ value</em></li><li><em>HLXPTDTIN001 : Phone - SMS Preference - Mandatory\
-            \ field - Please provide valid value</em></li><li><em>HLXPTDTIN001 : Electronic\
-            \ Address - Type - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Electronic Address - Type - Mandatory field - Please provide valid\
-            \ value</em></li><li><em>HLXPTDTIN001 : Electronic Address - Contact Preference\
-            \ - Mandatory field - Please provide value</em></li><li><em>HLXPTDTIN001\
-            \ : Electronic Address - Contact Preference - Mandatory field - Please\
-            \ provide valid value</em></li><li><em>HLXPTDTIN001 : Email - Mandatory\
-            \ field - Please provide value</em></li><li><em>HLXPTDTIN001 : Email -\
-            \ Mandatory field - Maximum field length of 256 characters exceeded</em></li><li><em>HLXPTDTIN001\
-            \ : Email - Mandatory field - Must be valid email</em></li></ul>"
+            \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Financial Institution Identification is not valid, please provide\
+            \ valid value.</em></li><li><em>HLXPTDTIN001 : Financial Institution Identification\
+            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTIN001 : Brand\
+            \ Identification is not valid.</em></li><li><em>HLXPTDTIN001 : Brand Identification\
+            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTIN001 : External\
+            \ Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Name Prefix accepts alphabets only.</em></li><li><em>HLXPTDTIN001\
+            \ : Name Prefix is not valid.</em></li><li><em>HLXPTDTIN001 : Given Name\
+            \ required, please provide value.</em></li><li><em>HLXPTDTIN001 : Given\
+            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Given Name\
+            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001 : Middle\
+            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Middle\
+            \ Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Surname required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Surname accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Surname\
+            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001 : Birth\
+            \ Date must be a past date.</em></li><li><em>HLXPTDTIN001 : Birth Date\
+            \  has to be a valid date.</em></li><li><em>HLXPTDTIN001 : Birth Date\
+            \ must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTIN001 : Language\
+            \ code must be ISO language code.</em></li><li><em>HLXPTDTIN001 : Memorable\
+            \ word accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Memorable\
+            \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTIN001\
+            \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Line1 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Line2 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Country required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
+            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Postal Address - Contact Preference is not valid, please provide valid\
+            \ value.</em></li><li><em>HLXPTDTIN001 : Phone - Type required, please\
+            \ provide value.</em></li><li><em>HLXPTDTIN001 : Phone - Type is not valid,\
+            \ please provide valid value.</em></li><li><em>HLXPTDTIN001 : Phone/Mobile\
+            \ Number required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTIN001\
+            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
+            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
+            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ : Electronic Address - Contact Preference is not valid, please provide\
+            \ valid value.</em></li><li><em>HLXPTDTIN001 : Email required, please\
+            \ provide value.</em></li><li><em>HLXPTDTIN001 : Email exceeds maximum\
+            \ 256 length allowed.</em></li><li><em>HLXPTDTIN001 : Email is not valid,\
+            \ please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -368,8 +356,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUN001\
-            \ : Financial Institution - Mandatory field - Does not exist in the system</em></li><li><em>HLXPTDTUN001\
-            \ : Brand - Mandatory field - Does not exist in the system<em></li></ul>"
+            \ : Financial Institution not found.</em></li><li><em>HLXPTDTUN002 : Brand\
+            \ not found.<em></li></ul>"
           content:
             application/json:
               schema:
@@ -387,9 +375,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIN001\
-            \ : Financial Institution - Mandatory field - Not Active in the system</em></li><li><em>HLXPTDTIN002\
-            \ : Brand - Mandatory field - Not Active in the system<em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA001\
+            \ : Financial Institution not active.</em></li><li><em>HLXPTDTIA002 :\
+            \ Brand not active.<em></li></ul>"
           content:
             application/json:
               schema:
@@ -402,7 +390,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTAD001\
-            \ : Error While Adding Person</em></li></ul>"
+            \ : There is an error while adding a Person, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -425,6 +413,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "200":
+          description: OK
       x-proxy-name: Add a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
@@ -435,7 +425,7 @@ paths:
       description: "This service is used to inquire a customer (person) details using\
         \ FECID, which is the ID that is used to identify the customer within the\
         \ system."
-      operationId: get
+      operationId: Get
       parameters:
       - name: partyId
         in: path
@@ -464,8 +454,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT002\
-            \ : FECID doesn't exist</em></li></ul>"
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT003\
+            \ : Person not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -484,7 +474,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT001\
-            \ : Error while getting Person details by Id</em></li></ul>"
+            \ : There is an error while getting Person details, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -508,6 +498,78 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on a Person
+      x-group-name: Customer Management
+  /Helix/V1/Person/{partyId}/Validate:
+    get:
+      tags:
+      - Customer Management
+      summary: Validate person
+      operationId: Validate
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
+            \ : Person not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA007\
+            \ : Person not active</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
+            \ : There is an error while validationg Person details, please try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Validate a Person
       x-group-name: Customer Management
 components:
   schemas:
@@ -618,7 +680,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
           description: Identification of the account
@@ -687,11 +749,28 @@ components:
         Status:
           description: Banking Product Status
           type: string
+        BankCardType:
+          allOf:
+          - $ref: "#/components/schemas/BankCardType"
+          - description: Bank Card Type
+        ChipDataConfig:
+          $ref: "#/components/schemas/ChipDataConfig"
+        ReissuePeriod:
+          format: int32
+          description: Banking Product Reissue Period
+          type: integer
+        activationControls:
+          type: object
+          additionalProperties:
+            type: boolean
     BankingProduct1:
       type: object
       properties:
         ProductId:
           description: Id of the Banking Product
+          type: string
+        ProductName:
+          description: Name of the Banking Product
           type: string
         CardExpiryMinTerm:
           format: int32
@@ -708,20 +787,6 @@ components:
         Status:
           description: Banking Product Status
           type: string
-        BankCardType:
-          allOf:
-          - $ref: "#/components/schemas/BankCardType"
-          - description: Bank Card Type
-        ChipDataConfig:
-          $ref: "#/components/schemas/ChipDataConfig"
-        ReissuePeriod:
-          format: int32
-          description: Banking Product Reissue Period
-          type: integer
-        activationControls:
-          type: object
-          additionalProperties:
-            type: boolean
     BlockIssuedDeviceRequest:
       required:
       - BlockReason
@@ -752,11 +817,10 @@ components:
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone number of the Brand
-          maxLength: 35
           type: string
         Status:
           description: Status of the Brand in the System
@@ -798,11 +862,10 @@ components:
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone number of the Brand
-          maxLength: 35
           type: string
         Status:
           description: Status of the Brand in the System
@@ -957,11 +1020,10 @@ components:
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone Number of Financial Institution
-          maxLength: 35
           type: string
         Status:
           description: Status of Financial Institution in the System
@@ -994,11 +1056,10 @@ components:
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone Number of Financial Institution
-          maxLength: 35
           type: string
         Status:
           description: Status of Financial Institution in the System
@@ -1016,8 +1077,6 @@ components:
           nullable: false
         ClientIdentification:
           description: Identification of Client Financial Institution
-          maxLength: 5
-          minLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -1071,19 +1130,19 @@ components:
         FinancialInstitution:
           description: FI to which the Payment Card Facility belongs
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Brand:
           description: Brand to which the Payment Card Facility belongs
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Product:
           description: Product to which the Payment Card Facility belongs
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         CardAccountType:
@@ -1454,7 +1513,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -1515,7 +1574,7 @@ components:
           description: Identification of the financial institution associated with
             the person
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Brand:
@@ -1535,7 +1594,7 @@ components:
         GivenName:
           description: First name of a person
           maxLength: 35
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         MiddleName:
@@ -1546,7 +1605,7 @@ components:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
           maxLength: 35
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         BirthDate:
@@ -1660,7 +1719,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
