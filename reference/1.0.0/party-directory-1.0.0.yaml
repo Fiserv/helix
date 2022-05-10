@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.139
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Customer Management
-  x-proxy-name: Validate a Person
+  x-proxy-name: Validate person details
   x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
@@ -21,8 +21,6 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
-        "200":
-          description: OK
         "201":
           description: Created
           content:
@@ -101,6 +99,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "200":
+          description: OK
       x-proxy-name: Add an Organisation
       x-group-name: Customer Management
   /Helix/V1/Organisation/{partyId}/Retrieve:
@@ -503,7 +503,9 @@ paths:
     get:
       tags:
       - Customer Management
-      summary: Validate person
+      summary: Validate person status
+      description: This API allows the user to validate person details for the given
+        FEPID <br/><br/><i> (This API is for Internal purpose only)</i>
       operationId: Validate
       parameters:
       - name: partyId
@@ -558,7 +560,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
-            \ : There is an error while validationg Person details, please try again</em></li></ul>"
+            \ : There is an error while validating Person details, please try again</em></li></ul>"
           content:
             application/json:
               schema:
@@ -569,7 +571,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate a Person
+      x-proxy-name: Validate person details
       x-group-name: Customer Management
 components:
   schemas:
@@ -632,40 +634,42 @@ components:
           nullable: false
         RelatedAccount:
           description: Account linked to the card. (FEAID)
-          maxLength: 37
           pattern: \S
           type: string
           nullable: false
         Cardholder:
           description: Party entitled to use the card (FECID)
-          maxLength: 37
           pattern: \S
           type: string
           nullable: false
         CardholderType:
-          description: Indicates if the card being added is of type Primary or Additional
+          description: Indicates if the card being added is of type Primary or Additional.
+            Accepted Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
+            </EM></LI></UL>
           pattern: \S
           type: string
           nullable: false
         NameLine1:
           description: Cardholder name as it appears on the card
-          maximum: 26
-          minimum: 2
           type: string
         NameLine2:
           description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
           type: string
         Design:
           description: Identification of card design associated with the payment card
           maxLength: 10
           type: string
         DigitalCardType:
-          description: Indicates the type of digital card
+          description: Indicates the type of digital card. Accepted Values are <UL><LI><EM>
+            FullTerm </EM></LI> <EM><LI> ShortTerm </EM></LI> <EM><LI> Transient </EM></LI>
+            <EM><LI> NonDigital </EM></LI></UL>
           type: string
         CardTechnology:
-          description: Indicates the  technology type supported by the physical card
+          description: Indicates the  technology type supported by the physical card.
+            Accepted Values are <UL><LI><EM> MagneticStripe </EM></LI> <EM><LI> ContactChip
+            </EM></LI> <EM><LI> ContactlessMagStripe </EM></LI> <EM><LI> ContactlessChip
+            </EM></LI> <EM><LI> MobileContactlessMagStripe </EM></LI> <EM><LI> MobileContactlessChip
+            </EM></LI> <EM><LI> NonPhysical </EM></LI></UL>
           type: string
         DeviceFormFactor:
           description: Indicates the type of device (form factor) written to the track
@@ -683,11 +687,13 @@ components:
           - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
-          description: Identification of the account
-          type: object
+          allOf:
+          - $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
+          - description: Identification of the account
         Cardholder:
-          description: Identification of the cardholder
-          type: object
+          allOf:
+          - $ref: "#/components/schemas/RetrievePersonResponse"
+          - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
@@ -734,6 +740,9 @@ components:
         ProductId:
           description: Id of the Banking Product
           type: string
+        ProductName:
+          description: Name of the Banking Product
+          type: string
         CardExpiryMinTerm:
           format: int32
           description: Card Expiry Minimum Term
@@ -759,10 +768,22 @@ components:
           format: int32
           description: Banking Product Reissue Period
           type: integer
+        CardTechnology:
+          allOf:
+          - $ref: "#/components/schemas/CardTechnology"
+          - description: default Card Technology
         activationControls:
           type: object
           additionalProperties:
             type: boolean
+        CardNameTruncationRule:
+          format: int32
+          description: Card Name Truncation Rule
+          type: integer
+        CardNameMaxLength:
+          format: int32
+          description: Card Name Max Length
+          type: integer
     BankingProduct1:
       type: object
       properties:
@@ -787,16 +808,6 @@ components:
         Status:
           description: Banking Product Status
           type: string
-    BlockIssuedDeviceRequest:
-      required:
-      - BlockReason
-      type: object
-      properties:
-        BlockReason:
-          description: To set the type of loss status on the selected card
-          pattern: \S
-          type: string
-          nullable: false
     BrandEntryAddRequest:
       required:
       - Name
@@ -891,6 +902,16 @@ components:
         Name:
           description: Name of Brand
           type: string
+    CardTechnology:
+      enum:
+      - ContactChip
+      - ContactlessChip
+      - ContactlessMagStripe
+      - MagneticStripe
+      - MobileContactlessChip
+      - MobileContactlessMagStripe
+      - NonPhysical
+      type: string
     ChipDataConfig:
       type: object
       properties:
@@ -983,6 +1004,20 @@ components:
           format: date-time
           description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+    ExecuteActivateCardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
+    ExecuteReplaceCardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -1171,6 +1206,34 @@ components:
           description: "Unique identifier of a Payment Card Facility, as assigned\
             \ by the account servicer (FEAID)"
           type: string
+    IssuedDeviceActionRequest:
+      required:
+      - BlockReason
+      - ReplaceCard
+      - GenerateNewPin
+      type: object
+      properties:
+        BlockReason:
+          description: To set the type of loss status on the selected card. Accepted
+            Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
+          pattern: \S
+          type: string
+          nullable: false
+        ReplaceCard:
+          description: To identify whether a replacement card need to be created and
+            sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
+            No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
+        GenerateNewPin:
+          description: To identify whether a replacement PIN needs to be generated
+            and sent to the cardholder when PIN is compromised or whether the existing
+            PIN will be reused when PIN is not compromised.Accepted Values are <UL><LI><EM>
+            Yes </EM></LI> <LI><EM> No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
     IssuedDeviceActionResponse:
       type: object
       properties:
@@ -1178,6 +1241,14 @@ components:
           allOf:
           - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
+        NewFepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the new payment instrument (FEPID)
+        ActivationStatus:
+          description: Indicates whether card activation needs to occur for the most
+            recently issued card.
+          type: string
     IssuedDeviceUpdateRequest:
       type: object
       properties:
@@ -1326,12 +1397,11 @@ components:
         Product:
           description: Banking product associated with the payment instrument
           type: string
+        ProductName:
+          description: Name of the banking product associated with the payment instrument
+          type: string
         RelatedAccount:
           description: Account linked to the payment instrument. (FEAID)
-          type: string
-        SequenceNumber:
-          description: Identifies a card inside a set of cards with the same number
-            (or PAN).
           type: string
         Status:
           description: Status of the payment instrument in the system
@@ -1349,8 +1419,9 @@ components:
           description: Party entitled to use the payment instrument (FECID)
           type: string
         CardholderType:
-          description: Indicates if the card holder is a primary account holder or
-            an additional cardholder to the account
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Accepted Values are <UL><LI><EM>
+            Primary </EM></LI> <LI><EM> Additional </EM></LI></UL>
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -1375,6 +1446,7 @@ components:
           type: string
         BlockedReason:
           description: Specifies the reason for which the payment instrument is blocked.
+            Accepted Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           type: string
         BlockedDateTime:
           format: date-time
@@ -1390,7 +1462,12 @@ components:
           type: string
         PAN:
           description: Long number that appears on the front of the card (Primary
-            Account Number)
+            Account Number) in masked form showing only the last 4 digits
+          type: string
+        PlasticCreationDateTime:
+          format: date-time
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     Phone:
       required:
