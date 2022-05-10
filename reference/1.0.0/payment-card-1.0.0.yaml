@@ -292,9 +292,9 @@ paths:
     get:
       tags:
       - Account Management
-      summary: This method is used to validate the account details for the given FEPID
+      summary: This method is used to validate the account details for the given FEAID
       description: "This API allows the user to validate the account details for the\
-        \ given FEPID,<br/><br/><i> (This API is for Internal purpose only)</i>"
+        \ given FEAID,<br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: Validate
       parameters:
       - name: paymentCardFacilityId
