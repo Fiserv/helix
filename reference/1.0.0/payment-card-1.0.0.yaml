@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.94
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Account Management
-  x-proxy-name: Retrieve Account List
+  x-proxy-name: Validate account status
   x-group-name: Account Management
 paths:
   /Helix/V1/PaymentCardFacility/GetList/Request:
@@ -113,8 +113,6 @@ paths:
             schema:
               $ref: "#/components/schemas/InitiatePaymentCardFacilityRequest"
       responses:
-        "200":
-          description: OK
         "201":
           description: Created
           content:
@@ -222,6 +220,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "200":
+          description: OK
       x-proxy-name: Add an Account
       x-group-name: Account Management
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Retrieve:
@@ -288,17 +288,12 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve an Account
       x-group-name: Account Management
-    parameters:
-    - name: paymentCardFacilityId
-      in: path
-      required: true
-      schema:
-        maxLength: 37
-        type: string
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Validate:
     get:
       tags:
-      - Payment Card Facility Resource Impl
+      - Account Management
+      summary: Validate account status
+      operationId: Validate
       parameters:
       - name: paymentCardFacilityId
         in: path
@@ -309,13 +304,63 @@ paths:
       responses:
         "200":
           description: OK
-    parameters:
-    - name: paymentCardFacilityId
-      in: path
-      required: true
-      schema:
-        maxLength: 37
-        type: string
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT003\
+            \ : Account not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIA006\
+            \ : Account not active</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT004\
+            \ : There is an error while validating Payment Card facility, please try\
+            \ again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Validate account status
+      x-group-name: Account Management
 components:
   schemas:
     AddOrganisationResponse:
