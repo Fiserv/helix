@@ -108,7 +108,7 @@ paths:
       tags:
       - Customer Management
       summary: This method is used to return the organisation details
-      operationId: get
+      operationId: Get
       parameters:
       - name: partyId
         in: path
@@ -425,7 +425,7 @@ paths:
       description: "This service is used to inquire a customer (person) details using\
         \ FECID, which is the ID that is used to identify the customer within the\
         \ system."
-      operationId: Get
+      operationId: get
       parameters:
       - name: partyId
         in: path
@@ -504,8 +504,8 @@ paths:
       tags:
       - Customer Management
       summary: Validate person status
-      description: This API allows the user to validate person details for the given
-        FEPID <br/><br/><i> (This API is for Internal purpose only)</i>
+      description: "This API allows the user to validate person details for the given\
+        \ FECID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: Validate
       parameters:
       - name: partyId
@@ -684,7 +684,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
         Account:
           allOf:
@@ -758,6 +758,30 @@ components:
         Status:
           description: Banking Product Status
           type: string
+    BankingProduct1:
+      type: object
+      properties:
+        ProductId:
+          description: Id of the Banking Product
+          type: string
+        ProductName:
+          description: Name of the Banking Product
+          type: string
+        CardExpiryMinTerm:
+          format: int32
+          description: Card Expiry Minimum Term
+          type: integer
+        CardExpiryMaxTerm:
+          format: int32
+          description: Card Expiry Maximum Term
+          type: integer
+        PinLength:
+          format: int32
+          description: Pin Length
+          type: integer
+        Status:
+          description: Banking Product Status
+          type: string
         BankCardType:
           allOf:
           - $ref: "#/components/schemas/BankCardType"
@@ -784,30 +808,6 @@ components:
           format: int32
           description: Card Name Max Length
           type: integer
-    BankingProduct1:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
     BrandEntryAddRequest:
       required:
       - Name
@@ -1590,7 +1590,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -1796,7 +1796,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
