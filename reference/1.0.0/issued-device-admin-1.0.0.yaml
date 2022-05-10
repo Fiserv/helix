@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.241
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Helix Core
-  x-proxy-name: Validate on Card Details
+  x-proxy-name: Validate card details
   x-group-name: Card Management
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
@@ -762,6 +762,8 @@ paths:
                     description: "Date and time at which plastic created for the payment\
                       \ instrument (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
+                  enabled:
+                    type: boolean
         "401":
           description: Not Authorized
           content:
@@ -940,7 +942,7 @@ paths:
       summary: This method is used to validate the payment instrument for the given
         FEPID
       description: This API allows the user to validate the payment instrument for
-        the given FEPID
+        the given FEPID <br/><br/><i> (This API is for Internal purpose only)</i>
       operationId: validatePaymentInstrument
       parameters:
       - name: paymentInstrumentId
@@ -970,7 +972,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -983,7 +985,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: Unprocessable Entity
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID004\
+            \ : Card is not enabled</em></li><li><em>HLXIDASID005 : Card is blocked\
+            \ as Lost</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen</em></li></ul>"
           content:
             application/json:
               schema:
@@ -995,7 +999,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: Internal Server Error
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
+            \ : There is an error while validating Payment Instrument, please try\
+            \ again</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1018,7 +1024,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate on Card Details
+      x-proxy-name: Validate card details
       x-group-name: Card Management
 components:
   schemas:
@@ -1131,7 +1137,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
           allOf:
@@ -1205,30 +1211,6 @@ components:
         Status:
           description: Banking Product Status
           type: string
-    BankingProduct1:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
         BankCardType:
           allOf:
           - $ref: "#/components/schemas/BankCardType"
@@ -1255,6 +1237,30 @@ components:
           format: int32
           description: Card Name Max Length
           type: integer
+    BankingProduct1:
+      type: object
+      properties:
+        ProductId:
+          description: Id of the Banking Product
+          type: string
+        ProductName:
+          description: Name of the Banking Product
+          type: string
+        CardExpiryMinTerm:
+          format: int32
+          description: Card Expiry Minimum Term
+          type: integer
+        CardExpiryMaxTerm:
+          format: int32
+          description: Card Expiry Maximum Term
+          type: integer
+        PinLength:
+          format: int32
+          description: Pin Length
+          type: integer
+        Status:
+          description: Banking Product Status
+          type: string
     BrandEntryAddRequest:
       required:
       - Name
@@ -1919,6 +1925,8 @@ components:
           description: "Date and time at which plastic created for the payment instrument\
             \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        enabled:
+          type: boolean
     Phone:
       required:
       - Type
@@ -2040,7 +2048,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -2246,7 +2254,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
