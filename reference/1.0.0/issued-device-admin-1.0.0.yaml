@@ -193,7 +193,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
-            \ : </em></li></ul>"
+            \ : Attempt to add card has failed due to Persistence Error</em></li></ul>"
           content:
             application/json:
               schema:
@@ -379,7 +379,7 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAS002\
             \ : Card already activated</em></li><li><em>HLXIDASBV002 : Card already\
-            \ blocked as </em></li></ul>"
+            \ blocked as Lost<li><em>HLXIDASBV002 : Card already blocked as Stolen</em></li></ul>"
           content:
             application/json:
               schema:
@@ -392,7 +392,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ : </em></li></ul>"
+            \ :  - Attempt to update the payment instrument information has failed\
+            \ due to persistence error</em></li></ul>"
           content:
             application/json:
               schema:
@@ -501,7 +502,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
-            \ : Card already blocked as </em></li></ul>"
+            \ : Card already blocked as Lost<li><em>HLXIDASBV002 : Card already blocked\
+            \ as Stolen</em></li></ul>"
           content:
             application/json:
               schema:
@@ -514,7 +516,9 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ : </em></li><li><em>HLXIDASBR002 : </em></li></ul>"
+            \ :  - Attempt to update the payment instrument information has failed\
+            \ due to persistence error</em></li><li><em>HLXIDASBR002 : - Attempt to\
+            \ block and replace the card has failed due to persistence error</em></li></ul>"
           content:
             application/json:
               schema:
