@@ -521,8 +521,7 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
             \ : - Attempt to block and replace the card has failed due to persistence\
-            \ error</em></li><li><em>HLXIDASBR002 : - Attempt to block and replace\
-            \ the card has failed due to persistence error</em></li></ul>"
+            \ error</em></li></ul>"
           content:
             application/json:
               schema:
