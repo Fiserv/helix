@@ -634,8 +634,8 @@ paths:
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ :  - Attempt to update the payment instrument information has failed\
             \ due to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to\
-            \ replace the card has failed<li><em>CR001 :  - Attempt to replace the\
-            \ card has failed. Previous chip data is not present</em></li></ul>"
+            \ replace the card has failed<li><em>HLXIDASCR001 :  - Attempt to replace\
+            \ the card has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1154,7 +1154,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
         Account:
           allOf:
@@ -1229,6 +1229,30 @@ components:
         Status:
           description: Banking Product Status
           type: string
+    BankingProduct1:
+      type: object
+      properties:
+        ProductId:
+          description: Id of the Banking Product
+          type: string
+        ProductName:
+          description: Name of the Banking Product
+          type: string
+        CardExpiryMinTerm:
+          format: int32
+          description: Card Expiry Minimum Term
+          type: integer
+        CardExpiryMaxTerm:
+          format: int32
+          description: Card Expiry Maximum Term
+          type: integer
+        PinLength:
+          format: int32
+          description: Pin Length
+          type: integer
+        Status:
+          description: Banking Product Status
+          type: string
         BankCardType:
           allOf:
           - $ref: "#/components/schemas/BankCardType"
@@ -1255,30 +1279,6 @@ components:
           format: int32
           description: Card Name Max Length
           type: integer
-    BankingProduct1:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
     BrandEntryAddRequest:
       required:
       - Name
@@ -2070,7 +2070,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -2276,7 +2276,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct"
+          - $ref: "#/components/schemas/BankingProduct1"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
