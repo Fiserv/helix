@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.241
+  version: 1.1.252
 tags:
 - name: Helix Core
   x-proxy-name: Validate card details
@@ -113,7 +113,9 @@ paths:
                     - description: Unique identifier of the payment card (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
+                      for the most recently issued card. Possible Response Values
+                      are <UL><LI><EM> ANED (ActivationNeed) </EM></LI> <EM><LI> ACMP
+                      (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASIN001\
@@ -127,7 +129,7 @@ paths:
             \ : Account exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
             \ : Party required, please provide value</em></li><li><em>HLXIDASIN001\
             \ : Party exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : CardholderTypeCardholderType invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASIN001\
+            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASIN001\
             \ : CardholderType required, please provide value</em></li><li><em>HLXIDASIN001\
             \ : Name Line 1 less than minimum length allowed2 chars</em></li><li><em>HLXIDASIN001\
             \ : Name Line 1 exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
@@ -193,7 +195,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
-            \ : Attempt to add card has failed due to Persistence Error</em></li></ul>"
+            \ : Attempt to add card has failed due to persistence error</em></li></ul>"
           content:
             application/json:
               schema:
@@ -460,7 +462,9 @@ paths:
                         (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
+                      for the most recently issued card. Possible Response Values
+                      are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
+                      ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
@@ -515,10 +519,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ :  - Attempt to update the payment instrument information has failed\
-            \ due to persistence error</em></li><li><em>HLXIDASBR002 : - Attempt to\
-            \ block and replace the card has failed due to persistence error</em></li></ul>"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
+            \ : - Attempt to block and replace the card has failed due to persistence\
+            \ error</em></li></ul>"
           content:
             application/json:
               schema:
@@ -630,8 +633,8 @@ paths:
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ :  - Attempt to update the payment instrument information has failed\
             \ due to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to\
-            \ replace the card has failed<li><em>CR001 :  - Attempt to replace the\
-            \ card has failed. Previous chip data is not present</em></li></ul>"
+            \ replace the card has failed<li><em>HLXIDASCR001 :  - Attempt to replace\
+            \ the card has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
               schema:
@@ -696,7 +699,9 @@ paths:
                     description: Account linked to the payment instrument. (FEAID)
                     type: string
                   Status:
-                    description: Status of the payment instrument in the system
+                    description: Status of the payment instrument in the system. Possible
+                      Response Values are <UL><LI><EM> ENAB (Enabled) </EM></LI> <LI><EM>
+                      DISA (Disabled) </EM></LI> <LI><EM> DELE (Deleted) </EM></LI></UL>
                     type: string
                   StartDate:
                     format: date
@@ -712,9 +717,9 @@ paths:
                     type: string
                   CardholderType:
                     description: Indicates if the card holder of the account is a
-                      Primary account Holder or an Additional Account Holder. Accepted
-                      Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
-                      </EM></LI></UL>
+                      Primary account Holder or an Additional Account Holder. Possible
+                      Response Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM>
+                      ADNL (Additional) </EM></LI></UL>
                     type: string
                   NameLine1:
                     description: Cardholder name as it appears on the card.
@@ -729,7 +734,9 @@ paths:
                     type: string
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
+                      for the most recently issued card. Possible Response Values
+                      are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
+                      ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
                   ActivationDate:
                     format: date
@@ -863,7 +870,9 @@ paths:
                         (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
-                      for the most recently issued card.
+                      for the most recently issued card. Possible Response Values
+                      are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
+                      ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
           description: Bad Request
@@ -1006,6 +1015,7 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
             \ : There is an error while validating Payment Instrument, please try\
+            \ againThere is an error while validating Payment Instrument, please try\
             \ again</em></li></ul>"
           content:
             application/json:
@@ -1102,8 +1112,8 @@ components:
           nullable: false
         CardholderType:
           description: Indicates if the card being added is of type Primary or Additional.
-            Accepted Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
-            </EM></LI></UL>
+            Accepted Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM> ADNL
+            (Additional) </EM></LI></UL>
           pattern: \S
           type: string
           nullable: false
@@ -1119,15 +1129,16 @@ components:
           type: string
         DigitalCardType:
           description: Indicates the type of digital card. Accepted Values are <UL><LI><EM>
-            FullTerm </EM></LI> <EM><LI> ShortTerm </EM></LI> <EM><LI> Transient </EM></LI>
-            <EM><LI> NonDigital </EM></LI></UL>
+            FTRM (FullTerm) </EM></LI> <EM><LI> STRM (ShortTerm) </EM></LI> <EM><LI>
+            TRAN (Transient) </EM></LI> <EM><LI> NDIG (NonDigital) </EM></LI></UL>
           type: string
         CardTechnology:
           description: Indicates the  technology type supported by the physical card.
-            Accepted Values are <UL><LI><EM> MagneticStripe </EM></LI> <EM><LI> ContactChip
-            </EM></LI> <EM><LI> ContactlessMagStripe </EM></LI> <EM><LI> ContactlessChip
-            </EM></LI> <EM><LI> MobileContactlessMagStripe </EM></LI> <EM><LI> MobileContactlessChip
-            </EM></LI> <EM><LI> NonPhysical </EM></LI></UL>
+            Accepted Values are <UL><LI><EM> MGST (MagneticStripe) </EM></LI> <EM><LI>
+            CTCP (ContactChip) </EM></LI> <EM><LI> CLMS (ContactlessMagStripe) </EM></LI>
+            <EM><LI> CLCP (ContactlessChip) </EM></LI> <EM><LI> MCLM (MobileContactlessMagStripe)
+            </EM></LI> <EM><LI> MCLC (MobileContactlessChip) </EM></LI> <EM><LI> NPHY
+            (NonPhysical) </EM></LI></UL>
           type: string
         DeviceFormFactor:
           description: Indicates the type of device (form factor) written to the track
@@ -1178,7 +1189,8 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeed)
+            </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     AddOrganisationResponse:
       type: object
@@ -1707,7 +1719,8 @@ components:
           - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     IssuedDeviceUpdateRequest:
       type: object
@@ -1865,7 +1878,9 @@ components:
           description: Account linked to the payment instrument. (FEAID)
           type: string
         Status:
-          description: Status of the payment instrument in the system
+          description: Status of the payment instrument in the system. Possible Response
+            Values are <UL><LI><EM> ENAB (Enabled) </EM></LI> <LI><EM> DISA (Disabled)
+            </EM></LI> <LI><EM> DELE (Deleted) </EM></LI></UL>
           type: string
         StartDate:
           format: date
@@ -1881,8 +1896,8 @@ components:
           type: string
         CardholderType:
           description: Indicates if the card holder of the account is a Primary account
-            Holder or an Additional Account Holder. Accepted Values are <UL><LI><EM>
-            Primary </EM></LI> <LI><EM> Additional </EM></LI></UL>
+            Holder or an Additional Account Holder. Possible Response Values are <UL><LI><EM>
+            PRIM (Primary) </EM></LI> <LI><EM> ADNL (Additional) </EM></LI></UL>
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -1896,7 +1911,8 @@ components:
           type: string
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         ActivationDate:
           format: date
