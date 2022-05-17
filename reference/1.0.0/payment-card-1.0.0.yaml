@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.95
+  version: 1.1.99
 tags:
 - name: Account Management
-  x-proxy-name: Validate account details
+  x-proxy-name: Validate account status
   x-group-name: Account Management
 paths:
   /Helix/V1/PaymentCardFacility/GetList/Request:
@@ -113,6 +113,8 @@ paths:
             schema:
               $ref: "#/components/schemas/InitiatePaymentCardFacilityRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -220,8 +222,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add an Account
       x-group-name: Account Management
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Retrieve:
@@ -229,10 +229,14 @@ paths:
       tags:
       - Account Management
       summary: Retrieve details about payment card facility account
+      description: "This service is used to inquire an Account details using FEAID\
+        \ , which is the ID that is used to identify the Account within the system."
       operationId: Retrieve
       parameters:
       - name: paymentCardFacilityId
         in: path
+        description: "Unique identifier of a Payment Card Facility, as assigned by\
+          \ the account servicer (FEAID)"
         required: true
         schema:
           maxLength: 37
@@ -245,7 +249,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
         "400":
-          description: Bad Request
+          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT002\
+            \ : Account number not found.</em></li><li><em>HLXPCFDIN001 : Account\
+            \ number is not valid.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -263,7 +269,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: Not Found
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT002\
+            \ : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -275,7 +282,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: Internal Server Error
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT001\
+            \ : There is an error while retrieving Payment Card facility, please try\
+            \ again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -286,15 +295,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve an Account
+      x-proxy-name: Inquire on an Account
       x-group-name: Account Management
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Validate:
     get:
       tags:
       - Account Management
-      summary: This method is used to validate the account details for the given FEAID
-      description: "This API allows the user to validate the account details for the\
-        \ given FEAID,<br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
+      summary: Validate account status
       operationId: Validate
       parameters:
       - name: paymentCardFacilityId
@@ -361,7 +368,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate account details
+      x-proxy-name: Validate account status
       x-group-name: Account Management
 components:
   schemas:
