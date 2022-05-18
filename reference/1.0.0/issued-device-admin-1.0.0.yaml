@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.252
+  version: 1.1.258
 tags:
 - name: Helix Core
   x-proxy-name: Validate card details
@@ -114,8 +114,8 @@ paths:
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
-                      are <UL><LI><EM> ANED (ActivationNeed) </EM></LI> <EM><LI> ACMP
-                      (ActivationComplete) </EM></LI></UL>
+                      are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <EM><LI>
+                      ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASIN001\
@@ -420,6 +420,19 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Activate a Card
       x-group-name: Card Management
+  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
+    put:
+      tags:
+      - Issued Device Activation Resource
+      parameters:
+      - name: paymentInstrumentId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
@@ -520,7 +533,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
-            \ : - Attempt to block and replace the card has failed due to persistence\
+            \ : Attempt to block and replace the card has failed due to persistence\
             \ error</em></li></ul>"
           content:
             application/json:
@@ -633,8 +646,8 @@ paths:
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ :  - Attempt to update the payment instrument information has failed\
             \ due to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to\
-            \ replace the card has failed<li><em>HLXIDASCR001 :  - Attempt to replace\
-            \ the card has failed. Previous chip data is not present</em></li></ul>"
+            \ replace the card has failed<li><em>CR001 :  - Attempt to replace the\
+            \ card has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1015,7 +1028,6 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
             \ : There is an error while validating Payment Instrument, please try\
-            \ againThere is an error while validating Payment Instrument, please try\
             \ again</em></li></ul>"
           content:
             application/json:
@@ -1189,7 +1201,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeed)
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     AddOrganisationResponse:
@@ -1476,6 +1488,13 @@ components:
           description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     ExecuteActivateCardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
+    ExecuteDeactivateCardResponse:
       type: object
       properties:
         FepId:
