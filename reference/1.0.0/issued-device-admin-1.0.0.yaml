@@ -646,7 +646,7 @@ paths:
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ :  - Attempt to update the payment instrument information has failed\
             \ due to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to\
-            \ replace the card has failed<li><em>CR001 :  - Attempt to replace the\
+            \ replace the card has failed<li><em>HLXIDASCR001 : Attempt to replace the\
             \ card has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
