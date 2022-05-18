@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.100
+  version: 1.1.101
 tags:
 - name: Account Management
   x-proxy-name: Validate account details
@@ -249,9 +249,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
         "400":
-          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT002\
-            \ : Account number not found.</em></li><li><em>HLXPCFDIN001 : Account\
-            \ number is not valid.</em></li></ul>"
+          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+            \ : Account number is not valid.</em></li></ul>"
           content:
             application/json:
               schema:
