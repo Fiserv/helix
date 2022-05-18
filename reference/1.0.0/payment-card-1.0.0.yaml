@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.99
+  version: 1.1.100
 tags:
 - name: Account Management
-  x-proxy-name: Validate account status
+  x-proxy-name: Validate account details
   x-group-name: Account Management
 paths:
   /Helix/V1/PaymentCardFacility/GetList/Request:
@@ -301,7 +301,9 @@ paths:
     get:
       tags:
       - Account Management
-      summary: Validate account status
+      summary: This method is used to validate the account details for the given FEAID
+      description: "This API allows the user to validate the account details for the\
+        \ given FEAID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: Validate
       parameters:
       - name: paymentCardFacilityId
@@ -368,7 +370,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate account status
+      x-proxy-name: Validate account details
       x-group-name: Account Management
 components:
   schemas:
