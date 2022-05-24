@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.258
+  version: 1.1.262
 tags:
 - name: Helix Core
   x-proxy-name: Validate card details
@@ -182,7 +182,10 @@ paths:
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
             \ : Person not active</em></li><li><em>HLXIDASFI001 : Financial Institution\
             \ not active</em></li><li><em>HLXIDASBR001 : Brand not active</em></li><li><em>HLXIDASPD001\
-            \ : Product not active</em></li><li><em>HLXIDASAC001 : Account not active</em></li></ul>"
+            \ : Product not active</em></li><li><em>HLXIDASAC001 : Account not active</em></li><li><em>HLXIDASCT001\
+            \ : Card Technology must be NPHY, when Digital Card Type is FTRM or STRM</em></li><li><em>HLXIDASCT002\
+            \ : Card Technology cannot be NPHY, when Digital Card Type is TRAN or\
+            \ NDIG</em></li></ul>"
           content:
             application/json:
               schema:
@@ -394,8 +397,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ :  - Attempt to update the payment instrument information has failed\
-            \ due to persistence error</em></li></ul>"
+            \ : Attempt to update the payment instrument information has failed due\
+            \ to persistence error</em></li></ul>"
           content:
             application/json:
               schema:
@@ -644,10 +647,10 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ :  - Attempt to update the payment instrument information has failed\
-            \ due to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to\
-            \ replace the card has failed<li><em>HLXIDASCR001 : Attempt to replace the\
-            \ card has failed. Previous chip data is not present</em></li></ul>"
+            \ : Attempt to update the payment instrument information has failed due\
+            \ to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to replace\
+            \ the card has failed<li><em>HLXIDASCR001 : Attempt to replace the card\
+            \ has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
               schema:
