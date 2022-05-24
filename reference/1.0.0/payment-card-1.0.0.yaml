@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.100
+  version: 1.1.102
 tags:
 - name: Account Management
   x-proxy-name: Validate account details
@@ -113,8 +113,6 @@ paths:
             schema:
               $ref: "#/components/schemas/InitiatePaymentCardFacilityRequest"
       responses:
-        "200":
-          description: OK
         "201":
           description: Created
           content:
@@ -222,6 +220,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "200":
+          description: OK
       x-proxy-name: Add an Account
       x-group-name: Account Management
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Retrieve:
@@ -249,9 +249,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
         "400":
-          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT002\
-            \ : Account number not found.</em></li><li><em>HLXPCFDIN001 : Account\
-            \ number is not valid.</em></li></ul>"
+          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+            \ : Account number is not valid.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -711,6 +710,7 @@ components:
         Identification:
           description: "Unique identifier of a Payment Card Facility, as assigned\
             \ by the account servicer (FEAID)"
+          maxLength: 37
           type: string
     PaymentCardInvolvement:
       description: Role played by a party in the context of PaymentCardFacility operations.
@@ -1098,15 +1098,19 @@ components:
         Identification:
           description: "Unique identifier of a Payment Card Facility, as assigned\
             \ by the account servicer (FEAID)"
+          maxLength: 37
           type: string
         FinancialInstitution:
           description: FI to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Brand:
           description: Brand to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Product:
           description: Product to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Status:
           description: "Status of the Payment Card Facility entity in the system <br>\
