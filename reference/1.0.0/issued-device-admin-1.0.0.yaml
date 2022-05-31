@@ -2,11 +2,12 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.262
+  version: 1.1.268
 tags:
 - name: Helix Core
   x-proxy-name: Validate card details
   x-group-name: Card Management
+  x-api-scope: Internal
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
@@ -315,6 +316,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Reissue a Card
       x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
@@ -426,16 +428,24 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
-      - Issued Device Activation Resource
+      - Helix Core
+      summary: This method is used to deactivate a card
+      description: This API allows the user to deactivate a card
+      operationId: deactivateCard
       parameters:
       - name: paymentInstrumentId
         in: path
+        description: Unique identifier of the payment instrument (FEPID)
         required: true
         schema:
+          maxLength: 37
           type: string
       responses:
         "200":
           description: OK
+      x-proxy-name: Deactivate a Card
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
@@ -648,9 +658,9 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ : Attempt to update the payment instrument information has failed due\
-            \ to persistence error</em></li><li><em>HLXIDASCR001 : Attempt to replace\
-            \ the card has failed<li><em>HLXIDASCR001 : Attempt to replace the card\
-            \ has failed. Previous chip data is not present</em></li></ul>"
+            \ to persistence error</em></li><li><em>HLXIDASCR001 : Card Replacement\
+            \ failed due to persistence error<li><em>HLXIDASCR001 : Attempt to replace\
+            \ the card has failed. Previous chip data is not present</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1015,7 +1025,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID004\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
             \ : Card is not enabled</em></li><li><em>HLXIDASID005 : Card is blocked\
             \ as Lost</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen</em></li></ul>"
           content:
@@ -1056,6 +1066,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Validate card details
       x-group-name: Card Management
+      x-api-scope: Internal
 components:
   schemas:
     Account:
