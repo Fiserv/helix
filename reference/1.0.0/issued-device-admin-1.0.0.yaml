@@ -346,7 +346,7 @@ paths:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -493,7 +493,7 @@ paths:
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -605,7 +605,7 @@ paths:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -624,7 +624,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -801,6 +801,13 @@ paths:
                     type: string
                   enabled:
                     type: boolean
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
@@ -999,6 +1006,13 @@ paths:
             application/json:
               schema:
                 type: object
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
