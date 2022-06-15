@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.268
+  version: 1.1.272
 tags:
 - name: Helix Core
   x-proxy-name: Validate card details
@@ -119,28 +119,28 @@ paths:
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASIN001\
-            \ : Financial Institution required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Financial Institution Identification exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Brand required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Brand exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Product required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Product exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Account required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Account exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Party required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Party exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASIN001\
-            \ : CardholderType required, please provide value</em></li><li><em>HLXIDASIN001\
-            \ : Name Line 1 less than minimum length allowed2 chars</em></li><li><em>HLXIDASIN001\
-            \ : Name Line 1 exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Name Line 2 less than minimum length allowed2 chars</em></li><li><em>HLXIDASIN001\
-            \ : Name Line 2 exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
-            \ : Design exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Financial Institution required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Financial Institution Identification exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Brand required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Brand exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Product required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Product exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Account required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Account exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Party required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Party exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASBR001\
+            \ : CardholderType required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Design exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
             \ : DigitalCardTypeDigital Card Type invalid, valid values are FTRM, STRM,\
-            \ TRAN or NDIG</em></li><li><em>HLXIDASIN001 : CardTechnologyCard Technology\
-            \ invalid, valid values are MGST, CTCP, CLMS, CLCP, MCLM, MCLC and NPHY</em></li><li><em>HLXIDASIN001\
-            \ : DeviceFormFactor exceeds maximum length allowed</em></li><li><em>HLXIDASIN001\
+            \ TRAN or NDIG</em></li><li><em>HLXIDASBR001 : CardTechnologyCard Technology\
+            \ invalid, valid values are MGST, CTCP, CLMS, CLCP, MCLM, MCLC and NPHY</em></li><li><em>HLXIDASBR001\
+            \ : DeviceFormFactor exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
             \ : DeviceFormFactor less than minimum length allowed1 char</em></li></ul>"
           content:
             application/json:
@@ -346,7 +346,7 @@ paths:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -493,7 +493,7 @@ paths:
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -605,7 +605,7 @@ paths:
                     - $ref: "#/components/schemas/UUID"
                     - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -624,7 +624,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found</em></li></ul>"
           content:
             application/json:
@@ -801,6 +801,13 @@ paths:
                     type: string
                   enabled:
                     type: boolean
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
@@ -999,6 +1006,13 @@ paths:
             application/json:
               schema:
                 type: object
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
@@ -1179,7 +1193,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
           allOf:
@@ -1231,30 +1245,6 @@ components:
       - Visa
       type: string
     BankingProduct:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
-    BankingProduct1:
       type: object
       properties:
         ProductId:
@@ -2102,7 +2092,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RegisterOrganisationRequest:
       required:
@@ -2308,7 +2298,7 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
     RetrieveOrganisationResponse:
       required:
