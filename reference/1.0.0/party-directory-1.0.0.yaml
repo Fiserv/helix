@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.139
+  version: 1.1.149
 tags:
 - name: Customer Management
   x-proxy-name: Validate person details
@@ -21,6 +21,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -99,8 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add an Organisation
       x-group-name: Customer Management
   /Helix/V1/Organisation/{partyId}/Retrieve:
@@ -965,12 +965,14 @@ components:
       type: object
       properties:
         Type:
-          description: Type of email
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
           pattern: \S
           type: string
           nullable: false
         Email:
-          description: Address for electronic mail (e-mail)
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -1476,17 +1478,19 @@ components:
       type: object
       properties:
         Type:
-          description: Type of phone
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
           pattern: \S
           type: string
           nullable: false
         Number:
           description: "Collection of information that identifies a phone number,\
-            \ as defined by telecom services. It is recommended to use only numbers\
-            \ and limited punctuation +,-.(.)."
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
           type: string
         Extension:
-          description: Phone extension number
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -1571,7 +1575,8 @@ components:
           maxLength: 35
           type: string
         Country:
-          description: Nation with its own government occupying a particular territory
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
           pattern: \S
           type: string
           nullable: false
@@ -1690,7 +1695,8 @@ components:
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
@@ -1918,6 +1924,7 @@ components:
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          maxLength: 37
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
@@ -1926,19 +1933,24 @@ components:
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the person
+          maxLength: 37
           type: string
         Brand:
           description: Identification of the brand associated with the person
+          maxLength: 37
           type: string
         FiName:
           description: Name of the financial institution associated with the person
+          maxLength: 70
           type: string
         BrandName:
           description: Name of the brand associated with the person
+          maxLength: 70
           type: string
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
           type: string
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
@@ -1947,30 +1959,37 @@ components:
           type: string
         GivenName:
           description: First name of a person
+          maxLength: 35
           type: string
         MiddleName:
           description: Second name of a person
+          maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
+          maxLength: 35
           type: string
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         Email:
           description: Address for electronic mail (e-mail)
+          maxLength: 256
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
             authentication
+          maxLength: 20
           type: string
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word
+          maxLength: 35
           type: string
         PostalAddress:
           description: Current postal address of the person.
