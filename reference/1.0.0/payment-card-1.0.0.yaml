@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: payment-card
-  version: 1.1.102
+  version: 1.1.125
 tags:
 - name: Account Management
-  x-proxy-name: Validate account details
+  x-proxy-name: Validate account status
   x-group-name: Account Management
 paths:
   /Helix/V1/PaymentCardFacility/GetList/Request:
@@ -113,6 +113,8 @@ paths:
             schema:
               $ref: "#/components/schemas/InitiatePaymentCardFacilityRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -220,10 +222,111 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add an Account
       x-group-name: Account Management
+  /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Facility/Retrieve:
+    get:
+      tags:
+      - Payment Card Facility Resource Impl
+      parameters:
+      - name: paymentCardFacilityId
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+      - name: capability
+        in: query
+        required: true
+        schema:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDBR001\
+            \ : Account number required, please provide value.</em></li><li><em>HLXPCFDBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXPCFDBR001\
+            \ : Capability required, please provide value.</em></li><li><em>HLXPCFDBR001\
+            \ : Capability exceeds maximum 35 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT003\
+            \ : Account number not found.</em></li><li><em>HLXPCFDGT005 : Capability\
+            \ not linked to the account.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT001\
+            \ : There is an error while retrieving Facility, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
   /Helix/V1/PaymentCardFacility/{paymentCardFacilityId}/Retrieve:
     get:
       tags:
@@ -249,7 +352,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
         "400":
-          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIN001\
+          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDBR001\
             \ : Account number is not valid.</em></li></ul>"
           content:
             application/json:
@@ -337,14 +440,14 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDGT003\
-            \ : Account not found</em></li></ul>"
+            \ : Account not found.</em></li></ul>"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPCFDIA006\
-            \ : Account not active</em></li></ul>"
+            \ : Account not active.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -369,7 +472,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate account details
+      x-proxy-name: Validate account status
       x-group-name: Account Management
 components:
   schemas:
@@ -379,30 +482,6 @@ components:
         FEOID:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
-          type: string
-    BankingProduct:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
           type: string
     BrandEntryAddRequest:
       required:
@@ -424,7 +503,7 @@ components:
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone number of the Brand
@@ -451,6 +530,7 @@ components:
           nullable: false
         CountryOfOperation:
           description: Country of Operation
+          maxLength: 2
           type: string
     BrandEntryDto:
       required:
@@ -469,7 +549,7 @@ components:
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone number of the Brand
@@ -498,6 +578,33 @@ components:
         Name:
           description: Name of Brand
           type: string
+    ConfigurationOptionDto:
+      type: object
+      properties:
+        Name:
+          type: string
+        Specification:
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationParameter:
+      required:
+      - Name
+      - Value
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Value:
+          maxLength: 1000
+          pattern: \S
+          type: string
+          nullable: false
     ElectronicAddress:
       required:
       - Type
@@ -505,12 +612,14 @@ components:
       type: object
       properties:
         Type:
-          description: Type of email
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
           pattern: \S
           type: string
           nullable: false
         Email:
-          description: Address for electronic mail (e-mail)
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -541,6 +650,16 @@ components:
           pattern: \S
           type: string
           nullable: false
+    FacilityParameterDto:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        Value:
+          type: string
     FiDirectoryEntryDto:
       required:
       - Name
@@ -558,7 +677,7 @@ components:
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone Number of Financial Institution
@@ -594,7 +713,7 @@ components:
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
-          maxLength: 225
+          maxLength: 256
           type: string
         PhoneNumber:
           description: Phone Number of Financial Institution
@@ -616,7 +735,6 @@ components:
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
-          minLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -712,6 +830,14 @@ components:
             \ by the account servicer (FEAID)"
           maxLength: 37
           type: string
+    PanChunkEvent:
+      type: object
+      properties:
+        ProductId:
+          type: string
+        ProductFeatureId:
+          format: int64
+          type: integer
     PaymentCardInvolvement:
       description: Role played by a party in the context of PaymentCardFacility operations.
       required:
@@ -738,17 +864,19 @@ components:
       type: object
       properties:
         Type:
-          description: Type of phone
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
           pattern: \S
           type: string
           nullable: false
         Number:
           description: "Collection of information that identifies a phone number,\
-            \ as defined by telecom services. It is recommended to use only numbers\
-            \ and limited punctuation +,-.(.)."
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
           type: string
         Extension:
-          description: Phone extension number
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -833,7 +961,8 @@ components:
           maxLength: 35
           type: string
         Country:
-          description: Nation with its own government occupying a particular territory
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
           pattern: \S
           type: string
           nullable: false
@@ -847,6 +976,29 @@ components:
         DateTime:
           description: Time stamp when this address is set as the current address
           type: string
+    RegisterConfigurationOptionRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Specification:
+          maxLength: 140
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    RegisterConfigurationOptionResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
     RegisterOrganisationRequest:
       required:
       - FinancialInstitution
@@ -906,7 +1058,7 @@ components:
           description: Identification of the financial institution associated with
             the person
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Brand:
@@ -926,7 +1078,7 @@ components:
         GivenName:
           description: First name of a person
           maxLength: 35
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         MiddleName:
@@ -937,7 +1089,7 @@ components:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
           maxLength: 35
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         BirthDate:
@@ -945,7 +1097,8 @@ components:
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
@@ -976,6 +1129,62 @@ components:
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          type: string
+    RegisterProductFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          type: integer
+    RegisterProductRequest:
+      required:
+      - Identification
+      - Name
+      - FinancialInstitution
+      - Brand
+      type: object
+      properties:
+        Identification:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Name:
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        FinancialInstitution:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        description:
+          type: string
+        type:
+          type: string
+    RegisterProductRequest1:
+      required:
+      - Capability
+      type: object
+      properties:
+        Specification:
+          maxLength: 140
+          type: string
+        Capability:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+    RegisterProductResponse:
+      type: object
+      properties:
+        Identification:
           type: string
     RegistrationAddress:
       description: Registered Address
@@ -1035,6 +1244,40 @@ components:
           pattern: \S
           type: string
           nullable: false
+    RetrieveBankingProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        Status:
+          type: string
+        enabled:
+          type: boolean
+    RetrieveFacilityResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+        Capability:
+          type: string
+        Feature:
+          format: int64
+          type: integer
+        CreationDate:
+          type: string
+        FacilityParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/FacilityParameterDto"
     RetrieveOrganisationResponse:
       required:
       - FinancialInstitution
@@ -1159,6 +1402,7 @@ components:
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          maxLength: 37
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
@@ -1167,19 +1411,24 @@ components:
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the person
+          maxLength: 37
           type: string
         Brand:
           description: Identification of the brand associated with the person
+          maxLength: 37
           type: string
         FiName:
           description: Name of the financial institution associated with the person
+          maxLength: 70
           type: string
         BrandName:
           description: Name of the brand associated with the person
+          maxLength: 70
           type: string
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
           type: string
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
@@ -1188,30 +1437,37 @@ components:
           type: string
         GivenName:
           description: First name of a person
+          maxLength: 35
           type: string
         MiddleName:
           description: Second name of a person
+          maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
+          maxLength: 35
           type: string
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         Email:
           description: Address for electronic mail (e-mail)
+          maxLength: 256
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
             authentication
+          maxLength: 20
           type: string
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word
+          maxLength: 35
           type: string
         PostalAddress:
           description: Current postal address of the person.
@@ -1228,3 +1484,29 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+    RetrieveProductFeatureListRequest:
+      required:
+      - CapabilityName
+      type: object
+      properties:
+        CapabilityName:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+    RetrieveProductFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          type: integer
+        Product:
+          type: string
+        Specification:
+          type: string
+        Capability:
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOptionDto"

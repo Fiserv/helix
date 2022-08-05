@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.139
+  version: 1.1.161
 tags:
 - name: Customer Management
-  x-proxy-name: Validate person details
+  x-proxy-name: Add an Organisation
   x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
@@ -21,6 +21,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -99,8 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add an Organisation
       x-group-name: Customer Management
   /Helix/V1/Organisation/{partyId}/Retrieve:
@@ -271,6 +271,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterPersonRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -278,65 +280,65 @@ paths:
               schema:
                 $ref: "#/components/schemas/RegisterPersonResponse"
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIN001\
-            \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTIN001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
+            \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification is not valid, please provide\
-            \ valid value.</em></li><li><em>HLXPTDTIN001 : Financial Institution Identification\
-            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTIN001 : Brand\
-            \ Identification is not valid.</em></li><li><em>HLXPTDTIN001 : Brand Identification\
-            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTIN001 : External\
-            \ Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Name Prefix accepts alphabets only.</em></li><li><em>HLXPTDTIN001\
-            \ : Name Prefix is not valid.</em></li><li><em>HLXPTDTIN001 : Given Name\
-            \ required, please provide value.</em></li><li><em>HLXPTDTIN001 : Given\
-            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Given Name\
-            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001 : Middle\
-            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Middle\
-            \ Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Surname required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Surname accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Surname\
-            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001 : Birth\
-            \ Date must be a past date.</em></li><li><em>HLXPTDTIN001 : Birth Date\
-            \  has to be a valid date.</em></li><li><em>HLXPTDTIN001 : Birth Date\
-            \ must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTIN001 : Language\
-            \ code must be ISO language code.</em></li><li><em>HLXPTDTIN001 : Memorable\
-            \ word accepts alphabets only.</em></li><li><em>HLXPTDTIN001 : Memorable\
-            \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTIN001\
-            \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
-            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line1 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line2 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Country required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
-            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ valid value.</em></li><li><em>HLXPTDTBR001 : Financial Institution Identification\
+            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001 : Brand\
+            \ Identification is not valid.</em></li><li><em>HLXPTDTBR001 : Brand Identification\
+            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001 : External\
+            \ Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Name Prefix accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
+            \ : Name Prefix is not valid.</em></li><li><em>HLXPTDTBR001 : Given Name\
+            \ required, please provide value.</em></li><li><em>HLXPTDTBR001 : Given\
+            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Given Name\
+            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Middle\
+            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Middle\
+            \ Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Surname\
+            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth Date\
+            \  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth Date\
+            \ must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 : Language\
+            \ code must be ISO language code.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line1 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line2 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Postal Address - Contact Preference is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXPTDTIN001 : Phone - Type required, please\
-            \ provide value.</em></li><li><em>HLXPTDTIN001 : Phone - Type is not valid,\
-            \ please provide valid value.</em></li><li><em>HLXPTDTIN001 : Phone/Mobile\
-            \ Number required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
-            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
-            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTIN001\
-            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTIN001\
-            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTIN001\
+            \ value.</em></li><li><em>HLXPTDTBR001 : Phone - Type required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Phone - Type is not valid,\
+            \ please provide valid value.</em></li><li><em>HLXPTDTBR001 : Phone/Mobile\
+            \ Number required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Electronic Address - Contact Preference is not valid, please provide\
-            \ valid value.</em></li><li><em>HLXPTDTIN001 : Email required, please\
-            \ provide value.</em></li><li><em>HLXPTDTIN001 : Email exceeds maximum\
-            \ 256 length allowed.</em></li><li><em>HLXPTDTIN001 : Email is not valid,\
+            \ valid value.</em></li><li><em>HLXPTDTBR001 : Email required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum\
+            \ 256 length allowed.</em></li><li><em>HLXPTDTBR001 : Email is not valid,\
             \ please provide valid value.</em></li></ul>"
           content:
             application/json:
@@ -413,8 +415,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
@@ -540,14 +540,14 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
-            \ : Person not found</em></li></ul>"
+            \ : Person not found.</em></li></ul>"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA007\
-            \ : Person not active</em></li></ul>"
+            \ : Person not active.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -571,7 +571,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate person details
+      x-proxy-name: Validate person status
       x-group-name: Customer Management
 components:
   schemas:
@@ -644,8 +644,8 @@ components:
           nullable: false
         CardholderType:
           description: Indicates if the card being added is of type Primary or Additional.
-            Accepted Values are <UL><LI><EM> Primary </EM></LI> <LI><EM> Additional
-            </EM></LI></UL>
+            Accepted Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM> ADNL
+            (Additional) </EM></LI></UL>
           pattern: \S
           type: string
           nullable: false
@@ -654,26 +654,6 @@ components:
           type: string
         NameLine2:
           description: Details on second name line as it appears on the card
-          type: string
-        Design:
-          description: Identification of card design associated with the payment card
-          maxLength: 10
-          type: string
-        DigitalCardType:
-          description: Indicates the type of digital card. Accepted Values are <UL><LI><EM>
-            FullTerm </EM></LI> <EM><LI> ShortTerm </EM></LI> <EM><LI> Transient </EM></LI>
-            <EM><LI> NonDigital </EM></LI></UL>
-          type: string
-        CardTechnology:
-          description: Indicates the  technology type supported by the physical card.
-            Accepted Values are <UL><LI><EM> MagneticStripe </EM></LI> <EM><LI> ContactChip
-            </EM></LI> <EM><LI> ContactlessMagStripe </EM></LI> <EM><LI> ContactlessChip
-            </EM></LI> <EM><LI> MobileContactlessMagStripe </EM></LI> <EM><LI> MobileContactlessChip
-            </EM></LI> <EM><LI> NonPhysical </EM></LI></UL>
-          type: string
-        DeviceFormFactor:
-          description: Indicates the type of device (form factor) written to the track
-            data on the physical card
           type: string
     AddCardRequestEvent:
       type: object
@@ -684,7 +664,7 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
         Account:
           allOf:
@@ -711,6 +691,9 @@ components:
         FinancialInstitution:
           description: Identification of the financial institution
           type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card
+          type: string
     AddCardResponse:
       type: object
       properties:
@@ -720,7 +703,8 @@ components:
           - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     AddOrganisationResponse:
       type: object
@@ -729,36 +713,29 @@ components:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
+    AssignPanExecuteRequest:
+      required:
+      - ProductId
+      type: object
+      properties:
+        ProductId:
+          description: Banking Product Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+    AssignPanExecuteResponse:
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          type: string
     BankCardType:
       enum:
       - Mastercard
       - Visa
       type: string
     BankingProduct:
-      type: object
-      properties:
-        ProductId:
-          description: Id of the Banking Product
-          type: string
-        ProductName:
-          description: Name of the Banking Product
-          type: string
-        CardExpiryMinTerm:
-          format: int32
-          description: Card Expiry Minimum Term
-          type: integer
-        CardExpiryMaxTerm:
-          format: int32
-          description: Card Expiry Maximum Term
-          type: integer
-        PinLength:
-          format: int32
-          description: Pin Length
-          type: integer
-        Status:
-          description: Banking Product Status
-          type: string
-    BankingProduct1:
       type: object
       properties:
         ProductId:
@@ -792,10 +769,6 @@ components:
           format: int32
           description: Banking Product Reissue Period
           type: integer
-        CardTechnology:
-          allOf:
-          - $ref: "#/components/schemas/CardTechnology"
-          - description: default Card Technology
         activationControls:
           type: object
           additionalProperties:
@@ -855,6 +828,7 @@ components:
           nullable: false
         CountryOfOperation:
           description: Country of Operation
+          maxLength: 2
           type: string
     BrandEntryDto:
       required:
@@ -902,16 +876,6 @@ components:
         Name:
           description: Name of Brand
           type: string
-    CardTechnology:
-      enum:
-      - ContactChip
-      - ContactlessChip
-      - ContactlessMagStripe
-      - MagneticStripe
-      - MobileContactlessChip
-      - MobileContactlessMagStripe
-      - NonPhysical
-      type: string
     ChipDataConfig:
       type: object
       properties:
@@ -958,6 +922,33 @@ components:
       - Mastercard
       - Visa
       type: string
+    ConfigurationOptionDto:
+      type: object
+      properties:
+        Name:
+          type: string
+        Specification:
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationParameter:
+      required:
+      - Name
+      - Value
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Value:
+          maxLength: 1000
+          pattern: \S
+          type: string
+          nullable: false
     ElectronicAddress:
       required:
       - Type
@@ -965,12 +956,14 @@ components:
       type: object
       properties:
         Type:
-          description: Type of email
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
           pattern: \S
           type: string
           nullable: false
         Email:
-          description: Address for electronic mail (e-mail)
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -1011,6 +1004,13 @@ components:
           allOf:
           - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
+    ExecuteDeactivateCardResponse:
+      type: object
+      properties:
+        FepId:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -1038,6 +1038,16 @@ components:
           pattern: \S
           type: string
           nullable: false
+    FacilityParameterDto:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        Value:
+          type: string
     FiDirectoryEntryDto:
       required:
       - Name
@@ -1112,6 +1122,7 @@ components:
           nullable: false
         ClientIdentification:
           description: Identification of Client Financial Institution
+          maxLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -1125,6 +1136,65 @@ components:
         Name:
           description: Name of Financial Institution
           type: string
+    GenerateCVVRequest:
+      required:
+      - ExpiryDate
+      type: object
+      properties:
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: \S
+          type: string
+          nullable: false
+    GenerateCVVResponse:
+      type: object
+      properties:
+        CVV:
+          description: CVV
+          type: string
+        CVV2:
+          description: CVV2
+          type: string
+        ICVV:
+          description: ICVV
+          type: string
+    GeneratePinRequest:
+      required:
+      - FinancialInstitution
+      - Brand
+      - Product
+      - PinLength
+      - KeyIndex
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Product:
+          description: Banking Product
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        PinLength:
+          description: Length of PIN
+          pattern: \S
+          type: string
+          nullable: false
+        KeyIndex:
+          description: PIN verification key index
+          type: integer
+          nullable: false
     GetListPaymentCardFacilityRequest:
       type: object
       properties:
@@ -1205,6 +1275,7 @@ components:
         Identification:
           description: "Unique identifier of a Payment Card Facility, as assigned\
             \ by the account servicer (FEAID)"
+          maxLength: 37
           type: string
     IssuedDeviceActionRequest:
       required:
@@ -1247,7 +1318,8 @@ components:
           - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     IssuedDeviceUpdateRequest:
       type: object
@@ -1318,6 +1390,52 @@ components:
           type: string
         PartialAuthorization:
           type: string
+    PanChunkCreationErrorEvent:
+      type: object
+      properties:
+        ServiceDomain:
+          description: Specifies the service domain
+          type: string
+        ServiceDomainIdentifier:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Specifies the service domain identifier
+        ServiceDomainIdentifierName:
+          description: Specifies the service domain identifier name
+          type: string
+        Action:
+          description: Action that was in progress when this error happened
+          type: string
+        ErrorReason:
+          description: Specifies the error reason
+          type: string
+        FailedDateTime:
+          format: date-time
+          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
+        'FinancialInstitution ':
+          description: Financial institution identifier.
+          type: string
+        Brand:
+          description: Specifies the brand id.
+          type: string
+        Product:
+          description: Specifies the product id.
+          type: string
+        FeatureId:
+          description: Specifies the feature id.
+          type: string
+        PreviousPANChunkID:
+          description: Specifies the previous chunk id.
+          type: string
+    PanChunkEvent:
+      type: object
+      properties:
+        ProductId:
+          type: string
+        ProductFeatureId:
+          format: int64
+          type: integer
     Party:
       required:
       - Identification
@@ -1371,6 +1489,7 @@ components:
       properties:
         PartyIdentification:
           description: Identifies the person which plays the role of contact ( FECID)
+          maxLength: 37
           pattern: \S
           type: string
           nullable: false
@@ -1404,7 +1523,9 @@ components:
           description: Account linked to the payment instrument. (FEAID)
           type: string
         Status:
-          description: Status of the payment instrument in the system
+          description: Status of the payment instrument in the system. Possible Response
+            Values are <UL><LI><EM> ENAB (Enabled) </EM></LI> <LI><EM> DISA (Disabled)
+            </EM></LI> <LI><EM> DELE (Deleted) </EM></LI></UL>
           type: string
         StartDate:
           format: date
@@ -1420,8 +1541,8 @@ components:
           type: string
         CardholderType:
           description: Indicates if the card holder of the account is a Primary account
-            Holder or an Additional Account Holder. Accepted Values are <UL><LI><EM>
-            Primary </EM></LI> <LI><EM> Additional </EM></LI></UL>
+            Holder or an Additional Account Holder. Possible Response Values are <UL><LI><EM>
+            PRIM (Primary) </EM></LI> <LI><EM> ADNL (Additional) </EM></LI></UL>
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -1435,7 +1556,8 @@ components:
           type: string
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
-            recently issued card.
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         ActivationDate:
           format: date
@@ -1469,6 +1591,14 @@ components:
           description: "Date and time at which plastic created for the payment instrument\
             \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        Design:
+          description: Identification of card design associated with the payment card.
+          type: string
+        enabled:
+          type: boolean
     Phone:
       required:
       - Type
@@ -1476,17 +1606,19 @@ components:
       type: object
       properties:
         Type:
-          description: Type of phone
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
           pattern: \S
           type: string
           nullable: false
         Number:
           description: "Collection of information that identifies a phone number,\
-            \ as defined by telecom services. It is recommended to use only numbers\
-            \ and limited punctuation +,-.(.)."
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
           type: string
         Extension:
-          description: Phone extension number
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
@@ -1571,7 +1703,8 @@ components:
           maxLength: 35
           type: string
         Country:
-          description: Nation with its own government occupying a particular territory
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
           pattern: \S
           type: string
           nullable: false
@@ -1590,8 +1723,31 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
+    RegisterConfigurationOptionRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Specification:
+          maxLength: 140
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    RegisterConfigurationOptionResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
     RegisterOrganisationRequest:
       required:
       - FinancialInstitution
@@ -1690,7 +1846,8 @@ components:
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
@@ -1721,6 +1878,62 @@ components:
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          type: string
+    RegisterProductFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          type: integer
+    RegisterProductRequest:
+      required:
+      - Identification
+      - Name
+      - FinancialInstitution
+      - Brand
+      type: object
+      properties:
+        Identification:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Name:
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        FinancialInstitution:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        description:
+          type: string
+        type:
+          type: string
+    RegisterProductRequest1:
+      required:
+      - Capability
+      type: object
+      properties:
+        Specification:
+          maxLength: 140
+          type: string
+        Capability:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+    RegisterProductResponse:
+      type: object
+      properties:
+        Identification:
           type: string
     RegistrationAddress:
       description: Registered Address
@@ -1796,8 +2009,74 @@ components:
             $ref: "#/components/schemas/PaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/BankingProduct1"
+          - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
+    RequestViewPinRequest:
+      required:
+      - RSAKey
+      - Association
+      type: object
+      properties:
+        RSAKey:
+          description: RSA public key to encrypt customer PIN
+          pattern: \S
+          type: string
+          nullable: false
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewPinRequest1:
+      required:
+      - RSAPublicKey
+      type: object
+      properties:
+        RSAPublicKey:
+          description: Key used for Encrypting the data
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewPinResponse:
+      type: object
+      properties:
+        EncryptedPIN:
+          description: Encrypted PIN
+          type: string
+    RetrieveBankingProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        Status:
+          type: string
+        enabled:
+          type: boolean
+    RetrieveFacilityResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+        Capability:
+          type: string
+        Feature:
+          format: int64
+          type: integer
+        CreationDate:
+          type: string
+        FacilityParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/FacilityParameterDto"
     RetrieveOrganisationResponse:
       required:
       - FinancialInstitution
@@ -1853,6 +2132,12 @@ components:
         Status:
           description: Status of the organisation record in the system
           type: string
+    RetrievePanResponse:
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          type: string
     RetrievePaymentCardFacilityResponse:
       required:
       - PaymentCardInvolvement
@@ -1861,15 +2146,19 @@ components:
         Identification:
           description: "Unique identifier of a Payment Card Facility, as assigned\
             \ by the account servicer (FEAID)"
+          maxLength: 37
           type: string
         FinancialInstitution:
           description: FI to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Brand:
           description: Brand to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Product:
           description: Product to which the Payment Card Facility belongs
+          maxLength: 37
           type: string
         Status:
           description: "Status of the Payment Card Facility entity in the system <br>\
@@ -1918,6 +2207,7 @@ components:
       properties:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          maxLength: 37
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
@@ -1926,19 +2216,24 @@ components:
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the person
+          maxLength: 37
           type: string
         Brand:
           description: Identification of the brand associated with the person
+          maxLength: 37
           type: string
         FiName:
           description: Name of the financial institution associated with the person
+          maxLength: 70
           type: string
         BrandName:
           description: Name of the brand associated with the person
+          maxLength: 70
           type: string
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
           type: string
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
@@ -1947,30 +2242,37 @@ components:
           type: string
         GivenName:
           description: First name of a person
+          maxLength: 35
           type: string
         MiddleName:
           description: Second name of a person
+          maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
+          maxLength: 35
           type: string
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: Language in which a person communicates
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
           type: string
         Email:
           description: Address for electronic mail (e-mail)
+          maxLength: 256
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
             authentication
+          maxLength: 20
           type: string
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word
+          maxLength: 35
           type: string
         PostalAddress:
           description: Current postal address of the person.
@@ -1987,10 +2289,81 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+    RetrieveProductFeatureListRequest:
+      required:
+      - CapabilityName
+      type: object
+      properties:
+        CapabilityName:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+    RetrieveProductFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          type: integer
+        Product:
+          type: string
+        Specification:
+          type: string
+        Capability:
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOptionDto"
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    ValidateCvv2ExecuteRequest:
+      required:
+      - ExpiryDate
+      - CVV2
+      type: object
+      properties:
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: \S
+          type: string
+          nullable: false
+        CVV2:
+          description: CVV2
+          type: integer
+          nullable: false
+    ValidateCvvExecuteRequest:
+      required:
+      - ExpiryDate
+      - CVV
+      type: object
+      properties:
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: \S
+          type: string
+          nullable: false
+        CVV:
+          description: CVV
+          type: integer
+          nullable: false
+    ValidateIcvvExecuteRequest:
+      required:
+      - ExpiryDate
+      - iCVV
+      type: object
+      properties:
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: \S
+          type: string
+          nullable: false
+        iCVV:
+          description: iCVV
+          type: integer
+          nullable: false
     VisaChipDataConfig:
       type: object
       properties:
