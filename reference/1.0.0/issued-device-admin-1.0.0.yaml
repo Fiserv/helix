@@ -7,7 +7,6 @@ tags:
 - name: Helix Core
   x-proxy-name: Replace a Damaged Card
   x-group-name: Card Management
-  x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
     get:
