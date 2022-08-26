@@ -9,7 +9,7 @@ paths:
     /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     get:
       tags:
-      - Helix Core
+      - Card Management
       summary: This method is used to generate CVV 2 the given FEPID
       description: "This API allows the user to to generate CVV2 for given FEPID <br/><br/><i>\
         \ <b>Note</b>:This API is for Internal purpose only.</i>"
@@ -92,9 +92,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Generate CVV2
-      x-group-name: Card Management
-      x-api-scope: Internal
 components:
   schemas:
     GenerateCVVRequest:
