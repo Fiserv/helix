@@ -1,3 +1,4 @@
+
 ---
 openapi: 3.0.3
 info:
@@ -29,6 +30,84 @@ paths:
       responses:
         "200":
           description: OK
+  /Helix/V1/IssuedDeviceSecurity/{paymentInstrumentId}/GetCVV2/Request:
+    post:
+      tags:
+      - Helix Core
+      summary: This method is used to generate CVV2
+      description: This API allows the user to generate CVV2
+      operationId: generateCVV2
+      parameters:
+      - name: paymentInstrumentId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateCVVRequest'
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CVV:
+                    description: CVV
+                    type: string
+                  CVV2:
+                    description: CVV2
+                    type: string
+                  ICVV:
+                    description: ICVV
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDSECBR001\
+            \ : FEPID required, please provide value.</em></li><li><em>HLXDSECBR001\
+            \ : Expiry Date required, please provide value.</em></li><li><em>HLXDSECBR001\
+            \ : Invalid Expiry Date, should be in YYMM format.</em></li></ul>"
+          content: {}
+        "401":
+          description: Not Authorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDSECPA002\
+            \ : Card does not have a PAN assigned.</em></li></ul>"
+          content: {}
+        "413":
+          description: Payload Too large
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+        "422":
+          description: Unprocessable Entity
+          content: {}
+        "429":
+          description: Too Many Request
+          content: {}
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDSECCG001\
+            \ : Attempt to generate CVV has failed.</em></li></ul>"
+          content: {}
+        "502":
+          description: Bad Gateway
+          content: {}
+        "503":
+          description: Service Unavailable
+          content: {}
+        "504":
+          description: Gateway Timeout
+          content: {}
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
@@ -448,10 +527,10 @@ paths:
     get:
       tags:
       - Helix Core
-      summary: This method is used to generate CVV 2 the given FEPID
+      summary: This method is used to generate CVV2 the given FEPID
       description: "This API allows the user to to generate CVV2 for given FEPID <br/><br/><i>\
         \ <b>Note</b>:This API is for Internal purpose only.</i>"
-      operationId: generateCVV2
+      operationId: GenerateCVV2
       parameters:
       - name: paymentInstrumentId
         in: path
