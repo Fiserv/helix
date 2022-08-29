@@ -5,6 +5,9 @@ info:
   version: 1.1.360
 tags:
 - name: Helix Core
+  x-proxy-name: Replace a Damaged Card
+  x-group-name: Card Management
+  x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
     get:
@@ -126,6 +129,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve List of Cards
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/Initiate:
     post:
       tags:
@@ -160,67 +165,103 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-                    \ : Card not found.</em></li></ul>"
+            \ : Financial Institution required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Financial Institution Identification exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Brand required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Brand exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Product required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Product exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Account required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Account exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Party required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Party exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASBR001\
+            \ : CardholderType required, please provide value</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 exceeds maximum length allowed</em></li></ul>"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-          "401":
-            description: Not Authorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "403":
-            description: Forbidden
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "404":
-            description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
-                    \ : Card not found.</em></li></ul>"
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "415":
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "429":
-            description: Too Many Request
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "500":
-            description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASDP001\
-                    \ : Attempt to parse date has failed</em></li></ul>"
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "502":
-            description: Bad Gateway
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "503":
-            description: Service Unavailable
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
-          "504":
-            description: Gateway Timeout
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA002\
+            \ : Person not found</em></li><li><em>HLXIDASFI001 : Financial Institution\
+            \ not found</em></li><li><em>HLXIDASBR001 : Brand not found</em></li><li><em>HLXIDASPD002\
+            \ : Product not found</em></li><li><em>HLXIDASAC002 : Account not found</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
+            \ : Person not active</em></li><li><em>HLXIDASFI001 : Financial Institution\
+            \ not active</em></li><li><em>HLXIDASBR001 : Brand not active</em></li><li><em>HLXIDASPD001\
+            \ : Product not active</em></li><li><em>HLXIDASAC001 : Account not active</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
+            \ : Attempt to add card has failed due to persistence error</em></li><li><em>HLXIDASPF001\
+            \ : Error while fetching Product Feature of CardType_V1 Capability from\
+            \ Product Directory</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Add a New Card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
     post:
       tags:
@@ -311,6 +352,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Reissue a Card
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
@@ -417,6 +461,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Activate a Card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
@@ -505,6 +551,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve chip data details
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
@@ -523,6 +572,9 @@ paths:
       responses:
         "200":
           description: OK
+      x-proxy-name: Deactivate a Card
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     get:
       tags:
@@ -609,6 +661,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Generate CVV2
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
@@ -733,6 +788,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Report a Card as Lost or Stolen
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
@@ -844,6 +901,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Replace a Damaged Card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
       tags:
@@ -1030,6 +1089,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Inquire on Card Details
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
       tags:
@@ -1144,6 +1205,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Update Name on a Card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
     get:
       tags:
@@ -1241,6 +1304,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Validate card status
+      x-group-name: Card Management
+      x-api-scope: Internal
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
     post:
       tags:
@@ -1341,6 +1407,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: View Pin
+      x-group-name: Card Management
 components:
   schemas:
     Account:
