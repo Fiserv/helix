@@ -5,9 +5,6 @@ info:
   version: 1.1.389
 tags:
 - name: Helix Core
-  x-proxy-name: View Pin
-  x-group-name: Card Sensitive Data
-  x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
     get:
