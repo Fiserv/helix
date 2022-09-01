@@ -2,11 +2,11 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.360
+  version: 1.1.389
 tags:
 - name: Helix Core
-  x-proxy-name: Replace a Damaged Card
-  x-group-name: Card Management
+  x-proxy-name: View Pin
+  x-group-name: Card Sensitive Data
   x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
@@ -79,8 +79,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA003\
-            \ : No input field provided in request message</em></li><li><em>HLXIDASID002\
-            \ : Account not found</em></li><li><em>HLXIDASID002 : Person not found</em></li><li><em>HLXIDASID002\
+            \ : No input field provided in request message.</em></li><li><em>HLXIDASID002\
+            \ : Account not found.</em></li><li><em>HLXIDASID002 : Person not found.</em></li><li><em>HLXIDASID002\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -94,7 +94,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
-            \ : Person not active</em></li><li><em>HLXIDASAC001 : Account not active</em></li></ul>"
+            \ : Person not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -165,22 +165,22 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Financial Institution required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Financial Institution Identification exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : Brand required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Brand exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : Product required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Product exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : Account required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Account exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : Party required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Party exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL</em></li><li><em>HLXIDASBR001\
-            \ : CardholderType required, please provide value</em></li><li><em>HLXIDASBR001\
-            \ : Name Line 1 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
-            \ : Name Line 1 exceeds maximum length allowed</em></li><li><em>HLXIDASBR001\
-            \ : Name Line 2 less than minimum length allowed2 chars</em></li><li><em>HLXIDASBR001\
-            \ : Name Line 2 exceeds maximum length allowed</em></li></ul>"
+            \ : Financial Institution required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Financial Institution Identification exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Brand required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Brand exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Product required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Product exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Account required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Account exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Party required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Party exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : CardholderTypeCardholder Type invalid, valid values are PRIM or ADNL.</em></li><li><em>HLXIDASBR001\
+            \ : CardholderType required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 less than minimum length allowed.2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 1 exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 less than minimum length allowed.2 chars</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 exceeds maximum length allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -199,9 +199,9 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA002\
-            \ : Person not found</em></li><li><em>HLXIDASFI001 : Financial Institution\
-            \ not found</em></li><li><em>HLXIDASBR001 : Brand not found</em></li><li><em>HLXIDASPD002\
-            \ : Product not found</em></li><li><em>HLXIDASAC002 : Account not found</em></li></ul>"
+            \ : Person not found.</em></li><li><em>HLXIDASFI001 : Financial Institution\
+            \ not found.</em></li><li><em>HLXIDASBR001 : Brand not found.</em></li><li><em>HLXIDASPD002\
+            \ : Product not found.</em></li><li><em>HLXIDASAC002 : Account not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -220,9 +220,9 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
-            \ : Person not active</em></li><li><em>HLXIDASFI001 : Financial Institution\
-            \ not active</em></li><li><em>HLXIDASBR001 : Brand not active</em></li><li><em>HLXIDASPD001\
-            \ : Product not active</em></li><li><em>HLXIDASAC001 : Account not active</em></li></ul>"
+            \ : Person not active.</em></li><li><em>HLXIDASFI001 : Financial Institution\
+            \ not active.</em></li><li><em>HLXIDASBR001 : Brand not active.</em></li><li><em>HLXIDASPD001\
+            \ : Product not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -235,9 +235,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
-            \ : Attempt to add card has failed due to persistence error</em></li><li><em>HLXIDASPF001\
-            \ : Error while fetching Product Feature of CardType_V1 Capability from\
-            \ Product Directory</em></li></ul>"
+            \ : Attempt to add card has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -423,8 +421,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAS002\
-            \ : Card already activated</em></li><li><em>HLXIDASBV002 : Card already\
-            \ blocked as Lost<li><em>HLXIDASBV002 : Card already blocked as Stolen</em></li></ul>"
+            \ : Card already activated.</em></li><li><em>HLXIDASBV002 : Card already\
+            \ blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked as Stolen.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -437,8 +435,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ : Attempt to update the payment instrument information has failed due\
-            \ to persistence error</em></li></ul>"
+            \ : Attempt to activate the card has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -486,6 +483,49 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  Version:
+                    type: string
+                  CryptogramVersion:
+                    type: string
+                  CryptogramKeyIndex:
+                    type: string
+                  MacKeyIndex:
+                    type: string
+                  EncryptionKeyIndex:
+                    type: string
+                  OfflinePin:
+                    type: boolean
+                  PreferredCvm:
+                    type: string
+                  Lcol:
+                    type: string
+                  Ucol:
+                    type: string
+                  CurrencyConversionFactor:
+                    type: string
+                  SecondaryAppCurrencyCode:
+                    type: string
+                  CotCurrency:
+                    type: string
+                  CotCountry:
+                    type: string
+                  Tac:
+                    type: string
+                  Tadc:
+                    type: string
+                  Atc:
+                    type: string
+                  ContactlessLcol:
+                    type: string
+                  ContactlessUcol:
+                    type: string
+                  VlpResetThreshold:
+                    type: string
+                  VlpFundsLimit:
+                    type: string
+                  VlpTransactionAmountLimit:
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -508,13 +548,19 @@ paths:
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
             \ : Card not found.</em></li><li><em>HLXIDASID007 : Chip data not found\
-            \ for given FEPID</em></li></ul>"
+            \ for given FEPID.</em></li></ul>"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -526,9 +572,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID007\
-            \ : There is an error while validating Payment Instrument, please try\
-            \ again</em></li></ul>"
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -572,11 +616,94 @@ paths:
       responses:
         "200":
           description: OK
-      x-proxy-name: Deactivate a Card
-      x-group-name: Card Management
-      x-api-scope: Internal
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FepId:
+                    allOf:
+                    - $ref: "#/components/schemas/UUID"
+                    - description: Unique identifier of the payment card (FEPID)
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+            \ : Card is not enabled.</em></li><li><em>HLXIDASAS001 : Card already\
+            \ inactive.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC003\
+            \ : Attempt to deactivate the card has failed due to persistence error.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
-    get:
+    post:
       tags:
       - Helix Core
       summary: This method is used to generate CVV 2 the given FEPID
@@ -591,6 +718,11 @@ paths:
         schema:
           maxLength: 37
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestGetCVV2Request"
       responses:
         "200":
           description: OK
@@ -598,6 +730,16 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  CVV:
+                    description: CVV
+                    type: string
+                  CVV2:
+                    description: CVV2
+                    type: string
+                  ICVV:
+                    description: ICVV
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -630,6 +772,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
@@ -638,7 +786,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASDP001\
-            \ : Attempt to parse date has failed</em></li></ul>"
+            \ : Attempt to parse date has failed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -662,8 +810,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Generate CVV2
-      x-group-name: Card Management
-      x-api-scope: Internal
+      x-group-name: Card Sensitive Data
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
@@ -750,8 +897,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
-            \ : Card already blocked as Lost<li><em>HLXIDASBV002 : Card already blocked\
-            \ as Stolen</em></li></ul>"
+            \ : Card already blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked\
+            \ as Stolen.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -765,7 +912,7 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
             \ : Attempt to block and replace the card has failed due to persistence\
-            \ error</em></li></ul>"
+            \ error.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -862,7 +1009,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
-            \ : Card replacement failed, chip sequence exceeds maximum value</em></li></ul>"
+            \ : Card replacement failed, chip sequence exceeds maximum value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -874,11 +1021,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
-            \ : Attempt to update the payment instrument information has failed due\
-            \ to persistence error</em></li><li><em>HLXIDASCR001 : Card Replacement\
-            \ failed due to persistence error<li><em>HLXIDASCR001 : Attempt to replace\
-            \ the card has failed. Previous chip data is not present</em></li></ul>"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCR001\
+            \ : Card Replacement failed due to persistence error.<li><em>HLXIDASCR001\
+            \ : Attempt to replace the card has failed. Previous chip data is not\
+            \ present.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1059,6 +1205,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
+            \ : Cannot retrieve card details, the record is in ProForma status.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
@@ -1134,7 +1287,8 @@ paths:
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: Bad Request
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1170,7 +1324,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: Unprocessable Entity
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC001\
+            \ : No value provided for update.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1182,7 +1337,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: Internal Server Error
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
+            \ : Attempt to update the payment instrument information has failed due\
+            \ to persistence error.</em></li><li><em>HLXIDASUP001 : Card Update failed\
+            \ due to persistence error.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1281,7 +1439,7 @@ paths:
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
             \ : There is an error while validating Payment Instrument, please try\
-            \ again</em></li></ul>"
+            \ again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1335,6 +1493,10 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  EncryptedPIN:
+                    description: Encrypted PIN
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li><li><em>HLXIDASBR001 : RSA Public Key required,\
@@ -1384,7 +1546,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASVP001\
-            \ : - Attempt to view Encrypted Pin has failed due to persistence error</em></li></ul>"
+            \ : - Attempt to view Encrypted Pin has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1408,7 +1570,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: View Pin
-      x-group-name: Card Management
+      x-group-name: Card Sensitive Data
 components:
   schemas:
     Account:
@@ -1608,14 +1770,6 @@ components:
           type: object
           additionalProperties:
             type: boolean
-        CardNameTruncationRule:
-          format: int32
-          description: Card Name Truncation Rule
-          type: integer
-        CardNameMaxLength:
-          format: int32
-          description: Card Name Max Length
-          type: integer
     BrandEntryAddRequest:
       required:
       - Name
@@ -1762,8 +1916,6 @@ components:
           type: string
         MasterCardChipDataConfig:
           $ref: "#/components/schemas/MasterCardChipDataConfig"
-        VisaChipDataConfig:
-          $ref: "#/components/schemas/VisaChipDataConfig"
     ChipStatus:
       enum:
       - Deleted
@@ -2006,6 +2158,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        RSAPublicKey:
+          description: Key used for Encrypting the data
+          type: string
     GenerateCVVResponse:
       type: object
       properties:
@@ -2871,6 +3026,16 @@ components:
           allOf:
           - $ref: "#/components/schemas/BankingProduct"
           - description: Identification of the product
+    RequestGetCVV2Request:
+      required:
+      - RSAPublicKey
+      type: object
+      properties:
+        RSAPublicKey:
+          description: Key used for Encrypting the data
+          pattern: \S
+          type: string
+          nullable: false
     RequestViewPinRequest:
       required:
       - RSAPublicKey
@@ -3240,48 +3405,3 @@ components:
           description: iCVV
           type: integer
           nullable: false
-    VisaChipDataConfig:
-      type: object
-      properties:
-        Version:
-          type: string
-        CryptogramVersion:
-          type: string
-        CryptogramKeyIndex:
-          type: string
-        MacKeyIndex:
-          type: string
-        EncryptionKeyIndex:
-          type: string
-        OfflinePin:
-          type: string
-        PreferredCvm:
-          type: string
-        Lcol:
-          type: string
-        Ucol:
-          type: string
-        CurrencyConversionFactor:
-          type: string
-        SecondaryAppCurrencyCode:
-          type: string
-        CotCurrency:
-          type: string
-        CotCountry:
-          type: string
-        Tac:
-          type: string
-        Tadc:
-          type: string
-        Atc:
-          type: string
-        ContactlessLcol:
-          type: string
-        ContactlessUcol:
-          type: string
-        VlpResetThreshold:
-          type: string
-        VlpFundsLimit:
-          type: string
-        VlpTransactionAmountLimit:
-          type: string
