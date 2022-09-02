@@ -2,30 +2,10 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.389
+  version: 1.1.398
 tags:
 - name: Helix Core
 paths:
-  /Helix/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
@@ -707,8 +687,8 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to generate CVV 2 the given FEPID
-      description: "This API allows the user to to generate CVV2 for given FEPID <br/><br/><i>\
-        \ <b>Note</b>:This API is for Internal purpose only.</i>"
+      description: This API generates and provides the CVV2 for the card. Encryption
+        keys and method must be known to use this API.
       operationId: generateCVV2
       parameters:
       - name: paymentInstrumentId
@@ -1470,8 +1450,8 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to View Pin in Encrypted form for the given FEPID
-      description: This API allows the user to view Encrypted Pin for the provided
-        RSA public key for given FEPID <br/><br/>
+      description: This API retrieves the PIN (for use in a secure environment) for
+        a card. Encryption keys and method must be known to use this API.
       operationId: viewPin
       parameters:
       - name: paymentInstrumentId
@@ -1485,7 +1465,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RequestViewPinRequest"
+              $ref: "#/components/schemas/RequestViewPinRequest1"
       responses:
         "200":
           description: Created
@@ -1569,7 +1549,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: View Pin
+      x-proxy-name: View PIN request
       x-group-name: Card Sensitive Data
 components:
   schemas:
@@ -1762,10 +1742,6 @@ components:
           - description: Bank Card Type
         ChipDataConfig:
           $ref: "#/components/schemas/ChipDataConfig"
-        ReissuePeriod:
-          format: int32
-          description: Banking Product Reissue Period
-          type: integer
         activationControls:
           type: object
           additionalProperties:
@@ -3038,16 +3014,6 @@ components:
           nullable: false
     RequestViewPinRequest:
       required:
-      - RSAPublicKey
-      type: object
-      properties:
-        RSAPublicKey:
-          description: Key used for Encrypting the data
-          pattern: \S
-          type: string
-          nullable: false
-    RequestViewPinRequest1:
-      required:
       - RSAKey
       - Association
       type: object
@@ -3059,6 +3025,16 @@ components:
           nullable: false
         Association:
           description: Identifies the association Key
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewPinRequest1:
+      required:
+      - RSAPublicKey
+      type: object
+      properties:
+        RSAPublicKey:
+          description: Key used for Encrypting the data
           pattern: \S
           type: string
           nullable: false
