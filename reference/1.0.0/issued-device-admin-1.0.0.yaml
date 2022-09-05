@@ -1061,10 +1061,6 @@ paths:
                   Product:
                     description: Banking product associated with the payment instrument
                     type: string
-                  ProductName:
-                    description: Name of the banking product associated with the payment
-                      instrument
-                    type: string
                   RelatedAccount:
                     description: Account linked to the payment instrument. (FEAID)
                     type: string
