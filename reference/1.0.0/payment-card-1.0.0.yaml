@@ -803,9 +803,6 @@ components:
           minLength: 1
           type: string
           nullable: false
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
-          type: string
         PaymentCardInvolvement:
           minItems: 1
           type: array
@@ -1359,9 +1356,6 @@ components:
           description: "Status of the Payment Card Facility entity in the system <br>\
             \ Valid values are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma\
             \ <br>Pending"
-          type: string
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
           type: string
         PaymentCardInvolvement:
           minItems: 1
