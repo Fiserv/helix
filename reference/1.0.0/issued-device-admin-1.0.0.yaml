@@ -16,6 +16,8 @@ paths:
       responses:
         "200":
           description: OK
+      x-proxy-name: Retrieve capability
+      x-group-name: Card Management
   /Helix/V1/Capability/{capabilityName}/Retrieve:
     get:
       tags:
@@ -29,6 +31,8 @@ paths:
       responses:
         "200":
           description: OK
+      x-proxy-name: Retrieve capability by name
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
