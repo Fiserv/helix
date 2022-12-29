@@ -2,11 +2,11 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-58
 tags:
 - name: Helix Core
-  x-proxy-name: View PIN request
-  x-group-name: Card Sensitive Data
+  x-proxy-name: Add a New Card
+  x-group-name: Card Management
   x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
