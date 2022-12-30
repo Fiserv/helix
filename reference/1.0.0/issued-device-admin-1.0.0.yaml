@@ -5,30 +5,7 @@ info:
   version: 1.1.0-59
 tags:
   - name: Helix Core
-    x-proxy-name: Report a Card as Lost or Stolen
-    x-group-name: Card Management
-    x-api-scope: Internal
 paths:
-  /Helix/V1/Capability/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      parameters:
-        - name: capabilityName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
