@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-59
+  version: 1.1.0-70
 tags:
   - name: Helix Core
 paths:
@@ -74,8 +74,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
-            \ : Person not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASPR001\
-            \ : Person does not have any cards.</em></li></ul>"
+            \ : Person not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASID003\
+            \ : Card not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1865,44 +1865,6 @@ components:
       properties:
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
-    BinChunkCreationErrorEvent:
-      type: object
-      properties:
-        ServiceDomain:
-          description: Specifies the service domain
-          type: string
-        ServiceDomainIdentifier:
-          allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Specifies the service domain identifier
-        ServiceDomainIdentifierName:
-          description: Specifies the service domain identifier name
-          type: string
-        Action:
-          description: Action that was in progress when this error happened
-          type: string
-        ErrorReason:
-          description: Specifies the error reason
-          type: string
-        FailedDateTime:
-          format: date-time
-          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
-          type: string
-        'FinancialInstitution ':
-          description: Financial institution identifier.
-          type: string
-        Brand:
-          description: Specifies the brand id.
-          type: string
-        Product:
-          description: Specifies the product id.
-          type: string
-        FeatureId:
-          description: Specifies the feature id.
-          type: string
-        PreviousBinChunkID:
-          description: Specifies the previous chunk id.
-          type: string
     BinChunkEvent:
       type: object
       properties:
@@ -2195,12 +2157,19 @@ components:
             - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
+        - FeatureId
         - ProductId
         - FinancialInstitution
       type: object
       properties:
+        FeatureId:
+          description: Feature Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
         ProductId:
-          description: Banking Product Id
+          description: Product Id
           maxLength: 37
           pattern: \S
           type: string
@@ -2224,6 +2193,24 @@ components:
           allOf:
             - $ref: "#/components/schemas/UUID"
             - description: Unique identifier of the payment card (FEPID)
+    ExecuteGeneratePINRequest:
+      required:
+        - FeatureId
+        - FinancialInstitution
+      type: object
+      properties:
+        FeatureId:
+          description: Feature Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        FinancialInstitution:
+          description: Financial Institution Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -2295,6 +2282,34 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecuteValidatePINRequest:
+      required:
+        - PAN
+        - PIN block
+        - Association
+      type: object
+      properties:
+        PAN:
+          description: PAN of the payment instrument.
+          pattern: \S
+          type: string
+          nullable: false
+        PIN block:
+          description: PIN Block.
+          pattern: \S
+          type: string
+          nullable: false
+        Association:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+          nullable: false
+    ExecuteValidatePINResponse:
+      type: object
+      properties:
+        IsValid:
+          description: Flag to indicate if the PIN is Valid
+          type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -3285,6 +3300,22 @@ components:
           type: string
         ICVV:
           description: ICVV
+          type: string
+    RequestViewInstrumentIdRequest:
+      required:
+        - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewInstrumentIdResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
           type: string
     RequestViewPANResponse:
       type: object
