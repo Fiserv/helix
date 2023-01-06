@@ -5,7 +5,7 @@ info:
   version: 1.1.0-20
 tags:
 - name: Customer Management
-  x-proxy-name: Add an Organisation
+  x-proxy-name: Validate person status
   x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
@@ -735,8 +735,8 @@ paths:
       tags:
       - Customer Management
       summary: Validate person status
-      description: This API allows the user to validate person details for the given
-        FECID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>
+      description: "This API allows the user to validate person details for the given\
+        \ FECID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: validatePerson
       parameters:
       - name: partyId
@@ -912,11 +912,11 @@ components:
           type: string
         CreatedDateTime:
           format: date-time
-          description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         Brand:
           description: Identification of the Brand
@@ -988,7 +988,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/"#/components/schemas/AgreementFeatureParameter1"schemas/AgreementFeatureParameter"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     AgreementFeatureParameter:
       type: object
       properties:
@@ -1030,7 +1030,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
+          $ref: "#/components/schemas/ExternalAccount1"
     BinChunkCreationErrorEvent:
       type: object
       properties:
@@ -1052,9 +1052,9 @@ components:
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
-        FinancialInstitution:
+        'FinancialInstitution ':
           description: Financial institution identifier.
           type: string
         Brand:
@@ -1321,7 +1321,7 @@ components:
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     ExecuteActivateCardResponse:
       type: object
@@ -1603,7 +1603,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
+          $ref: "#/components/schemas/ExternalAccount"
     HelixErrorDetails:
       type: object
       properties:
@@ -1656,7 +1656,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/"#/components/schemas/AgreementFeatureParameter1"schemas/AgreementFeatureParameter"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     InitiateAgreementFeatureResponse:
       type: object
       properties:
@@ -1713,7 +1713,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1805,7 +1805,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     InitiatePaymentCardFacilityResponse:
       type: object
       properties:
@@ -2516,7 +2516,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/"#/components/schemas/AgreementFeatureParameter1"schemas/AgreementFeatureParameter"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -2609,7 +2609,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     RetrieveAgreementResponse1:
       type: object
       properties:
@@ -2772,7 +2772,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
@@ -2836,7 +2836,8 @@ components:
           type: string
         BlockedDateTime:
           format: date-time
-          description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which the payment instrument was blocked\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -2851,8 +2852,8 @@ components:
           type: string
         PlasticCreationDateTime:
           format: date-time
-          description: Date and time at which plastic created for the payment instrument
-            (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
