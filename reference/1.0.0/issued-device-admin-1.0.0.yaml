@@ -2493,7 +2493,7 @@ components:
         DefaultIndicator:
           description: Default feature indicator
           type: string
-    Feature1:
+    Feature2:
       type: object
       properties:
         Identification:
@@ -2821,7 +2821,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -3094,12 +3094,12 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
     RegisterBundleRequest:
       required:
-      - Identification
-      - Name
+        - Identification
+        - Name
       type: object
       properties:
         Identification:
@@ -3341,9 +3341,9 @@ components:
           $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
-      - Name
-      - Brand
-      - Identification
+        - Name
+        - Brand
+        - Identification
       type: object
       properties:
         Name:
@@ -3661,7 +3661,7 @@ components:
             $ref: "#/components/schemas/ExternalAccount"
     RetrieveBrandResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3672,8 +3672,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -3798,7 +3798,7 @@ components:
             $ref: "#/components/schemas/ConfigurationOption"
     RetrieveFiResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3809,8 +3809,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -4167,7 +4167,7 @@ components:
           type: string
     SystemUpdateRequest:
       required:
-      - InvalidPinTryCounter
+        - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
@@ -4192,7 +4192,7 @@ components:
       type: string
     UpdateFeatureRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
