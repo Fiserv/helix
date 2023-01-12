@@ -1326,7 +1326,7 @@ paths:
     put:
       tags:
         - Helix Core
-      summary: This method is used to update the system level parameters for the payment
+      summary: This method is used to update payment instrument attritbures as part of a system action/event.
         instrument.
       operationId: systemUpdate
       parameters:
