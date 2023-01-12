@@ -6,8 +6,6 @@ info:
 tags:
 - name: Helix Core
   x-proxy-name: Update Invalid Pin try Counter
-  x-group-name: Card Management
-  x-api-scope: Internal
 paths:
   /Helix/V1/Capability/Retrieve:
     get:
