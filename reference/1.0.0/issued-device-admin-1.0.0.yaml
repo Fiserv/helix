@@ -1326,7 +1326,7 @@ paths:
     put:
       tags:
         - Helix Core
-      summary: This method is used to update the system level parameters for the payment
+      summary: This method is used to update payment instrument attritbures as part of a system action/event.
         instrument.
       operationId: systemUpdate
       parameters:
@@ -1434,7 +1434,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Update Invalid Pin try Counter
+      x-proxy-name: Payment Instrument system updates
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
