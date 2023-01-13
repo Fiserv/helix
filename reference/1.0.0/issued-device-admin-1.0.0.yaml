@@ -2208,9 +2208,8 @@ components:
       type: object
       properties:
         Identification:
-          description:
-            "<em> maxLength: 37 </em> Identification of bundles to be processed\
-            \ for the card"
+          description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
+            \ be processed for the card"
           minLength: 1
           type: string
           nullable: false
