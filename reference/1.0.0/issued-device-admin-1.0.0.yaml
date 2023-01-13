@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-80
+  version: 1.1.0-84
 tags:
   - name: Helix Core
 
@@ -1959,9 +1959,15 @@ components:
           items:
             $ref: "#/components/schemas/OverrideParameter"
         Bundle:
+          description:
+            "Bundles are a collection of multiple Features, that can be\
+            \ used to further segment a Product, in order to provide alternate set(s)\
+            \ of features to customers compared to the Product default Features. For\
+            \ example different card types (virtual/physical), card designs, card\
+            \ fees etc. or any combination of these during the onboarding process."
           type: array
           items:
-            $ref: "#/components/schemas/Bundles"
+            $ref: "#/components/schemas/BundleRequestDto"
     AddCardRequestEvent:
       type: object
       properties:
@@ -2196,19 +2202,14 @@ components:
       properties:
         Identification:
           type: string
-    Bundles:
-      description:
-        "Bundles are a collection of multiple Features, that can be used\
-        \ to further segment a Product, in order to provide alternate set(s) of features\
-        \ to customers compared to the Product default Features. For example different\
-        \ card types (virtual/physical), card designs, card fees etc. or any combination\
-        \ of these during the onboarding process."
+    BundleRequestDto:
       required:
         - Identification
       type: object
       properties:
         Identification:
-          description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
+          description:
+            "<em> maxLength: 37 </em> <br> Identification of bundles to\
             \ be processed for the card"
           minLength: 1
           type: string
@@ -2270,6 +2271,22 @@ components:
         Ucol:
           type: string
     ConfigurationOption:
+      required:
+        - Name
+        - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
       required:
         - Name
         - ConfigurationParameter
@@ -3283,7 +3300,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3953,7 +3970,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4399,7 +4416,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4430,7 +4447,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
         - Name
