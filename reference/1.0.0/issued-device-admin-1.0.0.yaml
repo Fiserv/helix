@@ -1071,8 +1071,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
-            \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
-            \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li></ul>"
+            \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card blocked\
+            \ as Lost.</em></li><li><em>HLXIDASID005 : Card blocked as Stolen.</em></li></ul>"
           content:
             application/json:
               schema:
