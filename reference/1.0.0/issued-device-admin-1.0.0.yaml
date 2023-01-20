@@ -2,15 +2,17 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-87
+  version: 1.1.0-84
 tags:
-- name: Helix Core
+  - name: Helix Core
+
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
-      - Helix Core
-      summary: This method is used to return the list of payment instruments for an
+        - Helix Core
+      summary:
+        This method is used to return the list of payment instruments for an
         account (FEAID) or a person (FECID) or an external identification (CRM ID)
       operationId: getPaymentInstrumentList
       requestBody:
@@ -28,7 +30,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Provide one search criteria only.</em></li><li><em>HLXIDASBR001 :\
             \ Party or Account or CRM ID search criteria required, please provide\
             \ at least one value.</em></li><li><em>HLXIDASBR001 : Account less than\
@@ -57,7 +60,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA003\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA003\
             \ : No input field provided in request message.</em></li><li><em>HLXIDASID002\
             \ : Account not found.</em></li><li><em>HLXIDASID002 : Person not found.</em></li><li><em>HLXIDASID002\
             \ : Card not found.</em></li><li><em>HLXIDASEI001 : External Identification\
@@ -73,7 +77,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
             \ : Person not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASID003\
             \ : Card not found.</em></li></ul>"
           content:
@@ -115,9 +120,10 @@ paths:
   /Helix/V1/PaymentInstrument/Initiate:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to create new card
-      description: This API allows the user to add a new card to the platform. The
+      description:
+        This API allows the user to add a new card to the platform. The
         new card will be linked to the Person ID and Account ID provided in the request
         message. It is not intended to be used to replace an existing card.
       operationId: create
@@ -136,16 +142,18 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
                   ActivationStatus:
-                    description: Indicates whether card activation needs to occur
+                    description:
+                      Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
                       are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <EM><LI>
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXIDASBR001\
             \ : Financial Institution Identification exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
             \ : Brand required, please provide value.</em></li><li><em>HLXIDASBR001\
@@ -171,7 +179,8 @@ paths:
           description: Forbidden
           content: {}
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA002\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA002\
             \ : Person not found.</em></li><li><em>HLXIDASFI001 : Financial Institution\
             \ not found.</em></li><li><em>HLXIDASBR001 : Brand not found.</em></li><li><em>HLXIDASPD002\
             \ : Product not found.</em></li><li><em>HLXIDASAC002 : Account not found.</em></li></ul>"
@@ -183,7 +192,8 @@ paths:
           description: Unsupported Media Type
           content: {}
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
             \ : Person not active.</em></li><li><em>HLXIDASFI001 : Financial Institution\
             \ not active.</em></li><li><em>HLXIDASBR001 : Brand not active.</em></li><li><em>HLXIDASPD001\
             \ : Product not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASAC004\
@@ -198,7 +208,8 @@ paths:
           description: Too Many Request
           content: {}
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
             \ : Attempt to add card has failed due to persistence error.</em></li></ul>"
           content: {}
         "502":
@@ -215,7 +226,7 @@ paths:
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to reissue cards for a product
       operationId: reissueCardsForProduct
       requestBody:
@@ -308,19 +319,20 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to activate a card
-      description: "This API allows the user to activate a card, when a card requires\
+      description:
+        "This API allows the user to activate a card, when a card requires\
         \ activation prior to first use."
       operationId: activateCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -331,10 +343,11 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -353,7 +366,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -372,7 +386,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAS002\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAS002\
             \ : Card already activated.</em></li><li><em>HLXIDASBV002 : Card already\
             \ blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked as Stolen.</em></li></ul>"
           content:
@@ -386,7 +401,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
+          description:
+            "Internal Server Error  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC002\
             \ : Attempt to activate the card has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
@@ -415,25 +431,27 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/AllData/Retrieve:
     get:
       tags:
-      - Helix Core
-      summary: This method is used to return the issued device details along with
+        - Helix Core
+      summary:
+        This method is used to return the issued device details along with
         chip details for the given FEPID
-      description: This API allows the user to retrieve details of a specific card
+      description:
+        This API allows the user to retrieve details of a specific card
         in the platform.
       operationId: getIssuedDeviceWithChipDetails
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: chipSequence
-        in: query
-        description: Chip Sequence
-        schema:
-          type: integer
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: chipSequence
+          in: query
+          description: Chip Sequence
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
@@ -444,18 +462,19 @@ paths:
                 properties:
                   PaymentInstrumentResponse:
                     allOf:
-                    - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
-                    - description: Payment instrument details
+                      - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+                      - description: Payment instrument details
                   VisaChipDataResponse:
                     allOf:
-                    - $ref: "#/components/schemas/VisaChipDataResponse"
-                    - description: Visa Chip details for a given payment instrument
+                      - $ref: "#/components/schemas/VisaChipDataResponse"
+                      - description: Visa Chip details for a given payment instrument
                   MasterCardChipDataResponse:
                     allOf:
-                    - $ref: "#/components/schemas/MasterCardChipDataResponse"
-                    - description: MasterCard Chip details for a given payment instrument
+                      - $ref: "#/components/schemas/MasterCardChipDataResponse"
+                      - description: MasterCard Chip details for a given payment instrument
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -474,7 +493,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
             \ : Card not found.</em></li><li><em>HLXIDASID008 : Chip Sequence not\
             \ found.</em></li></ul>"
           content:
@@ -528,19 +548,20 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to fetch chipData the given FEPID
-      description: "This API allows the user to to fetch chipData given FEPID <br/><br/><i>\
+      description:
+        "This API allows the user to to fetch chipData given FEPID <br/><br/><i>\
         \ <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: retrieveChipData
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -592,7 +613,8 @@ paths:
                   OfflinePin:
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -611,7 +633,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
             \ : Card not found.</em></li><li><em>HLXIDASID007 : Chip data not found\
             \ for given FEPID.</em></li></ul>"
           content:
@@ -666,18 +689,18 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to deactivate a card
       description: This API allows the user to deactivate a card
       operationId: deactivateCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -688,10 +711,11 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -710,7 +734,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -729,7 +754,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
             \ : Card is not enabled.</em></li><li><em>HLXIDASAS001 : Card already\
             \ inactive.</em></li></ul>"
           content:
@@ -743,7 +769,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC003\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC003\
             \ : Attempt to deactivate the card has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
@@ -773,19 +800,20 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to generate CVV 2 the given FEPID
-      description: This API generates and provides the CVV2 for the card. Encryption
+      description:
+        This API generates and provides the CVV2 for the card. Encryption
         keys and method must be known to use this API.
       operationId: generateCVV2
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -809,7 +837,8 @@ paths:
                     description: ICVV
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -828,7 +857,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -853,7 +883,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASDP001\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASDP001\
             \ : Attempt to parse date has failed.</em></li></ul>"
           content:
             application/json:
@@ -882,9 +913,10 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to block a card
-      description: "This service allows you to report a card as lost or stolen and,\
+      description:
+        "This service allows you to report a card as lost or stolen and,\
         \ if appropriate, request a new replacement card and PIN (if the PIN has been\
         \ compromised). Reporting a card as lost or stolen will block the current\
         \ card so that no spend can take place on it and any replacement card that\
@@ -892,11 +924,11 @@ paths:
         \ if one has been requested."
       operationId: updateCardBlockStatus
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -912,21 +944,24 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   NewFepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description:
+                          Unique identifier of the new payment instrument
+                          (FEPID)
                   ActivationStatus:
-                    description: Indicates whether card activation needs to occur
+                    description:
+                      Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
                       are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -945,7 +980,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -964,7 +1000,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
             \ : Card already blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked\
             \ as Stolen.</em></li></ul>"
           content:
@@ -978,7 +1015,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR002\
             \ : Attempt to block and replace the card has failed due to persistence\
             \ error.</em></li></ul>"
           content:
@@ -1005,119 +1043,13 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Report a Card as Lost or Stolen
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
-    post:
-      tags:
-      - Helix Core
-      summary: This API is used to reset the Invalid PIN Try Counter on a card to
-        zero.
-      operationId: resetInvalidPinTryCounter
-      parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  FEPID:
-                    allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Card not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
-            \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
-            \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
-            \ : Attempt to update the payment instrument information has failed due\
-            \ to persistence error.</em></li><li><em>HLXIDASUP001 : Card Update failed\
-            \ due to persistence error.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Pin Try Counter Reset
-      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to replace a damaged card
-      description: "This service allows the replacement of a card due to damage or\
+      description:
+        "This service allows the replacement of a card due to damage or\
         \ fault and is not intended for a lost or stolen scenario. The FEPID is to\
         \ be provided in the request message, and a successful request will result\
         \ in an identical card being sent to the customer, including PAN, PIN and\
@@ -1125,13 +1057,13 @@ paths:
         \ calculated if the card is due to expire soon)."
       operationId: replaceDamagedCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "201":
           description: Created
@@ -1142,10 +1074,11 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1164,7 +1097,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1183,7 +1117,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
             \ : Card replacement failed, chip sequence exceeds maximum value.</em></li></ul>"
           content:
             application/json:
@@ -1196,7 +1131,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCR001\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCR001\
             \ : Card Replacement failed due to persistence error.<li><em>HLXIDASCR001\
             \ : Attempt to replace the card has failed. Previous chip data is not\
             \ present.</em></li></ul>"
@@ -1227,20 +1163,22 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
       tags:
-      - Helix Core
-      summary: This method is used to return the issued device details for the given
+        - Helix Core
+      summary:
+        This method is used to return the issued device details for the given
         FEPID
-      description: This API allows the user to retrieve details of a specific card
+      description:
+        This API allows the user to retrieve details of a specific card
         in the platform.
       operationId: getIssuedDevice
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -1251,8 +1189,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   Product:
                     description: Banking product associated with the payment instrument
                     type: string
@@ -1260,13 +1198,15 @@ paths:
                     description: Account linked to the payment instrument. (FEAID)
                     type: string
                   Status:
-                    description: Status of the payment instrument in the system. Possible
+                    description:
+                      Status of the payment instrument in the system. Possible
                       Response Values are <UL><LI><EM> ENAB (Enabled) </EM></LI> <LI><EM>
                       DISA (Disabled) </EM></LI> <LI><EM> DELE (Deleted) </EM></LI></UL>
                     type: string
                   StartDate:
                     format: date
-                    description: Date when the payment instrument becomes available
+                    description:
+                      Date when the payment instrument becomes available
                       for use (YYYY-MM-dd).
                     type: string
                   ExpiryDate:
@@ -1275,14 +1215,16 @@ paths:
                     type: string
                   PriorCardExpiryDate:
                     format: date
-                    description: Prior Date on which the payment instrument expires
+                    description:
+                      Prior Date on which the payment instrument expires
                       (YYYY-MM-dd).
                     type: string
                   Cardholder:
                     description: Party entitled to use the payment instrument (FECID)
                     type: string
                   CardholderType:
-                    description: Indicates if the card holder of the account is a
+                    description:
+                      Indicates if the card holder of the account is a
                       Primary account Holder or an Additional Account Holder. Possible
                       Response Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM>
                       ADNL (Additional) </EM></LI></UL>
@@ -1291,15 +1233,18 @@ paths:
                     description: Cardholder name as it appears on the card.
                     type: string
                   NameLine2:
-                    description: Details on second name line as it appears on the
+                    description:
+                      Details on second name line as it appears on the
                       card.
                     type: string
                   PinOffset:
-                    description: Data that system uses to calculate the Personal Identification
+                    description:
+                      Data that system uses to calculate the Personal Identification
                       Number for the card.
                     type: string
                   ActivationStatus:
-                    description: Indicates whether card activation needs to occur
+                    description:
+                      Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
                       are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
                       ACMP (ActivationComplete) </EM></LI></UL>
@@ -1312,46 +1257,55 @@ paths:
                     description: Indicates whether payment instrument is blocked
                     type: string
                   BlockedReason:
-                    description: Specifies the reason for which the payment instrument
+                    description:
+                      Specifies the reason for which the payment instrument
                       is blocked. Accepted Values are <UL><LI><EM> Lost </EM></LI>
                       <LI><EM> Stolen </EM></LI></UL>
                     type: string
                   BlockedDateTime:
                     format: date-time
-                    description: "Date and time at which the payment instrument was\
+                    description:
+                      "Date and time at which the payment instrument was\
                       \ blocked (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
                   FinancialInstitution:
-                    description: Identification of the financial institution associated
+                    description:
+                      Identification of the financial institution associated
                       with the payment instrument
                     type: string
                   Brand:
-                    description: Identification of the brand associated with the payment
+                    description:
+                      Identification of the brand associated with the payment
                       instrument
                     type: string
                   PAN:
-                    description: Long number that appears on the front of the card
+                    description:
+                      Long number that appears on the front of the card
                       (Primary Account Number) in masked form showing only the last
                       4 digits
                     type: string
                   PlasticCreationDateTime:
                     format: date-time
-                    description: "Date and time at which plastic created for the payment\
+                    description:
+                      "Date and time at which plastic created for the payment\
                       \ instrument (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
                   CardTechnology:
-                    description: Indicates the technology type supported by the physical
+                    description:
+                      Indicates the technology type supported by the physical
                       card.
                     type: string
                   Design:
-                    description: Identification of card design associated with the
+                    description:
+                      Identification of card design associated with the
                       payment card.
                     type: string
                   LastCardActionProcessed:
                     description: The last action processed on the card.
                     type: string
                   TransferredToPaymentInstrument:
-                    description: Identification of the new card after lost stolen
+                    description:
+                      Identification of the new card after lost stolen
                       replacement
                     type: string
                   InvalidPinTryCounter:
@@ -1360,13 +1314,15 @@ paths:
                     type: integer
                   LastInvalidPinTryDateTime:
                     format: date-time
-                    description: "Date and time when the Last Invalid PIN was attempted.\
+                    description:
+                      "Date and time when the Last Invalid PIN was attempted.\
                       \ (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
                   enabled:
                     type: boolean
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1385,7 +1341,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1398,7 +1355,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
             \ : Cannot retrieve card details, the record is in ProForma status.</em></li></ul>"
           content:
             application/json:
@@ -1439,18 +1397,19 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/SystemUpdate:
     put:
       tags:
-      - Helix Core
-      summary: This method is used to update payment instrument attributes as part
+        - Helix Core
+      summary:
+        This method is used to update payment instrument attributes as part
         of a system action/event.
       operationId: systemUpdate
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1466,16 +1425,15 @@ paths:
                 properties:
                   InvalidPinTryCounter:
                     format: int32
-                    description: Number of times an authorisation with an invalid
-                      PIN was attempted on the card.
+                    description: Invalid PIN Tries.
                     type: integer
                   LastInvalidPinTryDateTime:
                     format: date-time
-                    description: Date and time when the last authorisation with an
-                      invalid PIN was attempted on the card.
+                    description: Last Invalid PIN was attempted.
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1512,9 +1470,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
-            \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
-            \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li></ul>"
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -1526,7 +1482,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
             \ : Attempt to update the payment instrument information has failed due\
             \ to persistence error.</em></li><li><em>HLXIDASUP001 : Card Update failed\
             \ due to persistence error.</em></li></ul>"
@@ -1557,17 +1514,17 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to update the issued device information
       operationId: updateIssuedDeviceInfo
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1583,21 +1540,24 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   NewFepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description:
+                          Unique identifier of the new payment instrument
+                          (FEPID)
                   ActivationStatus:
-                    description: Indicates whether card activation needs to occur
+                    description:
+                      Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
                       are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <LI><EM>
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1634,7 +1594,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC001\
             \ : No value provided for update.</em></li></ul>"
           content:
             application/json:
@@ -1647,7 +1608,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
             \ : Attempt to update the payment instrument information has failed due\
             \ to persistence error.</em></li><li><em>HLXIDASUP001 : Card Update failed\
             \ due to persistence error.</em></li></ul>"
@@ -1678,21 +1640,23 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
     get:
       tags:
-      - Helix Core
-      summary: This method is used to validate the payment instrument for the given
+        - Helix Core
+      summary:
+        This method is used to validate the payment instrument for the given
         FEPID
-      description: "This API allows the user to validate the payment instrument for\
+      description:
+        "This API allows the user to validate the payment instrument for\
         \ the given FEPID <br/><br/><i> <b>Note</b>:This API is for Internal purpose\
         \ only.</i>"
       operationId: validatePaymentInstrument
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -1701,7 +1665,8 @@ paths:
               schema:
                 type: object
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1720,7 +1685,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1733,7 +1699,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
             \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
             \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li></ul>"
           content:
@@ -1747,7 +1714,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID006\
             \ : There is an error while validating Payment Instrument, please try\
             \ again.</em></li></ul>"
           content:
@@ -1778,19 +1746,20 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to View Pin in Encrypted form for the given FEPID
-      description: This API retrieves the PIN (for use in a secure environment) for
+      description:
+        This API retrieves the PIN (for use in a secure environment) for
         a card. Encryption keys and method must be known to use this API.
       operationId: viewPin
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1808,7 +1777,8 @@ paths:
                     description: Encrypted PIN
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+          description:
+            "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li><li><em>HLXIDASBR001 : RSA Public Key required,\
             \ please provide value.</em></li></ul>"
           content:
@@ -1828,7 +1798,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+          description:
+            "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -1841,7 +1812,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+          description:
+            "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
             \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
             \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li></ul>"
           content:
@@ -1855,7 +1827,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASVP001\
+          description:
+            "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASVP001\
             \ : - Attempt to view Encrypted Pin has failed due to persistence error.</em></li></ul>"
           content:
             application/json:
@@ -1884,12 +1857,14 @@ paths:
 components:
   schemas:
     Account:
-      description: "An Account is Record of transactions in specific types of assets,\
+      description:
+        "An Account is Record of transactions in specific types of assets,\
         \ maintained by a servicing party on behalf of one or more owning parties."
       type: object
       properties:
         AccountIdentification:
-          description: "Unique identifier of an account, as assigned by the account\
+          description:
+            "Unique identifier of an account, as assigned by the account\
             \ servicer (FEAID)"
           maxLength: 37
           type: string
@@ -1915,21 +1890,23 @@ components:
       type: object
       properties:
         CPID:
-          description: Capability Catalog ID - Unique identifier for the Capability
+          description:
+            Capability Catalog ID - Unique identifier for the Capability
             Catalog
           type: string
     AddCardRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - Product
-      - RelatedAccount
-      - Cardholder
-      - CardholderType
+        - FinancialInstitution
+        - Brand
+        - Product
+        - RelatedAccount
+        - Cardholder
+        - CardholderType
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the payment card
           maxLength: 37
           pattern: \S
@@ -1958,7 +1935,8 @@ components:
           type: string
           nullable: false
         CardholderType:
-          description: Indicates if the card being added is of type Primary or Additional.
+          description:
+            Indicates if the card being added is of type Primary or Additional.
             Accepted Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM> ADNL
             (Additional) </EM></LI></UL>
           pattern: \S
@@ -1971,7 +1949,8 @@ components:
           description: Details on second name line as it appears on the card
           type: string
         CardMaintenanceWaiveFlag:
-          description: Flag to describe if the Card Maintenance Fee to be waived once
+          description:
+            Flag to describe if the Card Maintenance Fee to be waived once
             or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
             PERM (Permanent) </EM></LI></UL>
           type: string
@@ -1980,7 +1959,8 @@ components:
           items:
             $ref: "#/components/schemas/OverrideParameter"
         Bundle:
-          description: "Bundles are a collection of multiple Features, that can be\
+          description:
+            "Bundles are a collection of multiple Features, that can be\
             \ used to further segment a Product, in order to provide alternate set(s)\
             \ of features to customers compared to the Product default Features. For\
             \ example different card types (virtual/physical), card designs, card\
@@ -1993,20 +1973,20 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
         Account:
           allOf:
-          - $ref: "#/components/schemas/RetrieveAgreementResponse"
-          - description: Identification of the account
+            - $ref: "#/components/schemas/RetrieveAgreementResponse"
+            - description: Identification of the account
         Cardholder:
           allOf:
-          - $ref: "#/components/schemas/RetrievePersonResponse"
-          - description: Identification of the cardholder
+            - $ref: "#/components/schemas/RetrievePersonResponse"
+            - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
@@ -2040,10 +2020,11 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
-          description: Indicates whether card activation needs to occur for the most
+          description:
+            Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
@@ -2051,7 +2032,8 @@ components:
       type: object
       properties:
         FEOID:
-          description: Fiserv Enterprise Organisation ID - Unique identifier for the
+          description:
+            Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
     AgreementFeature:
@@ -2085,7 +2067,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -2101,8 +2083,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-      - PartyIdentification
-      - PartyRole
+        - PartyIdentification
+        - PartyRole
       type: object
       properties:
         PartyIdentification:
@@ -2112,7 +2094,8 @@ components:
           type: string
           nullable: false
         PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
+          description:
+            "Specifies the role of the party in the transaction <br> Valid\
             \ values are : <br> AccountHolder"
           pattern: \S
           type: string
@@ -2124,10 +2107,10 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
     BrandEntryAddRequest:
       required:
-      - Name
-      - FinancialInstitutionIdentification
-      - Identification
-      - ReportingCurrency
+        - Name
+        - FinancialInstitutionIdentification
+        - Identification
+        - ReportingCurrency
       type: object
       properties:
         Name:
@@ -2138,8 +2121,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -2185,7 +2168,7 @@ components:
           type: string
     BrandUpdateRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -2196,8 +2179,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -2221,19 +2204,20 @@ components:
           type: string
     BundleRequestDto:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
-          description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
+          description:
+            "<em> maxLength: 37 </em> <br> Identification of bundles to\
             \ be processed for the card"
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
     CapabilityCatalog:
       required:
-      - Version
-      - CapabilityName
+        - Version
+        - CapabilityName
       type: object
       properties:
         Version:
@@ -2288,8 +2272,24 @@ components:
           type: string
     ConfigurationOption:
       required:
-      - Name
-      - ConfigurationParameter
+        - Name
+        - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+        - Name
+        - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -2305,27 +2305,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
-    ConfigurationOption1:
-      required:
-      - Name
-      - ConfigurationParameter
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          pattern: \S
-          type: string
-          nullable: false
-        ConfigurationParameter:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-      - Name
-      - Value
+        - Name
+        - Value
       type: object
       properties:
         Name:
@@ -2342,27 +2326,31 @@ components:
           nullable: false
     ElectronicAddress:
       required:
-      - Type
-      - Email
+        - Type
+        - Email
       type: object
       properties:
         Type:
-          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+          description:
+            "Type of email <br/> Valid values are : <br/> PersonalEmail\
             \ <br/> WorkEmail"
           pattern: \S
           type: string
           nullable: false
         Email:
-          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+          description:
+            "<em> maxLength: 256 </em> <br/> Address for electronic mail\
             \ (e-mail)"
           type: string
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
+          description:
+            "Indicates whether the person prefer to be contacted on this\
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
         DateTime:
-          description: Time stamp when this email is set as the current electronic
+          description:
+            Time stamp when this email is set as the current electronic
             address
           type: string
     ErrorEvent:
@@ -2373,8 +2361,8 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Specifies the service domain identifier
+            - $ref: "#/components/schemas/UUID"
+            - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -2393,14 +2381,14 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
-      - FeatureId
-      - FeatureIdentification
-      - ProductId
-      - FinancialInstitution
+        - FeatureId
+        - FeatureIdentification
+        - ProductId
+        - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -2437,12 +2425,12 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteGeneratePINRequest:
       required:
-      - FeatureId
-      - FinancialInstitution
+        - FeatureId
+        - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -2457,23 +2445,16 @@ components:
           pattern: \S
           type: string
           nullable: false
-    ExecutePINTryCounterResetResponse:
-      type: object
-      properties:
-        FEPID:
-          allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
-      - NewPaymentInstrumentId
+        - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -2490,8 +2471,8 @@ components:
             $ref: "#/components/schemas/Feature"
     ExecuteValidateCVV2Request:
       required:
-      - ExpiryDate
-      - CVV2
+        - ExpiryDate
+        - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -2506,8 +2487,8 @@ components:
           nullable: false
     ExecuteValidateCVVRequest:
       required:
-      - ExpiryDate
-      - CVV
+        - ExpiryDate
+        - CVV
       type: object
       properties:
         ExpiryDate:
@@ -2528,8 +2509,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-      - ExpiryDate
-      - iCVV
+        - ExpiryDate
+        - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -2544,9 +2525,9 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-      - PAN
-      - PIN block
-      - Association
+        - PAN
+        - PIN block
+        - Association
       type: object
       properties:
         PAN:
@@ -2573,12 +2554,13 @@ components:
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
+        - ClearingSystemIdentificationCode
+        - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
+          description:
+            Specifies the clearing system identification code. E.g. Sort
             Code for BACS ( Bank Branch code in other countries )
           maxLength: 13
           minLength: 1
@@ -2599,7 +2581,7 @@ components:
           type: string
     Feature1:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -2664,9 +2646,9 @@ components:
           type: string
     FiRegisterRequest:
       required:
-      - Name
-      - Identification
-      - InvoiceCurrency
+        - Name
+        - Identification
+        - InvoiceCurrency
       type: object
       properties:
         Name:
@@ -2677,8 +2659,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2718,7 +2700,7 @@ components:
           type: string
     FiUpdateRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -2729,8 +2711,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2773,7 +2755,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -2793,11 +2775,11 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - Product
-      - AgreementInvolvement
-      - OpeningDate
+        - FinancialInstitution
+        - Brand
+        - Product
+        - AgreementInvolvement
+        - OpeningDate
       type: object
       properties:
         FinancialInstitution:
@@ -2824,7 +2806,8 @@ components:
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
-          description: Date on which the Agreement and related basic services are
+          description:
+            Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
             Date format (YYYY-MM-DD)
           pattern: \S
@@ -2838,13 +2821,14 @@ components:
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
+          description:
+            "Unique identifier of a Agreement, as assigned by the account\
             \ servicer (FEAID)"
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -2867,26 +2851,29 @@ components:
           type: string
     IssuedDeviceActionRequest:
       required:
-      - BlockReason
-      - ReplaceCard
-      - GenerateNewPin
+        - BlockReason
+        - ReplaceCard
+        - GenerateNewPin
       type: object
       properties:
         BlockReason:
-          description: To set the type of loss status on the selected card. Accepted
+          description:
+            To set the type of loss status on the selected card. Accepted
             Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           pattern: \S
           type: string
           nullable: false
         ReplaceCard:
-          description: To identify whether a replacement card need to be created and
+          description:
+            To identify whether a replacement card need to be created and
             sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
             No </EM></LI></UL>
           minLength: 1
           type: string
           nullable: false
         GenerateNewPin:
-          description: To identify whether a replacement PIN needs to be generated
+          description:
+            To identify whether a replacement PIN needs to be generated
             and sent to the cardholder when PIN is compromised or whether the existing
             PIN will be reused when PIN is not compromised.Accepted Values are <UL><LI><EM>
             Yes </EM></LI> <LI><EM> No </EM></LI></UL>
@@ -2894,7 +2881,8 @@ components:
           type: string
           nullable: false
         CardMaintenanceWaiveFlag:
-          description: Flag to describe if the Lost/Stolen Fee to be waived. Accepted
+          description:
+            Flag to describe if the Lost/Stolen Fee to be waived. Accepted
             Value is <UL><LI><EM> ONCE </EM></LI></UL>
           type: string
     IssuedDeviceActionResponse:
@@ -2902,14 +2890,15 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the new payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
-          description: Indicates whether card activation needs to occur for the most
+          description:
+            Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
@@ -2928,7 +2917,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -3010,7 +2999,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-      - Capability
+        - Capability
       type: object
       properties:
         Capability:
@@ -3022,10 +3011,10 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -3035,7 +3024,8 @@ components:
           type: string
           nullable: false
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the person
           type: string
         Brand:
@@ -3054,7 +3044,8 @@ components:
           description: Second name of a person.
           type: string
         Surname:
-          description: "Surname is a name added to a given name and is part of a personal\
+          description:
+            "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name."
           type: string
         Language:
@@ -3064,7 +3055,8 @@ components:
           description: Specifies the gender of the person.
           type: string
         MemorableWord:
-          description: Memorable word selected by the customer to be used for customer
+          description:
+            Memorable word selected by the customer to be used for customer
             authentication.
           type: string
     PaymentInstrumentGetListRequest:
@@ -3079,18 +3071,20 @@ components:
           type: string
     Phone:
       required:
-      - Type
-      - Number
+        - Type
+        - Number
       type: object
       properties:
         Type:
-          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+          description:
+            "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
             \ <br/> WorkPhone"
           pattern: \S
           type: string
           nullable: false
         Number:
-          description: "Collection of information that identifies a phone number,\
+          description:
+            "Collection of information that identifies a phone number,\
             \ as defined by telecom services. Phone number must start with special\
             \ character '+', followed by numbers [0 - 9], with minimum length of 8\
             \ digits and maximum length of 15 digits excluding + symbol."
@@ -3099,28 +3093,32 @@ components:
           description: "<em> maxLength: 10 </em> <br/> Phone extension number"
           type: string
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
+          description:
+            "Indicates whether the person prefer to be contacted on this\
             \ phone number<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
         SmsPreference:
-          description: "Indicates whether the person prefer to be receive SMS on this\
+          description:
+            "Indicates whether the person prefer to be receive SMS on this\
             \ mobile number<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
         DateTime:
-          description: Time stamp when this phone number is set as the current phone
+          description:
+            Time stamp when this phone number is set as the current phone
             address
           type: string
     PostalAddress:
       required:
-      - AddressType
-      - Country
-      - ContactPreference
+        - AddressType
+        - Country
+        - ContactPreference
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Residential\
+          description:
+            "Type of address<br/> Valid values are : <br/> Residential\
             \ <br/> Business"
           pattern: \S
           type: string
@@ -3138,35 +3136,41 @@ components:
           maxLength: 70
           type: string
         PostOfficeBox:
-          description: "Numbered box in a post office, assigned to a person or organisation,\
+          description:
+            "Numbered box in a post office, assigned to a person or organisation,\
             \ where letters are kept until called for"
           maxLength: 16
           type: string
         PostalCode:
-          description: Identifier consisting of a group of letters and/or numbers
+          description:
+            Identifier consisting of a group of letters and/or numbers
             that is added to a postal address to assist the sorting of mail
           maxLength: 16
           type: string
         AddressLine1:
-          description: "AddressLine1 - Information that locates and identifies a specific\
+          description:
+            "AddressLine1 - Information that locates and identifies a specific\
             \ address, as defined by postal services, that is presented in free format\
             \ text"
           maxLength: 70
           type: string
         AddressLine2:
-          description: "AddressLine2 - Information that locates and identifies a specific\
+          description:
+            "AddressLine2 - Information that locates and identifies a specific\
             \ address, as defined by postal services, that is presented in free format\
             \ text"
           maxLength: 70
           type: string
         AddressLine3:
-          description: "AddressLine3 - Information that locates and identifies a specific\
+          description:
+            "AddressLine3 - Information that locates and identifies a specific\
             \ address, as defined by postal services, that is presented in free format\
             \ text"
           maxLength: 70
           type: string
         AddressLine4:
-          description: "AddressLine4 - Information that locates and identifies a specific\
+          description:
+            "AddressLine4 - Information that locates and identifies a specific\
             \ address, as defined by postal services, that is presented in free format\
             \ text"
           maxLength: 70
@@ -3176,18 +3180,21 @@ components:
           maxLength: 35
           type: string
         CountrySubDivision:
-          description: "Identifies a subdivision of a country such as state, region,\
+          description:
+            "Identifies a subdivision of a country such as state, region,\
             \ county"
           maxLength: 35
           type: string
         Country:
-          description: "Nation with its own government occupying a particular territory\
+          description:
+            "Nation with its own government occupying a particular territory\
             \ <br/> Valid values are : 2 character ISO Country Codes "
           pattern: \S
           type: string
           nullable: false
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
+          description:
+            "Indicates whether the person prefer to be contacted on this\
             \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
             \ <br/> MayBeUsedForContact"
           pattern: \S
@@ -3201,12 +3208,12 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
     RegisterBundleRequest:
       required:
-      - Identification
-      - Name
+        - Identification
+        - Name
       type: object
       properties:
         Identification:
@@ -3236,7 +3243,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3261,10 +3268,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-      - Identification
-      - Name
-      - Capability
-      - ConfigurationOption
+        - Identification
+        - Name
+        - Capability
+        - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -3293,7 +3300,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3302,13 +3309,14 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - TradingName
+        - FinancialInstitution
+        - Brand
+        - TradingName
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the organisation
           maxLength: 37
           minLength: 1
@@ -3321,7 +3329,8 @@ components:
           type: string
           nullable: false
         ExternalIdentification:
-          description: Identification of the customer issued by the client financial
+          description:
+            Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
           maxLength: 35
           type: string
@@ -3330,7 +3339,8 @@ components:
           maxLength: 35
           type: string
         TradingName:
-          description: "Name used by a business for commercial purposes, although\
+          description:
+            "Name used by a business for commercial purposes, although\
             \ its registered legal name, used for contracts and other formal situations,\
             \ may be another"
           maxLength: 35
@@ -3338,7 +3348,8 @@ components:
           type: string
           nullable: false
         RegistrationDate:
-          description: Date on which a given organisation was officially registered
+          description:
+            Date on which a given organisation was officially registered
             <br/> Format must be ISO Date format (YYYY-MM-DD)
           type: string
         ElectronicAddress:
@@ -3353,14 +3364,15 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - GivenName
-      - Surname
+        - FinancialInstitution
+        - Brand
+        - GivenName
+        - Surname
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the person
           maxLength: 37
           minLength: 1
@@ -3378,7 +3390,8 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
+          description:
+            "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
             \ GenderNeutral"
           type: string
@@ -3393,22 +3406,26 @@ components:
           maxLength: 35
           type: string
         Surname:
-          description: "Surname is a name added to a given name and is part of a personal\
+          description:
+            "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
           maxLength: 35
           minLength: 1
           type: string
           nullable: false
         BirthDate:
-          description: Date on which a person is born <br/> Format must be ISO Date
+          description:
+            Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: "Language in which a person communicates <br> Valid values\
+          description:
+            "Language in which a person communicates <br> Valid values\
             \ are : 2 character ISO Language Codes"
           type: string
         MemorableWord:
-          description: Memorable word selected by the customer to be used for customer
+          description:
+            Memorable word selected by the customer to be used for customer
             authentication
           maxLength: 20
           type: string
@@ -3439,7 +3456,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -3454,9 +3471,9 @@ components:
           $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
-      - Name
-      - Brand
-      - Identification
+        - Name
+        - Brand
+        - Identification
       type: object
       properties:
         Name:
@@ -3488,7 +3505,7 @@ components:
     RegistrationAddress:
       description: Registered Address
       required:
-      - Country
+        - Country
       type: object
       properties:
         AddressType:
@@ -3545,14 +3562,15 @@ components:
           nullable: false
     ReissueCardRequest:
       required:
-      - FinancialInstitution
+        - FinancialInstitution
       type: object
       properties:
         ProductId:
           description: ID of the banking product
           type: string
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the payment card
           maxLength: 37
           pattern: \S
@@ -3568,11 +3586,11 @@ components:
             $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
     RequestGetCVV2Request:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3582,7 +3600,7 @@ components:
           nullable: false
     RequestGetCVVRequest:
       required:
-      - ExpiryDate
+        - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -3607,7 +3625,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-      - PAN
+        - PAN
       type: object
       properties:
         PAN:
@@ -3629,8 +3647,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-      - RSAKey
-      - Association
+        - RSAKey
+        - Association
       type: object
       properties:
         RSAKey:
@@ -3645,7 +3663,7 @@ components:
           nullable: false
     RequestViewPinRequest:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3731,11 +3749,12 @@ components:
             $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
       required:
-      - AgreementInvolvement
+        - AgreementInvolvement
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
+          description:
+            "Unique identifier of a Agreement, as assigned by the account\
             \ servicer (FEAID)"
           maxLength: 37
           type: string
@@ -3752,7 +3771,8 @@ components:
           maxLength: 37
           type: string
         Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
+          description:
+            "Status of the Agreement entity in the system <br> Valid values\
             \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
           type: string
         AgreementInvolvement:
@@ -3761,7 +3781,8 @@ components:
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
-          description: Date on which the Agreement and related basic services are
+          description:
+            Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
             Date format (YYYY-MM-DD)
           type: string
@@ -3771,7 +3792,7 @@ components:
             $ref: "#/components/schemas/ExternalAccount"
     RetrieveBrandResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3782,8 +3803,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -3817,7 +3838,8 @@ components:
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the product
           type: string
         Identification:
@@ -3841,7 +3863,8 @@ components:
       type: object
       properties:
         CPID:
-          description: Capability Catalog ID - Unique identifier for the Capability
+          description:
+            Capability Catalog ID - Unique identifier for the Capability
             Catalog
           type: string
         Version:
@@ -3883,8 +3906,8 @@ components:
             $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
-      - FacilityIdentification
-      - Capability
+        - FacilityIdentification
+        - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -3927,7 +3950,8 @@ components:
           description: Identification of the feature
           type: string
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the product
           type: string
         Name:
@@ -3946,14 +3970,14 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
           type: string
     RetrieveFiResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3964,8 +3988,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -3987,13 +4011,14 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
-      - Brand
-      - TradingName
+        - FinancialInstitution
+        - Brand
+        - TradingName
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the organisation
           maxLength: 37
           minLength: 1
@@ -4006,7 +4031,8 @@ components:
           type: string
           nullable: false
         ExternalIdentification:
-          description: Identification of the customer issued by the client financial
+          description:
+            Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
           maxLength: 35
           type: string
@@ -4015,7 +4041,8 @@ components:
           maxLength: 35
           type: string
         TradingName:
-          description: "Name used by a business for commercial purposes, although\
+          description:
+            "Name used by a business for commercial purposes, although\
             \ its registered legal name, used for contracts and other formal situations,\
             \ may be another"
           maxLength: 35
@@ -4023,7 +4050,8 @@ components:
           type: string
           nullable: false
         RegistrationDate:
-          description: Date on which a given organisation was officially registered
+          description:
+            Date on which a given organisation was officially registered
             <br/> Format must be ISO Date format (YYYY-MM-DD)
           type: string
         ElectronicAddress:
@@ -4037,7 +4065,8 @@ components:
           items:
             $ref: "#/components/schemas/Phone"
         Identification:
-          description: Fiserv Enterprise Organisation ID - Unique identifier for the
+          description:
+            Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
         Status:
@@ -4048,8 +4077,8 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -4057,13 +4086,15 @@ components:
           description: Account linked to the payment instrument. (FEAID)
           type: string
         Status:
-          description: Status of the payment instrument in the system. Possible Response
+          description:
+            Status of the payment instrument in the system. Possible Response
             Values are <UL><LI><EM> ENAB (Enabled) </EM></LI> <LI><EM> DISA (Disabled)
             </EM></LI> <LI><EM> DELE (Deleted) </EM></LI></UL>
           type: string
         StartDate:
           format: date
-          description: Date when the payment instrument becomes available for use
+          description:
+            Date when the payment instrument becomes available for use
             (YYYY-MM-dd).
           type: string
         ExpiryDate:
@@ -4078,7 +4109,8 @@ components:
           description: Party entitled to use the payment instrument (FECID)
           type: string
         CardholderType:
-          description: Indicates if the card holder of the account is a Primary account
+          description:
+            Indicates if the card holder of the account is a Primary account
             Holder or an Additional Account Holder. Possible Response Values are <UL><LI><EM>
             PRIM (Primary) </EM></LI> <LI><EM> ADNL (Additional) </EM></LI></UL>
           type: string
@@ -4089,11 +4121,13 @@ components:
           description: Details on second name line as it appears on the card.
           type: string
         PinOffset:
-          description: Data that system uses to calculate the Personal Identification
+          description:
+            Data that system uses to calculate the Personal Identification
             Number for the card.
           type: string
         ActivationStatus:
-          description: Indicates whether card activation needs to occur for the most
+          description:
+            Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
@@ -4105,28 +4139,33 @@ components:
           description: Indicates whether payment instrument is blocked
           type: string
         BlockedReason:
-          description: Specifies the reason for which the payment instrument is blocked.
+          description:
+            Specifies the reason for which the payment instrument is blocked.
             Accepted Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           type: string
         BlockedDateTime:
           format: date-time
-          description: "Date and time at which the payment instrument was blocked\
+          description:
+            "Date and time at which the payment instrument was blocked\
             \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the payment instrument
           type: string
         Brand:
           description: Identification of the brand associated with the payment instrument
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
+          description:
+            Long number that appears on the front of the card (Primary
             Account Number) in masked form showing only the last 4 digits
           type: string
         PlasticCreationDateTime:
           format: date-time
-          description: "Date and time at which plastic created for the payment instrument\
+          description:
+            "Date and time at which plastic created for the payment instrument\
             \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         CardTechnology:
@@ -4156,16 +4195,16 @@ components:
       properties:
         PaymentInstrumentResponse:
           allOf:
-          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
-          - description: Payment instrument details
+            - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+            - description: Payment instrument details
         VisaChipDataResponse:
           allOf:
-          - $ref: "#/components/schemas/VisaChipDataResponse"
-          - description: Visa Chip details for a given payment instrument
+            - $ref: "#/components/schemas/VisaChipDataResponse"
+            - description: Visa Chip details for a given payment instrument
         MasterCardChipDataResponse:
           allOf:
-          - $ref: "#/components/schemas/MasterCardChipDataResponse"
-          - description: MasterCard Chip details for a given payment instrument
+            - $ref: "#/components/schemas/MasterCardChipDataResponse"
+            - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -4178,7 +4217,8 @@ components:
           maxLength: 35
           type: string
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
+          description:
+            Specifies the clearing system identification code. E.g. Sort
             Code for BACS ( Bank Branch code in other countries )
           maxLength: 13
           type: string
@@ -4194,11 +4234,13 @@ components:
           maxLength: 37
           type: string
         Status:
-          description: "Status of the person record in the system <br> Valid values\
+          description:
+            "Status of the person record in the system <br> Valid values\
             \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
           type: string
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the person
           maxLength: 37
           type: string
@@ -4220,7 +4262,8 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
+          description:
+            "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
             \ GenderNeutral"
           type: string
@@ -4233,16 +4276,19 @@ components:
           maxLength: 35
           type: string
         Surname:
-          description: "Surname is a name added to a given name and is part of a personal\
+          description:
+            "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
           maxLength: 35
           type: string
         BirthDate:
-          description: Date on which a person is born <br/> Format must be ISO Date
+          description:
+            Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
           type: string
         Language:
-          description: "Language in which a person communicates <br> Valid values\
+          description:
+            "Language in which a person communicates <br> Valid values\
             \ are : 2 character ISO Language Codes"
           type: string
         Email:
@@ -4250,7 +4296,8 @@ components:
           maxLength: 256
           type: string
         MemorableWord:
-          description: Memorable word selected by the customer to be used for customer
+          description:
+            Memorable word selected by the customer to be used for customer
             authentication
           maxLength: 20
           type: string
@@ -4289,7 +4336,8 @@ components:
       type: object
       properties:
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the product
           type: string
         Brand:
@@ -4327,12 +4375,12 @@ components:
           type: string
     SystemUpdateRequest:
       required:
-      - InvalidPinTryCounter
+        - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
+          description: Invalid PIN Tries.
+          minLength: 1
           type: string
           nullable: false
     SystemUpdateResponse:
@@ -4340,13 +4388,11 @@ components:
       properties:
         InvalidPinTryCounter:
           format: int32
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
+          description: Invalid PIN Tries.
           type: integer
         LastInvalidPinTryDateTime:
           format: date-time
-          description: Date and time when the last authorisation with an invalid PIN
-            was attempted on the card.
+          description: Last Invalid PIN was attempted.
           type: string
     UUID:
       format: uuid
@@ -4354,7 +4400,7 @@ components:
       type: string
     UpdateFeatureRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -4370,7 +4416,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4381,7 +4427,8 @@ components:
           description: Identification of the feature
           type: string
         FinancialInstitution:
-          description: Identification of the financial institution associated with
+          description:
+            Identification of the financial institution associated with
             the product
           type: string
         Name:
@@ -4400,11 +4447,11 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
-      - Name
-      - Brand
+        - Name
+        - Brand
       type: object
       properties:
         Name:
