@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-87
+  version: 1.1.0-91
 tags:
 - name: Helix Core
 paths:
@@ -115,7 +115,7 @@ paths:
   /Helix/V1/PaymentInstrument/Initiate:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to create new card
       description: This API allows the user to add a new card to the platform. The
         new card will be linked to the Person ID and Account ID provided in the request
@@ -136,8 +136,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
@@ -215,7 +215,7 @@ paths:
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to reissue cards for a product
       operationId: reissueCardsForProduct
       requestBody:
@@ -308,19 +308,19 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to activate a card
       description: "This API allows the user to activate a card, when a card requires\
         \ activation prior to first use."
       operationId: activateCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -331,8 +331,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -415,25 +415,25 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/AllData/Retrieve:
     get:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to return the issued device details along with
         chip details for the given FEPID
       description: This API allows the user to retrieve details of a specific card
         in the platform.
       operationId: getIssuedDeviceWithChipDetails
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: chipSequence
-        in: query
-        description: Chip Sequence
-        schema:
-          type: integer
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: chipSequence
+          in: query
+          description: Chip Sequence
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
@@ -444,16 +444,16 @@ paths:
                 properties:
                   PaymentInstrumentResponse:
                     allOf:
-                    - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
-                    - description: Payment instrument details
+                      - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+                      - description: Payment instrument details
                   VisaChipDataResponse:
                     allOf:
-                    - $ref: "#/components/schemas/VisaChipDataResponse"
-                    - description: Visa Chip details for a given payment instrument
+                      - $ref: "#/components/schemas/VisaChipDataResponse"
+                      - description: Visa Chip details for a given payment instrument
                   MasterCardChipDataResponse:
                     allOf:
-                    - $ref: "#/components/schemas/MasterCardChipDataResponse"
-                    - description: MasterCard Chip details for a given payment instrument
+                      - $ref: "#/components/schemas/MasterCardChipDataResponse"
+                      - description: MasterCard Chip details for a given payment instrument
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -528,19 +528,19 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to fetch chipData the given FEPID
       description: "This API allows the user to to fetch chipData given FEPID <br/><br/><i>\
         \ <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: retrieveChipData
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -666,18 +666,18 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to deactivate a card
       description: This API allows the user to deactivate a card
       operationId: deactivateCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -688,8 +688,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -773,19 +773,19 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to generate CVV 2 the given FEPID
       description: This API generates and provides the CVV2 for the card. Encryption
         keys and method must be known to use this API.
       operationId: generateCVV2
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -882,7 +882,7 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to block a card
       description: "This service allows you to report a card as lost or stolen and,\
         \ if appropriate, request a new replacement card and PIN (if the PIN has been\
@@ -892,11 +892,11 @@ paths:
         \ if one has been requested."
       operationId: updateCardBlockStatus
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -912,13 +912,13 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   NewFepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the new payment instrument
+                          (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
@@ -1008,18 +1008,18 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This API is used to reset the Invalid PIN Try Counter on a card to
         zero.
       operationId: resetInvalidPinTryCounter
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -1030,8 +1030,8 @@ paths:
                 properties:
                   FEPID:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -1115,7 +1115,7 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to replace a damaged card
       description: "This service allows the replacement of a card due to damage or\
         \ fault and is not intended for a lost or stolen scenario. The FEPID is to\
@@ -1125,13 +1125,13 @@ paths:
         \ calculated if the card is due to expire soon)."
       operationId: replaceDamagedCard
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "201":
           description: Created
@@ -1142,8 +1142,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment card (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -1227,20 +1227,20 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to return the issued device details for the given
         FEPID
       description: This API allows the user to retrieve details of a specific card
         in the platform.
       operationId: getIssuedDevice
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -1251,8 +1251,8 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   Product:
                     description: Banking product associated with the payment instrument
                     type: string
@@ -1363,6 +1363,12 @@ paths:
                     description: "Date and time when the Last Invalid PIN was attempted.\
                       \ (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
+                  DigitalCardType:
+                    description: Identifies the type of digital card. Possible Response
+                      Values are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM>
+                      STRM (ShortTerm) </EM></LI> <LI><EM> TRAN (Transient) </EM></LI>
+                      <LI><EM> NDIG (NonDigital) </EM></LI></UL>
+                    type: string
                   enabled:
                     type: boolean
         "400":
@@ -1439,18 +1445,18 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/SystemUpdate:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to update payment instrument attributes as part
         of a system action/event.
       operationId: systemUpdate
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1557,17 +1563,17 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     put:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to update the issued device information
       operationId: updateIssuedDeviceInfo
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1583,13 +1589,13 @@ paths:
                 properties:
                   FepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the payment instrument (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment instrument (FEPID)
                   NewFepId:
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - description: Unique identifier of the new payment instrument
-                        (FEPID)
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the new payment instrument
+                          (FEPID)
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
@@ -1678,7 +1684,7 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
     get:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to validate the payment instrument for the given
         FEPID
       description: "This API allows the user to validate the payment instrument for\
@@ -1686,13 +1692,13 @@ paths:
         \ only.</i>"
       operationId: validatePaymentInstrument
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       responses:
         "200":
           description: OK
@@ -1778,19 +1784,19 @@ paths:
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to View Pin in Encrypted form for the given FEPID
       description: This API retrieves the PIN (for use in a secure environment) for
         a card. Encryption keys and method must be known to use this API.
       operationId: viewPin
       parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
       requestBody:
         content:
           application/json:
@@ -1920,12 +1926,12 @@ components:
           type: string
     AddCardRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - Product
-      - RelatedAccount
-      - Cardholder
-      - CardholderType
+        - FinancialInstitution
+        - Brand
+        - Product
+        - RelatedAccount
+        - Cardholder
+        - CardholderType
       type: object
       properties:
         FinancialInstitution:
@@ -1993,20 +1999,20 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
         Account:
           allOf:
-          - $ref: "#/components/schemas/RetrieveAgreementResponse"
-          - description: Identification of the account
+            - $ref: "#/components/schemas/RetrieveAgreementResponse"
+            - description: Identification of the account
         Cardholder:
           allOf:
-          - $ref: "#/components/schemas/RetrievePersonResponse"
-          - description: Identification of the cardholder
+            - $ref: "#/components/schemas/RetrievePersonResponse"
+            - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
@@ -2040,8 +2046,8 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -2085,7 +2091,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -2101,8 +2107,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-      - PartyIdentification
-      - PartyRole
+        - PartyIdentification
+        - PartyRole
       type: object
       properties:
         PartyIdentification:
@@ -2124,10 +2130,10 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
     BrandEntryAddRequest:
       required:
-      - Name
-      - FinancialInstitutionIdentification
-      - Identification
-      - ReportingCurrency
+        - Name
+        - FinancialInstitutionIdentification
+        - Identification
+        - ReportingCurrency
       type: object
       properties:
         Name:
@@ -2138,8 +2144,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -2185,7 +2191,7 @@ components:
           type: string
     BrandUpdateRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -2196,8 +2202,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -2221,7 +2227,7 @@ components:
           type: string
     BundleRequestDto:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -2232,8 +2238,8 @@ components:
           nullable: false
     CapabilityCatalog:
       required:
-      - Version
-      - CapabilityName
+        - Version
+        - CapabilityName
       type: object
       properties:
         Version:
@@ -2288,8 +2294,24 @@ components:
           type: string
     ConfigurationOption:
       required:
-      - Name
-      - ConfigurationParameter
+        - Name
+        - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+        - Name
+        - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -2305,27 +2327,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
-    ConfigurationOption1:
-      required:
-      - Name
-      - ConfigurationParameter
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          pattern: \S
-          type: string
-          nullable: false
-        ConfigurationParameter:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-      - Name
-      - Value
+        - Name
+        - Value
       type: object
       properties:
         Name:
@@ -2342,8 +2348,8 @@ components:
           nullable: false
     ElectronicAddress:
       required:
-      - Type
-      - Email
+        - Type
+        - Email
       type: object
       properties:
         Type:
@@ -2373,8 +2379,8 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Specifies the service domain identifier
+            - $ref: "#/components/schemas/UUID"
+            - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -2393,14 +2399,14 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
-      - FeatureId
-      - FeatureIdentification
-      - ProductId
-      - FinancialInstitution
+        - FeatureId
+        - FeatureIdentification
+        - ProductId
+        - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -2437,12 +2443,12 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteGeneratePINRequest:
       required:
-      - FeatureId
-      - FinancialInstitution
+        - FeatureId
+        - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -2462,18 +2468,18 @@ components:
       properties:
         FEPID:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
-      - NewPaymentInstrumentId
+        - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -2490,8 +2496,8 @@ components:
             $ref: "#/components/schemas/Feature"
     ExecuteValidateCVV2Request:
       required:
-      - ExpiryDate
-      - CVV2
+        - ExpiryDate
+        - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -2506,8 +2512,8 @@ components:
           nullable: false
     ExecuteValidateCVVRequest:
       required:
-      - ExpiryDate
-      - CVV
+        - ExpiryDate
+        - CVV
       type: object
       properties:
         ExpiryDate:
@@ -2528,8 +2534,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-      - ExpiryDate
-      - iCVV
+        - ExpiryDate
+        - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -2544,9 +2550,9 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-      - PAN
-      - PIN block
-      - Association
+        - PAN
+        - PIN block
+        - Association
       type: object
       properties:
         PAN:
@@ -2573,8 +2579,8 @@ components:
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
+        - ClearingSystemIdentificationCode
+        - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
@@ -2599,7 +2605,7 @@ components:
           type: string
     Feature1:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -2664,9 +2670,9 @@ components:
           type: string
     FiRegisterRequest:
       required:
-      - Name
-      - Identification
-      - InvoiceCurrency
+        - Name
+        - Identification
+        - InvoiceCurrency
       type: object
       properties:
         Name:
@@ -2677,8 +2683,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2718,7 +2724,7 @@ components:
           type: string
     FiUpdateRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -2729,8 +2735,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2773,7 +2779,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -2793,11 +2799,11 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - Product
-      - AgreementInvolvement
-      - OpeningDate
+        - FinancialInstitution
+        - Brand
+        - Product
+        - AgreementInvolvement
+        - OpeningDate
       type: object
       properties:
         FinancialInstitution:
@@ -2844,7 +2850,7 @@ components:
           type: string
     InitiateFacilityAllocationRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -2867,9 +2873,9 @@ components:
           type: string
     IssuedDeviceActionRequest:
       required:
-      - BlockReason
-      - ReplaceCard
-      - GenerateNewPin
+        - BlockReason
+        - ReplaceCard
+        - GenerateNewPin
       type: object
       properties:
         BlockReason:
@@ -2902,12 +2908,12 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the new payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -2928,7 +2934,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -3010,7 +3016,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-      - Capability
+        - Capability
       type: object
       properties:
         Capability:
@@ -3022,10 +3028,10 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -3079,8 +3085,8 @@ components:
           type: string
     Phone:
       required:
-      - Type
-      - Number
+        - Type
+        - Number
       type: object
       properties:
         Type:
@@ -3114,9 +3120,9 @@ components:
           type: string
     PostalAddress:
       required:
-      - AddressType
-      - Country
-      - ContactPreference
+        - AddressType
+        - Country
+        - ContactPreference
       type: object
       properties:
         AddressType:
@@ -3201,12 +3207,12 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
     RegisterBundleRequest:
       required:
-      - Identification
-      - Name
+        - Identification
+        - Name
       type: object
       properties:
         Identification:
@@ -3236,7 +3242,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3261,10 +3267,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-      - Identification
-      - Name
-      - Capability
-      - ConfigurationOption
+        - Identification
+        - Name
+        - Capability
+        - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -3293,7 +3299,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3302,9 +3308,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - TradingName
+        - FinancialInstitution
+        - Brand
+        - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -3353,10 +3359,10 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-      - FinancialInstitution
-      - Brand
-      - GivenName
-      - Surname
+        - FinancialInstitution
+        - Brand
+        - GivenName
+        - Surname
       type: object
       properties:
         FinancialInstitution:
@@ -3439,7 +3445,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -3454,9 +3460,9 @@ components:
           $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
-      - Name
-      - Brand
-      - Identification
+        - Name
+        - Brand
+        - Identification
       type: object
       properties:
         Name:
@@ -3488,7 +3494,7 @@ components:
     RegistrationAddress:
       description: Registered Address
       required:
-      - Country
+        - Country
       type: object
       properties:
         AddressType:
@@ -3545,7 +3551,7 @@ components:
           nullable: false
     ReissueCardRequest:
       required:
-      - FinancialInstitution
+        - FinancialInstitution
       type: object
       properties:
         ProductId:
@@ -3568,11 +3574,11 @@ components:
             $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
-          - description: Identification of the product
+            - $ref: "#/components/schemas/RetrieveProductResponse"
+            - description: Identification of the product
     RequestGetCVV2Request:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3582,7 +3588,7 @@ components:
           nullable: false
     RequestGetCVVRequest:
       required:
-      - ExpiryDate
+        - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -3607,7 +3613,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-      - PAN
+        - PAN
       type: object
       properties:
         PAN:
@@ -3629,8 +3635,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-      - RSAKey
-      - Association
+        - RSAKey
+        - Association
       type: object
       properties:
         RSAKey:
@@ -3645,7 +3651,7 @@ components:
           nullable: false
     RequestViewPinRequest:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3731,7 +3737,7 @@ components:
             $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
       required:
-      - AgreementInvolvement
+        - AgreementInvolvement
       type: object
       properties:
         Identification:
@@ -3771,7 +3777,7 @@ components:
             $ref: "#/components/schemas/ExternalAccount"
     RetrieveBrandResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3782,8 +3788,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of the Brand
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -3883,8 +3889,8 @@ components:
             $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
-      - FacilityIdentification
-      - Capability
+        - FacilityIdentification
+        - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -3946,14 +3952,14 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
           type: string
     RetrieveFiResponse:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3964,8 +3970,8 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-          - description: Registered address of Financial Institution
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -3987,9 +3993,9 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
-      - Brand
-      - TradingName
+        - FinancialInstitution
+        - Brand
+        - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -4048,8 +4054,8 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment instrument (FEPID)
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -4149,6 +4155,12 @@ components:
           format: date-time
           description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible Response Values
+            are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
+            </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
+            </EM></LI></UL>
+          type: string
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -4156,16 +4168,16 @@ components:
       properties:
         PaymentInstrumentResponse:
           allOf:
-          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
-          - description: Payment instrument details
+            - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+            - description: Payment instrument details
         VisaChipDataResponse:
           allOf:
-          - $ref: "#/components/schemas/VisaChipDataResponse"
-          - description: Visa Chip details for a given payment instrument
+            - $ref: "#/components/schemas/VisaChipDataResponse"
+            - description: Visa Chip details for a given payment instrument
         MasterCardChipDataResponse:
           allOf:
-          - $ref: "#/components/schemas/MasterCardChipDataResponse"
-          - description: MasterCard Chip details for a given payment instrument
+            - $ref: "#/components/schemas/MasterCardChipDataResponse"
+            - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -4327,7 +4339,7 @@ components:
           type: string
     SystemUpdateRequest:
       required:
-      - InvalidPinTryCounter
+        - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
@@ -4354,7 +4366,7 @@ components:
       type: string
     UpdateFeatureRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -4370,7 +4382,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4400,11 +4412,11 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
-      - Name
-      - Brand
+        - Name
+        - Brand
       type: object
       properties:
         Name:
