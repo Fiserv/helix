@@ -74,7 +74,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
-            \ : Person not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASID003\
+            \ : Person not enabled.</em></li><li><em>HLXIDASAC001 : Account not enabled.</em></li><li><em>HLXIDASID003\
             \ : Card not found.</em></li></ul>"
           content:
             application/json:
@@ -184,9 +184,9 @@ paths:
           content: {}
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA001\
-            \ : Person not active.</em></li><li><em>HLXIDASFI001 : Financial Institution\
-            \ not active.</em></li><li><em>HLXIDASBR001 : Brand not active.</em></li><li><em>HLXIDASPD001\
-            \ : Product not active.</em></li><li><em>HLXIDASAC001 : Account not active.</em></li><li><em>HLXIDASAC004\
+            \ : Person not enabled.</em></li><li><em>HLXIDASFI001 : Financial Institution\
+            \ not enabled.</em></li><li><em>HLXIDASBR001 : Brand not enabled.</em></li><li><em>HLXIDASPD001\
+            \ : Product not enabled.</em></li><li><em>HLXIDASAC001 : Account not enabled.</em></li><li><em>HLXIDASAC004\
             \ : Bundle <bundle-id> exceeds maximum 37 length allowed.</em></li><li><em>HLXIDASAC005\
             \ : Bundle <bundle-id> is duplicated within request.</em></li><li><em>HLXIDASAC007\
             \ : Capability <capability-name> has conflicting Features supplied by\

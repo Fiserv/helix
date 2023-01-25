@@ -97,8 +97,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA001\
-            \ : Financial Institution not active.</em></li><li><em>HLXPTDTIA002 :\
-            \ Brand not active.</em></li></ul>"
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTIA002 :\
+            \ Brand not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -344,7 +344,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA006\
-            \ : Payment Instrument not active.</em></li></ul>"
+            \ : Payment Instrument not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -510,8 +510,8 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA001\
-            \ : Financial Institution not active.</em></li><li><em>HLXPTDTIA002 :\
-            \ Brand not active.<em></li></ul>"
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTIA002 :\
+            \ Brand not enabled.<em></li></ul>"
           content:
             application/json:
               schema:
@@ -775,7 +775,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA007\
-            \ : Person not active.</em></li></ul>"
+            \ : Person not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
