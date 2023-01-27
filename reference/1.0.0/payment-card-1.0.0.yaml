@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-9
+  version: 1.1.0-44
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -15,8 +15,9 @@ paths:
     post:
       tags:
         - Account Management
-      summary: Retrieve details about agreement for Bank Account and Sort Code
-      operationId: Request
+      summary: This API is used to retrieve the list of accounts for a person (FECID)
+        or an external account.
+      operationId: retrieveAgreementList
       requestBody:
         content:
           application/json:
@@ -28,7 +29,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveAgreementResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/RetrieveAgreementResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Clearing System Identification Code required, please provide value.</em></li><li><em>HLXAGDTBR001\
@@ -36,7 +39,10 @@ paths:
             \ value.</em></li><li><em>HLXAGDTBR001 : Clearing System Identification\
             \ Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Account Identification required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account Identification exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Account Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Person must be at least 36 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Person exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Person is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -120,7 +126,7 @@ paths:
         \ (person) to the system, that will also be associated with a card. This service\
         \ will return a unique FEAID, which is the ID that will identify the account\
         \ holder within the system."
-      operationId: InitiateAgreement
+      operationId: initiateAgreement
       requestBody:
         content:
           application/json:
@@ -132,7 +138,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InitiateAgreementResponse"
+                type: object
+                properties:
+                  Identification:
+                    description: "Unique identifier of a Agreement, as assigned by\
+                      \ the account servicer (FEAID)"
+                    maxLength: 37
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXAGDTAD001\
@@ -175,8 +187,7 @@ paths:
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXAGDTUN002 : Brand\
-            \ not found.</em></li><li><em>HLXAGDTUN005 : Product not found.</em></li><li><em>HLXAGDTUN003\
-            \ : Party not found.</em></li></ul>"
+            \ not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -197,7 +208,9 @@ paths:
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTIA001\
             \ : Financial Institution not active.</em></li><li><em>HLXAGDTIA002 :\
             \ Brand not active.</em></li><li><em>HLXAGDTIA005 : Product is not active.</em></li><li><em>HLXAGDTIA003\
-            \ : Party ID is not active.</em></li></ul>"
+            \ : Party ID is not active.</em></li><li><em>HLXAGDTGT014 : Product not\
+            \ found under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
+            \ : Party <party-id> not found under Financial Institution and Brand.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -233,8 +246,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add an Account
       x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/AgreementFeature/GetList/Request:
@@ -245,7 +256,7 @@ paths:
       description: "This service is used to inquire Agreement Feature parameter details\
         \ using FEAID, which is the ID that is used to identify the Agreement and\
         \ filter using the data given in request body."
-      operationId: Retrieve
+      operationId: retrieveAgreementFeatureParameterList
       parameters:
         - name: agreementId
           in: path
@@ -265,7 +276,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveAgreementFeatureResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/RetrieveAgreementFeatureResponse"
         "400":
           description: Bad Request
           content:
@@ -320,7 +333,7 @@ paths:
       description: "This service is used to add a new Agreement Feature. This service\
         \ will return a unique ID, which is the ID that will identify the agreement\
         \ feature within the system."
-      operationId: InitiateAgreementFeature
+      operationId: initiateAgreementFeature
       parameters:
         - name: agreementId
           in: path
@@ -340,7 +353,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InitiateAgreementFeatureResponse"
+                type: object
+                properties:
+                  Id:
+                    format: int64
+                    description: Id of Agreement Feature
+                    type: integer
+                  Feature:
+                    description: Identification of Feature
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Agreement ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
@@ -431,7 +452,7 @@ paths:
         \ within the system. Capability name can be provided as an optional filter\
         \ during retrieval. If the capability name is not provided, the API will return\
         \ all the available agreement feature details."
-      operationId: RetrieveAgreementFeature
+      operationId: retrieveAgreementFeatureByCapabilityName
       parameters:
         - name: agreementId
           in: path
@@ -451,7 +472,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveAgreementFeatureResponse"
+                type: object
+                properties:
+                  Identification:
+                    description: Agreement Identification
+                    type: string
+                  FinancialInstitution:
+                    description: FI to which the Agreement belongs
+                    type: string
+                  Brand:
+                    description: Brand to which the Agreement belongs
+                    type: string
+                  Product:
+                    description: Product to which the Agreement belongs
+                    type: string
+                  Status:
+                    description: Status of the Agreement in the system
+                    type: string
+                  AgreementFeature:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AgreementFeature"
         "400":
           description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
@@ -508,7 +549,7 @@ paths:
         \ using FEAID, which is the ID that is used to identify the Agreement and\
         \ Agreement Feature Id is Identification key of Agreement Feature within the\
         \ system ."
-      operationId: RetrieveAgreementFeatureParameter
+      operationId: retrieveAgreementFeatureParameter
       parameters:
         - name: agreementFeatureId
           in: path
@@ -529,7 +570,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveAgreementFeatureParameterResponse"
+                type: object
+                properties:
+                  Id:
+                    description: Agreement Feature Identification
+                    type: string
+                  Agreement:
+                    description: Agreement Identification
+                    type: string
+                  Feature:
+                    description: Feature Identification
+                    type: string
+                  Capability:
+                    description: Name of the system capability linked to a feature
+                    type: string
+                  AgreementFeatureParameter:
+                    description: List of Feature Parameter
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AgreementFeatureParameter"
         "400":
           description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
@@ -577,6 +636,148 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on an Agreement Feature Parameter
       x-group-name: Agreement Feature Management
+  /Helix/V1/Agreement/{agreementId}/FacilityAllocation/GetFeatureParameter/Retrieve:
+    post:
+      tags:
+        - Account Management
+      summary: "Retrieves Feature Parameters for given Agreement ID, Facility ID and\
+        \ capability."
+      description: This service is used to retrieve Feature Parameters using Facility
+        Allocation and Capability.
+      operationId: retrieveFacilityAllocationFeatureParameters
+      parameters:
+        - name: agreementId
+          in: path
+          description: Unique identifier of an Agreement
+          required: true
+          schema:
+            maxLength: 37
+            pattern: \S
+            type: string
+            nullable: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest1"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    format: int64
+                    description: Id of Facility
+                    type: integer
+                  AgreementFeature:
+                    format: int64
+                    description: Identification of Agreement Feature
+                    type: integer
+                  FacilityIdentification:
+                    description: Identification of Facility
+                    type: string
+                  FacilityStatus:
+                    description: Status of Facility
+                    type: string
+                  Capability:
+                    description: Name of the system capability linked to a feature
+                    type: string
+                  Agreement:
+                    description: Identification of Agreement
+                    type: string
+                  AgreementFeatureParameter:
+                    description: List of Feature Parameter
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AgreementFeatureParameter"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Facility Identification is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Facility Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Facility Identification required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Capability required, please provide value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
+            \ : Account number not found.</em></li><li><em>HLXAGDTGT013 : Facility\
+            \ does not exist for capability.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT003\
+            \ : There is an error while retrieving Facility Allocation, please try\
+            \ again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Feature Parameters for Facility Allocation
+      x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Initiate:
     post:
       tags:
@@ -585,7 +786,7 @@ paths:
       description: "This service is used to add a new Facility Allocation for the\
         \ given FEAID in the system, This service will return a unique Facility Allocation\
         \ ID, which will be used to identify the Facility."
-      operationId: InitiateFacility
+      operationId: initiateFacilityAllocation
       parameters:
         - name: agreementId
           in: path
@@ -607,7 +808,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InitiateFacilityAllocationResponse"
+                type: object
+                properties:
+                  Identification:
+                    description: Unique identifier of a Facility Allocation
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
@@ -688,8 +893,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
       x-proxy-name: Add a Facility Allocation
       x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Retrieve:
@@ -699,7 +902,7 @@ paths:
       summary: Retrieves a Facility Allocation for the given FEAID
       description: This service is used to retrieve Facility Allocation details for
         the given FEAID.
-      operationId: RetrieveFacility
+      operationId: retrieveFacilityAllocationList
       parameters:
         - name: agreementId
           in: path
@@ -714,7 +917,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveFacilityAllocationResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/RetrieveFacilityAllocationResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
@@ -802,7 +1007,7 @@ paths:
       summary: Retrieve details about agreement account
       description: "This service is used to inquire an Account details using FEAID\
         \ , which is the ID that is used to identify the Account within the system."
-      operationId: RetrieveAgreement
+      operationId: retrieveAgreement
       parameters:
         - name: agreementId
           in: path
@@ -817,7 +1022,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveAgreementResponse"
+                required:
+                  - AgreementInvolvement
+                type: object
+                properties:
+                  Identification:
+                    description: "Unique identifier of a Agreement, as assigned by\
+                      \ the account servicer (FEAID)"
+                    maxLength: 37
+                    type: string
+                  FinancialInstitution:
+                    description: FI to which the Agreement belongs
+                    maxLength: 37
+                    type: string
+                  Brand:
+                    description: Brand to which the Agreement belongs
+                    maxLength: 37
+                    type: string
+                  Product:
+                    description: Product to which the Agreement belongs
+                    maxLength: 37
+                    type: string
+                  Status:
+                    description: "Status of the Agreement entity in the system <br>\
+                      \ Valid values are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma\
+                      \ <br>Pending"
+                    type: string
+                  AgreementInvolvement:
+                    minItems: 1
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AgreementInvolvement"
+                  OpeningDate:
+                    description: Date on which the Agreement and related basic services
+                      are effectively operational for the Account owner <br/> Format
+                      must be ISO Date format (YYYY-MM-DD)
+                    type: string
+                  ExternalAccount:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ExternalAccount"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number is not valid.</em></li></ul>"
@@ -872,7 +1116,7 @@ paths:
       summary: This method is used to validate the account details for the given FEAID
       description: "This API allows the user to validate the account details for the\
         \ given FEAID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
-      operationId: Validate
+      operationId: validateAgreement
       parameters:
         - name: agreementId
           in: path
@@ -884,9 +1128,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema: {}
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account cannot be more than 37 characters</em></li></ul>"
@@ -1031,8 +1272,18 @@ components:
           description: Details on second name line as it appears on the card
           type: string
         CardMaintenanceWaiveFlag:
-          description: Flag to describe the type of Card Maintenance Waive Fee
+          description: Flag to describe if the Card Maintenance Fee to be waived once
+            or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
+            PERM (Permanent) </EM></LI></UL>
           type: string
+        OverrideParameterValues:
+          type: array
+          items:
+            $ref: "#/components/schemas/OverrideParameter"
+        Bundle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bundle"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1046,7 +1297,7 @@ components:
             - description: Identification of the product
         Account:
           allOf:
-            - $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
+            - $ref: "#/components/schemas/RetrieveAgreementResponse"
             - description: Identification of the account
         Cardholder:
           allOf:
@@ -1075,6 +1326,11 @@ components:
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
           type: string
+        FeatureOverrideDto:
+          description: List of feature overridden in request
+          type: array
+          items:
+            $ref: "#/components/schemas/FeatureOverride"
     AddCardResponse:
       type: object
       properties:
@@ -1109,31 +1365,11 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
-    AgreementFeature1:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement Feature Parameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
     AgreementFeatureParameter:
       type: object
       properties:
@@ -1143,15 +1379,21 @@ components:
         Value:
           description: Value of Agreement Feature Parameter
           type: string
-    AgreementFeatureParameter1:
+    AgreementFeatureRequestDto:
+      required:
+        - Feature
       type: object
       properties:
-        Name:
-          description: Name of Product Feature Parameter
+        Feature:
+          description: Identification of Agreement Feature
+          maxLength: 37
+          minLength: 1
           type: string
-        Value:
-          description: Value of Product Feature Parameter
-          type: string
+          nullable: false
+        AgreementFeatureParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -1174,58 +1416,12 @@ components:
     AgreementListRequest:
       type: object
       properties:
+        Person:
+          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
+            \ plays the role of contact (FECID)"
+          type: string
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
-    BinChunkCreationErrorEvent:
-      type: object
-      properties:
-        ServiceDomain:
-          description: Specifies the service domain
-          type: string
-        ServiceDomainIdentifier:
-          allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Specifies the service domain identifier
-        ServiceDomainIdentifierName:
-          description: Specifies the service domain identifier name
-          type: string
-        Action:
-          description: Action that was in progress when this error happened
-          type: string
-        ErrorReason:
-          description: Specifies the error reason
-          type: string
-        FailedDateTime:
-          format: date-time
-          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
-          type: string
-        'FinancialInstitution ':
-          description: Financial institution identifier.
-          type: string
-        Brand:
-          description: Specifies the brand id.
-          type: string
-        Product:
-          description: Specifies the product id.
-          type: string
-        FeatureId:
-          description: Specifies the feature id.
-          type: string
-        PreviousBinChunkID:
-          description: Specifies the previous chunk id.
-          type: string
-    BinChunkEvent:
-      type: object
-      properties:
-        fiId:
-          type: string
-        ProductId:
-          type: string
-        ProductFeatureId:
-          format: int64
-          type: integer
-        FeatureId:
-          type: string
     BrandEntryAddRequest:
       required:
         - Name
@@ -1275,43 +1471,6 @@ components:
           description: Country of Operation
           maxLength: 2
           type: string
-    BrandEntryDto:
-      required:
-        - Name
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
     BrandRegisterResponse:
       type: object
       properties:
@@ -1355,6 +1514,21 @@ components:
         ReportingCurrency:
           description: Reporting Currency
           type: string
+    Bundle:
+      required:
+        - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of Bundle
+          minLength: 1
+          type: string
+          nullable: false
+    Bundle1:
+      type: object
+      properties:
+        Identification:
+          type: string
     CapabilityCatalog:
       required:
         - Version
@@ -1374,29 +1548,93 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
-    ConfigurationOptionDto:
+    CommonChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
+    ConfigurationOption:
+      required:
+        - Name
+        - ConfigurationParameter
       type: object
       properties:
         Name:
+          description: Name of a configuration option
+          pattern: \S
           type: string
+          nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+        - Name
+        - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
         Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
+      description: Parameter used for configuring options
       required:
         - Name
         - Value
       type: object
       properties:
         Name:
+          description: Name of a configuration parameter
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Value:
+          description: Value of a configuration parameter
           maxLength: 40000
           pattern: \S
           type: string
@@ -1458,12 +1696,25 @@ components:
             - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
+        - FeatureId
+        - FeatureIdentification
         - ProductId
         - FinancialInstitution
       type: object
       properties:
+        FeatureId:
+          description: Feature Id
+          pattern: \S
+          type: string
+          nullable: false
+        FeatureIdentification:
+          description: Feature Identification
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
         ProductId:
-          description: Banking Product Id
+          description: Product Id
           maxLength: 37
           pattern: \S
           type: string
@@ -1487,6 +1738,24 @@ components:
           allOf:
             - $ref: "#/components/schemas/UUID"
             - description: Unique identifier of the payment card (FEPID)
+    ExecuteGeneratePINRequest:
+      required:
+        - FeatureId
+        - FinancialInstitution
+      type: object
+      properties:
+        FeatureId:
+          description: Feature Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        FinancialInstitution:
+          description: Financial Institution Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -1504,6 +1773,13 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecuteUnlinkFeatureRequest:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
     ExecuteValidateCVV2Request:
       required:
         - ExpiryDate
@@ -1558,6 +1834,34 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecuteValidatePINRequest:
+      required:
+        - PAN
+        - PIN block
+        - Association
+      type: object
+      properties:
+        PAN:
+          description: PAN of the payment instrument.
+          pattern: \S
+          type: string
+          nullable: false
+        PIN block:
+          description: PIN Block.
+          pattern: \S
+          type: string
+          nullable: false
+        Association:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+          nullable: false
+    ExecuteValidatePINResponse:
+      type: object
+      properties:
+        IsValid:
+          description: Flag to indicate if the PIN is Valid
+          type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -1578,59 +1882,77 @@ components:
           pattern: \S
           type: string
           nullable: false
-    ExternalAccount1:
-      description: Provide Link to External Accounts
-      required:
-        - ClearingSystemIdentificationCode
-        - AccountIdentification
+    Feature:
       type: object
       properties:
-        ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          type: string
+    Feature1:
+      required:
+        - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        AccountIdentification:
-          description: Account number associated with External Clearing System
-          maxLength: 37
-          pattern: \S
+        DefaultIndicator:
+          description: Default feature indicator
           type: string
-          nullable: false
-    FiDirectoryEntryDto:
-      required:
-        - Name
+    Feature2:
       type: object
       properties:
+        Identification:
+          description: Identification of the feature
+          type: string
         Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
+          description: Name of a feature
           type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of Financial Institution
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
+        Specification:
+          description: Description of a feature
           type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
+        Capability:
+          description: Name of the system capability linked to a feature
           type: string
-        Status:
-          description: Status of Financial Institution in the System
+        DefaultIndicator:
+          description: Flag to indicate default feature
+          type: boolean
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
           type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
+        Name:
+          description: Name of the feature
           type: string
-        InvoiceCurrency:
-          description: Invoice Currency
+        Specification:
+          description: Specification of a feature
           type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        CapabilityVersion:
+          description: Version of the system capability linked to a feature
+          type: string
+    FeatureOverride:
+      type: object
+      properties:
+        Feature:
+          description: Identification of Feature
+          type: string
+        AgreementFeatureId:
+          description: Id of Agreement Feature
+          type: string
+        CapabilityName:
+          description: Capability name
+          type: string
+        CapabilityVersion:
+          description: Capability version
           type: string
     FiRegisterRequest:
       required:
@@ -1689,7 +2011,6 @@ components:
     FiUpdateRequest:
       required:
         - Name
-        - Identification
       type: object
       properties:
         Name:
@@ -1712,12 +2033,6 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
-        Identification:
-          description: Identification of the financial institution
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
         InvoiceCurrency:
           description: Invoice Currency
           type: string
@@ -1725,11 +2040,6 @@ components:
           description: Identification of Client Financial Institution
           maxLength: 5
           type: string
-    GetListPaymentCardFacilityRequest:
-      type: object
-      properties:
-        ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
     HelixErrorDetails:
       type: object
       properties:
@@ -1755,44 +2065,23 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-        - Feature
+        - AgreementFeature
       type: object
       properties:
-        Feature:
-          description: Identification of Agreement Feature
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        AgreementFeatureParameter:
+        AgreementFeature:
+          minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    InitiateAgreementFeatureRequest1:
-      required:
-        - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Product Feature
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        AgreementFeatureParameter:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
     InitiateAgreementFeatureResponse:
       type: object
       properties:
         Id:
-          description: Identification of Agreement Feature
-          type: string
-    InitiateAgreementFeatureResponse1:
-      type: object
-      properties:
-        Id:
+          format: int64
+          description: Id of Agreement Feature
+          type: integer
+        Feature:
+          description: Identification of Feature
           type: string
     InitiateAgreementRequest:
       required:
@@ -1847,28 +2136,19 @@ components:
           type: string
     InitiateFacilityAllocationRequest:
       required:
-        - Feature
+        - AgreementFeature
       type: object
       properties:
-        Feature:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          type: string
+        AgreementFeature:
           description: Feature ID of Agreement Feature
           minLength: 1
           type: string
           nullable: false
-        Status:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationRequest1:
-      required:
-        - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          type: string
-          nullable: false
-        Status:
+        FacilityStatus:
           description: Status of Facility Allocation
           type: string
     InitiateFacilityAllocationResponse:
@@ -1876,66 +2156,6 @@ components:
       properties:
         Identification:
           description: Unique identifier of a Facility Allocation
-          type: string
-    InitiateFacilityAllocationResponse1:
-      type: object
-      properties:
-        Identification:
-          description: Unique identifier of a Facility Allocayion
-          type: string
-    InitiatePaymentCardFacilityRequest:
-      required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - PaymentCardInvolvement
-        - OpeningDate
-      type: object
-      properties:
-        FinancialInstitution:
-          description: FI to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Brand:
-          description: Brand to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Product:
-          description: Product to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
-          type: string
-        PaymentCardInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/PaymentCardInvolvement"
-        OpeningDate:
-          description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner <br/> Format must be
-            ISO Date format (YYYY-MM-DD)
-          pattern: \S
-          type: string
-          nullable: false
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount1"
-    InitiatePaymentCardFacilityResponse:
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Payment Card Facility, as assigned\
-            \ by the account servicer (FEAID)"
-          maxLength: 37
           type: string
     IssuedDeviceActionRequest:
       required:
@@ -1966,7 +2186,8 @@ components:
           type: string
           nullable: false
         CardMaintenanceWaiveFlag:
-          description: Flag to check the maintenance waiver fee
+          description: Flag to describe if the Lost/Stolen Fee to be waived. Accepted
+            Value is <UL><LI><EM> ONCE </EM></LI></UL>
           type: string
     IssuedDeviceActionResponse:
       type: object
@@ -1997,6 +2218,103 @@ components:
           maximum: 26
           minimum: 2
           type: string
+    LinkBundleFeatureRequest:
+      required:
+        - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    MasterCardChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
+        Ndcf:
+          type: string
+        Lcota:
+          type: string
+        Ucota:
+          type: string
+        Mota:
+          type: string
+        Atc:
+          format: int32
+          type: integer
+        A2ll:
+          type: string
+        A2ul:
+          type: string
+        C2ll:
+          type: string
+        C2ul:
+          type: string
+        Iesw:
+          type: string
+        Mtacc:
+          type: string
+        Mtancc:
+          type: string
+        Mtaccl:
+          type: string
+        Mtanccl:
+          type: string
+        OllDays:
+          type: string
+        PartialAuthorization:
+          type: string
+        enabled:
+          type: boolean
+    OverrideParameter:
+      required:
+        - Capability
+      type: object
+      properties:
+        Capability:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
         - Identification
@@ -2041,31 +2359,15 @@ components:
           description: Memorable word selected by the customer to be used for customer
             authentication.
           type: string
-    PaymentCardInvolvement:
-      description: Role played by a party in the context of PaymentCardFacility operations.
-      required:
-        - PartyIdentification
-        - PartyRole
-      type: object
-      properties:
-        PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
-          maxLength: 37
-          pattern: \S
-          type: string
-          nullable: false
-        PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
-            \ values are : <br> AccountHolder"
-          pattern: \S
-          type: string
-          nullable: false
     PaymentInstrumentGetListRequest:
       type: object
       properties:
         Account:
           type: string
         Person:
+          type: string
+        ExternalIdentification:
+          maxLength: 35
           type: string
     Phone:
       required:
@@ -2193,17 +2495,50 @@ components:
           allOf:
             - $ref: "#/components/schemas/RetrieveProductResponse"
             - description: Identification of the product
+    RegisterBundleRequest:
+      required:
+        - Identification
+        - Name
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Name:
+          description: Name of a bundle
+          maxLength: 140
+          pattern: \S
+          type: string
+          nullable: false
+        Description:
+          description: Description of a bundle
+          type: string
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    RegisterBundleResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          type: string
     RegisterConfigurationOptionRequest:
       required:
         - Name
       type: object
       properties:
         Name:
+          description: Name of a configuration option
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Specification:
+          description: Description of a configuration option
           maxLength: 140
           type: string
         ConfigurationParameter:
@@ -2219,30 +2554,48 @@ components:
     RegisterFeatureRequest:
       required:
         - Identification
+        - Name
         - Capability
+        - ConfigurationOption
       type: object
       properties:
         Identification:
+          description: Identification of a feature
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+          nullable: false
         Specification:
+          description: Description of a feature
           maxLength: 140
           type: string
         Capability:
+          description: Name of the system capability linked to a feature
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
+        ConfigurationOption:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
         Identification:
+          description: Identification of a feature
           type: string
     RegisterOrganisationRequest:
       required:
         - FinancialInstitution
+        - Brand
         - TradingName
       type: object
       properties:
@@ -2250,13 +2603,15 @@ components:
           description: Identification of the financial institution associated with
             the organisation
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -2291,6 +2646,7 @@ components:
     RegisterPersonRequest:
       required:
         - FinancialInstitution
+        - Brand
         - GivenName
         - Surname
       type: object
@@ -2305,7 +2661,9 @@ components:
         Brand:
           description: Identification of the brand associated with the person
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
@@ -2371,26 +2729,22 @@ components:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
           type: string
+    RegisterProductFeatureRequest:
+      required:
+        - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
     RegisterProductFeatureResponse:
       type: object
       properties:
-        Identification:
-          format: int64
-          type: integer
+        Warning:
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
-      required:
-        - Capability
-      type: object
-      properties:
-        Specification:
-          maxLength: 140
-          type: string
-        Capability:
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-    RegisterProductRequest1:
       required:
         - Name
         - Brand
@@ -2398,20 +2752,22 @@ components:
       type: object
       properties:
         Name:
+          description: Name of a product
           maxLength: 70
           pattern: \S
           type: string
           nullable: false
         Brand:
+          description: Identification of the brand associated with the product
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        Description:
-          type: string
         Type:
+          description: Specifies the type of product category
           type: string
         Identification:
+          description: Unique identifier for the product
           maxLength: 37
           minLength: 1
           type: string
@@ -2541,6 +2897,22 @@ components:
         ICVV:
           description: ICVV
           type: string
+    RequestViewInstrumentIdRequest:
+      required:
+        - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewInstrumentIdResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
+          type: string
     RequestViewPANResponse:
       type: object
       properties:
@@ -2594,41 +2966,16 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
-    RetrieveAgreementFeatureParameterResponse1:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement Feature Parameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
-        CapabilityName:
-          description: Name of the capability
-          type: string
-    RetrieveAgreementFeatureRequest1:
-      type: object
-      properties:
         capabilityName:
+          description: Name of the capability
           type: string
     RetrieveAgreementFeatureResponse:
       type: object
@@ -2652,23 +2999,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeature"
-    RetrieveAgreementFeatureResponse1:
-      type: object
-      properties:
-        Identification:
-          type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        Product:
-          type: string
-        Status:
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeature1"
     RetrieveAgreementResponse:
       required:
         - AgreementInvolvement
@@ -2709,17 +3039,74 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
-    RetrieveAgreementResponse1:
+    RetrieveBrandResponse:
+      required:
+        - Name
       type: object
       properties:
-        Identification:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
           type: string
-        FinancialInstitution:
+          nullable: false
+        RegistrationAddress:
+          allOf:
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of the Brand
+        Email:
+          description: Email of the Brand
+          maxLength: 256
           type: string
-        Product:
+        PhoneNumber:
+          description: Phone number of the Brand
           type: string
         Status:
+          description: Status of the Brand in the System
           type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+    RetrieveBundleListRequest:
+      type: object
+      properties:
+        Bundle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bundle1"
+    RetrieveBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature3"
     RetrieveCapabilityResponse:
       type: object
       properties:
@@ -2736,6 +3123,51 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
+    RetrieveFacilityAllocationFeatureParameterRequest:
+      type: object
+      properties:
+        Id:
+          format: int64
+          description: Id of Facility
+          type: integer
+        AgreementFeature:
+          format: int64
+          description: Identification of Agreement Feature
+          type: integer
+        FacilityIdentification:
+          description: Identification of Facility
+          type: string
+        FacilityStatus:
+          description: Status of Facility
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Agreement:
+          description: Identification of Agreement
+          type: string
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    RetrieveFacilityAllocationFeatureParameterRequest1:
+      required:
+        - FacilityIdentification
+        - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+          nullable: false
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -2743,30 +3175,13 @@ components:
           format: int64
           type: integer
         Agreement:
-          format: int64
-          type: integer
+          type: string
         AgreementFeature:
           format: int64
           type: integer
-        FacilityData:
+        Capability:
           type: string
-        CreationDateTime:
-          type: string
-        Status:
-          type: string
-    RetrieveFacilityAllocationResponse1:
-      type: object
-      properties:
-        Id:
-          format: int64
-          type: integer
-        PaymentCardFacility:
-          format: int64
-          type: integer
-        AgreementFeature:
-          format: int64
-          type: integer
-        FacilityData:
+        Facility:
           type: string
         CreationDateTime:
           type: string
@@ -2775,8 +3190,24 @@ components:
     RetrieveFeatureResponse:
       type: object
       properties:
+        Id:
+          description: Id of the feature
+          type: string
         Identification:
           description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
           type: string
         Status:
           description: Status of the feature record in the system
@@ -2785,10 +3216,49 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOptionDto"
+            $ref: "#/components/schemas/ConfigurationOption1"
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
+    RetrieveFiResponse:
+      required:
+        - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+          nullable: false
+        RegistrationAddress:
+          allOf:
+            - $ref: "#/components/schemas/RegistrationAddress"
+            - description: Registered address of Financial Institution
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
     RetrieveOrganisationResponse:
       required:
         - FinancialInstitution
+        - Brand
         - TradingName
       type: object
       properties:
@@ -2796,13 +3266,15 @@ components:
           description: Identification of the financial institution associated with
             the organisation
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -2841,50 +3313,6 @@ components:
         Status:
           description: Status of the organisation record in the system
           type: string
-    RetrievePaymentCardFacilityResponse:
-      required:
-        - PaymentCardInvolvement
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Payment Card Facility, as assigned\
-            \ by the account servicer (FEAID)"
-          maxLength: 37
-          type: string
-        FinancialInstitution:
-          description: FI to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Payment Card Facility entity in the system <br>\
-            \ Valid values are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma\
-            \ <br>Pending"
-          type: string
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
-          type: string
-        PaymentCardInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/PaymentCardInvolvement"
-        OpeningDate:
-          description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner <br/> Format must be
-            ISO Date format (YYYY-MM-DD)
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount1"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
@@ -2911,6 +3339,10 @@ components:
         ExpiryDate:
           format: date
           description: Date on which the payment instrument expires (YYYY-MM-dd).
+          type: string
+        PriorCardExpiryDate:
+          format: date
+          description: Prior Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
         Cardholder:
           description: Party entitled to use the payment instrument (FECID)
@@ -2979,8 +3411,31 @@ components:
         TransferredToPaymentInstrument:
           description: Identification of the new card after lost stolen replacement
           type: string
+        InvalidPinTryCounter:
+          format: int32
+          description: Number of Invalid PIN Tries before reset.
+          type: integer
+        LastInvalidPinTryDateTime:
+          format: date-time
+          description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
         enabled:
           type: boolean
+    RetrievePaymentInstrumentWithChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrumentResponse:
+          allOf:
+            - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+            - description: Payment instrument details
+        VisaChipDataResponse:
+          allOf:
+            - $ref: "#/components/schemas/VisaChipDataResponse"
+            - description: Visa Chip details for a given payment instrument
+        MasterCardChipDataResponse:
+          allOf:
+            - $ref: "#/components/schemas/MasterCardChipDataResponse"
+            - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -3088,6 +3543,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+        enabled:
+          type: boolean
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -3101,23 +3558,24 @@ components:
     RetrieveProductFeatureResponse:
       type: object
       properties:
-        Identification:
-          format: int64
-          type: integer
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          type: string
         Product:
+          description: Identification of the product
           type: string
-        Specification:
+        Type:
+          description: Type of the product
           type: string
-        Capability:
-          type: string
-        CreateAgreementFeature:
-          type: string
-        CreateFacility:
-          type: string
-        ConfigurationOption:
+        Feature:
+          description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOptionDto"
+            $ref: "#/components/schemas/Feature2"
     RetrieveProductResponse:
       type: object
       properties:
@@ -3137,12 +3595,80 @@ components:
           type: string
         Status:
           type: string
-        Description:
+    SystemUpdateRequest:
+      required:
+        - InvalidPinTryCounter
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Invalid PIN Tries.
+          minLength: 1
+          type: string
+          nullable: false
+    SystemUpdateResponse:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          format: int32
+          description: Invalid PIN Tries.
+          type: integer
+        LastInvalidPinTryDateTime:
+          format: date-time
+          description: Last Invalid PIN was attempted.
           type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    UpdateFeatureRequest:
+      required:
+        - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+          nullable: false
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
+    UpdateFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
         - Name
@@ -3150,16 +3676,98 @@ components:
       type: object
       properties:
         Name:
+          description: Name of a product
           maxLength: 70
           pattern: \S
           type: string
           nullable: false
         Brand:
+          description: Identification of the brand associated with the product
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        Description:
-          type: string
         Type:
+          description: Specifies the type of product category
+          type: string
+    VisaChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
+        CurrencyConversionFactor:
+          type: string
+        SecondaryAppCurrencyCode:
+          type: string
+        CotCurrency:
+          type: string
+        CotCountry:
+          type: string
+        Tac:
+          type: string
+        Tadc:
+          type: string
+        Atc:
+          format: int32
+          type: integer
+        ContactlessLcol:
+          type: string
+        ContactlessUcol:
+          type: string
+        VlpResetThreshold:
+          type: string
+        VlpFundsLimit:
+          type: string
+        VlpTransactionAmountLimit:
+          type: string
+        PreferredCvm:
+          type: string
+        enabled:
+          type: boolean
+    Warning:
+      type: object
+      properties:
+        responseCode:
+          format: int32
+          type: integer
+        message:
+          type: array
+          items:
+            $ref: "#/components/schemas/WarningMessage"
+    WarningMessage:
+      type: object
+      properties:
+        message:
           type: string
