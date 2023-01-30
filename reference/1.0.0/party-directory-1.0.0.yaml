@@ -96,8 +96,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA001\
-            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTIA002 :\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
             \ Brand not enabled.</em></li></ul>"
           content:
             application/json:
@@ -343,7 +343,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA006\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE006\
             \ : Payment Instrument not enabled.</em></li></ul>"
           content:
             application/json:
@@ -509,8 +509,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA001\
-            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTIA002 :\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
             \ Brand not enabled.<em></li></ul>"
           content:
             application/json:
@@ -774,7 +774,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTIA007\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE007\
             \ : Person not enabled.</em></li></ul>"
           content:
             application/json:
