@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-44
+  version: 1.1.0-50
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -205,12 +205,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTIA001\
-            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTIA002 :\
-            \ Brand not enabled.</em></li><li><em>HLXAGDTIA005 : Product is not enabled.</em></li><li><em>HLXAGDTIA003\
-            \ : Party not enabled.</em></li><li><em>HLXAGDTGT014 : Product not\
-            \ found under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
-            \ : Party <party-id> not found under Financial Institution and Brand.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
+            \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
+            \ : Party not enabled.</em></li><li><em>HLXAGDTGT014 : Product not found\
+            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
+            \ : Person <person-id> not found under Financial Institution <fi-id></em></li></ul>"
           content:
             application/json:
               schema:
@@ -1155,7 +1155,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTIA006\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE006\
             \ : Account not enabled.</em></li></ul>"
           content:
             application/json:
@@ -1283,7 +1283,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle"
+            $ref: "#/components/schemas/Bundle1"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1422,6 +1422,8 @@ components:
           type: string
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
+        validRequest:
+          type: boolean
     BrandEntryAddRequest:
       required:
         - Name
@@ -1515,6 +1517,11 @@ components:
           description: Reporting Currency
           type: string
     Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    Bundle1:
       required:
         - Identification
       type: object
@@ -1524,11 +1531,6 @@ components:
           minLength: 1
           type: string
           nullable: false
-    Bundle1:
-      type: object
-      properties:
-        Identification:
-          type: string
     CapabilityCatalog:
       required:
         - Version
@@ -1596,6 +1598,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1612,9 +1617,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2314,7 +2316,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
         - Identification
@@ -2585,7 +2587,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3082,7 +3084,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle1"
+            $ref: "#/components/schemas/Bundle"
     RetrieveBundleResponse:
       type: object
       properties:
@@ -3216,7 +3218,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3638,7 +3640,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3668,7 +3670,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateProductRequest:
       required:
         - Name
