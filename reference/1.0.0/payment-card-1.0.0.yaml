@@ -674,7 +674,7 @@ paths:
                   ClosingDate:
                     format: date-time
                     description: "Date on which the Agreement is closed <br/> Format\
-                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
+                      \ must be (YYYY-MM-DDThh:mm:ss.sssZ)"
                     type: string
                   ClosureRequestDate:
                     description: Date on which the Agreement is requested for Closure
@@ -1191,7 +1191,7 @@ paths:
                   ClosingDate:
                     format: date-time
                     description: "Date on which the Agreement is closed <br/> Format\
-                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
+                      \ must be (YYYY-MM-DDThh:mm:ss.sssZ)"
                     type: string
                   ClosureRequestDate:
                     description: Date on which the Agreement is requested for Closure
@@ -1907,7 +1907,7 @@ components:
         ClosingDate:
           format: date-time
           description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)"
           type: string
         ClosureRequestDate:
           description: Date on which the Agreement is requested for Closure <br/>
@@ -3227,7 +3227,7 @@ components:
         ClosingDate:
           format: date-time
           description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)"
           type: string
         ClosureRequestDate:
           description: Date on which the Agreement is requested for Closure <br/>
