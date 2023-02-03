@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-44
+  version: 1.1.0-51
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -205,12 +205,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTIA001\
-            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTIA002 :\
-            \ Brand not enabled.</em></li><li><em>HLXAGDTIA005 : Product is not enabled.</em></li><li><em>HLXAGDTIA003\
-            \ : Party not enabled.</em></li><li><em>HLXAGDTGT014 : Product not\
-            \ found under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
-            \ : Party <party-id> not found under Financial Institution and Brand.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
+            \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
+            \ : Party not enabled.</em></li><li><em>HLXAGDTGT014 : Product not found\
+            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
+            \ : Person <person-id> not found under Financial Institution <fi-id></em></li></ul>"
           content:
             application/json:
               schema:
@@ -636,6 +636,118 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on an Agreement Feature Parameter
       x-group-name: Agreement Feature Management
+  /Helix/V1/Agreement/{agreementId}/Closure/Execute:
+    post:
+      tags:
+        - Account Management
+      summary: Initiate for Agreement Closure
+      description: This service is used to close an agreement
+      operationId: closeAgreement
+      parameters:
+        - name: agreementId
+          in: path
+          description: Unique identifier of an Agreement
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExecuteClosureRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Identification:
+                    description: "Unique identifier of a Agreement, as assigned by\
+                      \ the account servicer (FEAID)"
+                    maxLength: 37
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Account number is not valid.</em></li><li><em>HLXAGDTBR001 : Closure\
+            \ Request Date cannot be a future date.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
+            \ : Account number not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC002\
+            \ : Account is closed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC001\
+            \ : There is an error while closing Agreement, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Close an agreement
+      x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/GetFeatureParameter/Retrieve:
     post:
       tags:
@@ -1062,6 +1174,18 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/ExternalAccount"
+                  IsClosed:
+                    description: This field identifies if agreement is closed or not
+                    type: boolean
+                  ClosingDate:
+                    format: date-time
+                    description: "Date on which the Agreement is closed <br/> Format\
+                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
+                    type: string
+                  ClosureRequestDate:
+                    description: Date on which the Agreement is requested for Closure
+                      <br/> Format must be ISO Date format (YYYY-MM-DD)
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number is not valid.</em></li></ul>"
@@ -1155,7 +1279,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTIA006\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE006\
             \ : Account not enabled.</em></li></ul>"
           content:
             application/json:
@@ -1182,6 +1306,26 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Validate account status
       x-group-name: Account Management
+  /Helix/V1/Capability/Retrieve:
+    get:
+      tags:
+        - Capability Resource
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+        - Capability Resource
+      parameters:
+        - name: capabilityName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     Account:
@@ -1283,7 +1427,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle"
+            $ref: "#/components/schemas/Bundle1"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1422,6 +1566,8 @@ components:
           type: string
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
+        validRequest:
+          type: boolean
     BrandEntryAddRequest:
       required:
         - Name
@@ -1515,6 +1661,11 @@ components:
           description: Reporting Currency
           type: string
     Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    Bundle1:
       required:
         - Identification
       type: object
@@ -1524,11 +1675,6 @@ components:
           minLength: 1
           type: string
           nullable: false
-    Bundle1:
-      type: object
-      properties:
-        Identification:
-          type: string
     CapabilityCatalog:
       required:
         - Version
@@ -1596,6 +1742,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1612,9 +1761,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1730,6 +1876,31 @@ components:
       properties:
         PAN:
           description: Primary Account Number
+          type: string
+    ExecuteClosureRequest:
+      type: object
+      properties:
+        ClosureRequestDate:
+          description: Closure Request Date Format must be ISO Date format (YYYY-MM-DD)
+          type: string
+    ExecuteClosureResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of a Agreement, as assigned by the account\
+            \ servicer (FEAID)"
+          type: string
+        IsClosed:
+          description: This field identifies if agreement is closed or not
+          type: boolean
+        ClosingDate:
+          format: date-time
+          description: "Date on which the Agreement is closed <br/> Format must be\
+            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+          type: string
+        ClosureRequestDate:
+          description: Date on which the Agreement is requested for Closure <br/>
+            Format must be ISO Date format (YYYY-MM-DD)
           type: string
     ExecuteDeactivateCardResponse:
       type: object
@@ -2314,7 +2485,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
         - Identification
@@ -2585,7 +2756,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3039,6 +3210,18 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+        IsClosed:
+          description: This field identifies if agreement is closed or not
+          type: boolean
+        ClosingDate:
+          format: date-time
+          description: "Date on which the Agreement is closed <br/> Format must be\
+            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+          type: string
+        ClosureRequestDate:
+          description: Date on which the Agreement is requested for Closure <br/>
+            Format must be ISO Date format (YYYY-MM-DD)
+          type: string
     RetrieveBrandResponse:
       required:
         - Name
@@ -3082,7 +3265,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle1"
+            $ref: "#/components/schemas/Bundle"
     RetrieveBundleResponse:
       type: object
       properties:
@@ -3216,7 +3399,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3638,7 +3821,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3668,7 +3851,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateProductRequest:
       required:
         - Name
