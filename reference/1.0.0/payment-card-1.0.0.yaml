@@ -667,7 +667,18 @@ paths:
                   Identification:
                     description: "Unique identifier of a Agreement, as assigned by\
                       \ the account servicer (FEAID)"
-                    maxLength: 37
+                    type: string
+                  IsClosed:
+                    description: This field identifies if agreement is closed or not
+                    type: boolean
+                  ClosingDate:
+                    format: date-time
+                    description: "Date on which the Agreement is closed <br/> Format\
+                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
+                    type: string
+                  ClosureRequestDate:
+                    description: Date on which the Agreement is requested for Closure
+                      <br/> Format must be ISO Date format (YYYY-MM-DD)
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
