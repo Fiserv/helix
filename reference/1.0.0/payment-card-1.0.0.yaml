@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-51
+  version: 1.1.0-53
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -640,13 +640,13 @@ paths:
     post:
       tags:
         - Account Management
-      summary: Initiate for Agreement Closure
-      description: This service is used to close an agreement
+      summary: Initiate for Account Closure
+      description: This service is used to close an account.
       operationId: closeAgreement
       parameters:
         - name: agreementId
           in: path
-          description: Unique identifier of an Agreement
+          description: Unique identifier of an Account
           required: true
           schema:
             maxLength: 37
@@ -665,20 +665,24 @@ paths:
                 type: object
                 properties:
                   Identification:
-                    description: "Unique identifier of a Agreement, as assigned by\
-                      \ the account servicer (FEAID)"
+                    description: "Unique identifier of an Account, as assigned by\
+                      \ the account servicer (FEAID)."
                     type: string
                   IsClosed:
-                    description: This field identifies if agreement is closed or not
+                    description: This field identifies if an account is closed or
+                      not. Valid values are True and False. This field will be set
+                      to True if an account is closed and it will be set to False
+                      if an account is open.
                     type: boolean
+                  ClosureRequestDate:
+                    description: The date that was sent through on the account closure
+                      API to indicate when the account was closed on the host system.
+                      Format must be ISO Date format (YYYY-MM-DD).
+                    type: string
                   ClosingDate:
                     format: date-time
-                    description: "Date on which the Agreement is closed <br/> Format\
-                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
-                    type: string
-                  ClosureRequestDate:
-                    description: Date on which the Agreement is requested for Closure
-                      <br/> Format must be ISO Date format (YYYY-MM-DD)
+                    description: "Date and Time on which the Account was closed by\
+                      \ the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
@@ -757,7 +761,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Close an agreement
+      x-proxy-name: Close an account
       x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/GetFeatureParameter/Retrieve:
     post:
@@ -1186,16 +1190,20 @@ paths:
                     items:
                       $ref: "#/components/schemas/ExternalAccount"
                   IsClosed:
-                    description: This field identifies if agreement is closed or not
+                    description: This field identifies if an account is closed or
+                      not. Valid values are True and False. This field will be set
+                      to True if an account is closed and it will be set to False
+                      if an account is open.
                     type: boolean
+                  ClosureRequestDate:
+                    description: The date that was sent through on the account closure
+                      API to indicate when the account was closed on the host system.
+                      Format must be ISO Date format (YYYY-MM-DD).
+                    type: string
                   ClosingDate:
                     format: date-time
-                    description: "Date on which the Agreement is closed <br/> Format\
-                      \ must be ((YYYY-MM-DDThh:mm:ss.sssZ))"
-                    type: string
-                  ClosureRequestDate:
-                    description: Date on which the Agreement is requested for Closure
-                      <br/> Format must be ISO Date format (YYYY-MM-DD)
+                    description: "Date and Time on which the Account was closed by\
+                      \ the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
@@ -1753,9 +1761,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1772,6 +1777,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1892,26 +1900,31 @@ components:
       type: object
       properties:
         ClosureRequestDate:
-          description: Closure Request Date Format must be ISO Date format (YYYY-MM-DD)
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
           type: string
     ExecuteClosureResponse:
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
+          description: "Unique identifier of an Account, as assigned by the account\
+            \ servicer (FEAID)."
           type: string
         IsClosed:
-          description: This field identifies if agreement is closed or not
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
           type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
         ClosingDate:
           format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
-          type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     ExecuteDeactivateCardResponse:
       type: object
@@ -2496,7 +2509,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
         - Identification
@@ -2767,7 +2780,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3222,16 +3235,19 @@ components:
           items:
             $ref: "#/components/schemas/ExternalAccount"
         IsClosed:
-          description: This field identifies if agreement is closed or not
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
           type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
         ClosingDate:
           format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
-          type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     RetrieveBrandResponse:
       required:
@@ -3410,7 +3426,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3832,7 +3848,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3862,7 +3878,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
         - Name
