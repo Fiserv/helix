@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-53
+  version: 1.1.0-54
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -208,9 +208,9 @@ paths:
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
             \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
-            \ : Party not enabled.</em></li><li><em>HLXAGDTGT014 : Product not found\
-            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT015\
-            \ : Person <person-id> not found under Financial Institution <fi-id></em></li></ul>"
+            \ : Party not enabled.</em></li><li><em>HLXAGDTGT013 : Product not found\
+            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT014\
+            \ : Person <person-id> not found under Financial Institution <fi-id>.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -847,7 +847,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account number not found.</em></li><li><em>HLXAGDTGT013 : Facility\
+            \ : Account number not found.</em></li><li><em>HLXAGDTGT012 : Facility\
             \ does not exist for capability.</em></li></ul>"
           content:
             application/json:
@@ -1325,26 +1325,6 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Validate account status
       x-group-name: Account Management
-  /Helix/V1/Capability/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      parameters:
-        - name: capabilityName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
 components:
   schemas:
     Account:
@@ -1761,6 +1741,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1777,9 +1760,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
