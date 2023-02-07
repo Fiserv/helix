@@ -4,7 +4,7 @@ info:
   title: issued-device-admin
   version: 1.1.0-110
 tags:
-  - name: Helix Core
+- name: Helix Core
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
