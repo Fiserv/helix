@@ -2,14 +2,14 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-110
+  version: 1.1.0-91
 tags:
 - name: Helix Core
 paths:
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
-        - Helix Core
+      - Helix Core
       summary: This method is used to return the list of payment instruments for an
         account (FEAID) or a person (FECID) or an external identification (CRM ID)
       operationId: getPaymentInstrumentList
@@ -57,7 +57,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: Not Found
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPA003\
+            \ : No input field provided in request message.</em></li><li><em>HLXIDASID002\
+            \ : Account not found.</em></li><li><em>HLXIDASID002 : Person not found.</em></li><li><em>HLXIDASID002\
+            \ : Card not found.</em></li><li><em>HLXIDASEI001 : External Identification\
+            \ not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -188,7 +192,7 @@ paths:
             \ : Capability <capability-name> has conflicting Features supplied by\
             \ Bundles.</em></li><li><em>HLXIDASAC009 : Error while creating Agreement\
             \ Feature.</em></li><li><em>HLXIDASAC008 : Error while creating facility\
-            \ allocation.</em></li><li><em>HLXIDASAC001 : Account is closed.</em></li></ul>"
+            \ allocation.</em></li></ul>"
           content: {}
         "429":
           description: Too Many Request
@@ -370,8 +374,7 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAS002\
             \ : Card already activated.</em></li><li><em>HLXIDASBV002 : Card already\
-            \ blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked as Stolen.</em></li><li><em>HLXIDASAC001\
-            \ : Account is closed.</em></li></ul>"
+            \ blocked as Lost.<li><em>HLXIDASBV002 : Card already blocked as Stolen.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1181,8 +1184,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
-            \ : Card replacement failed, chip sequence exceeds maximum value.</em></li><li><em>HLXIDASAC001\
-            \ : Account is closed.</em></li></ul>"
+            \ : Card replacement failed, chip sequence exceeds maximum value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1403,7 +1405,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV002\
-            \ : Cannot retrieve details, card is not enabled.</em></li></ul>"
+            \ : Cannot retrieve card details, the record is in ProForma status.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2031,9 +2033,6 @@ components:
         CardTechnology:
           description: Indicates the technology type supported by the physical card
           type: string
-        DigitalCardType:
-          description: Indicates the type of digital card
-          type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
           type: string
@@ -2127,14 +2126,8 @@ components:
     AgreementListRequest:
       type: object
       properties:
-        Person:
-          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
-            \ plays the role of contact (FECID)"
-          type: string
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
-        validRequest:
-          type: boolean
     BrandEntryAddRequest:
       required:
         - Name
@@ -2232,30 +2225,6 @@ components:
       properties:
         Identification:
           type: string
-    BundleCommonDto:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Identification:
-          description: Identification of a bundle
-          type: string
-        Name:
-          description: Name of the bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        Status:
-          description: Status of a bundle
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: "#/components/schemas/Feature1"
     BundleRequestDto:
       required:
         - Identification
@@ -2469,31 +2438,6 @@ components:
         PAN:
           description: Primary Account Number
           type: string
-    ExecuteClosureRequest:
-      type: object
-      properties:
-        ClosureRequestDate:
-          description: Closure Request Date Format must be ISO Date format (YYYY-MM-DD)
-          type: string
-    ExecuteClosureResponse:
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
-          type: string
-        IsClosed:
-          description: This field identifies if agreement is closed or not
-          type: boolean
-        ClosingDate:
-          format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
-          type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
-          type: string
     ExecuteDeactivateCardResponse:
       type: object
       properties:
@@ -2543,37 +2487,13 @@ components:
           pattern: \S
           type: string
           nullable: false
-    ExecuteUnlinkBundleFeatureRequest:
+    ExecuteUnlinkFeatureRequest:
       type: object
       properties:
         Feature:
           type: array
           items:
             $ref: "#/components/schemas/Feature"
-    ExecuteUnlinkProductFeatureRequest:
-      required:
-        - RequestType
-      type: object
-      properties:
-        Feature:
-          type: array
-          items:
-            $ref: "#/components/schemas/Feature"
-        RequestType:
-          description: Request Type of Unlink Feature
-          minLength: 1
-          type: string
-          nullable: false
-    ExecuteUnlinkProductFeatureResponse:
-      type: object
-      properties:
-        Feature:
-          type: array
-          items:
-            $ref: "#/components/schemas/Feature"
-        RequestType:
-          description: Request Type of Unlink Feature
-          type: string
     ExecuteValidateCVV2Request:
       required:
         - ExpiryDate
@@ -2684,24 +2604,6 @@ components:
           maxLength: 37
           type: string
     Feature1:
-      type: object
-      properties:
-        Identification:
-          description: Identification of the feature
-          type: string
-        Name:
-          description: Name of the feature
-          type: string
-        Specification:
-          description: Specification of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        CapabilityVersion:
-          description: Version of the system capability linked to a feature
-          type: string
-    Feature2:
       required:
         - Identification
       type: object
@@ -2715,7 +2617,7 @@ components:
         DefaultIndicator:
           description: Default feature indicator
           type: string
-    Feature3:
+    Feature2:
       type: object
       properties:
         Identification:
@@ -2733,6 +2635,24 @@ components:
         DefaultIndicator:
           description: Flag to indicate default feature
           type: boolean
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of the feature
+          type: string
+        Specification:
+          description: Specification of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        CapabilityVersion:
+          description: Version of the system capability linked to a feature
+          type: string
     FeatureOverride:
       type: object
       properties:
@@ -3532,7 +3452,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/Feature2"
+            $ref: "#/components/schemas/Feature1"
     RegisterProductFeatureResponse:
       type: object
       properties:
@@ -3855,18 +3775,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
-        IsClosed:
-          description: This field identifies if agreement is closed or not
-          type: boolean
-        ClosingDate:
-          format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
-          type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
-          type: string
     RetrieveBrandResponse:
       required:
         - Name
@@ -3934,7 +3842,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/Feature1"
+            $ref: "#/components/schemas/Feature3"
     RetrieveCapabilityResponse:
       type: object
       properties:
@@ -4409,7 +4317,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/Feature3"
+            $ref: "#/components/schemas/Feature2"
     RetrieveProductResponse:
       type: object
       properties:
@@ -4456,41 +4364,6 @@ components:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
-    UpdateBundleRequest:
-      type: object
-      properties:
-        Name:
-          description: Name of a bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        validRequest:
-          type: boolean
-    UpdateBundleResponse:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Identification:
-          description: Identification of a bundle
-          type: string
-        Name:
-          description: Name of the bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        Status:
-          description: Status of a bundle
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: "#/components/schemas/Feature1"
     UpdateFeatureRequest:
       required:
         - Name
