@@ -9,26 +9,6 @@ tags:
     x-group-name: Authorisation
     x-api-scope: Internal
 paths:
-  /Helix/V1/Capability/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-        - Capability Resource
-      parameters:
-        - name: capabilityName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
   /Helix/V1/PaymentAuthorisation/AuthAssessment/{AuthAssessmentId}/Retrieve:
     get:
       tags:
