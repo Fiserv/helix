@@ -53,7 +53,7 @@ paths:
                     type: string
                   ReversalStatus:
                     allOf:
-                    - $ref: '#/components/schemas/ReversalStatus'
+                    - $ref: "#/components/schemas/ReversalStatus"
                     - description: Status of the PaymentAuthAssessment record in the
                         system
                   AssessmentCreationDatetime:
@@ -67,7 +67,7 @@ paths:
                     type: string
                   AuthorisationResult:
                     allOf:
-                    - $ref: '#/components/schemas/AuthorisationResult'
+                    - $ref: "#/components/schemas/AuthorisationResult"
                     - description: Authorisation decision as supplied by the PaymentAuth
                         service
                   RsltReasonCode:
@@ -90,74 +90,74 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAA001\
             \ : PaymentAuthAssessment log not found.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire an authorisation
       x-group-name: Authorisation
   /Helix/V1/PaymentAuthorisation/Authorisation/Evaluate:
@@ -171,7 +171,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EvaluateAuthorisationRequest'
+              $ref: "#/components/schemas/EvaluateAuthorisationRequest"
       responses:
         "200":
           description: OK
@@ -197,75 +197,75 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Authorise Request
-      x-group-name: Authorisation Management
+      x-group-name: Authorisation
       x-api-scope: Internal
 components:
   schemas:
@@ -364,40 +364,40 @@ components:
         OverrideParameterValues:
           type: array
           items:
-            $ref: '#/components/schemas/OverrideParameter'
+            $ref: "#/components/schemas/OverrideParameter"
         Bundle:
           type: array
           items:
-            $ref: '#/components/schemas/Bundle'
+            $ref: "#/components/schemas/Bundle"
     AddCardRequestEvent:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
         Account:
           allOf:
-          - $ref: '#/components/schemas/RetrieveAgreementResponse'
+          - $ref: "#/components/schemas/RetrieveAgreementResponse"
           - description: Identification of the account
         Cardholder:
           allOf:
-          - $ref: '#/components/schemas/RetrievePersonResponse'
+          - $ref: "#/components/schemas/RetrievePersonResponse"
           - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
         CreatedDateTime:
           format: date-time
-          description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         Brand:
           description: Identification of the Brand
@@ -415,13 +415,13 @@ components:
           description: List of feature overridden in request
           type: array
           items:
-            $ref: '#/components/schemas/FeatureOverride'
+            $ref: "#/components/schemas/FeatureOverride"
     AddCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
@@ -454,7 +454,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementFeatureParameter:
       type: object
       properties:
@@ -478,7 +478,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -502,7 +502,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: '#/components/schemas/ExternalAccount'
+          $ref: "#/components/schemas/ExternalAccount"
     AuthorisationResult:
       enum:
       - APPROVED
@@ -598,6 +598,22 @@ components:
           pattern: \S
           type: string
           nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
         Specification:
           description: Description of a configuration option
           type: string
@@ -605,7 +621,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
@@ -658,7 +674,7 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
@@ -671,7 +687,7 @@ components:
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     EvaluateAuthorisationRequest:
       required:
@@ -725,7 +741,7 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
@@ -763,7 +779,7 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteGeneratePINRequest:
       required:
@@ -788,7 +804,7 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
@@ -806,7 +822,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     ExecuteValidateCVV2Request:
       required:
       - ExpiryDate
@@ -990,7 +1006,7 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/HelixMessage'
+            $ref: "#/components/schemas/HelixMessage"
     HelixMessage:
       type: object
       properties:
@@ -1013,7 +1029,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureRequestDto'
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
     InitiateAgreementFeatureResponse:
       type: object
       properties:
@@ -1055,7 +1071,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -1066,7 +1082,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1135,11 +1151,11 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
@@ -1168,7 +1184,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     MasterCardChipDataResponse:
       type: object
       properties:
@@ -1255,7 +1271,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -1434,7 +1450,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
     RegisterBundleRequest:
       required:
@@ -1460,7 +1476,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     RegisterBundleResponse:
       type: object
       properties:
@@ -1485,7 +1501,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -1526,7 +1542,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -1578,12 +1594,12 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
       - FinancialInstitution
@@ -1653,17 +1669,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
     RegisterPersonResponse:
       type: object
       properties:
@@ -1679,12 +1695,12 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Feature1'
+            $ref: "#/components/schemas/Feature1"
     RegisterProductFeatureResponse:
       type: object
       properties:
         Warning:
-          $ref: '#/components/schemas/Warning'
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -1740,10 +1756,10 @@ components:
           description: List of PaymentInstrument
           type: array
           items:
-            $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+            $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
     RequestGetCVV2Request:
       required:
@@ -1853,7 +1869,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -1881,7 +1897,7 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeature'
+            $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
       required:
       - AgreementInvolvement
@@ -1912,7 +1928,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -1921,7 +1937,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount"
     RetrieveAuthAssessmentResponse:
       type: object
       properties:
@@ -1945,7 +1961,7 @@ components:
           type: string
         ReversalStatus:
           allOf:
-          - $ref: '#/components/schemas/ReversalStatus'
+          - $ref: "#/components/schemas/ReversalStatus"
           - description: Status of the PaymentAuthAssessment record in the system
         AssessmentCreationDatetime:
           format: date-time
@@ -1958,7 +1974,7 @@ components:
           type: string
         AuthorisationResult:
           allOf:
-          - $ref: '#/components/schemas/AuthorisationResult'
+          - $ref: "#/components/schemas/AuthorisationResult"
           - description: Authorisation decision as supplied by the PaymentAuth service
         RsltReasonCode:
           description: The reason code provides the exact reason as to why a specific
@@ -1993,7 +2009,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature3'
+            $ref: "#/components/schemas/Feature3"
     RetrieveCapabilityResponse:
       type: object
       properties:
@@ -2037,7 +2053,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
       - FacilityIdentification
@@ -2100,7 +2116,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -2150,12 +2166,12 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
@@ -2168,7 +2184,7 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
@@ -2230,7 +2246,8 @@ components:
           type: string
         BlockedDateTime:
           format: date-time
-          description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which the payment instrument was blocked\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -2245,8 +2262,8 @@ components:
           type: string
         PlasticCreationDateTime:
           format: date-time
-          description: Date and time at which plastic created for the payment instrument
-            (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
@@ -2266,7 +2283,7 @@ components:
           type: integer
         LastInvalidPinTryDateTime:
           format: date-time
-          description: Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         enabled:
           type: boolean
@@ -2275,15 +2292,15 @@ components:
       properties:
         PaymentInstrumentResponse:
           allOf:
-          - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
           - description: Payment instrument details
         VisaChipDataResponse:
           allOf:
-          - $ref: '#/components/schemas/VisaChipDataResponse'
+          - $ref: "#/components/schemas/VisaChipDataResponse"
           - description: Visa Chip details for a given payment instrument
         MasterCardChipDataResponse:
           allOf:
-          - $ref: '#/components/schemas/MasterCardChipDataResponse'
+          - $ref: "#/components/schemas/MasterCardChipDataResponse"
           - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
@@ -2381,17 +2398,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         enabled:
           type: boolean
     RetrieveProductFeatureListRequest:
@@ -2424,7 +2441,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature2'
+            $ref: "#/components/schemas/Feature2"
     RetrieveProductResponse:
       type: object
       properties:
@@ -2491,7 +2508,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -2518,7 +2535,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
       - Name
@@ -2615,7 +2632,7 @@ components:
         message:
           type: array
           items:
-            $ref: '#/components/schemas/WarningMessage'
+            $ref: "#/components/schemas/WarningMessage"
     WarningMessage:
       type: object
       properties:
