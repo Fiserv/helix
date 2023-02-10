@@ -4,27 +4,27 @@ info:
   title: payment-authorisation
   version: 1.1.0-SNAPSHOT
 tags:
-  - name: Helix Core
-    x-proxy-name: Inquire an authorisation
-    x-group-name: Authorisation
-    x-api-scope: Internal
+- name: Helix Core
+  x-proxy-name: Inquire an authorisation
+  x-group-name: Authorisation
+  x-api-scope: Internal
 paths:
   /Helix/V1/PaymentAuthorisation/AuthAssessment/{AuthAssessmentId}/Retrieve:
     get:
       tags:
-        - Helix Core
+      - Helix Core
       summary: This API is used to retrieve a list of authorisations processed against
         a card.
       description: This API is used to retrieve a list of authorisations processed
         against a card.
       operationId: getPaymentAuthAssessmentLog
       parameters:
-        - name: AuthAssessmentId
-          in: path
-          description: Unique identifier of an authorisation
-          required: true
-          schema:
-            type: string
+      - name: AuthAssessmentId
+        in: path
+        description: Unique identifier of an authorisation
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -44,7 +44,7 @@ paths:
                   PaymentInstrument:
                     description: Unique identifier of the payment instrument (FEPID)
                     type: string
-                  AgreementID:
+                  AgreementId:
                     description: Unique identifier of the Agreement (FEAID) associated
                       with the Payment instrument
                     type: string
@@ -53,9 +53,9 @@ paths:
                     type: string
                   ReversalStatus:
                     allOf:
-                      - $ref: '#/components/schemas/ReversalStatus'
-                      - description: Status of the PaymentAuthAssessment record in the
-                          system
+                    - $ref: '#/components/schemas/ReversalStatus'
+                    - description: Status of the PaymentAuthAssessment record in the
+                        system
                   AssessmentCreationDatetime:
                     format: date-time
                     description: The date and time when the AuthAssessment record
@@ -67,9 +67,9 @@ paths:
                     type: string
                   AuthorisationResult:
                     allOf:
-                      - $ref: '#/components/schemas/AuthorisationResult'
-                      - description: Authorisation decision as supplied by the PaymentAuth
-                          service
+                    - $ref: '#/components/schemas/AuthorisationResult'
+                    - description: Authorisation decision as supplied by the PaymentAuth
+                        service
                   RsltReasonCode:
                     description: The reason code provides the exact reason as to why
                       a specific validation check was failed
@@ -163,7 +163,7 @@ paths:
   /Helix/V1/PaymentAuthorisation/Authorisation/Evaluate:
     post:
       tags:
-        - Helix Core
+      - Helix Core
       summary: This method is used to authorise the payment card transaction
       description: This API allows the user to authorise the payment card transaction
       operationId: evaluateAuthorisation
@@ -188,6 +188,9 @@ paths:
                     type: string
                   RsltReasonDesc:
                     description: Result reason code description
+                    type: string
+                  AuthAssessmentId:
+                    description: Authorisation Assessment ID
                     type: string
         "400":
           description: Bad Request
@@ -303,12 +306,12 @@ components:
           type: string
     AddCardRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - RelatedAccount
-        - Cardholder
-        - CardholderType
+      - FinancialInstitution
+      - Brand
+      - Product
+      - RelatedAccount
+      - Cardholder
+      - CardholderType
       type: object
       properties:
         FinancialInstitution:
@@ -371,20 +374,20 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
-            - description: Identification of the product
+          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - description: Identification of the product
         Account:
           allOf:
-            - $ref: '#/components/schemas/RetrieveAgreementResponse'
-            - description: Identification of the account
+          - $ref: '#/components/schemas/RetrieveAgreementResponse'
+          - description: Identification of the account
         Cardholder:
           allOf:
-            - $ref: '#/components/schemas/RetrievePersonResponse'
-            - description: Identification of the cardholder
+          - $ref: '#/components/schemas/RetrievePersonResponse'
+          - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
@@ -418,8 +421,8 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -463,7 +466,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -479,8 +482,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-        - PartyIdentification
-        - PartyRole
+      - PartyIdentification
+      - PartyRole
       type: object
       properties:
         PartyIdentification:
@@ -502,8 +505,9 @@ components:
           $ref: '#/components/schemas/ExternalAccount'
     AuthorisationResult:
       enum:
-        - APPROVED
-        - DECLINED
+      - APPROVED
+      - BYPASSED
+      - DECLINED
       type: string
     BinChunkEvent:
       type: object
@@ -519,7 +523,7 @@ components:
           type: string
     Bundle:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -529,8 +533,8 @@ components:
           nullable: false
     CapabilityCatalog:
       required:
-        - Version
-        - CapabilityName
+      - Version
+      - CapabilityName
       type: object
       properties:
         Version:
@@ -585,8 +589,8 @@ components:
           type: string
     ConfigurationOption:
       required:
-        - Name
-        - ConfigurationParameter
+      - Name
+      - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -605,8 +609,8 @@ components:
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-        - Name
-        - Value
+      - Name
+      - Value
       type: object
       properties:
         Name:
@@ -623,8 +627,8 @@ components:
           nullable: false
     ElectronicAddress:
       required:
-        - Type
-        - Email
+      - Type
+      - Email
       type: object
       properties:
         Type:
@@ -654,8 +658,8 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Specifies the service domain identifier
+          - $ref: '#/components/schemas/UUID'
+          - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -671,7 +675,7 @@ components:
           type: string
     EvaluateAuthorisationRequest:
       required:
-        - PAN
+      - PAN
       type: object
       properties:
         PAN:
@@ -713,18 +717,21 @@ components:
         RsltReasonDesc:
           description: Result reason code description
           type: string
+        AuthAssessmentId:
+          description: Authorisation Assessment ID
+          type: string
     ExecuteActivateCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
-        - FeatureId
-        - ProductId
-        - FinancialInstitution
+      - FeatureId
+      - ProductId
+      - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -756,12 +763,12 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteGeneratePINRequest:
       required:
-        - FeatureId
-        - FinancialInstitution
+      - FeatureId
+      - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -781,11 +788,11 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
-        - NewPaymentInstrumentId
+      - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -802,8 +809,8 @@ components:
             $ref: '#/components/schemas/Feature'
     ExecuteValidateCVV2Request:
       required:
-        - ExpiryDate
-        - CVV2
+      - ExpiryDate
+      - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -818,8 +825,8 @@ components:
           nullable: false
     ExecuteValidateCVVRequest:
       required:
-        - ExpiryDate
-        - CVV
+      - ExpiryDate
+      - CVV
       type: object
       properties:
         ExpiryDate:
@@ -840,8 +847,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-        - ExpiryDate
-        - iCVV
+      - ExpiryDate
+      - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -856,9 +863,9 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-        - PAN
-        - PIN block
-        - Association
+      - PAN
+      - PIN block
+      - Association
       type: object
       properties:
         PAN:
@@ -885,8 +892,8 @@ components:
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
-        - ClearingSystemIdentificationCode
-        - AccountIdentification
+      - ClearingSystemIdentificationCode
+      - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
@@ -911,7 +918,7 @@ components:
           type: string
     Feature1:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -999,7 +1006,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -1019,11 +1026,11 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - AgreementInvolvement
-        - OpeningDate
+      - FinancialInstitution
+      - Brand
+      - Product
+      - AgreementInvolvement
+      - OpeningDate
       type: object
       properties:
         FinancialInstitution:
@@ -1070,7 +1077,7 @@ components:
           type: string
     InitiateFacilityAllocationRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -1093,9 +1100,9 @@ components:
           type: string
     IssuedDeviceActionRequest:
       required:
-        - BlockReason
-        - ReplaceCard
-        - GenerateNewPin
+      - BlockReason
+      - ReplaceCard
+      - GenerateNewPin
       type: object
       properties:
         BlockReason:
@@ -1128,12 +1135,12 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment instrument (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the new payment instrument (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1154,7 +1161,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -1236,7 +1243,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-        - Capability
+      - Capability
       type: object
       properties:
         Capability:
@@ -1251,7 +1258,7 @@ components:
             $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -1305,8 +1312,8 @@ components:
           type: string
     Phone:
       required:
-        - Type
-        - Number
+      - Type
+      - Number
       type: object
       properties:
         Type:
@@ -1340,9 +1347,9 @@ components:
           type: string
     PostalAddress:
       required:
-        - AddressType
-        - Country
-        - ContactPreference
+      - AddressType
+      - Country
+      - ContactPreference
       type: object
       properties:
         AddressType:
@@ -1427,12 +1434,12 @@ components:
       properties:
         Product:
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
-            - description: Identification of the product
+          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - description: Identification of the product
     RegisterBundleRequest:
       required:
-        - Identification
-        - Name
+      - Identification
+      - Name
       type: object
       properties:
         Identification:
@@ -1462,7 +1469,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -1487,10 +1494,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-        - Identification
-        - Name
-        - Capability
-        - ConfigurationOption
+      - Identification
+      - Name
+      - Capability
+      - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -1528,9 +1535,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - TradingName
+      - FinancialInstitution
+      - Brand
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -1579,10 +1586,10 @@ components:
             $ref: '#/components/schemas/Phone'
     RegisterPersonRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - GivenName
-        - Surname
+      - FinancialInstitution
+      - Brand
+      - GivenName
+      - Surname
       type: object
       properties:
         FinancialInstitution:
@@ -1665,7 +1672,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -1680,9 +1687,9 @@ components:
           $ref: '#/components/schemas/Warning'
     RegisterProductRequest:
       required:
-        - Name
-        - Brand
-        - Identification
+      - Name
+      - Brand
+      - Identification
       type: object
       properties:
         Name:
@@ -1713,7 +1720,7 @@ components:
           type: string
     ReissueCardRequest:
       required:
-        - FinancialInstitution
+      - FinancialInstitution
       type: object
       properties:
         ProductId:
@@ -1736,11 +1743,11 @@ components:
             $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
         Product:
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
-            - description: Identification of the product
+          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - description: Identification of the product
     RequestGetCVV2Request:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -1750,7 +1757,7 @@ components:
           nullable: false
     RequestGetCVVRequest:
       required:
-        - ExpiryDate
+      - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -1775,7 +1782,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-        - PAN
+      - PAN
       type: object
       properties:
         PAN:
@@ -1797,8 +1804,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-        - RSAKey
-        - Association
+      - RSAKey
+      - Association
       type: object
       properties:
         RSAKey:
@@ -1813,7 +1820,7 @@ components:
           nullable: false
     RequestViewPinRequest:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -1877,7 +1884,7 @@ components:
             $ref: '#/components/schemas/AgreementFeature'
     RetrieveAgreementResponse:
       required:
-        - AgreementInvolvement
+      - AgreementInvolvement
       type: object
       properties:
         Identification:
@@ -1929,7 +1936,7 @@ components:
         PaymentInstrument:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
-        AgreementID:
+        AgreementId:
           description: Unique identifier of the Agreement (FEAID) associated with
             the Payment instrument
           type: string
@@ -1938,8 +1945,8 @@ components:
           type: string
         ReversalStatus:
           allOf:
-            - $ref: '#/components/schemas/ReversalStatus'
-            - description: Status of the PaymentAuthAssessment record in the system
+          - $ref: '#/components/schemas/ReversalStatus'
+          - description: Status of the PaymentAuthAssessment record in the system
         AssessmentCreationDatetime:
           format: date-time
           description: The date and time when the AuthAssessment record was created
@@ -1951,8 +1958,8 @@ components:
           type: string
         AuthorisationResult:
           allOf:
-            - $ref: '#/components/schemas/AuthorisationResult'
-            - description: Authorisation decision as supplied by the PaymentAuth service
+          - $ref: '#/components/schemas/AuthorisationResult'
+          - description: Authorisation decision as supplied by the PaymentAuth service
         RsltReasonCode:
           description: The reason code provides the exact reason as to why a specific
             validation check was failed
@@ -2033,8 +2040,8 @@ components:
             $ref: '#/components/schemas/AgreementFeatureParameter'
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
-        - FacilityIdentification
-        - Capability
+      - FacilityIdentification
+      - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -2100,9 +2107,9 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-        - FinancialInstitution
-        - Brand
-        - TradingName
+      - FinancialInstitution
+      - Brand
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -2161,8 +2168,8 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the payment instrument (FEPID)
+          - $ref: '#/components/schemas/UUID'
+          - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -2268,16 +2275,16 @@ components:
       properties:
         PaymentInstrumentResponse:
           allOf:
-            - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
-            - description: Payment instrument details
+          - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+          - description: Payment instrument details
         VisaChipDataResponse:
           allOf:
-            - $ref: '#/components/schemas/VisaChipDataResponse'
-            - description: Visa Chip details for a given payment instrument
+          - $ref: '#/components/schemas/VisaChipDataResponse'
+          - description: Visa Chip details for a given payment instrument
         MasterCardChipDataResponse:
           allOf:
-            - $ref: '#/components/schemas/MasterCardChipDataResponse'
-            - description: MasterCard Chip details for a given payment instrument
+          - $ref: '#/components/schemas/MasterCardChipDataResponse'
+          - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -2439,11 +2446,11 @@ components:
           type: string
     ReversalStatus:
       enum:
-        - ORIGINAL
+      - ORIGINAL
       type: string
     SystemUpdateRequest:
       required:
-        - InvalidPinTryCounter
+      - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
@@ -2468,7 +2475,7 @@ components:
       type: string
     UpdateFeatureRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -2514,8 +2521,8 @@ components:
             $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
-        - Name
-        - Brand
+      - Name
+      - Brand
       type: object
       properties:
         Name:
