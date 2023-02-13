@@ -3,9 +3,13 @@ openapi: 3.0.3
 info:
   title: event-catalog
   version: 1.0.0
+tags:
+  - name: Event Catalog
 paths:
   /card_auth_data_ready:
     head:
+      tags:
+        - Event Catalog
       summary: A new physical card has been added. The event content will indicate details of the card, the domain it has been added it, and relevant details relating to the circumstances under which the card was added, e.g. brand new card, replacement, etc.
       operationId: addCardEvent
       requestBody:
@@ -37,6 +41,8 @@ paths:
       x-group-name: Event Catalog
   /card_reissued:
     head:
+      tags:
+        - Event Catalog
       summary: Cards have been reissued for a product.
       operationId: getPaymentInstrumentList
       responses:
