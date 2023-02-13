@@ -44,7 +44,7 @@ paths:
       tags:
         - Event Catalog
       summary: Cards have been reissued for a product.
-      operationId: getPaymentInstrumentList
+      operationId: reissueCardEvent
       responses:
         "default":
           description: Event published
