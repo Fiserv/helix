@@ -9,6 +9,155 @@ tags:
   x-group-name: Authorisation
   x-api-scope: Internal
 paths:
+  /Helix/V1/PaymentAuthorisation/AuthAssessment/Getlist/Request:
+    post:
+      tags:
+      - Helix Core
+      summary: This API is used to retrieve a list of authorisations processed against
+        a card.
+      description: This API is used to retrieve a list of authorisations processed
+        against a card.
+      operationId: getAuthAssessmentLogsForFepId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetrieveAuthAssessmentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  AuthAssessmentId:
+                    format: int64
+                    description: Payment auth assessment ID
+                    type: integer
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the payment instrument
+                    type: string
+                  PaymentInstrument:
+                    description: Unique identifier of the payment instrument (FEPID)
+                    type: string
+                  AgreementId:
+                    description: Unique identifier of the Agreement (FEAID) associated
+                      with the Payment instrument
+                    type: string
+                  PrimaryAccountNumber:
+                    description: The PAN number which is used to facilitate the transaction.
+                    type: string
+                  ReversalStatus:
+                    description: Status of the PaymentAuthAssessment record in the
+                      system
+                    type: string
+                  AssessmentCreationDateTime:
+                    format: date-time
+                    description: The date and time when the AuthAssessment record
+                      was created and persisted.
+                    type: string
+                  AuthorisationRequestData:
+                    description: Contains the dump of the request data as received
+                      from Switch for Payment Auth decision.
+                    type: string
+                  AuthorisationResult:
+                    description: Authorisation decision as supplied by the PaymentAuth
+                      service
+                    type: string
+                  RsltReasonCode:
+                    description: The reason code provides the exact reason as to why
+                      a specific validation check was failed
+                    type: string
+                  RsltReasonDesc:
+                    description: The reason description provides the details of the
+                      exact reason as to why a specific validation check was failed
+                    type: string
+                  ValidationResultDataList:
+                    description: "Provides list of various validation checks that\
+                      \ had been attempted on the transaction along with the corresponding\
+                      \ outcome (approved, declined , bypassed) and the ResultReasonCode\
+                      \ ."
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBR001\
+            \ : FEPID required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : FEPID less than minimum 36 length allowed.</em></li><li><em>HLXAUTHBR001\
+            \ : FEPID exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHPA02\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve a list of authorisations for a card
+      x-group-name: Authorisation
   /Helix/V1/PaymentAuthorisation/AuthAssessment/{AuthAssessmentId}/Retrieve:
     get:
       tags:
@@ -52,11 +201,10 @@ paths:
                     description: The PAN number which is used to facilitate the transaction.
                     type: string
                   ReversalStatus:
-                    allOf:
-                    - $ref: "#/components/schemas/ReversalStatus"
-                    - description: Status of the PaymentAuthAssessment record in the
-                        system
-                  AssessmentCreationDatetime:
+                    description: Status of the PaymentAuthAssessment record in the
+                      system
+                    type: string
+                  AssessmentCreationDateTime:
                     format: date-time
                     description: The date and time when the AuthAssessment record
                       was created and persisted.
@@ -66,10 +214,9 @@ paths:
                       from Switch for Payment Auth decision.
                     type: string
                   AuthorisationResult:
-                    allOf:
-                    - $ref: "#/components/schemas/AuthorisationResult"
-                    - description: Authorisation decision as supplied by the PaymentAuth
-                        service
+                    description: Authorisation decision as supplied by the PaymentAuth
+                      service
+                    type: string
                   RsltReasonCode:
                     description: The reason code provides the exact reason as to why
                       a specific validation check was failed
@@ -503,12 +650,6 @@ components:
       properties:
         ExternalAccount:
           $ref: "#/components/schemas/ExternalAccount"
-    AuthorisationResult:
-      enum:
-      - APPROVED
-      - BYPASSED
-      - DECLINED
-      type: string
     BinChunkEvent:
       type: object
       properties:
@@ -1938,6 +2079,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+    RetrieveAuthAssessmentRequest:
+      required:
+      - FEPID
+      type: object
+      properties:
+        FEPID:
+          description: Unique identifier of the payment instrument (FEPID)
+          pattern: \S
+          type: string
+          nullable: false
     RetrieveAuthAssessmentResponse:
       type: object
       properties:
@@ -1960,10 +2111,9 @@ components:
           description: The PAN number which is used to facilitate the transaction.
           type: string
         ReversalStatus:
-          allOf:
-          - $ref: "#/components/schemas/ReversalStatus"
-          - description: Status of the PaymentAuthAssessment record in the system
-        AssessmentCreationDatetime:
+          description: Status of the PaymentAuthAssessment record in the system
+          type: string
+        AssessmentCreationDateTime:
           format: date-time
           description: The date and time when the AuthAssessment record was created
             and persisted.
@@ -1973,9 +2123,8 @@ components:
             for Payment Auth decision.
           type: string
         AuthorisationResult:
-          allOf:
-          - $ref: "#/components/schemas/AuthorisationResult"
-          - description: Authorisation decision as supplied by the PaymentAuth service
+          description: Authorisation decision as supplied by the PaymentAuth service
+          type: string
         RsltReasonCode:
           description: The reason code provides the exact reason as to why a specific
             validation check was failed
@@ -2461,10 +2610,6 @@ components:
           type: string
         Status:
           type: string
-    ReversalStatus:
-      enum:
-      - ORIGINAL
-      type: string
     SystemUpdateRequest:
       required:
       - InvalidPinTryCounter
