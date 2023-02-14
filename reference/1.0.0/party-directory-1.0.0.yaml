@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-34
+  version: 1.1.0-41
 tags:
   - name: Customer Management
 paths:
@@ -727,6 +727,191 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on a Person
       x-group-name: Customer Management
+  /Helix/V1/Person/{partyId}/Update:
+    patch:
+      tags:
+        - Customer Management
+      summary: This method is used to update the person details
+      description: "This service is used to update a customer (person) details using\
+        \ FECID, which is the ID that is used to identify the customer within the\
+        \ system."
+      operationId: updatePartyById
+      parameters:
+        - name: partyId
+          in: path
+          description: Fiserv Enterprise Customer ID (FECID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PersonDetailsDto"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FECID:
+                    description: Fiserv Enterprise Customer ID - Unique identifier
+                      for the person
+                    maxLength: 37
+                    type: string
+                  Status:
+                    description: "Status of the person record in the system <br> Valid\
+                      \ values are : <br> Enabled <br> Disabled <br> Deleted <br>\
+                      \ ProForma"
+                    type: string
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the person
+                    maxLength: 37
+                    type: string
+                  Brand:
+                    description: Identification of the brand associated with the person
+                    maxLength: 37
+                    type: string
+                  FiName:
+                    description: Name of the financial institution associated with
+                      the person
+                    maxLength: 70
+                    type: string
+                  BrandName:
+                    description: Name of the brand associated with the person
+                    maxLength: 70
+                    type: string
+                  ExternalIdentification:
+                    description: |
+                      Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+                    maxLength: 35
+                    type: string
+                  NamePrefix:
+                    description: "Specifies the terms used to formally address a person\
+                      \ <br> Valid values are : <br> Doctor<br> Mister <br> Miss <br>\
+                      \ Madam <br> GenderNeutral"
+                    type: string
+                  GivenName:
+                    description: First name of a person
+                    maxLength: 35
+                    type: string
+                  MiddleName:
+                    description: Second name of a person
+                    maxLength: 35
+                    type: string
+                  Surname:
+                    description: "Surname is a name added to a given name and is part\
+                      \ of a personal name. In many cases, a surname is a family name"
+                    maxLength: 35
+                    type: string
+                  BirthDate:
+                    description: Date on which a person is born <br/> Format must
+                      be ISO Date format (YYYY-MM-DD)
+                    type: string
+                  Language:
+                    description: "Language in which a person communicates <br> Valid\
+                      \ values are : 2 character ISO Language Codes"
+                    type: string
+                  Email:
+                    description: Address for electronic mail (e-mail)
+                    maxLength: 256
+                    type: string
+                  MemorableWord:
+                    description: Memorable word selected by the customer to be used
+                      for customer authentication
+                    maxLength: 20
+                    type: string
+                  MemorableWordReminder:
+                    description: Reminder set by the person to remember the memorable
+                      word
+                    maxLength: 35
+                    type: string
+                  PostalAddress:
+                    description: Current postal address of the person.
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PostalAddress"
+                  Phone:
+                    description: Collection of information that identifies a phone
+                      address.
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Phone"
+                  ElectronicAddress:
+                    description: Address which is accessed by electronic means.
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ElectronicAddress"
+                  enabled:
+                    type: boolean
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
+            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUP001\
+            \ : There is an error while updating a Person, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Update a Person
+      x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Validate:
     get:
       tags:
@@ -1042,7 +1227,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
+          $ref: "#/components/schemas/ExternalAccount"
     BinChunkCreationErrorEvent:
       type: object
       properties:
@@ -1200,7 +1385,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationOption1:
       required:
         - Name
@@ -1219,7 +1404,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationOptionDto:
       type: object
       properties:
@@ -1230,8 +1415,24 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
+      required:
+        - Name
+        - Value
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Value:
+          maxLength: 40000
+          pattern: \S
+          type: string
+          nullable: false
+    ConfigurationParameter1:
       description: Parameter used for configuring options
       required:
         - Name
@@ -1246,22 +1447,6 @@ components:
           nullable: false
         Value:
           description: Value of a configuration parameter
-          maxLength: 40000
-          pattern: \S
-          type: string
-          nullable: false
-    ConfigurationParameter1:
-      required:
-        - Name
-        - Value
-      type: object
-      properties:
-        Name:
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-        Value:
           maxLength: 40000
           pattern: \S
           type: string
@@ -1553,7 +1738,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
+          $ref: "#/components/schemas/ExternalAccount1"
     HelixErrorDetails:
       type: object
       properties:
@@ -1659,7 +1844,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1755,7 +1940,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     InitiatePaymentCardFacilityResponse:
       type: object
       properties:
@@ -1909,6 +2094,67 @@ components:
           type: string
         Person:
           type: string
+    PersonDetailsDto:
+      required:
+        - Surname
+      type: object
+      properties:
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
+          type: string
+        NamePrefix:
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
+          maxLength: 20
+          type: string
+        GivenName:
+          description: First name of a person
+          maxLength: 35
+          type: string
+        MiddleName:
+          description: Second name of a person
+          maxLength: 35
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name"
+          maxLength: 35
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD)
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication
+          maxLength: 20
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word
+          maxLength: 35
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
     Phone:
       required:
         - Type
@@ -2051,7 +2297,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
+            $ref: "#/components/schemas/ConfigurationParameter"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -2132,22 +2378,10 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-        - FinancialInstitution
-        - GivenName
         - Surname
+        - FinancialInstitution
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Brand:
-          description: Identification of the brand associated with the person
-          maxLength: 37
-          type: string
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
@@ -2157,13 +2391,12 @@ components:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
             \ GenderNeutral"
+          maxLength: 20
           type: string
         GivenName:
           description: First name of a person
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         MiddleName:
           description: Second name of a person
           maxLength: 35
@@ -2172,9 +2405,7 @@ components:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name"
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD)
@@ -2207,6 +2438,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the person
+          maxLength: 37
+          type: string
     RegisterPersonResponse:
       type: object
       properties:
@@ -2550,7 +2792,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     RetrieveAgreementResponse1:
       type: object
       properties:
@@ -2827,7 +3069,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
