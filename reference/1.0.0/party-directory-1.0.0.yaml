@@ -852,7 +852,57 @@ paths:
                     type: boolean
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Name Prefix exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
+            \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
+            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 : Language\
+            \ code must be ISO language code.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line1 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line2 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address - Contact Preference is not valid, please provide valid\
+            \ value.</em></li><li><em>HLXPTDTBR001 : Phone - Type required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Phone - Type is not valid,\
+            \ please provide valid value.</em></li><li><em>HLXPTDTBR001 : Phone/Mobile\
+            \ Number required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Contact Preference is not valid, please provide\
+            \ valid value.</em></li><li><em>HLXPTDTBR001 : Email required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum\
+            \ 256 length allowed.</em></li><li><em>HLXPTDTBR001 : Email is not valid,\
+            \ please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1155,7 +1205,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -1175,7 +1225,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -1184,19 +1234,19 @@ components:
       type: object
       properties:
         Name:
-          description: Name of Product Feature Parameter
+          description: Name of Agreement Feature Parameter
           type: string
         Value:
-          description: Value of Product Feature Parameter
+          description: Value of Agreement Feature Parameter
           type: string
     AgreementFeatureParameter1:
       type: object
       properties:
         Name:
-          description: Name of Agreement Feature Parameter
+          description: Name of Product Feature Parameter
           type: string
         Value:
-          description: Value of Agreement Feature Parameter
+          description: Value of Product Feature Parameter
           type: string
     AgreementFeatureRequestDto:
       required:
@@ -1212,7 +1262,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -1236,7 +1286,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
+          $ref: "#/components/schemas/ExternalAccount"
     BinChunkCreationErrorEvent:
       type: object
       properties:
@@ -1394,7 +1444,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationOption1:
       required:
       - Name
@@ -1413,7 +1463,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationOptionDto:
       type: object
       properties:
@@ -1424,8 +1474,24 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
+      required:
+      - Name
+      - Value
+      type: object
+      properties:
+        Name:
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Value:
+          maxLength: 40000
+          pattern: \S
+          type: string
+          nullable: false
+    ConfigurationParameter1:
       description: Parameter used for configuring options
       required:
       - Name
@@ -1440,22 +1506,6 @@ components:
           nullable: false
         Value:
           description: Value of a configuration parameter
-          maxLength: 40000
-          pattern: \S
-          type: string
-          nullable: false
-    ConfigurationParameter1:
-      required:
-      - Name
-      - Value
-      type: object
-      properties:
-        Name:
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-        Value:
           maxLength: 40000
           pattern: \S
           type: string
@@ -1747,7 +1797,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
+          $ref: "#/components/schemas/ExternalAccount1"
     HelixErrorDetails:
       type: object
       properties:
@@ -1773,6 +1823,16 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
+      - AgreementFeature
+      type: object
+      properties:
+        AgreementFeature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
+    InitiateAgreementFeatureRequest1:
+      required:
       - Feature
       type: object
       properties:
@@ -1785,23 +1845,8 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    InitiateAgreementFeatureRequest1:
-      required:
-      - AgreementFeature
-      type: object
-      properties:
-        AgreementFeature:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureRequestDto"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     InitiateAgreementFeatureResponse:
-      type: object
-      properties:
-        Id:
-          type: string
-    InitiateAgreementFeatureResponse1:
       type: object
       properties:
         Id:
@@ -1810,6 +1855,11 @@ components:
           type: integer
         Feature:
           description: Identification of Feature
+          type: string
+    InitiateAgreementFeatureResponse1:
+      type: object
+      properties:
+        Id:
           type: string
     InitiateAgreementRequest:
       required:
@@ -1853,7 +1903,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1863,19 +1913,6 @@ components:
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          type: string
-          nullable: false
-        Status:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationRequest1:
       required:
       - AgreementFeature
       type: object
@@ -1892,17 +1929,30 @@ components:
         FacilityStatus:
           description: Status of Facility Allocation
           type: string
+    InitiateFacilityAllocationRequest1:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          description: Feature ID of Agreement Feature
+          minLength: 1
+          type: string
+          nullable: false
+        Status:
+          description: Status of Facility Allocation
+          type: string
     InitiateFacilityAllocationResponse:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocayion
+          description: Unique identifier of a Facility Allocation
           type: string
     InitiateFacilityAllocationResponse1:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocation
+          description: Unique identifier of a Facility Allocayion
           type: string
     InitiatePaymentCardFacilityRequest:
       required:
@@ -1949,7 +1999,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     InitiatePaymentCardFacilityResponse:
       type: object
       properties:
@@ -2306,7 +2356,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
+            $ref: "#/components/schemas/ConfigurationParameter"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -2687,7 +2737,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -2707,7 +2757,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -2716,31 +2766,14 @@ components:
       type: object
       properties:
         capabilityName:
+          description: Name of the capability
           type: string
     RetrieveAgreementFeatureRequest1:
       type: object
       properties:
         capabilityName:
-          description: Name of the capability
           type: string
     RetrieveAgreementFeatureResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        Product:
-          type: string
-        Status:
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeature"
-    RetrieveAgreementFeatureResponse1:
       type: object
       properties:
         Identification:
@@ -2761,19 +2794,25 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeature1"
-    RetrieveAgreementResponse:
+            $ref: "#/components/schemas/AgreementFeature"
+    RetrieveAgreementFeatureResponse1:
       type: object
       properties:
         Identification:
           type: string
         FinancialInstitution:
           type: string
+        Brand:
+          type: string
         Product:
           type: string
         Status:
           type: string
-    RetrieveAgreementResponse1:
+        AgreementFeature:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeature1"
+    RetrieveAgreementResponse:
       required:
       - AgreementInvolvement
       type: object
@@ -2812,7 +2851,18 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
+    RetrieveAgreementResponse1:
+      type: object
+      properties:
+        Identification:
+          type: string
+        FinancialInstitution:
+          type: string
+        Product:
+          type: string
+        Status:
+          type: string
     RetrieveBrandResponse:
       required:
       - Name
@@ -2877,7 +2927,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
       - FacilityIdentification
@@ -2901,13 +2951,14 @@ components:
         Id:
           format: int64
           type: integer
-        PaymentCardFacility:
-          format: int64
-          type: integer
+        Agreement:
+          type: string
         AgreementFeature:
           format: int64
           type: integer
-        FacilityData:
+        Capability:
+          type: string
+        Facility:
           type: string
         CreationDateTime:
           type: string
@@ -2919,14 +2970,13 @@ components:
         Id:
           format: int64
           type: integer
-        Agreement:
-          type: string
+        PaymentCardFacility:
+          format: int64
+          type: integer
         AgreementFeature:
           format: int64
           type: integer
-        Capability:
-          type: string
-        Facility:
+        FacilityData:
           type: string
         CreationDateTime:
           type: string
@@ -3078,7 +3128,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
