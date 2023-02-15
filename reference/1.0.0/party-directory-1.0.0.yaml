@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-34
+  version: 1.1.0-35
 tags:
 - name: Customer Management
   x-proxy-name: Validate person status
@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterOrganisationRequest'
+              $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
         "201":
           description: Created
@@ -39,7 +39,6 @@ paths:
             \ valid value.</em></li><li><em>HLXPTDTBR001 : Error in Financial Institution\
             \ Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Brand Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
@@ -66,37 +65,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
@@ -104,38 +103,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTAD002\
             \ : There is an error while adding an Organisation, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Add an Organisation
       x-group-name: Customer Management
   /Helix/V1/Organisation/{partyId}/Retrieve:
@@ -160,7 +159,6 @@ paths:
               schema:
                 required:
                 - FinancialInstitution
-                - Brand
                 - TradingName
                 type: object
                 properties:
@@ -174,9 +172,7 @@ paths:
                   Brand:
                     description: Identification of the brand associated with the organisation
                     maxLength: 37
-                    minLength: 1
                     type: string
-                    nullable: false
                   ExternalIdentification:
                     description: Identification of the customer issued by the client
                       financial institution (CRM/CIS/CIF)
@@ -202,13 +198,13 @@ paths:
                     description: Address which is accessed by electronic means
                     type: array
                     items:
-                      $ref: '#/components/schemas/ElectronicAddress'
+                      $ref: "#/components/schemas/ElectronicAddress"
                   Phone:
                     description: Collection of information that identifies a phone
                       address
                     type: array
                     items:
-                      $ref: '#/components/schemas/Phone'
+                      $ref: "#/components/schemas/Phone"
                   Identification:
                     description: Fiserv Enterprise Organisation ID - Unique identifier
                       for the organisation
@@ -218,67 +214,68 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Organisation ID exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Organisation ID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Error in Organisation ID field. Spaces are not allowed.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT004\
             \ : Organisation not found.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT002\
             \ : There is an error while getting Organisation details, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve an Organisation
       x-group-name: Customer Management
   /Helix/V1/Person/GetList/Request:
@@ -292,7 +289,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RetrievePersonListRequest'
+              $ref: "#/components/schemas/RetrievePersonListRequest"
       responses:
         "200":
           description: OK
@@ -301,7 +298,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RetrievePersonResponse'
+                  $ref: "#/components/schemas/RetrievePersonResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : FEPID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -316,19 +313,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT007\
             \ : Person not found.</em></li><li><em>HLXPTDTGT009 : External Account\
@@ -337,50 +334,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE006\
             \ : Card not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve a Person List using FEPID or CRMID
       x-group-name: Customer Management
   /Helix/V1/Person/Register:
@@ -397,7 +394,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterPersonRequest'
+              $ref: "#/components/schemas/RegisterPersonRequest"
       responses:
         "201":
           description: Created
@@ -417,7 +414,6 @@ paths:
             \ valid value.</em></li><li><em>HLXPTDTBR001 : Error in Financial Institution\
             \ Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Brand Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -477,19 +473,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXPTDTUN002 : Brand\
@@ -497,19 +493,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
@@ -517,38 +513,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTAD001\
             \ : There is an error while adding a Person, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Add a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
@@ -653,83 +649,84 @@ paths:
                     description: Current postal address of the person.
                     type: array
                     items:
-                      $ref: '#/components/schemas/PostalAddress'
+                      $ref: "#/components/schemas/PostalAddress"
                   Phone:
                     description: Collection of information that identifies a phone
                       address.
                     type: array
                     items:
-                      $ref: '#/components/schemas/Phone'
+                      $ref: "#/components/schemas/Phone"
                   ElectronicAddress:
                     description: Address which is accessed by electronic means.
                     type: array
                     items:
-                      $ref: '#/components/schemas/ElectronicAddress'
+                      $ref: "#/components/schemas/ElectronicAddress"
                   enabled:
                     type: boolean
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul><li><em>HLXPTDTBR001\
+            \ : Error in Person Identification field. Spaces are not allowed.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT003\
             \ : Person not found.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT001\
             \ : There is an error while getting Person details, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Update:
@@ -753,7 +750,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonDetailsDto'
+              $ref: "#/components/schemas/PersonDetailsDto"
       responses:
         "200":
           description: OK
@@ -839,82 +836,139 @@ paths:
                     description: Current postal address of the person.
                     type: array
                     items:
-                      $ref: '#/components/schemas/PostalAddress'
+                      $ref: "#/components/schemas/PostalAddress"
                   Phone:
                     description: Collection of information that identifies a phone
                       address.
                     type: array
                     items:
-                      $ref: '#/components/schemas/Phone'
+                      $ref: "#/components/schemas/Phone"
                   ElectronicAddress:
                     description: Address which is accessed by electronic means.
                     type: array
                     items:
-                      $ref: '#/components/schemas/ElectronicAddress'
+                      $ref: "#/components/schemas/ElectronicAddress"
                   enabled:
                     type: boolean
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Name Prefix exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
+            \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
+            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 : Language\
+            \ code must be ISO language code.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Memorable\
+            \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
+            \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line1 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line2 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address - Contact Preference is not valid, please provide valid\
+            \ value.</em></li><li><em>HLXPTDTBR001 : Phone - Type required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Phone - Type is not valid,\
+            \ please provide valid value.</em></li><li><em>HLXPTDTBR001 : Phone/Mobile\
+            \ Number required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Contact Preference is not valid, please provide\
+            \ valid value.</em></li><li><em>HLXPTDTBR001 : Email required, please\
+            \ provide value.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum\
+            \ 256 length allowed.</em></li><li><em>HLXPTDTBR001 : Email is not valid,\
+            \ please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT015\
+            \ : External Identification updates are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUP001\
             \ : There is an error while updating a Person, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Update a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Validate:
@@ -922,8 +976,8 @@ paths:
       tags:
       - Customer Management
       summary: Validate person status
-      description: This API allows the user to validate person details for the given
-        FECID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>
+      description: "This API allows the user to validate person details for the given\
+        \ FECID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
       operationId: validatePerson
       parameters:
       - name: partyId
@@ -942,52 +996,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
             \ : Person not found.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE007\
             \ : Person not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
             \ : There is an error while validating Person details, please try again</em></li></ul>"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
+                $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Validate person status
       x-group-name: Customer Management
 components:
@@ -1080,30 +1134,30 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
         Account:
           allOf:
-          - $ref: '#/components/schemas/RetrievePaymentCardFacilityResponse'
+          - $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
           - description: Identification of the account
         Cardholder:
           allOf:
-          - $ref: '#/components/schemas/RetrievePersonResponse'
+          - $ref: "#/components/schemas/RetrievePersonResponse"
           - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
         CreatedDateTime:
           format: date-time
-          description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         Brand:
           description: Identification of the Brand
@@ -1122,7 +1176,7 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
@@ -1151,11 +1205,11 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementFeature1:
       type: object
       properties:
@@ -1171,21 +1225,12 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter1'
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     AgreementFeatureParameter:
-      type: object
-      properties:
-        Name:
-          description: Name of Product Feature Parameter
-          type: string
-        Value:
-          description: Value of Product Feature Parameter
-          type: string
-    AgreementFeatureParameter1:
       type: object
       properties:
         Name:
@@ -1193,6 +1238,15 @@ components:
           type: string
         Value:
           description: Value of Agreement Feature Parameter
+          type: string
+    AgreementFeatureParameter1:
+      type: object
+      properties:
+        Name:
+          description: Name of Product Feature Parameter
+          type: string
+        Value:
+          description: Value of Product Feature Parameter
           type: string
     AgreementFeatureRequestDto:
       required:
@@ -1208,7 +1262,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter1'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -1232,7 +1286,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: '#/components/schemas/ExternalAccount1'
+          $ref: "#/components/schemas/ExternalAccount"
     BinChunkCreationErrorEvent:
       type: object
       properties:
@@ -1241,7 +1295,7 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
@@ -1254,7 +1308,7 @@ components:
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         'FinancialInstitution ':
           description: Financial institution identifier.
@@ -1299,7 +1353,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
@@ -1357,7 +1411,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
@@ -1386,6 +1440,22 @@ components:
           pattern: \S
           type: string
           nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter1"
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
         Specification:
           description: Description of a configuration option
           type: string
@@ -1393,7 +1463,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter1'
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationOptionDto:
       type: object
       properties:
@@ -1404,7 +1474,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       required:
       - Name
@@ -1473,7 +1543,7 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
@@ -1486,14 +1556,14 @@ components:
           type: string
         FailedDateTime:
           format: date-time
-          description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
     ExecuteActivateCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
@@ -1524,14 +1594,14 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
@@ -1652,7 +1722,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
@@ -1704,7 +1774,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
@@ -1727,7 +1797,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: '#/components/schemas/ExternalAccount'
+          $ref: "#/components/schemas/ExternalAccount1"
     HelixErrorDetails:
       type: object
       properties:
@@ -1737,7 +1807,7 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/HelixMessage'
+            $ref: "#/components/schemas/HelixMessage"
     HelixMessage:
       type: object
       properties:
@@ -1753,6 +1823,16 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
+      - AgreementFeature
+      type: object
+      properties:
+        AgreementFeature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
+    InitiateAgreementFeatureRequest1:
+      required:
       - Feature
       type: object
       properties:
@@ -1765,23 +1845,8 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-    InitiateAgreementFeatureRequest1:
-      required:
-      - AgreementFeature
-      type: object
-      properties:
-        AgreementFeature:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureRequestDto'
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     InitiateAgreementFeatureResponse:
-      type: object
-      properties:
-        Id:
-          type: string
-    InitiateAgreementFeatureResponse1:
       type: object
       properties:
         Id:
@@ -1790,6 +1855,11 @@ components:
           type: integer
         Feature:
           description: Identification of Feature
+          type: string
+    InitiateAgreementFeatureResponse1:
+      type: object
+      properties:
+        Id:
           type: string
     InitiateAgreementRequest:
       required:
@@ -1822,7 +1892,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -1833,7 +1903,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount1'
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1843,19 +1913,6 @@ components:
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          type: string
-          nullable: false
-        Status:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationRequest1:
       required:
       - AgreementFeature
       type: object
@@ -1872,17 +1929,30 @@ components:
         FacilityStatus:
           description: Status of Facility Allocation
           type: string
+    InitiateFacilityAllocationRequest1:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          description: Feature ID of Agreement Feature
+          minLength: 1
+          type: string
+          nullable: false
+        Status:
+          description: Status of Facility Allocation
+          type: string
     InitiateFacilityAllocationResponse:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocayion
+          description: Unique identifier of a Facility Allocation
           type: string
     InitiateFacilityAllocationResponse1:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocation
+          description: Unique identifier of a Facility Allocayion
           type: string
     InitiatePaymentCardFacilityRequest:
       required:
@@ -1918,7 +1988,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/PaymentCardInvolvement'
+            $ref: "#/components/schemas/PaymentCardInvolvement"
         OpeningDate:
           description: Date on which the PaymentCardFacility and related basic services
             are effectively operational for the Account owner <br/> Format must be
@@ -1929,7 +1999,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount1"
     InitiatePaymentCardFacilityResponse:
       type: object
       properties:
@@ -1974,11 +2044,11 @@ components:
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
@@ -2012,7 +2082,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -2097,6 +2167,7 @@ components:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
             \ GenderNeutral"
+          maxLength: 20
           type: string
         GivenName:
           description: First name of a person
@@ -2132,17 +2203,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
     Phone:
       required:
       - Type
@@ -2267,7 +2338,7 @@ components:
       properties:
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
     RegisterConfigurationOptionRequest:
       required:
@@ -2285,7 +2356,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -2319,7 +2390,6 @@ components:
     RegisterOrganisationRequest:
       required:
       - FinancialInstitution
-      - Brand
       - TradingName
       type: object
       properties:
@@ -2333,9 +2403,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -2361,17 +2429,16 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
       - Surname
       - FinancialInstitution
-      - Brand
       type: object
       properties:
         ExternalIdentification:
@@ -2383,6 +2450,7 @@ components:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
             \ GenderNeutral"
+          maxLength: 20
           type: string
         GivenName:
           description: First name of a person
@@ -2418,17 +2486,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the person
@@ -2439,9 +2507,7 @@ components:
         Brand:
           description: Identification of the brand associated with the person
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
     RegisterPersonResponse:
       type: object
       properties:
@@ -2578,10 +2644,10 @@ components:
           description: List of PaymentInstrument
           type: array
           items:
-            $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+            $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
     RequestGetCVV2Request:
       required:
@@ -2671,11 +2737,11 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveAgreementFeatureParameterResponse1:
       type: object
       properties:
@@ -2691,40 +2757,23 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter1'
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     RetrieveAgreementFeatureRequest:
-      type: object
-      properties:
-        capabilityName:
-          type: string
-    RetrieveAgreementFeatureRequest1:
       type: object
       properties:
         capabilityName:
           description: Name of the capability
           type: string
-    RetrieveAgreementFeatureResponse:
+    RetrieveAgreementFeatureRequest1:
       type: object
       properties:
-        Identification:
+        capabilityName:
           type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        Product:
-          type: string
-        Status:
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeature'
-    RetrieveAgreementFeatureResponse1:
+    RetrieveAgreementFeatureResponse:
       type: object
       properties:
         Identification:
@@ -2745,19 +2794,25 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeature1'
-    RetrieveAgreementResponse:
+            $ref: "#/components/schemas/AgreementFeature"
+    RetrieveAgreementFeatureResponse1:
       type: object
       properties:
         Identification:
           type: string
         FinancialInstitution:
           type: string
+        Brand:
+          type: string
         Product:
           type: string
         Status:
           type: string
-    RetrieveAgreementResponse1:
+        AgreementFeature:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeature1"
+    RetrieveAgreementResponse:
       required:
       - AgreementInvolvement
       type: object
@@ -2787,7 +2842,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -2796,7 +2851,18 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount1'
+            $ref: "#/components/schemas/ExternalAccount"
+    RetrieveAgreementResponse1:
+      type: object
+      properties:
+        Identification:
+          type: string
+        FinancialInstitution:
+          type: string
+        Product:
+          type: string
+        Status:
+          type: string
     RetrieveBrandResponse:
       required:
       - Name
@@ -2810,7 +2876,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of the Brand
         Email:
           description: Email of the Brand
@@ -2861,7 +2927,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter1'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
       - FacilityIdentification
@@ -2885,13 +2951,14 @@ components:
         Id:
           format: int64
           type: integer
-        PaymentCardFacility:
-          format: int64
-          type: integer
+        Agreement:
+          type: string
         AgreementFeature:
           format: int64
           type: integer
-        FacilityData:
+        Capability:
+          type: string
+        Facility:
           type: string
         CreationDateTime:
           type: string
@@ -2903,14 +2970,13 @@ components:
         Id:
           format: int64
           type: integer
-        Agreement:
-          type: string
+        PaymentCardFacility:
+          format: int64
+          type: integer
         AgreementFeature:
           format: int64
           type: integer
-        Capability:
-          type: string
-        Facility:
+        FacilityData:
           type: string
         CreationDateTime:
           type: string
@@ -2929,7 +2995,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOptionDto'
+            $ref: "#/components/schemas/ConfigurationOptionDto"
     RetrieveFiResponse:
       required:
       - Name
@@ -2943,7 +3009,7 @@ components:
           nullable: false
         RegistrationAddress:
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: "#/components/schemas/RegistrationAddress"
           - description: Registered address of Financial Institution
         Email:
           description: Email address of Financial Institution
@@ -2967,7 +3033,6 @@ components:
     RetrieveOrganisationResponse:
       required:
       - FinancialInstitution
-      - Brand
       - TradingName
       type: object
       properties:
@@ -2981,9 +3046,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -3009,12 +3072,12 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
@@ -3056,7 +3119,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/PaymentCardInvolvement'
+            $ref: "#/components/schemas/PaymentCardInvolvement"
         OpeningDate:
           description: Date on which the PaymentCardFacility and related basic services
             are effectively operational for the Account owner <br/> Format must be
@@ -3065,13 +3128,13 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount1"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
         FepId:
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
@@ -3129,7 +3192,8 @@ components:
           type: string
         BlockedDateTime:
           format: date-time
-          description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which the payment instrument was blocked\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -3144,8 +3208,8 @@ components:
           type: string
         PlasticCreationDateTime:
           format: date-time
-          description: Date and time at which plastic created for the payment instrument
-            (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
@@ -3257,17 +3321,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/PostalAddress"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         enabled:
           type: boolean
     RetrieveProductFeatureListRequest:
@@ -3299,7 +3363,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOptionDto'
+            $ref: "#/components/schemas/ConfigurationOptionDto"
     RetrieveProductResponse:
       type: object
       properties:
