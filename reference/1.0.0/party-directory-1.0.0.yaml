@@ -418,19 +418,18 @@ paths:
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Name Prefix accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
-            \ : Name Prefix is not valid.</em></li><li><em>HLXPTDTBR001 : Given Name\
-            \ required, please provide value.</em></li><li><em>HLXPTDTBR001 : Given\
-            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Given Name\
-            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Middle\
-            \ Name accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Middle\
-            \ Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Surname required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Surname accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Surname\
-            \ exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Birth\
-            \ Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth Date\
-            \  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth Date\
-            \ must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 : Language\
+            \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
+            \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname required,\
+            \ please provide value.</em></li><li><em>HLXPTDTBR001 : Surname invalid\
+            \ - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
+            \ Date must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 : Language\
             \ code must be ISO language code.</em></li><li><em>HLXPTDTBR001 : Memorable\
             \ word accepts alphabets only.</em></li><li><em>HLXPTDTBR001 : Memorable\
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -858,8 +857,9 @@ paths:
             \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
-            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
-            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname required,\
+            \ please provide value.</em></li><li><em>HLXPTDTBR001 : Surname invalid\
+            \ - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
             \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
@@ -2164,39 +2164,37 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: Specifies the terms used to formally address a person.
           maxLength: 20
           type: string
         GivenName:
-          description: First name of a person
+          description: First name of a person.
           maxLength: 35
           type: string
         MiddleName:
-          description: Second name of a person
+          description: Second name of a person.
           maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
+            \ name. In many cases, a surname is a family name."
           maxLength: 35
           type: string
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
-            format (YYYY-MM-DD)
+            format (YYYY-MM-DD).
           type: string
         Language:
           description: "Language in which a person communicates <br> Valid values\
-            \ are : 2 character ISO Language Codes"
+            \ are : 2 character ISO Language Codes."
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
-            authentication
+            authentication.
           maxLength: 20
           type: string
         MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
+          description: Reminder set by the person to remember the memorable word.
           maxLength: 35
           type: string
         PostalAddress:
@@ -2447,39 +2445,37 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: Specifies the terms used to formally address a person.
           maxLength: 20
           type: string
         GivenName:
-          description: First name of a person
+          description: First name of a person.
           maxLength: 35
           type: string
         MiddleName:
-          description: Second name of a person
+          description: Second name of a person.
           maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
+            \ name. In many cases, a surname is a family name."
           maxLength: 35
           type: string
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
-            format (YYYY-MM-DD)
+            format (YYYY-MM-DD).
           type: string
         Language:
           description: "Language in which a person communicates <br> Valid values\
-            \ are : 2 character ISO Language Codes"
+            \ are : 2 character ISO Language Codes."
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
-            authentication
+            authentication.
           maxLength: 20
           type: string
         MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
+          description: Reminder set by the person to remember the memorable word.
           maxLength: 35
           type: string
         PostalAddress:
