@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-35
+  version: 1.1.0-44
 tags:
 - name: Customer Management
-  x-proxy-name: Validate person status
+  x-proxy-name: Add an Organisation
   x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
@@ -435,9 +435,8 @@ paths:
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Incomplete Postal Address information received in request.</em></li>Street\
+            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -448,27 +447,11 @@ paths:
             \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Postal Address - Contact Preference is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXPTDTBR001 : Phone - Type required, please\
-            \ provide value.</em></li><li><em>HLXPTDTBR001 : Phone - Type is not valid,\
-            \ please provide valid value.</em></li><li><em>HLXPTDTBR001 : Phone/Mobile\
-            \ Number required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Incomplete Phone information received in request.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Contact Preference is not valid, please provide\
-            \ valid value.</em></li><li><em>HLXPTDTBR001 : Email required, please\
-            \ provide value.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum\
-            \ 256 length allowed.</em></li><li><em>HLXPTDTBR001 : Email is not valid,\
-            \ please provide valid value.</em></li></ul>"
+            \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
+            \ : Email exceeds maximum 256 length allowed.</em></li>></ul>"
           content:
             application/json:
               schema:
@@ -869,9 +852,8 @@ paths:
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address  information in request is already present on the person.</em></li>Street\
+            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -882,27 +864,12 @@ paths:
             \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Country is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Postal Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Postal Address - Contact Preference is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXPTDTBR001 : Phone - Type required, please\
-            \ provide value.</em></li><li><em>HLXPTDTBR001 : Phone - Type is not valid,\
-            \ please provide valid value.</em></li><li><em>HLXPTDTBR001 : Phone/Mobile\
-            \ Number required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone  information in request is already present on the person.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - Contact Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Phone - SMS Preference is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
-            \ : Electronic Address - Contact Preference is not valid, please provide\
-            \ valid value.</em></li><li><em>HLXPTDTBR001 : Email required, please\
-            \ provide value.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum\
-            \ 256 length allowed.</em></li><li><em>HLXPTDTBR001 : Email is not valid,\
-            \ please provide valid value.</em></li></ul>"
+            \ : Electronic Address  information in request is already present on the\
+            \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
+            \ allowed.</em></li>></ul>"
           content:
             application/json:
               schema:
@@ -1205,7 +1172,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -1225,7 +1192,11 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -1234,19 +1205,19 @@ components:
       type: object
       properties:
         Name:
-          description: Name of Agreement Feature Parameter
+          description: Name of Product Feature Parameter
           type: string
         Value:
-          description: Value of Agreement Feature Parameter
+          description: Value of Product Feature Parameter
           type: string
     AgreementFeatureParameter1:
       type: object
       properties:
         Name:
-          description: Name of Product Feature Parameter
+          description: Name of Agreement Feature Parameter
           type: string
         Value:
-          description: Value of Product Feature Parameter
+          description: Value of Agreement Feature Parameter
           type: string
     AgreementFeatureRequestDto:
       required:
@@ -1262,7 +1233,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -1285,8 +1256,14 @@ components:
     AgreementListRequest:
       type: object
       properties:
+        Person:
+          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
+            \ plays the role of contact (FECID)"
+          type: string
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
+          $ref: "#/components/schemas/ExternalAccount1"
+        validRequest:
+          type: boolean
     BinChunkCreationErrorEvent:
       type: object
       properties:
@@ -1589,6 +1566,36 @@ components:
         PAN:
           description: Primary Account Number
           type: string
+    ExecuteClosureRequest:
+      type: object
+      properties:
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+    ExecuteClosureResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of an Account, as assigned by the account\
+            \ servicer (FEAID)."
+          type: string
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
+        ClosingDate:
+          format: date-time
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
     ExecuteDeactivateCardResponse:
       type: object
       properties:
@@ -1797,7 +1804,7 @@ components:
       type: object
       properties:
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
+          $ref: "#/components/schemas/ExternalAccount"
     HelixErrorDetails:
       type: object
       properties:
@@ -1823,16 +1830,6 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-      - AgreementFeature
-      type: object
-      properties:
-        AgreementFeature:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureRequestDto"
-    InitiateAgreementFeatureRequest1:
-      required:
       - Feature
       type: object
       properties:
@@ -1845,8 +1842,23 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    InitiateAgreementFeatureRequest1:
+      required:
+      - AgreementFeature
+      type: object
+      properties:
+        AgreementFeature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
     InitiateAgreementFeatureResponse:
+      type: object
+      properties:
+        Id:
+          type: string
+    InitiateAgreementFeatureResponse1:
       type: object
       properties:
         Id:
@@ -1855,11 +1867,6 @@ components:
           type: integer
         Feature:
           description: Identification of Feature
-          type: string
-    InitiateAgreementFeatureResponse1:
-      type: object
-      properties:
-        Id:
           type: string
     InitiateAgreementRequest:
       required:
@@ -1903,7 +1910,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
+            $ref: "#/components/schemas/ExternalAccount1"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1913,6 +1920,19 @@ components:
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          description: Feature ID of Agreement Feature
+          minLength: 1
+          type: string
+          nullable: false
+        Status:
+          description: Status of Facility Allocation
+          type: string
+    InitiateFacilityAllocationRequest1:
       required:
       - AgreementFeature
       type: object
@@ -1929,30 +1949,17 @@ components:
         FacilityStatus:
           description: Status of Facility Allocation
           type: string
-    InitiateFacilityAllocationRequest1:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          type: string
-          nullable: false
-        Status:
-          description: Status of Facility Allocation
-          type: string
     InitiateFacilityAllocationResponse:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocation
+          description: Unique identifier of a Facility Allocayion
           type: string
     InitiateFacilityAllocationResponse1:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocayion
+          description: Unique identifier of a Facility Allocation
           type: string
     InitiatePaymentCardFacilityRequest:
       required:
@@ -1999,7 +2006,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     InitiatePaymentCardFacilityResponse:
       type: object
       properties:
@@ -2733,7 +2740,7 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        AgreementFeatureParameter:
+        Agreement Feature Parameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -2753,7 +2760,11 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
@@ -2762,14 +2773,31 @@ components:
       type: object
       properties:
         capabilityName:
-          description: Name of the capability
           type: string
     RetrieveAgreementFeatureRequest1:
       type: object
       properties:
         capabilityName:
+          description: Name of the capability
           type: string
     RetrieveAgreementFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        Product:
+          type: string
+        Status:
+          type: string
+        AgreementFeature:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeature"
+    RetrieveAgreementFeatureResponse1:
       type: object
       properties:
         Identification:
@@ -2790,25 +2818,19 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeature"
-    RetrieveAgreementFeatureResponse1:
+            $ref: "#/components/schemas/AgreementFeature1"
+    RetrieveAgreementResponse:
       type: object
       properties:
         Identification:
           type: string
         FinancialInstitution:
           type: string
-        Brand:
-          type: string
         Product:
           type: string
         Status:
           type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeature1"
-    RetrieveAgreementResponse:
+    RetrieveAgreementResponse1:
       required:
       - AgreementInvolvement
       type: object
@@ -2847,18 +2869,24 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount"
-    RetrieveAgreementResponse1:
-      type: object
-      properties:
-        Identification:
+            $ref: "#/components/schemas/ExternalAccount1"
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
           type: string
-        FinancialInstitution:
+        ClosingDate:
+          format: date-time
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
-        Product:
-          type: string
-        Status:
-          type: string
+        enabled:
+          type: boolean
     RetrieveBrandResponse:
       required:
       - Name
@@ -2923,7 +2951,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
+            $ref: "#/components/schemas/AgreementFeatureParameter1"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
       - FacilityIdentification
@@ -2947,14 +2975,13 @@ components:
         Id:
           format: int64
           type: integer
-        Agreement:
-          type: string
+        PaymentCardFacility:
+          format: int64
+          type: integer
         AgreementFeature:
           format: int64
           type: integer
-        Capability:
-          type: string
-        Facility:
+        FacilityData:
           type: string
         CreationDateTime:
           type: string
@@ -2966,13 +2993,14 @@ components:
         Id:
           format: int64
           type: integer
-        PaymentCardFacility:
-          format: int64
-          type: integer
+        Agreement:
+          type: string
         AgreementFeature:
           format: int64
           type: integer
-        FacilityData:
+        Capability:
+          type: string
+        Facility:
           type: string
         CreationDateTime:
           type: string
@@ -3124,7 +3152,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
