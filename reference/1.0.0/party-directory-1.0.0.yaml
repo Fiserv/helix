@@ -588,9 +588,7 @@ paths:
                     maxLength: 35
                     type: string
                   NamePrefix:
-                    description: "Specifies the terms used to formally address a person\
-                      \ <br> Valid values are : <br> Doctor<br> Mister <br> Miss <br>\
-                      \ Madam <br> GenderNeutral"
+                    description: "Specifies the terms used to formally address a person"
                     type: string
                   GivenName:
                     description: First name of a person
@@ -775,9 +773,7 @@ paths:
                     maxLength: 35
                     type: string
                   NamePrefix:
-                    description: "Specifies the terms used to formally address a person\
-                      \ <br> Valid values are : <br> Doctor<br> Mister <br> Miss <br>\
-                      \ Madam <br> GenderNeutral"
+                    description: "Specifies the terms used to formally address a person"
                     type: string
                   GivenName:
                     description: First name of a person
@@ -868,8 +864,8 @@ paths:
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Electronic Address  information in request is already present on the\
-            \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
-            \ allowed.</em></li>></ul>"
+            \ person.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
+            \ allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3303,9 +3299,7 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: "Specifies the terms used to formally address a person <br>"
           type: string
         GivenName:
           description: First name of a person
