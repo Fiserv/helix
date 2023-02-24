@@ -588,9 +588,7 @@ paths:
                     maxLength: 35
                     type: string
                   NamePrefix:
-                    description: "Specifies the terms used to formally address a person\
-                      \ <br> Valid values are : <br> Doctor<br> Mister <br> Miss <br>\
-                      \ Madam <br> GenderNeutral"
+                    description: "Specifies the terms used to formally address a person"
                     type: string
                   GivenName:
                     description: First name of a person
@@ -775,9 +773,7 @@ paths:
                     maxLength: 35
                     type: string
                   NamePrefix:
-                    description: "Specifies the terms used to formally address a person\
-                      \ <br> Valid values are : <br> Doctor<br> Mister <br> Miss <br>\
-                      \ Madam <br> GenderNeutral"
+                    description: "Specifies the terms used to formally address a person"
                     type: string
                   GivenName:
                     description: First name of a person
@@ -3303,9 +3299,7 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: "Specifies the terms used to formally address a person <br>"
           type: string
         GivenName:
           description: First name of a person
