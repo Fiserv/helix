@@ -2,9 +2,11 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-6
+  version: 1.1.0-7
 tags:
   - name: Customer Access Entitlement
+    x-proxy-name: Update Restriction
+    x-group-name: Customer Access Entitlement
 paths:
   /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
     put:
@@ -107,6 +109,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Update Restriction
+      x-group-name: Customer Access Entitlement
   /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/AuthRestriction/Retrieve:
     get:
       tags:
@@ -214,6 +218,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Restriction
+      x-group-name: Customer Access Entitlement
 components:
   schemas:
     Account:
