@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-128
+  version: 1.1.0-129
 tags:
   - name: Helix Core
 paths:
@@ -1489,6 +1489,16 @@ paths:
                       Values are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM>
                       STRM (ShortTerm) </EM></LI> <LI><EM> TRAN (Transient) </EM></LI>
                       <LI><EM> NDIG (NonDigital) </EM></LI></UL>
+                    type: string
+                  ContactlessOptOutSwitch:
+                    description: Indicates customer preference for contact versus
+                      contactless card. This option can only be used if the product
+                      supports contactless cards. Valid values are Yes and No. The
+                      field is set to Yes if a customer wishes to opt out of contactless
+                      card (i.e. they prefer to have contact only card). The field
+                      is set to No if a customer wishes to opt in to contactless card.
+                      The field will not be present in the response if there is no
+                      customer preference.
                     type: string
                   enabled:
                     type: boolean
@@ -4465,6 +4475,15 @@ components:
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
             </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
             </EM></LI></UL>
+          type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field is set to Yes if a customer
+            wishes to opt out of contactless card (i.e. they prefer to have contact
+            only card). The field is set to No if a customer wishes to opt in to contactless
+            card. The field will not be present in the response if there is no customer
+            preference.
           type: string
         enabled:
           type: boolean
