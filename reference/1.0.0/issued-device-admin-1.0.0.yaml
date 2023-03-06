@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-126
+  version: 1.1.0-128
 tags:
   - name: Helix Core
 paths:
@@ -2106,6 +2106,14 @@ components:
           description: Flag to describe if the Card Maintenance Fee to be waived once
             or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
             PERM (Permanent) </EM></LI></UL>
+          type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
           type: string
         OverrideParameterValues:
           type: array
