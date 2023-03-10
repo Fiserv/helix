@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-54
+  version: 1.1.0-66
 tags:
   - name: Account Management
     x-proxy-name: Validate account status
@@ -584,6 +584,10 @@ paths:
                   Capability:
                     description: Name of the system capability linked to a feature
                     type: string
+                  DefaultIndicator:
+                    description: Default indicator indicates this is default feature
+                      on Agreement. i.e. default on Product while initiating Agreement
+                    type: boolean
                   AgreementFeatureParameter:
                     description: List of Feature Parameter
                     type: array
@@ -636,6 +640,113 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Inquire on an Agreement Feature Parameter
       x-group-name: Agreement Feature Management
+  /Helix/V1/Agreement/{agreementId}/AgreementInvolvement/Update:
+    patch:
+      tags:
+        - Account Management
+      summary: Register/Update agreement involvement for an account
+      description: "This API Is used to update account involvements (e.g. joint account\
+        \ holders). Account involvements specify an involvement (role) of a party\
+        \ in an account (e.g. Account Holder, Power of Attorney etc)"
+      operationId: updateAgreementInvolvement
+      parameters:
+        - name: agreementId
+          in: path
+          description: Unique identifier of an Account
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AgreementInvolvement"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgreementInvolvement"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>GT004GT004\
+            \ : Account number not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
+            \ : Account is closed.</em></li><li><em>AI001AI001 : Agreement Involvement\
+            \ ID not found</em></li><li><em>AI002AI002 : Account Involvement Status\
+            \ cannot be set to False while adding a new Involvement.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AI003AI003\
+            \ : There is an error while persisting Agreement Involvements, please\
+            \ try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Account Involvement Update
+      x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/Closure/Execute:
     post:
       tags:
@@ -1205,6 +1316,8 @@ paths:
                     description: "Date and Time on which the Account was closed by\
                       \ the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
                     type: string
+                  enabled:
+                    type: boolean
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number is not valid.</em></li></ul>"
@@ -1426,7 +1539,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle1"
+            $ref: "#/components/schemas/Bundle"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1508,6 +1621,10 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
@@ -1544,8 +1661,13 @@ components:
         - PartyRole
       type: object
       properties:
+        AgreementInvolvementId:
+          description: "Identifies the account involvement for which the change is\
+            \ to be made. If no AgreementInvolvementID is specified, the system will\
+            \ create a new involvement."
+          type: string
         PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
+          description: Identifies the person (FECID) that's connected to the account.
           maxLength: 37
           pattern: \S
           type: string
@@ -1556,6 +1678,11 @@ components:
           pattern: \S
           type: string
           nullable: false
+        IsActive:
+          description: "Specifies status of the involvement. If it's set to False,\
+            \ then the system will remove the involvement.<br> Valid values are :\
+            \ <br> True, False"
+          type: boolean
     AgreementListRequest:
       type: object
       properties:
@@ -1660,11 +1787,6 @@ components:
           description: Reporting Currency
           type: string
     Bundle:
-      type: object
-      properties:
-        Identification:
-          type: string
-    Bundle1:
       required:
         - Identification
       type: object
@@ -1674,6 +1796,11 @@ components:
           minLength: 1
           type: string
           nullable: false
+    Bundle1:
+      type: object
+      properties:
+        Identification:
+          type: string
     CapabilityCatalog:
       required:
         - Version
@@ -1741,9 +1868,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1760,6 +1884,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3141,6 +3268,10 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
@@ -3229,6 +3360,8 @@ components:
           description: "Date and Time on which the Account was closed by the system.\
             \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        enabled:
+          type: boolean
     RetrieveBrandResponse:
       required:
         - Name
@@ -3272,7 +3405,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle"
+            $ref: "#/components/schemas/Bundle1"
     RetrieveBundleResponse:
       type: object
       properties:
