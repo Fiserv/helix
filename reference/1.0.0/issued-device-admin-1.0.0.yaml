@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-110
+  version: 1.1.0-129
 tags:
   - name: Helix Core
 paths:
@@ -660,6 +660,128 @@ paths:
       x-proxy-name: Retrieve chip data details
       x-group-name: Card Management
       x-api-scope: Internal
+  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ContactLessOptChange/Execute:
+    post:
+      tags:
+        - Helix Core
+      summary: This method is used to opt in/out of contactless card
+      description: This API allows customers to opt in/out of contactless cards.
+      operationId: contactLessOptChange
+      parameters:
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExecuteContactLessOptRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FEPID:
+                    allOf:
+                      - $ref: "#/components/schemas/UUID"
+                      - description: Unique identifier of the payment card (FEPID)
+                  ContactlessOptOutSwitch:
+                    description: Indicates customer preference for contact versus
+                      contactless card.
+                    type: string
+                  CardReplaced:
+                    description: Indicates whether card has been replaced or not
+                    type: boolean
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+            \ : Card is not enabled.</em></li><li><em>HLXIDASID005 : Card is blocked\
+            \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li><li><em>HLXIDASCL002\
+            \ : Contactless opt out is not allowed.</em></li><li><em>HLXIDASCL003\
+            \ : Contactless opt out preference cannot be set to the same value.</em></li><li><em>HLXIDASCR002\
+            \ : Replacement cannot be processed for a non-physical card.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCL001\
+            \ : Contactless opt out failed due to persistence error.</em></li><li><em>HLXIDASCR001\
+            \ : Card Replacement failed due to persistence error.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Opt in/out contactless card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
@@ -1182,7 +1304,8 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
             \ : Card replacement failed, chip sequence exceeds maximum value.</em></li><li><em>HLXIDASAC001\
-            \ : Account is closed.</em></li></ul>"
+            \ : Account is closed.</em></li><li><em>HLXIDASCR002 : Replacement cannot\
+            \ be processed for a non-physical card.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1367,6 +1490,16 @@ paths:
                       STRM (ShortTerm) </EM></LI> <LI><EM> TRAN (Transient) </EM></LI>
                       <LI><EM> NDIG (NonDigital) </EM></LI></UL>
                     type: string
+                  ContactlessOptOutSwitch:
+                    description: Indicates customer preference for contact versus
+                      contactless card. This option can only be used if the product
+                      supports contactless cards. Valid values are Yes and No. The
+                      field is set to Yes if a customer wishes to opt out of contactless
+                      card (i.e. they prefer to have contact only card). The field
+                      is set to No if a customer wishes to opt in to contactless card.
+                      The field will not be present in the response if there is no
+                      customer preference.
+                    type: string
                   enabled:
                     type: boolean
         "400":
@@ -1478,6 +1611,11 @@ paths:
                     description: Date and time when the last authorisation with an
                       invalid PIN was attempted on the card.
                     type: string
+                  ChipData:
+                    allOf:
+                      - $ref: "#/components/schemas/ChipData"
+                      - description: It's an object with chip sequence number and application
+                          transaction counter value
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li></ul>"
@@ -1979,6 +2117,14 @@ components:
             or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
             PERM (Permanent) </EM></LI></UL>
           type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          type: string
         OverrideParameterValues:
           type: array
           items:
@@ -2076,6 +2222,10 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
@@ -2286,6 +2436,15 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
+    ChipData:
+      type: object
+      properties:
+        ApplicationTxnCntr:
+          description: Application Transaction Counter
+          type: string
+        Chip:
+          description: Chip Sequence Number
+          type: string
     CommonChipDataResponse:
       type: object
       properties:
@@ -2438,6 +2597,8 @@ components:
         - FeatureIdentification
         - ProductId
         - FinancialInstitution
+        - AgreementFeatureId
+        - Agreement
       type: object
       properties:
         FeatureId:
@@ -2463,6 +2624,17 @@ components:
           pattern: \S
           type: string
           nullable: false
+        AgreementFeatureId:
+          description: Agreement Feature Id
+          pattern: \S
+          type: string
+          nullable: false
+        Agreement:
+          description: Agreement Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
     ExecuteAssignPANResponse:
       type: object
       properties:
@@ -2473,27 +2645,69 @@ components:
       type: object
       properties:
         ClosureRequestDate:
-          description: Closure Request Date Format must be ISO Date format (YYYY-MM-DD)
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
           type: string
     ExecuteClosureResponse:
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
+          description: "Unique identifier of an Account, as assigned by the account\
+            \ servicer (FEAID)."
           type: string
         IsClosed:
-          description: This field identifies if agreement is closed or not
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
           type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
         ClosingDate:
           format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
+    ExecuteContactLessOptRequest:
+      required:
+        - ContactlessOptOutSwitch
+        - ReplaceCard
+      type: object
+      properties:
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          minLength: 1
           type: string
+          nullable: false
+        ReplaceCard:
+          description: Identifies whether a replacement card needs to be created and
+            sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
+            No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
+    ExecuteContactLessOptResponse:
+      type: object
+      properties:
+        FEPID:
+          allOf:
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card.
+          type: string
+        CardReplaced:
+          description: Indicates whether card has been replaced or not
+          type: boolean
     ExecuteDeactivateCardResponse:
       type: object
       properties:
@@ -3782,6 +3996,10 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
@@ -3856,17 +4074,22 @@ components:
           items:
             $ref: "#/components/schemas/ExternalAccount"
         IsClosed:
-          description: This field identifies if agreement is closed or not
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
           type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
         ClosingDate:
           format: date-time
-          description: "Date on which the Agreement is closed <br/> Format must be\
-            \ ((YYYY-MM-DDThh:mm:ss.sssZ))"
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
-        ClosureRequestDate:
-          description: Date on which the Agreement is requested for Closure <br/>
-            Format must be ISO Date format (YYYY-MM-DD)
-          type: string
+        enabled:
+          type: boolean
     RetrieveBrandResponse:
       required:
         - Name
@@ -4253,6 +4476,15 @@ components:
             </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
             </EM></LI></UL>
           type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field is set to Yes if a customer
+            wishes to opt out of contactless card (i.e. they prefer to have contact
+            only card). The field is set to No if a customer wishes to opt in to contactless
+            card. The field will not be present in the response if there is no customer
+            preference.
+          type: string
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -4430,15 +4662,17 @@ components:
         Status:
           type: string
     SystemUpdateRequest:
-      required:
-        - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
           type: string
-          nullable: false
+        ChipData:
+          allOf:
+            - $ref: "#/components/schemas/ChipData"
+            - description: It's an object with chip sequence number and application
+                transaction counter value
     SystemUpdateResponse:
       type: object
       properties:
@@ -4452,6 +4686,11 @@ components:
           description: Date and time when the last authorisation with an invalid PIN
             was attempted on the card.
           type: string
+        ChipData:
+          allOf:
+            - $ref: "#/components/schemas/ChipData"
+            - description: It's an object with chip sequence number and application
+                transaction counter value
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"

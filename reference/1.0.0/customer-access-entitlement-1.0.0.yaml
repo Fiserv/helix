@@ -1,173 +1,44 @@
 ---
 openapi: 3.0.3
 info:
-  title: agreement
-  version: 1.1.0-66
+  title: customer-access-entitlement
+  version: 1.1.0-8
 tags:
-  - name: Account Management
-    x-proxy-name: Validate account status
-    x-group-name: Account Management
-  - name: Agreement Feature Management
-    x-proxy-name: Inquire on an Agreement Feature
-    x-group-name: Agreement Feature Management
+  - name: Customer Access Entitlement
+    x-proxy-name: Update Restriction
+    x-group-name: Card Management
 paths:
-  /Helix/V1/Agreement/GetList/Request:
-    post:
+  /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
+    put:
       tags:
-        - Account Management
-      summary: This API is used to retrieve the list of accounts for a person (FECID)
-        or an external account.
-      operationId: retrieveAgreementList
+        - Customer Access Entitlement
+      summary: This API updates channel/device based access to products and services
+        that the customer has in place.
+      operationId: updateRestriction
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AgreementListRequest"
+              $ref: "#/components/schemas/UpdateAuthRestrictionRequest"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RetrieveAgreementResponse"
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Clearing System Identification Code required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Clearing System Identification Code is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXAGDTBR001 : Clearing System Identification\
-            \ Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Account Identification required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Person must be at least 36 characters.</em></li><li><em>HLXAGDTBR001\
-            \ : Person exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Person is not valid, please provide valid value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve Account List
-      x-group-name: Account Management
-  /Helix/V1/Agreement/Initiate:
-    post:
-      tags:
-        - Account Management
-      summary: InCR Register a new agreement account
-      description: "This service is used to add a new Account for the given customer\
-        \ (person) to the system, that will also be associated with a card. This service\
-        \ will return a unique FEAID, which is the ID that will identify the account\
-        \ holder within the system."
-      operationId: initiateAgreement
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InitiateAgreementRequest"
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
                 type: object
                 properties:
-                  Identification:
-                    description: "Unique identifier of a Agreement, as assigned by\
-                      \ the account servicer (FEAID)"
-                    maxLength: 37
+                  UniqueIdType:
+                    type: string
+                  UniqueID:
+                    description: Unique identifier of the Restriciton Level
+                    type: string
+                  FreezeAll:
+                    description: Field used to freeze all transactions by cardholder
+                      for a given Payment Instrument
                     type: string
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
-            \ : Financial Institution required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Brand required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Product required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Product is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Product exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Payment Card Involvement required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Opening Date required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Opening Date has to be a valid date.</em></li><li><em>HLXAGDTAD001\
-            \ : Opening Date can't be a future date.</em></li><li><em>HLXAGDTAD001\
-            \ : Party (FECID) required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Party role required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Identification Code required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Identification Code is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXAGDTAD001 : Clearing System Identification\
-            \ Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Account Identification required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Account Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -185,9 +56,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTUN001\
-            \ : Financial Institution not found.</em></li><li><em>HLXAGDTUN002 : Brand\
-            \ not found.</em></li></ul>"
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -205,12 +74,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
-            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
-            \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
-            \ : Party not enabled.</em></li><li><em>HLXAGDTGT013 : Product not found\
-            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT014\
-            \ : Person <person-id> not found under Financial Institution <fi-id>.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -222,8 +86,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
-            \ : There is an error while initiating Agreement, please try again.</em></li></ul>"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -246,225 +109,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Add an Account
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/AgreementFeature/GetList/Request:
-    post:
-      tags:
-        - Agreement Feature Management
-      summary: Retrieve details about an agreement feature parameter
-      description: "This service is used to inquire Agreement Feature parameter details\
-        \ using FEAID, which is the ID that is used to identify the Agreement and\
-        \ filter using the data given in request body."
-      operationId: retrieveAgreementFeatureParameterList
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RetrieveAgreementFeatureRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RetrieveAgreementFeatureResponse"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Inquire on an Agreement Feature Parameter
-      x-group-name: Agreement Feature Management
-  /Helix/V1/Agreement/{agreementId}/AgreementFeature/Initiate:
-    post:
-      tags:
-        - Agreement Feature Management
-      summary: Register a new Agreement Feature
-      description: "This service is used to add a new Agreement Feature. This service\
-        \ will return a unique ID, which is the ID that will identify the agreement\
-        \ feature within the system."
-      operationId: initiateAgreementFeature
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InitiateAgreementFeatureRequest"
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Id:
-                    format: int64
-                    description: Id of Agreement Feature
-                    type: integer
-                  Feature:
-                    description: Identification of Feature
-                    type: string
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Feature required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Feature is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Agreement Feature Parameter required, please provide value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: "Unprocessable Entity <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT009\
-            \ : Agreement Feature already exists for Feature.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Add an Agreement Feature
-      x-group-name: Agreement Feature Management
-  /Helix/V1/Agreement/{agreementId}/AgreementFeature/Retrieve:
+      x-proxy-name: Update Restriction
+      x-group-name: Card Management
+  /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/AuthRestriction/Retrieve:
     get:
       tags:
-        - Agreement Feature Management
-      summary: Retrieve details about an agreement feature
-      description: "This service is used to inquire an Agreement Feature details using\
-        \ agreement identification, which is the ID that is used to identify the Agreement\
-        \ within the system. Capability name can be provided as an optional filter\
-        \ during retrieval. If the capability name is not provided, the API will return\
-        \ all the available agreement feature details."
-      operationId: retrieveAgreementFeatureByCapabilityName
+        - Customer Access Entitlement
+      summary: This API retrieves channel/device based access to products and services
+        that the customer has in place.
+      operationId: retrieveRestriction
       parameters:
-        - name: agreementId
+        - name: UniqueId
           in: path
-          description: Unique identifier of an Agreement
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
           required: true
           schema:
             maxLength: 37
             type: string
-        - name: capabilityName
-          in: query
-          description: Name of the Capability to be used as a filter
+        - name: UniqueIdType
+          in: path
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          required: true
           schema:
+            maxLength: 4
             type: string
       responses:
         "200":
@@ -474,205 +142,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  Identification:
-                    description: Agreement Identification
+                  FreezeAll:
+                    description: Field used to freeze all transactions by cardholder
+                      for a given Payment Instrument
                     type: string
-                  FinancialInstitution:
-                    description: FI to which the Agreement belongs
-                    type: string
-                  Brand:
-                    description: Brand to which the Agreement belongs
-                    type: string
-                  Product:
-                    description: Product to which the Agreement belongs
-                    type: string
-                  Status:
-                    description: Status of the Agreement in the system
-                    type: string
-                  AgreementFeature:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/AgreementFeature"
         "400":
-          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Inquire on an Agreement Feature
-      x-group-name: Agreement Feature Management
-  /Helix/V1/Agreement/{agreementId}/AgreementFeature/{agreementFeatureId}/Retrieve:
-    get:
-      tags:
-        - Agreement Feature Management
-      summary: Retrieve details about an agreement feature parameter
-      description: "This service is used to inquire Agreement Feature Partmeter details\
-        \ using FEAID, which is the ID that is used to identify the Agreement and\
-        \ Agreement Feature Id is Identification key of Agreement Feature within the\
-        \ system ."
-      operationId: retrieveAgreementFeatureParameter
-      parameters:
-        - name: agreementFeatureId
-          in: path
-          description: Unique identifier of an Agreement Feature
-          required: true
-          schema:
-            type: string
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Id:
-                    description: Agreement Feature Identification
-                    type: string
-                  Agreement:
-                    description: Agreement Identification
-                    type: string
-                  Feature:
-                    description: Feature Identification
-                    type: string
-                  Capability:
-                    description: Name of the system capability linked to a feature
-                    type: string
-                  DefaultIndicator:
-                    description: Default indicator indicates this is default feature
-                      on Agreement. i.e. default on Product while initiating Agreement
-                    type: boolean
-                  AgreementFeatureParameter:
-                    description: List of Feature Parameter
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/AgreementFeatureParameter"
-        "400":
-          description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Inquire on an Agreement Feature Parameter
-      x-group-name: Agreement Feature Management
-  /Helix/V1/Agreement/{agreementId}/AgreementInvolvement/Update:
-    patch:
-      tags:
-        - Account Management
-      summary: Register/Update agreement involvement for an account
-      description: "This API Is used to update account involvements (e.g. joint account\
-        \ holders). Account involvements specify an involvement (role) of a party\
-        \ in an account (e.g. Account Holder, Power of Attorney etc)"
-      operationId: updateAgreementInvolvement
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Account
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/AgreementInvolvement"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/AgreementInvolvement"
         "401":
           description: Not Authorized
           content:
@@ -686,8 +165,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>GT004GT004\
-            \ : Account number not found.</em></li></ul>"
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -705,10 +183,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
-            \ : Account is closed.</em></li><li><em>AI001AI001 : Agreement Involvement\
-            \ ID not found</em></li><li><em>AI002AI002 : Account Involvement Status\
-            \ cannot be set to False while adding a new Involvement.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -720,9 +195,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AI003AI003\
-            \ : There is an error while persisting Agreement Involvements, please\
-            \ try again</em></li></ul>"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
           content:
             application/json:
               schema:
@@ -745,699 +218,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Account Involvement Update
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/Closure/Execute:
-    post:
-      tags:
-        - Account Management
-      summary: Initiate for Account Closure
-      description: This service is used to close an account.
-      operationId: closeAgreement
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Account
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExecuteClosureRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Identification:
-                    description: "Unique identifier of an Account, as assigned by\
-                      \ the account servicer (FEAID)."
-                    type: string
-                  IsClosed:
-                    description: This field identifies if an account is closed or
-                      not. Valid values are True and False. This field will be set
-                      to True if an account is closed and it will be set to False
-                      if an account is open.
-                    type: boolean
-                  ClosureRequestDate:
-                    description: The date that was sent through on the account closure
-                      API to indicate when the account was closed on the host system.
-                      Format must be ISO Date format (YYYY-MM-DD).
-                    type: string
-                  ClosingDate:
-                    format: date-time
-                    description: "Date and Time on which the Account was closed by\
-                      \ the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
-                    type: string
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number is not valid.</em></li><li><em>HLXAGDTBR001 : Closure\
-            \ Request Date cannot be a future date.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC002\
-            \ : Account is closed.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC001\
-            \ : There is an error while closing Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Close an account
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/FacilityAllocation/GetFeatureParameter/Retrieve:
-    post:
-      tags:
-        - Account Management
-      summary: "Retrieves Feature Parameters for given Agreement ID, Facility ID and\
-        \ capability."
-      description: This service is used to retrieve Feature Parameters using Facility
-        Allocation and Capability.
-      operationId: retrieveFacilityAllocationFeatureParameters
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            pattern: \S
-            type: string
-            nullable: false
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest1"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Id:
-                    format: int64
-                    description: Id of Facility
-                    type: integer
-                  AgreementFeature:
-                    format: int64
-                    description: Identification of Agreement Feature
-                    type: integer
-                  FacilityIdentification:
-                    description: Identification of Facility
-                    type: string
-                  FacilityStatus:
-                    description: Status of Facility
-                    type: string
-                  Capability:
-                    description: Name of the system capability linked to a feature
-                    type: string
-                  Agreement:
-                    description: Identification of Agreement
-                    type: string
-                  AgreementFeatureParameter:
-                    description: List of Feature Parameter
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/AgreementFeatureParameter"
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Facility Identification is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Facility Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Facility Identification required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Capability required, please provide value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account number not found.</em></li><li><em>HLXAGDTGT012 : Facility\
-            \ does not exist for capability.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT003\
-            \ : There is an error while retrieving Facility Allocation, please try\
-            \ again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve Feature Parameters for Facility Allocation
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Initiate:
-    post:
-      tags:
-        - Account Management
-      summary: Registers a new Facility Allocation for the given FEAID
-      description: "This service is used to add a new Facility Allocation for the\
-        \ given FEAID in the system, This service will return a unique Facility Allocation\
-        \ ID, which will be used to identify the Facility."
-      operationId: initiateFacilityAllocation
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            pattern: \S
-            type: string
-            nullable: false
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InitiateFacilityAllocationRequest"
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Identification:
-                    description: Unique identifier of a Facility Allocation
-                    type: string
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Agreement Feature ID required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Agreement Feature ID is not valid, please provide valid value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li><li><em>HLXAGDTGT008 : Agreement\
-            \ Feature not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD003\
-            \ : There is an error while initiating Facility Allocation, please try\
-            \ again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Add a Facility Allocation
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Retrieve:
-    get:
-      tags:
-        - Account Management
-      summary: Retrieves a Facility Allocation for the given FEAID
-      description: This service is used to retrieve Facility Allocation details for
-        the given FEAID.
-      operationId: retrieveFacilityAllocationList
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RetrieveFacilityAllocationResponse"
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number exceeds maximum 37 length allowed.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account number not found.</em></li><li><em>HLXAGDTGT006 : Facility\
-            \ Allocation not linked to the account.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Facility Allocation, please try\
-            \ again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve a Facility Allocation
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/Retrieve:
-    get:
-      tags:
-        - Account Management
-      summary: Retrieve details about agreement account
-      description: "This service is used to inquire an Account details using FEAID\
-        \ , which is the ID that is used to identify the Account within the system."
-      operationId: retrieveAgreement
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                required:
-                  - AgreementInvolvement
-                type: object
-                properties:
-                  Identification:
-                    description: "Unique identifier of a Agreement, as assigned by\
-                      \ the account servicer (FEAID)"
-                    maxLength: 37
-                    type: string
-                  FinancialInstitution:
-                    description: FI to which the Agreement belongs
-                    maxLength: 37
-                    type: string
-                  Brand:
-                    description: Brand to which the Agreement belongs
-                    maxLength: 37
-                    type: string
-                  Product:
-                    description: Product to which the Agreement belongs
-                    maxLength: 37
-                    type: string
-                  Status:
-                    description: "Status of the Agreement entity in the system <br>\
-                      \ Valid values are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma\
-                      \ <br>Pending"
-                    type: string
-                  AgreementInvolvement:
-                    minItems: 1
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/AgreementInvolvement"
-                  OpeningDate:
-                    description: Date on which the Agreement and related basic services
-                      are effectively operational for the Account owner <br/> Format
-                      must be ISO Date format (YYYY-MM-DD)
-                    type: string
-                  ExternalAccount:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ExternalAccount"
-                  IsClosed:
-                    description: This field identifies if an account is closed or
-                      not. Valid values are True and False. This field will be set
-                      to True if an account is closed and it will be set to False
-                      if an account is open.
-                    type: boolean
-                  ClosureRequestDate:
-                    description: The date that was sent through on the account closure
-                      API to indicate when the account was closed on the host system.
-                      Format must be ISO Date format (YYYY-MM-DD).
-                    type: string
-                  ClosingDate:
-                    format: date-time
-                    description: "Date and Time on which the Account was closed by\
-                      \ the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
-                    type: string
-                  enabled:
-                    type: boolean
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number is not valid.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
-            \ : Account number not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
-            \ : There is an error while retrieving Agreement, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Inquire on an Account
-      x-group-name: Account Management
-  /Helix/V1/Agreement/{agreementId}/Validate:
-    get:
-      tags:
-        - Account Management
-      summary: This method is used to validate the account details for the given FEAID
-      description: "This API allows the user to validate the account details for the\
-        \ given FEAID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>"
-      operationId: validateAgreement
-      parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account cannot be more than 37 characters</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE006\
-            \ : Account not enabled.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT005\
-            \ : There is an error while validating Agreement, please try again</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Validate account status
-      x-group-name: Account Management
+      x-proxy-name: Retrieve Restriction
+      x-group-name: Card Management
 components:
   schemas:
     Account:
@@ -1537,9 +319,14 @@ components:
           items:
             $ref: "#/components/schemas/OverrideParameter"
         Bundle:
+          description: "Bundles are a collection of multiple Features, that can be\
+            \ used to further segment a Product, in order to provide alternate set(s)\
+            \ of features to customers compared to the Product default Features. For\
+            \ example different card types (virtual/physical), card designs, card\
+            \ fees etc. or any combination of these during the onboarding process."
           type: array
           items:
-            $ref: "#/components/schemas/Bundle"
+            $ref: "#/components/schemas/BundleRequestDto"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1578,6 +365,9 @@ components:
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card
+          type: string
+        DigitalCardType:
+          description: Indicates the type of digital card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -1661,13 +451,8 @@ components:
         - PartyRole
       type: object
       properties:
-        AgreementInvolvementId:
-          description: "Identifies the account involvement for which the change is\
-            \ to be made. If no AgreementInvolvementID is specified, the system will\
-            \ create a new involvement."
-          type: string
         PartyIdentification:
-          description: Identifies the person (FECID) that's connected to the account.
+          description: Identifies the person which plays the role of contact ( FECID)
           maxLength: 37
           pattern: \S
           type: string
@@ -1678,11 +463,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        IsActive:
-          description: "Specifies status of the involvement. If it's set to False,\
-            \ then the system will remove the involvement.<br> Valid values are :\
-            \ <br> True, False"
-          type: boolean
     AgreementListRequest:
       type: object
       properties:
@@ -1694,113 +474,46 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
-    BrandEntryAddRequest:
-      required:
-        - Name
-        - FinancialInstitutionIdentification
-        - Identification
-        - ReportingCurrency
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Identification:
-          description: Identification of the Brand
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        ReportingCurrency:
-          description: Reporting Currency
-          pattern: \S
-          type: string
-          nullable: false
-        CountryOfOperation:
-          description: Country of Operation
-          maxLength: 2
-          type: string
-    BrandRegisterResponse:
-      type: object
-      properties:
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        Name:
-          description: Name of Brand
-          type: string
-    BrandUpdateRequest:
-      required:
-        - Name
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
     Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    BundleCommonDto:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    BundleRequestDto:
       required:
         - Identification
       type: object
       properties:
         Identification:
-          description: Identification of Bundle
-          minLength: 1
+          description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
+            \ be processed for the card"
+          pattern: \S
           type: string
           nullable: false
-    Bundle1:
-      type: object
-      properties:
-        Identification:
-          type: string
     CapabilityCatalog:
       required:
         - Version
@@ -1819,6 +532,15 @@ components:
           nullable: false
         CapabilityDefinition:
           description: Definition of Capability
+          type: string
+    ChipData:
+      type: object
+      properties:
+        ApplicationTxnCntr:
+          description: Application Transaction Counter
+          type: string
+        Chip:
+          description: Chip Sequence Number
           type: string
     CommonChipDataResponse:
       type: object
@@ -1972,6 +694,8 @@ components:
         - FeatureIdentification
         - ProductId
         - FinancialInstitution
+        - AgreementFeatureId
+        - Agreement
       type: object
       properties:
         FeatureId:
@@ -1993,6 +717,17 @@ components:
           nullable: false
         FinancialInstitution:
           description: Financial Institution Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        AgreementFeatureId:
+          description: Agreement Feature Id
+          pattern: \S
+          type: string
+          nullable: false
+        Agreement:
+          description: Agreement Id
           maxLength: 37
           pattern: \S
           type: string
@@ -2033,6 +768,43 @@ components:
           description: "Date and Time on which the Account was closed by the system.\
             \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+    ExecuteContactLessOptRequest:
+      required:
+        - ContactlessOptOutSwitch
+        - ReplaceCard
+      type: object
+      properties:
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          minLength: 1
+          type: string
+          nullable: false
+        ReplaceCard:
+          description: Identifies whether a replacement card needs to be created and
+            sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
+            No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
+    ExecuteContactLessOptResponse:
+      type: object
+      properties:
+        FEPID:
+          allOf:
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment card (FEPID)
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card.
+          type: string
+        CardReplaced:
+          description: Indicates whether card has been replaced or not
+          type: boolean
     ExecuteDeactivateCardResponse:
       type: object
       properties:
@@ -2058,6 +830,13 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecutePINTryCounterResetResponse:
+      type: object
+      properties:
+        FEPID:
+          allOf:
+            - $ref: "#/components/schemas/UUID"
+            - description: Unique identifier of the payment instrument (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -2075,13 +854,37 @@ components:
           pattern: \S
           type: string
           nullable: false
-    ExecuteUnlinkFeatureRequest:
+    ExecuteUnlinkBundleFeatureRequest:
       type: object
       properties:
         Feature:
           type: array
           items:
             $ref: "#/components/schemas/Feature"
+    ExecuteUnlinkProductFeatureRequest:
+      required:
+        - RequestType
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          minLength: 1
+          type: string
+          nullable: false
+    ExecuteUnlinkProductFeatureResponse:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          type: string
     ExecuteValidateCVV2Request:
       required:
         - ExpiryDate
@@ -2192,38 +995,6 @@ components:
           maxLength: 37
           type: string
     Feature1:
-      required:
-        - Identification
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        DefaultIndicator:
-          description: Default feature indicator
-          type: string
-    Feature2:
-      type: object
-      properties:
-        Identification:
-          description: Identification of the feature
-          type: string
-        Name:
-          description: Name of a feature
-          type: string
-        Specification:
-          description: Description of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        DefaultIndicator:
-          description: Flag to indicate default feature
-          type: boolean
-    Feature3:
       type: object
       properties:
         Identification:
@@ -2241,6 +1012,38 @@ components:
         CapabilityVersion:
           description: Version of the system capability linked to a feature
           type: string
+    Feature2:
+      required:
+        - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        DefaultIndicator:
+          description: Default feature indicator
+          type: string
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Flag to indicate default feature
+          type: boolean
     FeatureOverride:
       type: object
       properties:
@@ -2255,92 +1058,6 @@ components:
           type: string
         CapabilityVersion:
           description: Capability version
-          type: string
-    FiRegisterRequest:
-      required:
-        - Name
-        - Identification
-        - InvoiceCurrency
-      type: object
-      properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of Financial Institution
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          type: string
-        Status:
-          description: Status of Financial Institution in the System
-          type: string
-        Identification:
-          description: Identification of the financial institution
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        InvoiceCurrency:
-          description: Invoice Currency
-          pattern: \S
-          type: string
-          nullable: false
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
-          type: string
-    FiRegisterResponse:
-      type: object
-      properties:
-        Identification:
-          description: Identification of Financial Institution
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          type: string
-        Name:
-          description: Name of Financial Institution
-          type: string
-    FiUpdateRequest:
-      required:
-        - Name
-      type: object
-      properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of Financial Institution
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          type: string
-        Status:
-          description: Status of Financial Institution in the System
-          type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
           type: string
     HelixErrorDetails:
       type: object
@@ -3040,7 +1757,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/Feature1"
+            $ref: "#/components/schemas/Feature2"
     RegisterProductFeatureResponse:
       type: object
       properties:
@@ -3079,64 +1796,6 @@ components:
       properties:
         Identification:
           type: string
-    RegistrationAddress:
-      description: Registered Address
-      required:
-        - Country
-      type: object
-      properties:
-        AddressType:
-          description: Type of Address
-          type: string
-        StreetName:
-          description: Name of Street
-          maxLength: 70
-          type: string
-        BuildingNumber:
-          description: Building Number
-          maxLength: 35
-          type: string
-        BuildingName:
-          description: Name of Building
-          maxLength: 70
-          type: string
-        PostOfficeBox:
-          description: Post Box Number
-          maxLength: 16
-          type: string
-        PostalCode:
-          description: Postal Code
-          maxLength: 16
-          type: string
-        AddressLine1:
-          description: Address Line 1
-          maxLength: 70
-          type: string
-        AddressLine2:
-          description: Address Line 2
-          maxLength: 70
-          type: string
-        AddressLine3:
-          description: Address Line 3
-          maxLength: 70
-          type: string
-        AddressLine4:
-          description: Address Line 4
-          maxLength: 70
-          type: string
-        TownName:
-          description: Name of Town / City
-          maxLength: 35
-          type: string
-        CountrySubDivision:
-          description: Subdivision of Country
-          maxLength: 35
-          type: string
-        Country:
-          description: Country
-          pattern: \S
-          type: string
-          nullable: false
     ReissueCardRequest:
       required:
         - FinancialInstitution
@@ -3360,44 +2019,12 @@ components:
           description: "Date and Time on which the Account was closed by the system.\
             \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
-        enabled:
-          type: boolean
-    RetrieveBrandResponse:
-      required:
-        - Name
+    RetrieveAuthRestrictionResponse:
       type: object
       properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of the Brand
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
+        FreezeAll:
+          description: Field used to freeze all transactions by cardholder for a given
+            Payment Instrument
           type: string
     RetrieveBundleListRequest:
       type: object
@@ -3405,7 +2032,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: "#/components/schemas/Bundle1"
+            $ref: "#/components/schemas/Bundle"
     RetrieveBundleResponse:
       type: object
       properties:
@@ -3429,7 +2056,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/Feature3"
+            $ref: "#/components/schemas/Feature1"
     RetrieveCapabilityResponse:
       type: object
       properties:
@@ -3543,40 +2170,6 @@ components:
         CreateAgreementFeature:
           type: string
         CreateFacility:
-          type: string
-    RetrieveFiResponse:
-      required:
-        - Name
-      type: object
-      properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
-          type: string
-          nullable: false
-        RegistrationAddress:
-          allOf:
-            - $ref: "#/components/schemas/RegistrationAddress"
-            - description: Registered address of Financial Institution
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          type: string
-        Status:
-          description: Status of Financial Institution in the System
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
           type: string
     RetrieveOrganisationResponse:
       required:
@@ -3742,6 +2335,12 @@ components:
           format: date-time
           description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible Response Values
+            are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
+            </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
+            </EM></LI></UL>
+          type: string
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -3898,7 +2497,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/Feature2"
+            $ref: "#/components/schemas/Feature3"
     RetrieveProductResponse:
       type: object
       properties:
@@ -3919,30 +2518,111 @@ components:
         Status:
           type: string
     SystemUpdateRequest:
-      required:
-        - InvalidPinTryCounter
       type: object
       properties:
         InvalidPinTryCounter:
-          description: Invalid PIN Tries.
-          minLength: 1
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
           type: string
-          nullable: false
+        ChipData:
+          allOf:
+            - $ref: "#/components/schemas/ChipData"
+            - description: It's an object with chip sequence number and application
+                transaction counter value
     SystemUpdateResponse:
       type: object
       properties:
         InvalidPinTryCounter:
           format: int32
-          description: Invalid PIN Tries.
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
           type: integer
         LastInvalidPinTryDateTime:
           format: date-time
-          description: Last Invalid PIN was attempted.
+          description: Date and time when the last authorisation with an invalid PIN
+            was attempted on the card.
           type: string
+        ChipData:
+          allOf:
+            - $ref: "#/components/schemas/ChipData"
+            - description: It's an object with chip sequence number and application
+                transaction counter value
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    UpdateAuthRestrictionRequest:
+      required:
+        - UniqueIdType
+        - UniqueId
+        - FreezeAll
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          minLength: 1
+          type: string
+          nullable: false
+        UniqueId:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        FreezeAll:
+          description: Field used to freeze all transactions by cardholder for a given
+            Payment Instrument
+          minLength: 1
+          type: string
+          nullable: false
+    UpdateAuthRestrictionResponse:
+      type: object
+      properties:
+        UniqueIdType:
+          type: string
+        UniqueID:
+          description: Unique identifier of the Restriciton Level
+          type: string
+        FreezeAll:
+          description: Field used to freeze all transactions by cardholder for a given
+            Payment Instrument
+          type: string
+    UpdateBundleRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        validRequest:
+          type: boolean
+    UpdateBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
     UpdateFeatureRequest:
       required:
         - Name
