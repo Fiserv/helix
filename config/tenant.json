@@ -23,7 +23,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["party-directory-1.0.0", "payment-card-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "event-catalog-1.0.0"]
+        "apiSpecFileNames": ["party-directory-1.0.0", "payment-card-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "event-catalog-1.0.0", "account-servicing-1.0.0"]
       }
   ],
   "product": {
