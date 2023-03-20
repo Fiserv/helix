@@ -148,7 +148,7 @@ paths:
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
-            \ : Email exceeds maximum 256 length allowed.</em></li>></ul>"
+            \ : Email exceeds maximum 256 length allowed.</em></li></ul>"
           content: {}
         "401":
           description: Not Authorized
