@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-44
+  version: 1.1.0-59
 tags:
 - name: Customer Management
   x-proxy-name: Add an Organisation
@@ -21,6 +21,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterOrganisationRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -38,8 +40,8 @@ paths:
             \ : Financial Institution Identification is not valid, please provide\
             \ valid value.</em></li><li><em>HLXPTDTBR001 : Error in Financial Institution\
             \ Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Financial Institution Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
+            \ : Brand Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -157,64 +159,10 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                - FinancialInstitution
-                - TradingName
-                type: object
-                properties:
-                  FinancialInstitution:
-                    description: Identification of the financial institution associated
-                      with the organisation
-                    maxLength: 37
-                    minLength: 1
-                    type: string
-                    nullable: false
-                  Brand:
-                    description: Identification of the brand associated with the organisation
-                    maxLength: 37
-                    type: string
-                  ExternalIdentification:
-                    description: Identification of the customer issued by the client
-                      financial institution (CRM/CIS/CIF)
-                    maxLength: 35
-                    type: string
-                  LegalName:
-                    description: Official name under which an organisation is registered
-                    maxLength: 35
-                    type: string
-                  TradingName:
-                    description: "Name used by a business for commercial purposes,\
-                      \ although its registered legal name, used for contracts and\
-                      \ other formal situations, may be another"
-                    maxLength: 35
-                    pattern: \S
-                    type: string
-                    nullable: false
-                  RegistrationDate:
-                    description: Date on which a given organisation was officially
-                      registered <br/> Format must be ISO Date format (YYYY-MM-DD)
-                    type: string
-                  ElectronicAddress:
-                    description: Address which is accessed by electronic means
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ElectronicAddress"
-                  Phone:
-                    description: Collection of information that identifies a phone
-                      address
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Phone"
-                  Identification:
-                    description: Fiserv Enterprise Organisation ID - Unique identifier
-                      for the organisation
-                    type: string
-                  Status:
-                    description: Status of the organisation record in the system
-                    type: string
+                $ref: "#/components/schemas/RetrieveOrganisationResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Organisation ID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Organisation ID cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Organisation ID field. Spaces are not allowed.</em></li></ul>"
           content:
             application/json:
@@ -301,15 +249,22 @@ paths:
                   $ref: "#/components/schemas/RetrievePersonResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : FEPID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : FEPID cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : CRMID exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : ClearingSystemIdentificationCode is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXPTDTBR001 : ClearingSystemIdentificationCode\
-            \ exceeds maximum 13 length allowed.</em></li><li><em>HLXPTDTBR001 : AccountIdentification\
-            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTGT013 : Card\
-            \ ID required, please provide valid value.</em></li><li><em>HLXPTDTGT011\
+            \ value.</em></li><li><em>HLXPTDTBR001 : AccountIdentification\
+            \ cannot be more than 37 characters.</em></li><li><em>HLXPTDTGT013 : Card\
+            \ ID required, please provide valid value.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing System Member Identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing System Member Identification must be a combination of A-Z,\
+            \ a-z, 0-9 with spaces or '-'.</em></li><li><em>HLXPTDTGT011\
             \ : AccountIdentification required, please provide value.</em></li><li><em>HLXPTDTGT011\
-            \ : ClearingSystemIdentificationCode required, please provide value.</em></li></ul>"
+            \ : ClearingSystemIdentificationCode required, please provide value.</em></li><li><em>HLXAGDTEI001 : Clearing System\
+            \ Identification Code is not valid for Account Identification <account-id>.</em></li><li><em>HLXAGDTEI003\
+            \ : Clearing System Member Identification is required for Clearing System\
+            \ Identification Code <clearing-system-id>.</em></li><li><em>HLXAGDTEI004\
+            \ : Account Identification is required for Clearing System Identification\
+            \ Code <clearing-system-id>.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -396,6 +351,8 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterPersonRequest"
       responses:
+        "200":
+          description: OK
         "201":
           description: Created
           content:
@@ -413,19 +370,18 @@ paths:
             \ : Financial Institution Identification is not valid, please provide\
             \ valid value.</em></li><li><em>HLXPTDTBR001 : Error in Financial Institution\
             \ Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Financial Institution Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Brand Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
-            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname required,\
-            \ please provide value.</em></li><li><em>HLXPTDTBR001 : Surname invalid\
-            \ - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
+            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
             \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
@@ -552,100 +508,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  FECID:
-                    description: Fiserv Enterprise Customer ID - Unique identifier
-                      for the person
-                    maxLength: 37
-                    type: string
-                  Status:
-                    description: "Status of the person record in the system <br> Valid\
-                      \ values are : <br> Enabled <br> Disabled <br> Deleted <br>\
-                      \ ProForma"
-                    type: string
-                  FinancialInstitution:
-                    description: Identification of the financial institution associated
-                      with the person
-                    maxLength: 37
-                    type: string
-                  Brand:
-                    description: Identification of the brand associated with the person
-                    maxLength: 37
-                    type: string
-                  FiName:
-                    description: Name of the financial institution associated with
-                      the person
-                    maxLength: 70
-                    type: string
-                  BrandName:
-                    description: Name of the brand associated with the person
-                    maxLength: 70
-                    type: string
-                  ExternalIdentification:
-                    description: |
-                      Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-                    maxLength: 35
-                    type: string
-                  NamePrefix:
-                    description: "Specifies the terms used to formally address a person"
-                    type: string
-                  GivenName:
-                    description: First name of a person
-                    maxLength: 35
-                    type: string
-                  MiddleName:
-                    description: Second name of a person
-                    maxLength: 35
-                    type: string
-                  Surname:
-                    description: "Surname is a name added to a given name and is part\
-                      \ of a personal name. In many cases, a surname is a family name"
-                    maxLength: 35
-                    type: string
-                  BirthDate:
-                    description: Date on which a person is born <br/> Format must
-                      be ISO Date format (YYYY-MM-DD)
-                    type: string
-                  Language:
-                    description: "Language in which a person communicates <br> Valid\
-                      \ values are : 2 character ISO Language Codes"
-                    type: string
-                  Email:
-                    description: Address for electronic mail (e-mail)
-                    maxLength: 256
-                    type: string
-                  MemorableWord:
-                    description: Memorable word selected by the customer to be used
-                      for customer authentication
-                    maxLength: 20
-                    type: string
-                  MemorableWordReminder:
-                    description: Reminder set by the person to remember the memorable
-                      word
-                    maxLength: 35
-                    type: string
-                  PostalAddress:
-                    description: Current postal address of the person.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/PostalAddress"
-                  Phone:
-                    description: Collection of information that identifies a phone
-                      address.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Phone"
-                  ElectronicAddress:
-                    description: Address which is accessed by electronic means.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ElectronicAddress"
-                  enabled:
-                    type: boolean
+                $ref: "#/components/schemas/RetrievePersonResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul><li><em>HLXPTDTBR001\
+            \ : Person Identification cannot be more than 37 characters.</em></li></ul><li><em>HLXPTDTBR001\
             \ : Error in Person Identification field. Spaces are not allowed.</em></li></ul>"
           content:
             application/json:
@@ -737,97 +603,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  FECID:
-                    description: Fiserv Enterprise Customer ID - Unique identifier
-                      for the person
-                    maxLength: 37
-                    type: string
-                  Status:
-                    description: "Status of the person record in the system <br> Valid\
-                      \ values are : <br> Enabled <br> Disabled <br> Deleted <br>\
-                      \ ProForma"
-                    type: string
-                  FinancialInstitution:
-                    description: Identification of the financial institution associated
-                      with the person
-                    maxLength: 37
-                    type: string
-                  Brand:
-                    description: Identification of the brand associated with the person
-                    maxLength: 37
-                    type: string
-                  FiName:
-                    description: Name of the financial institution associated with
-                      the person
-                    maxLength: 70
-                    type: string
-                  BrandName:
-                    description: Name of the brand associated with the person
-                    maxLength: 70
-                    type: string
-                  ExternalIdentification:
-                    description: |
-                      Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-                    maxLength: 35
-                    type: string
-                  NamePrefix:
-                    description: "Specifies the terms used to formally address a person"
-                    type: string
-                  GivenName:
-                    description: First name of a person
-                    maxLength: 35
-                    type: string
-                  MiddleName:
-                    description: Second name of a person
-                    maxLength: 35
-                    type: string
-                  Surname:
-                    description: "Surname is a name added to a given name and is part\
-                      \ of a personal name. In many cases, a surname is a family name"
-                    maxLength: 35
-                    type: string
-                  BirthDate:
-                    description: Date on which a person is born <br/> Format must
-                      be ISO Date format (YYYY-MM-DD)
-                    type: string
-                  Language:
-                    description: "Language in which a person communicates <br> Valid\
-                      \ values are : 2 character ISO Language Codes"
-                    type: string
-                  Email:
-                    description: Address for electronic mail (e-mail)
-                    maxLength: 256
-                    type: string
-                  MemorableWord:
-                    description: Memorable word selected by the customer to be used
-                      for customer authentication
-                    maxLength: 20
-                    type: string
-                  MemorableWordReminder:
-                    description: Reminder set by the person to remember the memorable
-                      word
-                    maxLength: 35
-                    type: string
-                  PostalAddress:
-                    description: Current postal address of the person.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/PostalAddress"
-                  Phone:
-                    description: Collection of information that identifies a phone
-                      address.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Phone"
-                  ElectronicAddress:
-                    description: Address which is accessed by electronic means.
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ElectronicAddress"
-                  enabled:
-                    type: boolean
+                $ref: "#/components/schemas/RetrievePersonResponse"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Name Prefix exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -836,9 +612,8 @@ paths:
             \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
-            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname required,\
-            \ please provide value.</em></li><li><em>HLXPTDTBR001 : Surname invalid\
-            \ - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
+            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
             \ Date  has to be a valid date.</em></li><li><em>HLXPTDTBR001 : Birth\
@@ -864,8 +639,8 @@ paths:
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Electronic Address  information in request is already present on the\
-            \ person.</em></li><li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
-            \ allowed.</em></li></ul>"
+            \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
+            \ allowed.</em></li>></ul>"
           content:
             application/json:
               schema:
@@ -955,7 +730,7 @@ paths:
           description: OK
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul>"
+            \ : Person Identification cannot be more than 37 characters.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1090,8 +865,31 @@ components:
           description: Details on second name line as it appears on the card
           type: string
         CardMaintenanceWaiveFlag:
-          description: Flag to describe the type of Card Maintenance Waive Fee
+          description: Flag to describe if the Card Maintenance Fee to be waived once
+            or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
+            PERM (Permanent) </EM></LI></UL>
           type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          type: string
+        OverrideParameterValues:
+          type: array
+          items:
+            $ref: "#/components/schemas/OverrideParameter1"
+        Bundle:
+          description: "Bundles are a collection of multiple Features, that can be\
+            \ used to further segment a Product, in order to provide alternate set(s)\
+            \ of features to customers compared to the Product default Features. For\
+            \ example different card types (virtual/physical), card designs, card\
+            \ fees etc. or any combination of these during the onboarding process."
+          type: array
+          items:
+            $ref: "#/components/schemas/BundleRequestDto"
     AddCardRequestEvent:
       type: object
       properties:
@@ -1105,7 +903,7 @@ components:
           - description: Identification of the product
         Account:
           allOf:
-          - $ref: "#/components/schemas/RetrievePaymentCardFacilityResponse"
+          - $ref: "#/components/schemas/RetrieveAgreementResponse"
           - description: Identification of the account
         Cardholder:
           allOf:
@@ -1131,9 +929,17 @@ components:
         CardTechnology:
           description: Indicates the technology type supported by the physical card
           type: string
+        DigitalCardType:
+          description: Indicates the type of digital card
+          type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
           type: string
+        FeatureOverrideDto:
+          description: List of feature overridden in request
+          type: array
+          items:
+            $ref: "#/components/schemas/FeatureOverride"
     AddCardResponse:
       type: object
       properties:
@@ -1145,6 +951,10 @@ components:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
+          type: string
+        PAN:
+          description: Long number that appears on the front of the card (Primary
+            Account Number)
           type: string
     AddOrganisationResponse:
       type: object
@@ -1168,26 +978,6 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    AgreementFeature1:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
         DefaultIndicator:
           description: Default indicator indicates this is default feature on Agreement.
             i.e. default on Product while initiating Agreement
@@ -1196,17 +986,8 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementFeatureParameter:
-      type: object
-      properties:
-        Name:
-          description: Name of Product Feature Parameter
-          type: string
-        Value:
-          description: Value of Product Feature Parameter
-          type: string
-    AgreementFeatureParameter1:
       type: object
       properties:
         Name:
@@ -1229,7 +1010,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -1237,6 +1018,9 @@ components:
       - PartyRole
       type: object
       properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          type: string
         PartyIdentification:
           description: Identifies the person which plays the role of contact ( FECID)
           maxLength: 37
@@ -1249,6 +1033,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
     AgreementListRequest:
       type: object
       properties:
@@ -1257,59 +1044,9 @@ components:
             \ plays the role of contact (FECID)"
           type: string
         ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount1"
+          $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
-    BinChunkCreationErrorEvent:
-      type: object
-      properties:
-        ServiceDomain:
-          description: Specifies the service domain
-          type: string
-        ServiceDomainIdentifier:
-          allOf:
-          - $ref: "#/components/schemas/UUID"
-          - description: Specifies the service domain identifier
-        ServiceDomainIdentifierName:
-          description: Specifies the service domain identifier name
-          type: string
-        Action:
-          description: Action that was in progress when this error happened
-          type: string
-        ErrorReason:
-          description: Specifies the error reason
-          type: string
-        FailedDateTime:
-          format: date-time
-          description: "Time when error occurred (YYYY-MM-DDThh:mm:ss.sssZ)."
-          type: string
-        'FinancialInstitution ':
-          description: Financial institution identifier.
-          type: string
-        Brand:
-          description: Specifies the brand id.
-          type: string
-        Product:
-          description: Specifies the product id.
-          type: string
-        FeatureId:
-          description: Specifies the feature id.
-          type: string
-        PreviousBinChunkID:
-          description: Specifies the previous chunk id.
-          type: string
-    BinChunkEvent:
-      type: object
-      properties:
-        fiId:
-          type: string
-        ProductId:
-          type: string
-        ProductFeatureId:
-          format: int64
-          type: integer
-        FeatureId:
-          type: string
     BrandEntryAddRequest:
       required:
       - Name
@@ -1402,6 +1139,92 @@ components:
         ReportingCurrency:
           description: Reporting Currency
           type: string
+    Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    BundleCommonDto:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    BundleRequestDto:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
+            \ be processed for the card"
+          pattern: \S
+          type: string
+          nullable: false
+    ChipData:
+      type: object
+      properties:
+        ApplicationTxnCntr:
+          description: Application Transaction Counter
+          type: string
+        Chip:
+          description: Chip Sequence Number
+          type: string
+    CommonChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
     ConfigurationOption:
       required:
       - Name
@@ -1417,7 +1240,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationOption1:
       required:
       - Name
@@ -1436,30 +1259,38 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
-    ConfigurationOptionDto:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption2:
+      required:
+      - Name
+      - ConfigurationParameter
       type: object
       properties:
         Name:
+          description: Name of a configuration option
+          pattern: \S
           type: string
-        Specification:
-          type: string
+          nullable: false
         ConfigurationParameter:
+          minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     ConfigurationParameter:
+      description: Parameter used for configuring options
       required:
       - Name
       - Value
       type: object
       properties:
         Name:
+          description: Name of a configuration parameter
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Value:
+          description: Value of a configuration parameter
           maxLength: 40000
           pattern: \S
           type: string
@@ -1540,18 +1371,44 @@ components:
           - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
+      - FeatureId
+      - FeatureIdentification
       - ProductId
       - FinancialInstitution
+      - AgreementFeatureId
+      - Agreement
       type: object
       properties:
+        FeatureId:
+          description: Feature Id
+          pattern: \S
+          type: string
+          nullable: false
+        FeatureIdentification:
+          description: Feature Identification
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
         ProductId:
-          description: Banking Product Id
+          description: Product Id
           maxLength: 37
           pattern: \S
           type: string
           nullable: false
         FinancialInstitution:
           description: Financial Institution Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        AgreementFeatureId:
+          description: Agreement Feature Id
+          pattern: \S
+          type: string
+          nullable: false
+        Agreement:
+          description: Agreement Id
           maxLength: 37
           pattern: \S
           type: string
@@ -1592,6 +1449,43 @@ components:
           description: "Date and Time on which the Account was closed by the system.\
             \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+    ExecuteContactLessOptRequest:
+      required:
+      - ContactlessOptOutSwitch
+      - ReplaceCard
+      type: object
+      properties:
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          minLength: 1
+          type: string
+          nullable: false
+        ReplaceCard:
+          description: Identifies whether a replacement card needs to be created and
+            sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
+            No </EM></LI></UL>
+          minLength: 1
+          type: string
+          nullable: false
+    ExecuteContactLessOptResponse:
+      type: object
+      properties:
+        FEPID:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card.
+          type: string
+        CardReplaced:
+          description: Indicates whether card has been replaced or not
+          type: boolean
     ExecuteDeactivateCardResponse:
       type: object
       properties:
@@ -1599,6 +1493,31 @@ components:
           allOf:
           - $ref: "#/components/schemas/UUID"
           - description: Unique identifier of the payment card (FEPID)
+    ExecuteGeneratePINRequest:
+      required:
+      - FeatureId
+      - FinancialInstitution
+      type: object
+      properties:
+        FeatureId:
+          description: Feature Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        FinancialInstitution:
+          description: Financial Institution Id
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+    ExecutePINTryCounterResetResponse:
+      type: object
+      properties:
+        FEPID:
+          allOf:
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment instrument (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -1616,6 +1535,37 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecuteUnlinkBundleFeatureRequest:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    ExecuteUnlinkProductFeatureRequest:
+      required:
+      - RequestType
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          minLength: 1
+          type: string
+          nullable: false
+    ExecuteUnlinkProductFeatureResponse:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          type: string
     ExecuteValidateCVV2Request:
       required:
       - ExpiryDate
@@ -1670,6 +1620,28 @@ components:
           pattern: \S
           type: string
           nullable: false
+    ExecuteValidatePINRequest:
+      required:
+      - PINBlock
+      - Association
+      type: object
+      properties:
+        PINBlock:
+          description: PIN Block.
+          pattern: \S
+          type: string
+          nullable: false
+        Association:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+          nullable: false
+    ExecuteValidatePINResponse:
+      type: object
+      properties:
+        IsValid:
+          description: Flag to indicate if the PIN is Valid
+          type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -1678,9 +1650,9 @@ components:
       type: object
       properties:
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
           minLength: 1
           type: string
           nullable: false
@@ -1690,26 +1662,87 @@ components:
           pattern: \S
           type: string
           nullable: false
-    ExternalAccount1:
-      description: Provide Link to External Accounts
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          maxLength: 13
+          type: string
+    Feature:
       required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
+      - Identification
       type: object
       properties:
-        ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        AccountIdentification:
-          description: Account number associated with External Clearing System
+    Feature1:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of the feature
+          type: string
+        Specification:
+          description: Specification of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        CapabilityVersion:
+          description: Version of the system capability linked to a feature
+          type: string
+    Feature2:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
           maxLength: 37
-          pattern: \S
+          minLength: 1
           type: string
           nullable: false
+        DefaultIndicator:
+          description: Default feature indicator
+          type: string
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Flag to indicate default feature
+          type: boolean
+    FeatureOverride:
+      type: object
+      properties:
+        Feature:
+          description: Identification of Feature
+          type: string
+        AgreementFeatureId:
+          description: Id of Agreement Feature
+          type: string
+        CapabilityName:
+          description: Capability name
+          type: string
+        CapabilityVersion:
+          description: Capability version
+          type: string
     FiRegisterRequest:
       required:
       - Name
@@ -1736,6 +1769,10 @@ components:
           type: string
         Status:
           description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
           type: string
         Identification:
           description: Identification of the financial institution
@@ -1789,6 +1826,10 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
         InvoiceCurrency:
           description: Invoice Currency
           type: string
@@ -1796,17 +1837,9 @@ components:
           description: Identification of Client Financial Institution
           maxLength: 5
           type: string
-    GetListPaymentCardFacilityRequest:
-      type: object
-      properties:
-        ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
     HelixErrorDetails:
       type: object
       properties:
-        status:
-          format: int32
-          type: integer
         messages:
           type: array
           items:
@@ -1826,21 +1859,6 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Product Feature
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        AgreementFeatureParameter:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    InitiateAgreementFeatureRequest1:
-      required:
       - AgreementFeature
       type: object
       properties:
@@ -1850,11 +1868,6 @@ components:
           items:
             $ref: "#/components/schemas/AgreementFeatureRequestDto"
     InitiateAgreementFeatureResponse:
-      type: object
-      properties:
-        Id:
-          type: string
-    InitiateAgreementFeatureResponse1:
       type: object
       properties:
         Id:
@@ -1906,7 +1919,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1916,19 +1929,6 @@ components:
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          type: string
-          nullable: false
-        Status:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationRequest1:
       required:
       - AgreementFeature
       type: object
@@ -1949,67 +1949,7 @@ components:
       type: object
       properties:
         Identification:
-          description: Unique identifier of a Facility Allocayion
-          type: string
-    InitiateFacilityAllocationResponse1:
-      type: object
-      properties:
-        Identification:
           description: Unique identifier of a Facility Allocation
-          type: string
-    InitiatePaymentCardFacilityRequest:
-      required:
-      - FinancialInstitution
-      - Brand
-      - Product
-      - PaymentCardInvolvement
-      - OpeningDate
-      type: object
-      properties:
-        FinancialInstitution:
-          description: FI to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Brand:
-          description: Brand to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Product:
-          description: Product to which the Payment Card Facility belongs
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
-          type: string
-        PaymentCardInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/PaymentCardInvolvement"
-        OpeningDate:
-          description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner <br/> Format must be
-            ISO Date format (YYYY-MM-DD)
-          pattern: \S
-          type: string
-          nullable: false
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount"
-    InitiatePaymentCardFacilityResponse:
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Payment Card Facility, as assigned\
-            \ by the account servicer (FEAID)"
-          maxLength: 37
           type: string
     IssuedDeviceActionRequest:
       required:
@@ -2040,7 +1980,8 @@ components:
           type: string
           nullable: false
         CardMaintenanceWaiveFlag:
-          description: Flag to check the maintenance waiver fee
+          description: Flag to describe if the Lost/Stolen Fee to be waived. Accepted
+            Value is <UL><LI><EM> ONCE </EM></LI></UL>
           type: string
     IssuedDeviceActionResponse:
       type: object
@@ -2071,6 +2012,88 @@ components:
           maximum: 26
           minimum: 2
           type: string
+    LinkBundleFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    MasterCardChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
+        Ndcf:
+          type: string
+        Lcota:
+          type: string
+        Ucota:
+          type: string
+        Mota:
+          type: string
+        Atc:
+          format: int32
+          type: integer
+        A2ll:
+          type: string
+        A2ul:
+          type: string
+        C2ll:
+          type: string
+        C2ul:
+          type: string
+        Iesw:
+          type: string
+        Mtacc:
+          type: string
+        Mtancc:
+          type: string
+        Mtaccl:
+          type: string
+        Mtanccl:
+          type: string
+        OllDays:
+          type: string
+        PartialAuthorization:
+          type: string
+        enabled:
+          type: boolean
     OverrideParameter:
       required:
       - Capability
@@ -2086,6 +2109,21 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption"
+    OverrideParameter1:
+      required:
+      - Capability
+      type: object
+      properties:
+        Capability:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption2"
     Party:
       required:
       - Identification
@@ -2130,31 +2168,15 @@ components:
           description: Memorable word selected by the customer to be used for customer
             authentication.
           type: string
-    PaymentCardInvolvement:
-      description: Role played by a party in the context of PaymentCardFacility operations.
-      required:
-      - PartyIdentification
-      - PartyRole
-      type: object
-      properties:
-        PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
-          maxLength: 37
-          pattern: \S
-          type: string
-          nullable: false
-        PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
-            \ values are : <br> AccountHolder"
-          pattern: \S
-          type: string
-          nullable: false
     PaymentInstrumentGetListRequest:
       type: object
       properties:
         Account:
           type: string
         Person:
+          type: string
+        ExternalIdentification:
+          maxLength: 35
           type: string
     PersonDetailsDto:
       required:
@@ -2341,23 +2363,57 @@ components:
           allOf:
           - $ref: "#/components/schemas/RetrieveProductResponse"
           - description: Identification of the product
+    RegisterBundleRequest:
+      required:
+      - Identification
+      - Name
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Name:
+          description: Name of a bundle
+          maxLength: 35
+          pattern: \S
+          type: string
+          nullable: false
+        Description:
+          description: Description of a bundle
+          maxLength: 140
+          type: string
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    RegisterBundleResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          type: string
     RegisterConfigurationOptionRequest:
       required:
       - Name
       type: object
       properties:
         Name:
+          description: Name of a configuration option
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Specification:
+          description: Description of a configuration option
           maxLength: 140
           type: string
         ConfigurationParameter:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter"
+            $ref: "#/components/schemas/ConfigurationParameter1"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -2367,26 +2423,43 @@ components:
     RegisterFeatureRequest:
       required:
       - Identification
+      - Name
       - Capability
+      - ConfigurationOption
       type: object
       properties:
         Identification:
+          description: Identification of a feature
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+          nullable: false
         Specification:
+          description: Description of a feature
           maxLength: 140
           type: string
         Capability:
+          description: Name of the system capability linked to a feature
           maxLength: 35
           pattern: \S
           type: string
           nullable: false
+        ConfigurationOption:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
         Identification:
+          description: Identification of a feature
           type: string
     RegisterOrganisationRequest:
       required:
@@ -2513,26 +2586,22 @@ components:
         FECID:
           description: Fiserv Enterprise Customer ID - Unique identifier for the person
           type: string
+    RegisterProductFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature2"
     RegisterProductFeatureResponse:
       type: object
       properties:
-        Identification:
-          format: int64
-          type: integer
+        Warning:
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
-      required:
-      - Capability
-      type: object
-      properties:
-        Specification:
-          maxLength: 140
-          type: string
-        Capability:
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-    RegisterProductRequest1:
       required:
       - Name
       - Brand
@@ -2540,20 +2609,22 @@ components:
       type: object
       properties:
         Name:
+          description: Name of a product
           maxLength: 70
           pattern: \S
           type: string
           nullable: false
         Brand:
+          description: Identification of the brand associated with the product
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        Description:
-          type: string
         Type:
+          description: Specifies the type of product category
           type: string
         Identification:
+          description: Unique identifier for the product
           maxLength: 37
           minLength: 1
           type: string
@@ -2683,6 +2754,22 @@ components:
         ICVV:
           description: ICVV
           type: string
+    RequestViewInstrumentIdRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+          nullable: false
+    RequestViewInstrumentIdResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
+          type: string
     RequestViewPANResponse:
       type: object
       properties:
@@ -2736,26 +2823,6 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
-        Agreement Feature Parameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    RetrieveAgreementFeatureParameterResponse1:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
         DefaultIndicator:
           description: Default indicator indicates this is default feature on Agreement.
             i.e. default on Product while initiating Agreement
@@ -2764,36 +2831,14 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveAgreementFeatureRequest:
-      type: object
-      properties:
-        capabilityName:
-          type: string
-    RetrieveAgreementFeatureRequest1:
       type: object
       properties:
         capabilityName:
           description: Name of the capability
           type: string
     RetrieveAgreementFeatureResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        Product:
-          type: string
-        Status:
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeature"
-    RetrieveAgreementFeatureResponse1:
       type: object
       properties:
         Identification:
@@ -2814,19 +2859,8 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeature1"
+            $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
-        FinancialInstitution:
-          type: string
-        Product:
-          type: string
-        Status:
-          type: string
-    RetrieveAgreementResponse1:
       required:
       - AgreementInvolvement
       type: object
@@ -2865,7 +2899,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: "#/components/schemas/ExternalAccount1"
+            $ref: "#/components/schemas/ExternalAccount"
         IsClosed:
           description: This field identifies if an account is closed or not. Valid
             values are True and False. This field will be set to True if an account
@@ -2920,6 +2954,37 @@ components:
         CountryOfOperation:
           description: Country of Operation
           type: string
+    RetrieveBundleListRequest:
+      type: object
+      properties:
+        Bundle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bundle"
+    RetrieveBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
     RetrieveFacilityAllocationFeatureParameterRequest:
       type: object
       properties:
@@ -2947,7 +3012,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: "#/components/schemas/AgreementFeatureParameter1"
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
       - FacilityIdentification
@@ -2971,24 +3036,6 @@ components:
         Id:
           format: int64
           type: integer
-        PaymentCardFacility:
-          format: int64
-          type: integer
-        AgreementFeature:
-          format: int64
-          type: integer
-        FacilityData:
-          type: string
-        CreationDateTime:
-          type: string
-        Status:
-          type: string
-    RetrieveFacilityAllocationResponse1:
-      type: object
-      properties:
-        Id:
-          format: int64
-          type: integer
         Agreement:
           type: string
         AgreementFeature:
@@ -3005,8 +3052,24 @@ components:
     RetrieveFeatureResponse:
       type: object
       properties:
+        Id:
+          description: Id of the feature
+          type: string
         Identification:
           description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
           type: string
         Status:
           description: Status of the feature record in the system
@@ -3015,7 +3078,11 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOptionDto"
+            $ref: "#/components/schemas/ConfigurationOption1"
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
     RetrieveFiResponse:
       required:
       - Name
@@ -3040,6 +3107,10 @@ components:
           type: string
         Status:
           description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
           type: string
         FinancialInstitutionIdentification:
           description: Identification of Financial Institution
@@ -3105,50 +3176,6 @@ components:
         Status:
           description: Status of the organisation record in the system
           type: string
-    RetrievePaymentCardFacilityResponse:
-      required:
-      - PaymentCardInvolvement
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Payment Card Facility, as assigned\
-            \ by the account servicer (FEAID)"
-          maxLength: 37
-          type: string
-        FinancialInstitution:
-          description: FI to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Payment Card Facility belongs
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Payment Card Facility entity in the system <br>\
-            \ Valid values are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma\
-            \ <br>Pending"
-          type: string
-        CardAccountType:
-          description: "Type of PaymentCardFacility <br> Valid values are : <br> DebitCard"
-          type: string
-        PaymentCardInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/PaymentCardInvolvement"
-        OpeningDate:
-          description: Date on which the PaymentCardFacility and related basic services
-            are effectively operational for the Account owner <br/> Format must be
-            ISO Date format (YYYY-MM-DD)
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount"
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
@@ -3175,6 +3202,10 @@ components:
         ExpiryDate:
           format: date
           description: Date on which the payment instrument expires (YYYY-MM-dd).
+          type: string
+        PriorCardExpiryDate:
+          format: date
+          description: Prior Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
         Cardholder:
           description: Party entitled to use the payment instrument (FECID)
@@ -3243,8 +3274,46 @@ components:
         TransferredToPaymentInstrument:
           description: Identification of the new card after lost stolen replacement
           type: string
+        InvalidPinTryCounter:
+          format: int32
+          description: Number of Invalid PIN Tries before reset.
+          type: integer
+        LastInvalidPinTryDateTime:
+          format: date-time
+          description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible Response Values
+            are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
+            </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
+            </EM></LI></UL>
+          type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field is set to Yes if a customer
+            wishes to opt out of contactless card (i.e. they prefer to have contact
+            only card). The field is set to No if a customer wishes to opt in to contactless
+            card. The field will not be present in the response if there is no customer
+            preference.
+          type: string
         enabled:
           type: boolean
+    RetrievePaymentInstrumentWithChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrumentResponse:
+          allOf:
+          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+          - description: Payment instrument details
+        VisaChipDataResponse:
+          allOf:
+          - $ref: "#/components/schemas/VisaChipDataResponse"
+          - description: Visa Chip details for a given payment instrument
+        MasterCardChipDataResponse:
+          allOf:
+          - $ref: "#/components/schemas/MasterCardChipDataResponse"
+          - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -3257,13 +3326,18 @@ components:
           maxLength: 35
           type: string
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
           type: string
         AccountIdentification:
           description: Account number associated with External Clearing System
           maxLength: 37
+          type: string
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          maxLength: 13
           type: string
     RetrievePersonResponse:
       type: object
@@ -3299,7 +3373,9 @@ components:
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>"
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
           type: string
         GivenName:
           description: First name of a person
@@ -3365,23 +3441,24 @@ components:
     RetrieveProductFeatureResponse:
       type: object
       properties:
-        Identification:
-          format: int64
-          type: integer
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          type: string
         Product:
+          description: Identification of the product
           type: string
-        Specification:
+        Type:
+          description: Type of the product
           type: string
-        Capability:
-          type: string
-        CreateAgreementFeature:
-          type: string
-        CreateFacility:
-          type: string
-        ConfigurationOption:
+        Feature:
+          description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOptionDto"
+            $ref: "#/components/schemas/Feature3"
     RetrieveProductResponse:
       type: object
       properties:
@@ -3401,12 +3478,122 @@ components:
           type: string
         Status:
           type: string
-        Description:
+    SystemUpdateRequest:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
           type: string
+        ChipData:
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+          - description: It's an object with chip sequence number and application
+              transaction counter value
+    SystemUpdateResponse:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          format: int32
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          type: integer
+        LastInvalidPinTryDateTime:
+          format: date-time
+          description: Date and time when the last authorisation with an invalid PIN
+            was attempted on the card.
+          type: string
+        ChipData:
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+          - description: It's an object with chip sequence number and application
+              transaction counter value
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    UpdateBundleRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+    UpdateBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    UpdateFeatureRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+          nullable: false
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
+    UpdateFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
       - Name
@@ -3414,16 +3601,98 @@ components:
       type: object
       properties:
         Name:
+          description: Name of a product
           maxLength: 70
           pattern: \S
           type: string
           nullable: false
         Brand:
+          description: Identification of the brand associated with the product
           maxLength: 37
           minLength: 1
           type: string
           nullable: false
-        Description:
-          type: string
         Type:
+          description: Specifies the type of product category
+          type: string
+    VisaChipDataResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          type: string
+        ChipSequence:
+          type: string
+        ChipStatus:
+          type: string
+        CreationDate:
+          type: string
+        ExpiryDate:
+          type: string
+        Product:
+          type: string
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        MagneticStripeImageSecurityCode:
+          type: string
+        LanguagePreference:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+        Lcol:
+          type: string
+        Ucol:
+          type: string
+        CurrencyConversionFactor:
+          type: string
+        SecondaryAppCurrencyCode:
+          type: string
+        CotCurrency:
+          type: string
+        CotCountry:
+          type: string
+        Tac:
+          type: string
+        Tadc:
+          type: string
+        Atc:
+          format: int32
+          type: integer
+        ContactlessLcol:
+          type: string
+        ContactlessUcol:
+          type: string
+        VlpResetThreshold:
+          type: string
+        VlpFundsLimit:
+          type: string
+        VlpTransactionAmountLimit:
+          type: string
+        PreferredCvm:
+          type: string
+        enabled:
+          type: boolean
+    Warning:
+      type: object
+      properties:
+        responseCode:
+          format: int32
+          type: integer
+        message:
+          type: array
+          items:
+            $ref: "#/components/schemas/WarningMessage"
+    WarningMessage:
+      type: object
+      properties:
+        message:
           type: string
