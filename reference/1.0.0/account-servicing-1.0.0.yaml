@@ -1118,21 +1118,44 @@ components:
     InitiateBoardingRequest:
       required:
       - CreatePerson
+      - CreateAccount
+      - CreateCard
       type: object
       properties:
         CreatePerson:
+          description: Identifies whether addition of a Person record is required
+            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            </EM></LI></UL>
           type: string
           nullable: false
         CreateAccount:
+          description: Identifies whether addition of an Account record is required
+            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            </EM></LI></UL>
           type: string
+          nullable: false
         CreateCard:
+          description: Identifies whether addition of a Card record is required or
+            not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False </EM></LI></UL>
           type: string
+          nullable: false
         Person:
-          $ref: "#/components/schemas/RegisterPersonRequest"
+          allOf:
+          - $ref: "#/components/schemas/RegisterPersonRequest"
+          - description: "This object is used to add a new Person into the system,\
+              \ along with related demographic information, if supplied. This object\
+              \ is required when CreatePerson is true."
         Agreement:
-          $ref: "#/components/schemas/InitiateAgreementRequest"
+          allOf:
+          - $ref: "#/components/schemas/InitiateAgreementRequest"
+          - description: This object is used to add a new Account into the system.
+              This object is required when CreateAccount is true.
         PaymentInstrument:
-          $ref: "#/components/schemas/AddCardRequest"
+          allOf:
+          - $ref: "#/components/schemas/AddCardRequest"
+          - description: "This object is used to add a new Card into the system, along\
+              \ with  an optional Bundle and Parameter overrides that can be supplied.\
+              \ This object is required when CreateCard is true."
     InitiateBoardingResponse:
       type: object
       properties:
