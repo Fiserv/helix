@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-129
+  version: 1.1.0-144
 tags:
   - name: Helix Core
 paths:
@@ -139,6 +139,10 @@ paths:
                       for the most recently issued card. Possible Response Values
                       are <UL><LI><EM> ANED (ActivationNeeded) </EM></LI> <EM><LI>
                       ACMP (ActivationComplete) </EM></LI></UL>
+                    type: string
+                  PAN:
+                    description: Long number that appears on the front of the card
+                      (Primary Account Number)
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -2200,6 +2204,10 @@ components:
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
+        PAN:
+          description: Long number that appears on the front of the card (Primary
+            Account Number)
+          type: string
     AddOrganisationResponse:
       type: object
       properties:
@@ -2262,6 +2270,9 @@ components:
         - PartyRole
       type: object
       properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          type: string
         PartyIdentification:
           description: Identifies the person which plays the role of contact ( FECID)
           maxLength: 37
@@ -2274,6 +2285,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
     AgreementListRequest:
       type: object
       properties:
@@ -2493,6 +2507,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2509,9 +2526,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2844,17 +2858,11 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-        - PAN
-        - PIN block
+        - PINBlock
         - Association
       type: object
       properties:
-        PAN:
-          description: PAN of the payment instrument.
-          pattern: \S
-          type: string
-          nullable: false
-        PIN block:
+        PINBlock:
           description: PIN Block.
           pattern: \S
           type: string
@@ -2872,31 +2880,33 @@ components:
           type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
-      required:
-        - ClearingSystemIdentificationCode
-        - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
-          minLength: 1
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
           type: string
-          nullable: false
         AccountIdentification:
           description: Account number associated with External Clearing System
           maxLength: 37
-          pattern: \S
           type: string
-          nullable: false
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          maxLength: 13
+          type: string
     Feature:
+      required:
+        - Identification
       type: object
       properties:
         Identification:
           description: Identification of a feature
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
     Feature1:
       type: object
       properties:
@@ -2989,6 +2999,10 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
         Identification:
           description: Identification of the financial institution
           maxLength: 37
@@ -3041,6 +3055,10 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
         InvoiceCurrency:
           description: Invoice Currency
           type: string
@@ -3051,9 +3069,6 @@ components:
     HelixErrorDetails:
       type: object
       properties:
-        status:
-          format: int32
-          type: integer
         messages:
           type: array
           items:
@@ -3214,6 +3229,8 @@ components:
             </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     IssuedDeviceUpdateRequest:
+      required:
+        - isCancelled
       type: object
       properties:
         NameLine1:
@@ -3225,6 +3242,11 @@ components:
           description: Details on second name line as it appears on the card
           maximum: 26
           minimum: 2
+          type: string
+        isCancelled:
+          description: This field indicates if a card is cancelled or not. This field
+            will be set to Yes if a card is cancelled. A cancelled card cannot be
+            activated once it has been set.
           type: string
     LinkBundleFeatureRequest:
       required:
@@ -3322,7 +3344,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
         - Identification
@@ -3377,6 +3399,65 @@ components:
         ExternalIdentification:
           maxLength: 35
           type: string
+    PersonDetailsDto:
+      required:
+        - Surname
+      type: object
+      properties:
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
+          type: string
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
     Phone:
       required:
         - Type
@@ -3517,12 +3598,13 @@ components:
           nullable: false
         Name:
           description: Name of a bundle
-          maxLength: 140
+          maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Description:
           description: Description of a bundle
+          maxLength: 140
           type: string
         Feature:
           type: array
@@ -3593,7 +3675,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3603,7 +3685,6 @@ components:
     RegisterOrganisationRequest:
       required:
         - FinancialInstitution
-        - Brand
         - TradingName
       type: object
       properties:
@@ -3617,9 +3698,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -3653,67 +3732,47 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - GivenName
         - Surname
+        - FinancialInstitution
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Brand:
-          description: Identification of the brand associated with the person
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
           type: string
         GivenName:
-          description: First name of a person
+          description: First name of a person.
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         MiddleName:
-          description: Second name of a person
+          description: Second name of a person.
           maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
+            \ name. In many cases, a surname is a family name."
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
-            format (YYYY-MM-DD)
+            format (YYYY-MM-DD).
           type: string
         Language:
           description: "Language in which a person communicates <br> Valid values\
-            \ are : 2 character ISO Language Codes"
+            \ are : 2 character ISO Language Codes."
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
-            authentication
+            authentication.
           maxLength: 20
           type: string
         MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
+          description: Reminder set by the person to remember the memorable word.
           maxLength: 35
           type: string
         PostalAddress:
@@ -3731,6 +3790,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the person
+          maxLength: 37
+          type: string
     RegisterPersonResponse:
       type: object
       properties:
@@ -4267,7 +4337,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4297,6 +4367,10 @@ components:
         Status:
           description: Status of Financial Institution in the System
           type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
         FinancialInstitutionIdentification:
           description: Identification of Financial Institution
           type: string
@@ -4309,7 +4383,6 @@ components:
     RetrieveOrganisationResponse:
       required:
         - FinancialInstitution
-        - Brand
         - TradingName
       type: object
       properties:
@@ -4323,9 +4396,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -4704,8 +4775,6 @@ components:
         Description:
           description: Description of a bundle
           type: string
-        validRequest:
-          type: boolean
     UpdateBundleResponse:
       type: object
       properties:
@@ -4748,7 +4817,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4778,7 +4847,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateProductRequest:
       required:
         - Name
