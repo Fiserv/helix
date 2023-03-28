@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-3
+  version: 1.1.0-5
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -32,43 +32,31 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Person:
-                    allOf:
-                    - $ref: "#/components/schemas/RegisterPersonResponse"
-                    - description: Details of the created Person.
-                  Agreement:
-                    allOf:
-                    - $ref: "#/components/schemas/InitiateAgreementResponse"
-                    - description: Details of the created Agreement.
-                  PaymentInstrument:
-                    allOf:
-                    - $ref: "#/components/schemas/AddCardResponse"
-                    - description: Details of the created PaymentInstrument.
+                $ref: "#/components/schemas/InitiateBoardingResponse"
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Create Person required, please provide value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Person  is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Person is requested, details are missing.</em></li><li><em>HLXIDASBR001\
-            \ : Create Account required, please provide value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Account is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Account is requested, details are missing.</em></li><li><em>HLXIDASBR001\
-            \ : Create Card required, please provide value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Card is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
-            \ : Create Card is requested, details are missing.</em></li><li><em>HLXIDASAB001\
-            \ : Conflicting Account provided for person and account.</em></li><li><em>HLXIDASAB001\
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACSVBR001\
+            \ : Create Person required, please provide value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Person  is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Person is requested, details are missing.</em></li><li><em>HLXACSVBR001\
+            \ : Create Account required, please provide value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Account is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Account is requested, details are missing.</em></li><li><em>HLXACSVBR001\
+            \ : Create Card required, please provide value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Card is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
+            \ : Create Card is requested, details are missing.</em></li><li><em>HLXACSVAB001\
+            \ : Conflicting Account provided for person and account.</em></li><li><em>HLXACSVAB001\
             \ : Account holder within Account is unexpected, when create person is\
-            \ requested.</em></li><li><em>HLXIDASAB001 : Account holder within Account\
-            \ is required, when create person is not requested.</em></li><li><em>HLXIDASAB002\
+            \ requested.</em></li><li><em>HLXACSVAB001 : Account holder within Account\
+            \ is required, when create person is not requested.</em></li><li><em>HLXACSVAB002\
             \ : Conflicting cardholder(FECID) and account holder (FECID) provided\
-            \ in the request.</em></li><li><em>HLXIDASAB002 : Conficting Card provided\
-            \ for account and card.</em></li><li><em>HLXIDASAB002 : Related Account\
-            \ within Card is unexpected, when create account is requested.</em></li><li><em>HLXIDASAB002\
+            \ in the request.</em></li><li><em>HLXACSVAB002 : Conficting Card provided\
+            \ for account and card.</em></li><li><em>HLXACSVAB002 : Related Account\
+            \ within Card is unexpected, when create account is requested.</em></li><li><em>HLXACSVAB002\
             \ : Related Account within Card is required, when create account is not\
-            \ requested.</em></li><li><em>HLXIDASAB002 : Conflicting Card provided\
-            \ for person and card.</em></li><li><em>HLXIDASAB002 : Cardholder within\
-            \ Card is required, when create person is not requested.</em></li><li><em>HLXIDASBR001\
+            \ requested.</em></li><li><em>HLXACSVAB002 : Conflicting Card provided\
+            \ for person and card.</em></li><li><em>HLXACSVAB002 : Cardholder within\
+            \ Card is unexpected, when create person is requested.</em></li><li><em>HLXACSVAB002\
+            \ : Cardholder within Card is required, when create person is not requested.</em></li><li><em>HLXIDASBR001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXIDASBR001\
             \ : Financial Institution Identification exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
             \ : Brand required, please provide value.</em></li><li><em>HLXIDASBR001\
@@ -122,7 +110,7 @@ paths:
             \ : Middle Name invalid - only alphabet, space, apostrophe, or hyphen\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Middle Name exceeds maximum\
             \ 35 length allowed.</em></li><li><em>HLXPTDTBR001 : Surname invalid -\
-            \ only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
+            \ only alphabet, space, apostrophe, or hyphen allowed.<li><em>HLXPTDTBR001\
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Birth Date must be a past date.</em></li><li><em>HLXPTDTBR001 : Birth\
             \ Date  must be in YYYY-MM-DD format.</em></li><li><em>HLXPTDTBR001 :\
@@ -147,7 +135,7 @@ paths:
             \ : Incomplete Phone information received in request.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
+            \ : Incomplete Electronic Address information received in request.</em></li><li><em>HLXPTDTBR001\
             \ : Email exceeds maximum 256 length allowed.</em></li></ul>"
           content: {}
         "401":
@@ -162,7 +150,7 @@ paths:
             \ not found.</em></li><li><em>HLXIDASBR001 : Brand not found.</em></li><li><em>HLXIDASPD002\
             \ : Product not found.</em></li><li><em>HLXIDASAC002 : Account not found.</em></li><li><em>HLXPTDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXPTDTUN002 : Brand\
-            \ not found.<em></li><li><em>HLXAGDTUN001 : Financial Institution not\
+            \ not found.</em></li><li><em>HLXAGDTUN001 : Financial Institution not\
             \ found.</em></li><li><em>HLXAGDTUN002 : Brand not found.</em></li></ul>"
           content: {}
         "413":
@@ -594,43 +582,8 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationParameter1"
-    ConfigurationOption2:
-      required:
-      - Name
-      - ConfigurationParameter
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          pattern: \S
-          type: string
-          nullable: false
-        ConfigurationParameter:
-          minItems: 1
-          type: array
-          items:
             $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
-      description: Parameter used for configuring options
-      required:
-      - Name
-      - Value
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration parameter
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-        Value:
-          description: Value of a configuration parameter
-          maxLength: 40000
-          pattern: \S
-          type: string
-          nullable: false
-    ConfigurationParameter1:
       description: Parameter used for configuring options
       required:
       - Name
@@ -957,17 +910,11 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-      - PAN
-      - PIN block
+      - PINBlock
       - Association
       type: object
       properties:
-        PAN:
-          description: PAN of the payment instrument.
-          pattern: \S
-          type: string
-          nullable: false
-        PIN block:
+        PINBlock:
           description: PIN Block.
           pattern: \S
           type: string
@@ -985,31 +932,33 @@ components:
           type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
-      required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
-          minLength: 1
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
           type: string
-          nullable: false
         AccountIdentification:
           description: Account number associated with External Clearing System
           maxLength: 37
-          pattern: \S
           type: string
-          nullable: false
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          maxLength: 13
+          type: string
     Feature:
+      required:
+      - Identification
       type: object
       properties:
         Identification:
           description: Identification of a feature
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
     Feature1:
       type: object
       properties:
@@ -1169,21 +1118,44 @@ components:
     InitiateBoardingRequest:
       required:
       - CreatePerson
+      - CreateAccount
+      - CreateCard
       type: object
       properties:
         CreatePerson:
+          description: Identifies whether addition of a Person record is required
+            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            </EM></LI></UL>
           type: string
           nullable: false
         CreateAccount:
+          description: Identifies whether addition of an Account record is required
+            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            </EM></LI></UL>
           type: string
+          nullable: false
         CreateCard:
+          description: Identifies whether addition of a Card record is required or
+            not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False </EM></LI></UL>
           type: string
+          nullable: false
         Person:
-          $ref: "#/components/schemas/RegisterPersonRequest"
+          allOf:
+          - $ref: "#/components/schemas/RegisterPersonRequest"
+          - description: "This object is used to add a new Person into the system,\
+              \ along with related demographic information, if supplied. This object\
+              \ is required when CreatePerson is true."
         Agreement:
-          $ref: "#/components/schemas/InitiateAgreementRequest"
+          allOf:
+          - $ref: "#/components/schemas/InitiateAgreementRequest"
+          - description: This object is used to add a new Account into the system.
+              This object is required when CreateAccount is true.
         PaymentInstrument:
-          $ref: "#/components/schemas/AddCardRequest"
+          allOf:
+          - $ref: "#/components/schemas/AddCardRequest"
+          - description: "This object is used to add a new Card into the system, along\
+              \ with  an optional Bundle and Parameter overrides that can be supplied.\
+              \ This object is required when CreateCard is true."
     InitiateBoardingResponse:
       type: object
       properties:
@@ -1380,21 +1352,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption1"
-    OverrideParameter1:
-      required:
-      - Capability
-      type: object
-      properties:
-        Capability:
-          description: Name of the system capability linked to a feature
-          maxLength: 35
-          pattern: \S
-          type: string
-          nullable: false
-        ConfigurationOption:
-          type: array
-          items:
-            $ref: "#/components/schemas/ConfigurationOption2"
     Party:
       required:
       - Identification
@@ -1648,12 +1605,13 @@ components:
           nullable: false
         Name:
           description: Name of a bundle
-          maxLength: 140
+          maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Description:
           description: Description of a bundle
+          maxLength: 140
           type: string
         Feature:
           type: array
@@ -2653,8 +2611,6 @@ components:
         Description:
           description: Description of a bundle
           type: string
-        validRequest:
-          type: boolean
     UpdateBundleResponse:
       type: object
       properties:
