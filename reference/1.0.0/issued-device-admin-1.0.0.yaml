@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-144
+  version: 1.1.0-146
 tags:
   - name: Helix Core
 paths:
@@ -3229,8 +3229,6 @@ components:
             </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     IssuedDeviceUpdateRequest:
-      required:
-        - isCancelled
       type: object
       properties:
         NameLine1:
