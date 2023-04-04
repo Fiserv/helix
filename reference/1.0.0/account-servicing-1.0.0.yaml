@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-5
+  version: 1.1.0-9
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -29,10 +29,25 @@ paths:
       responses:
         "200":
           description: OK
+        "201":
+          description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InitiateBoardingResponse"
+                type: object
+                properties:
+                  Person:
+                    allOf:
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
+                    - description: Details of the created Person.
+                  Agreement:
+                    allOf:
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
+                    - description: Details of the created Agreement.
+                  PaymentInstrument:
+                    allOf:
+                    - $ref: "#/components/schemas/AddCardResponse"
+                    - description: Details of the created PaymentInstrument.
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACSVBR001\
             \ : Create Person required, please provide value.</em></li><li><em>HLXACSVBR001\
@@ -44,18 +59,18 @@ paths:
             \ : Create Card required, please provide value.</em></li><li><em>HLXACSVBR001\
             \ : Create Card is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
             \ : Create Card is requested, details are missing.</em></li><li><em>HLXACSVAB001\
-            \ : Conflicting Account provided for person and account.</em></li><li><em>HLXACSVAB001\
+            \ : Conflicting %s provided for person and account.</em></li><li><em>HLXACSVAB001\
             \ : Account holder within Account is unexpected, when create person is\
             \ requested.</em></li><li><em>HLXACSVAB001 : Account holder within Account\
             \ is required, when create person is not requested.</em></li><li><em>HLXACSVAB002\
             \ : Conflicting cardholder(FECID) and account holder (FECID) provided\
-            \ in the request.</em></li><li><em>HLXACSVAB002 : Conficting Card provided\
+            \ in the request.</em></li><li><em>HLXACSVAB002 : Conflicting %s provided\
             \ for account and card.</em></li><li><em>HLXACSVAB002 : Related Account\
             \ within Card is unexpected, when create account is requested.</em></li><li><em>HLXACSVAB002\
             \ : Related Account within Card is required, when create account is not\
-            \ requested.</em></li><li><em>HLXACSVAB002 : Conflicting Card provided\
-            \ for person and card.</em></li><li><em>HLXACSVAB002 : Cardholder within\
-            \ Card is unexpected, when create person is requested.</em></li><li><em>HLXACSVAB002\
+            \ requested.</em></li><li><em>HLXACSVAB002 : Conflicting %s provided for\
+            \ person and card.</em></li><li><em>HLXACSVAB002 : Cardholder within Card\
+            \ is unexpected, when create person is requested.</em></li><li><em>HLXACSVAB002\
             \ : Cardholder within Card is required, when create person is not requested.</em></li><li><em>HLXIDASBR001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXIDASBR001\
             \ : Financial Institution Identification exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
@@ -559,9 +574,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -578,6 +590,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1124,19 +1139,19 @@ components:
       properties:
         CreatePerson:
           description: Identifies whether addition of a Person record is required
-            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
             </EM></LI></UL>
           type: string
           nullable: false
         CreateAccount:
           description: Identifies whether addition of an Account record is required
-            or not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False
+            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
             </EM></LI></UL>
           type: string
           nullable: false
         CreateCard:
           description: Identifies whether addition of a Card record is required or
-            not. Accepted Values are <UL><LI><EM> True </EM></LI> <LI><EM> False </EM></LI></UL>
+            not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false </EM></LI></UL>
           type: string
           nullable: false
         Person:
@@ -1339,10 +1354,10 @@ components:
           type: boolean
     OverrideParameter:
       required:
-      - Capability
+      - CapabilityName
       type: object
       properties:
-        Capability:
+        CapabilityName:
           description: Name of the system capability linked to a feature
           maxLength: 35
           pattern: \S
@@ -1351,7 +1366,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -1682,7 +1697,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2211,7 +2226,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -2653,7 +2668,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -2683,7 +2698,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateProductRequest:
       required:
       - Name
