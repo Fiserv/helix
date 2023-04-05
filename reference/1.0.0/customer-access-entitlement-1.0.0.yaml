@@ -2,10 +2,10 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-8
+  version: 1.1.0-25
 tags:
   - name: Customer Access Entitlement
-    x-proxy-name: Update Restriction
+    x-proxy-name: Retrieve Spend Limit
     x-group-name: Card Management
 paths:
   /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
@@ -29,13 +29,30 @@ paths:
                 type: object
                 properties:
                   UniqueIdType:
+                    description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
                     type: string
-                  UniqueID:
+                  UniqueId:
                     description: Unique identifier of the Restriciton Level
                     type: string
                   FreezeAll:
                     description: Field used to freeze all transactions by cardholder
                       for a given Payment Instrument
+                    type: string
+                  IsATMAllowed:
+                    description: Field used to restrict all ATM transactions by cardholder
+                      for a given Payment Instrument
+                    type: string
+                  IsCNPAllowed:
+                    description: Field used to restrict all Card Not Present transactions
+                      by cardholder for a given Payment Instrument
+                    type: string
+                  IsPOSAllowed:
+                    description: Field used to restrict all POS transactions by cardholder
+                      for a given Payment Instrument
+                    type: string
+                  IsContactLessAllowed:
+                    description: Field used to restrict all Contactless transactions
+                      by cardholder for a given Payment Instrument
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
@@ -110,6 +127,300 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Update Restriction
+      x-group-name: Card Management
+  /Helix/V1/CustomerAccessEntitlement/Limits/Compute:
+    post:
+      tags:
+        - Customer Access Entitlement
+      summary: This API computes limit for given UniqueID and UniqueIDType.
+      operationId: computeLimit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComputeLimitRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Compute Limits
+      x-group-name: Card Management
+  /Helix/V1/CustomerAccessEntitlement/Limits/Evaluate:
+    post:
+      tags:
+        - Customer Access Entitlement
+      summary: This API evaluate Spend Limits capability based on fi id and product
+        id.
+      operationId: evaluateLimits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetrieveSpendLimitsRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UniqueIDType:
+                    description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+                    type: string
+                  UniqueID:
+                    description: Unique identifier of the Restriction Level e.g. payment
+                      instrument (FEPID)
+                    type: string
+                  Rslt:
+                    description: Result for the authorisation
+                    type: string
+                  RsltReasonCode:
+                    description: Result reason code for authorisation
+                    type: string
+                  RsltReasonDesc:
+                    description: Result reason code description
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Spend Limit
+      x-group-name: Card Management
+  /Helix/V1/CustomerAccessEntitlement/Limits/Update:
+    put:
+      tags:
+        - Customer Access Entitlement
+      summary: This API creates/updates limit for given UniqueID and UniqueIDType.
+      operationId: customerLimitsUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLimitRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateLimitResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Update Limits
       x-group-name: Card Management
   /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/AuthRestriction/Retrieve:
     get:
@@ -220,6 +531,118 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve Restriction
       x-group-name: Card Management
+  /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/Limits/Retrieve:
+    get:
+      tags:
+        - Customer Access Entitlement
+      summary: "This API is used to inquire transaction spend limits (ATM, POS, Ecomm,\
+        \ Contactless, Total spend, etc.)."
+      operationId: retrieveLimits
+      parameters:
+        - name: UniqueId
+          in: path
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: UniqueIdType
+          in: path
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          required: true
+          schema:
+            maxLength: 4
+            type: string
+        - name: LimitType
+          in: query
+          schema:
+            type: string
+        - name: PeriodType
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetrieveLimitResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Limits
+      x-group-name: Card Management
 components:
   schemas:
     Account:
@@ -314,6 +737,14 @@ components:
             or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
             PERM (Permanent) </EM></LI></UL>
           type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field should be set to Yes if
+            a customer wishes to opt out of contactless card (i.e. they prefer to
+            have contact only card). The field should be set to No if a customer wishes
+            to opt in to contactless card.
+          type: string
         OverrideParameterValues:
           type: array
           items:
@@ -389,6 +820,10 @@ components:
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
+        PAN:
+          description: Long number that appears on the front of the card (Primary
+            Account Number)
+          type: string
     AddOrganisationResponse:
       type: object
       properties:
@@ -451,6 +886,9 @@ components:
         - PartyRole
       type: object
       properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          type: string
         PartyIdentification:
           description: Identifies the person which plays the role of contact ( FECID)
           maxLength: 37
@@ -463,6 +901,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
     AgreementListRequest:
       type: object
       properties:
@@ -579,6 +1020,64 @@ components:
           type: string
         Ucol:
           type: string
+    ComputeLimitRequest:
+      required:
+        - UniqueIdType
+        - UniqueId
+        - FinancialInstitution
+        - Brand
+        - Product
+        - FEAID
+        - TCV
+        - TxnAmt
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          minLength: 1
+          type: string
+          nullable: false
+        UniqueId:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          description: Brand to which the Agreement belongs
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        FEAID:
+          description: Identification of the agreeement
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        TCV:
+          description: Transaction Criteria Value representing the bit value for different
+            criteria of a transaction.
+          type: string
+        TxnAmt:
+          description: Actual amount of the transaction.
+          minLength: 1
+          type: string
+          nullable: false
     ConfigurationOption:
       required:
         - Name
@@ -590,6 +1089,9 @@ components:
           pattern: \S
           type: string
           nullable: false
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -606,9 +1108,6 @@ components:
           pattern: \S
           type: string
           nullable: false
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -941,17 +1440,11 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-        - PAN
-        - PIN block
+        - PINBlock
         - Association
       type: object
       properties:
-        PAN:
-          description: PAN of the payment instrument.
-          pattern: \S
-          type: string
-          nullable: false
-        PIN block:
+        PINBlock:
           description: PIN Block.
           pattern: \S
           type: string
@@ -969,31 +1462,33 @@ components:
           type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
-      required:
-        - ClearingSystemIdentificationCode
-        - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. Sort
-            Code for BACS ( Bank Branch code in other countries )
-          maxLength: 13
-          minLength: 1
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
           type: string
-          nullable: false
         AccountIdentification:
           description: Account number associated with External Clearing System
           maxLength: 37
-          pattern: \S
           type: string
-          nullable: false
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          maxLength: 13
+          type: string
     Feature:
+      required:
+        - Identification
       type: object
       properties:
         Identification:
           description: Identification of a feature
           maxLength: 37
+          minLength: 1
           type: string
+          nullable: false
     Feature1:
       type: object
       properties:
@@ -1062,9 +1557,6 @@ components:
     HelixErrorDetails:
       type: object
       properties:
-        status:
-          format: int32
-          type: integer
         messages:
           type: array
           items:
@@ -1237,6 +1729,28 @@ components:
           maximum: 26
           minimum: 2
           type: string
+    LimitResponseDto:
+      type: object
+      properties:
+        LimitType:
+          description: "Type of transaction e.g., ATM, POS, Ecomm, etc."
+          type: string
+        PeriodType:
+          description: "Period type indicates whether transaction is single, daily\
+            \ or monthly"
+          type: string
+        CustomerMaximumLimitAmount:
+          description: An amount used to restrict total amount of transactions by
+            cardholder for a particular LCV
+          type: string
+        FeatureMaximumLimitAmount:
+          description: An amount used to restrict total amount of transactions by
+            feature for a particular LCV
+          type: string
+        LimitCumulativeAmount:
+          description: Accumulated amount of approved transactions by cardholder for
+            a particular LCV
+          type: string
     LinkBundleFeatureRequest:
       required:
         - Feature
@@ -1333,7 +1847,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
         - Identification
@@ -1388,6 +1902,65 @@ components:
         ExternalIdentification:
           maxLength: 35
           type: string
+    PersonDetailsDto:
+      required:
+        - Surname
+      type: object
+      properties:
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
+          type: string
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
     Phone:
       required:
         - Type
@@ -1528,12 +2101,13 @@ components:
           nullable: false
         Name:
           description: Name of a bundle
-          maxLength: 140
+          maxLength: 35
           pattern: \S
           type: string
           nullable: false
         Description:
           description: Description of a bundle
+          maxLength: 140
           type: string
         Feature:
           type: array
@@ -1604,7 +2178,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -1614,7 +2188,6 @@ components:
     RegisterOrganisationRequest:
       required:
         - FinancialInstitution
-        - Brand
         - TradingName
       type: object
       properties:
@@ -1628,9 +2201,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -1664,67 +2235,47 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - GivenName
         - Surname
+        - FinancialInstitution
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
-        Brand:
-          description: Identification of the brand associated with the person
-          maxLength: 37
-          minLength: 1
-          type: string
-          nullable: false
         ExternalIdentification:
           description: |
             Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
           maxLength: 35
           type: string
         NamePrefix:
-          description: "Specifies the terms used to formally address a person <br>\
-            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
-            \ GenderNeutral"
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
           type: string
         GivenName:
-          description: First name of a person
+          description: First name of a person.
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         MiddleName:
-          description: Second name of a person
+          description: Second name of a person.
           maxLength: 35
           type: string
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
-            \ name. In many cases, a surname is a family name"
+            \ name. In many cases, a surname is a family name."
           maxLength: 35
-          minLength: 1
           type: string
-          nullable: false
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
-            format (YYYY-MM-DD)
+            format (YYYY-MM-DD).
           type: string
         Language:
           description: "Language in which a person communicates <br> Valid values\
-            \ are : 2 character ISO Language Codes"
+            \ are : 2 character ISO Language Codes."
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
-            authentication
+            authentication.
           maxLength: 20
           type: string
         MemorableWordReminder:
-          description: Reminder set by the person to remember the memorable word
+          description: Reminder set by the person to remember the memorable word.
           maxLength: 35
           type: string
         PostalAddress:
@@ -1742,6 +2293,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ElectronicAddress"
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Brand:
+          description: Identification of the brand associated with the person
+          maxLength: 37
+          type: string
     RegisterPersonResponse:
       type: object
       properties:
@@ -2019,6 +2581,8 @@ components:
           description: "Date and Time on which the Account was closed by the system.\
             \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
+        enabled:
+          type: boolean
     RetrieveAuthRestrictionResponse:
       type: object
       properties:
@@ -2166,15 +2730,28 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
           type: string
+    RetrieveLimitResponse:
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          type: string
+        UniqueId:
+          description: Unique identifier of the Restriciton Level
+          type: string
+        Limits:
+          description: List of Limits
+          type: array
+          items:
+            $ref: "#/components/schemas/LimitResponseDto"
     RetrieveOrganisationResponse:
       required:
         - FinancialInstitution
-        - Brand
         - TradingName
       type: object
       properties:
@@ -2188,9 +2765,7 @@ components:
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
-          minLength: 1
           type: string
-          nullable: false
         ExternalIdentification:
           description: Identification of the customer issued by the client financial
             institution (CRM/CIS/CIF)
@@ -2340,6 +2915,15 @@ components:
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
             </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
             </EM></LI></UL>
+          type: string
+        ContactlessOptOutSwitch:
+          description: Indicates customer preference for contact versus contactless
+            card. This option can only be used if the product supports contactless
+            cards. Valid values are Yes and No. The field is set to Yes if a customer
+            wishes to opt out of contactless card (i.e. they prefer to have contact
+            only card). The field is set to No if a customer wishes to opt in to contactless
+            card. The field will not be present in the response if there is no customer
+            preference.
           type: string
         enabled:
           type: boolean
@@ -2517,6 +3101,65 @@ components:
           type: string
         Status:
           type: string
+    RetrieveSpendLimitsRequest:
+      required:
+        - UniqueIDType
+        - UniqueID
+        - FinancialInstitution
+        - Brand
+        - Product
+        - TxnAmt
+      type: object
+      properties:
+        UniqueIDType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          type: string
+        UniqueID:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          maxLength: 37
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        Brand:
+          description: Brand to which the Agreement belongs
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+          nullable: false
+        TxnAmt:
+          description: Transaction Amount
+          type: number
+    RetrieveSpendLimitsResponse:
+      type: object
+      properties:
+        UniqueIDType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          type: string
+        UniqueID:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          type: string
+        Rslt:
+          description: Result for the authorisation
+          type: string
+        RsltReasonCode:
+          description: Result reason code for authorisation
+          type: string
+        RsltReasonDesc:
+          description: Result reason code description
+          type: string
     SystemUpdateRequest:
       type: object
       properties:
@@ -2556,6 +3199,10 @@ components:
         - UniqueIdType
         - UniqueId
         - FreezeAll
+        - IsATMAllowed
+        - IsCNPAllowed
+        - IsPOSAllowed
+        - IsContactLessAllowed
       type: object
       properties:
         UniqueIdType:
@@ -2576,17 +3223,58 @@ components:
           minLength: 1
           type: string
           nullable: false
+        IsATMAllowed:
+          description: Field used to restrict all ATM transactions by cardholder for
+            a given Payment Instrument
+          minLength: 1
+          type: string
+          nullable: false
+        IsCNPAllowed:
+          description: Field used to restrict all Card Not Present transactions by
+            cardholder for a given Payment Instrument
+          minLength: 1
+          type: string
+          nullable: false
+        IsPOSAllowed:
+          description: Field used to restrict all POS transactions by cardholder for
+            a given Payment Instrument
+          minLength: 1
+          type: string
+          nullable: false
+        IsContactLessAllowed:
+          description: Field used to restrict all Contactless transactions by cardholder
+            for a given Payment Instrument
+          minLength: 1
+          type: string
+          nullable: false
     UpdateAuthRestrictionResponse:
       type: object
       properties:
         UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
           type: string
-        UniqueID:
+        UniqueId:
           description: Unique identifier of the Restriciton Level
           type: string
         FreezeAll:
           description: Field used to freeze all transactions by cardholder for a given
             Payment Instrument
+          type: string
+        IsATMAllowed:
+          description: Field used to restrict all ATM transactions by cardholder for
+            a given Payment Instrument
+          type: string
+        IsCNPAllowed:
+          description: Field used to restrict all Card Not Present transactions by
+            cardholder for a given Payment Instrument
+          type: string
+        IsPOSAllowed:
+          description: Field used to restrict all POS transactions by cardholder for
+            a given Payment Instrument
+          type: string
+        IsContactLessAllowed:
+          description: Field used to restrict all Contactless transactions by cardholder
+            for a given Payment Instrument
           type: string
     UpdateBundleRequest:
       type: object
@@ -2597,8 +3285,6 @@ components:
         Description:
           description: Description of a bundle
           type: string
-        validRequest:
-          type: boolean
     UpdateBundleResponse:
       type: object
       properties:
@@ -2641,7 +3327,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -2671,7 +3357,68 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
+    UpdateLimitRequest:
+      required:
+        - UniqueIdType
+        - UniqueId
+        - LimitType
+        - PeriodType
+        - CustomerMaximumLimitAmount
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          minLength: 1
+          type: string
+          nullable: false
+        UniqueId:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          maxLength: 37
+          minLength: 1
+          type: string
+          nullable: false
+        LimitType:
+          description: "Type of transaction e.g., ATM, POS, ECOM, etc."
+          minLength: 1
+          type: string
+          nullable: false
+        PeriodType:
+          description: "Period type indicates single, daily or monthly"
+          type: string
+        CustomerMaximumLimitAmount:
+          description: An amount to set by the consumer.
+          pattern: "^\\d{1,10}([.]\\d{1,5})?$"
+          type: string
+    UpdateLimitResponse:
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          type: string
+        UniqueId:
+          description: Unique identifier of the Restriciton Level
+          type: string
+        LimitType:
+          description: "Type of transaction e.g., ATM, POS, Ecomm, etc."
+          type: string
+        PeriodType:
+          description: "Period type indicates whether transaction is single, daily\
+            \ or monthly"
+          type: string
+        CustomerMaximumLimitAmount:
+          description: An amount used to restrict total amount of transactions by
+            cardholder for a particular LCV
+          type: string
+        FeatureMaximumLimitAmount:
+          description: An amount used to restrict total amount of transactions by
+            feature for a particular LCV
+          type: string
+        CumulativeAmount:
+          description: Accumulated amount of approved transactions by cardholder for
+            a particular LCV
+          type: string
     UpdateProductRequest:
       required:
         - Name
