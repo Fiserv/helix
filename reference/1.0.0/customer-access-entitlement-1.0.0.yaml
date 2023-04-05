@@ -4,14 +4,34 @@ info:
   title: customer-access-entitlement
   version: 1.1.0-25
 tags:
-  - name: Customer Access Entitlement
-    x-proxy-name: Retrieve Spend Limit
-    x-group-name: Card Management
+- name: Customer Access Entitlement
+  x-proxy-name: Retrieve Limits
+  x-group-name: Card Management
 paths:
+  /Helix/V1/Capability/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      parameters:
+      - name: capabilityName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
   /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
     put:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: This API updates channel/device based access to products and services
         that the customer has in place.
       operationId: updateRestriction
@@ -131,7 +151,7 @@ paths:
   /Helix/V1/CustomerAccessEntitlement/Limits/Compute:
     post:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: This API computes limit for given UniqueID and UniqueIDType.
       operationId: computeLimit
       requestBody:
@@ -223,7 +243,7 @@ paths:
   /Helix/V1/CustomerAccessEntitlement/Limits/Evaluate:
     post:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: This API evaluate Spend Limits capability based on fi id and product
         id.
       operationId: evaluateLimits
@@ -333,7 +353,7 @@ paths:
   /Helix/V1/CustomerAccessEntitlement/Limits/Update:
     put:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: This API creates/updates limit for given UniqueID and UniqueIDType.
       operationId: customerLimitsUpdate
       requestBody:
@@ -349,7 +369,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/UpdateLimitResponse"
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/>"
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDBR001\
+            \ : Unique ID Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Card ID required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Unique ID cannot be more than 37 characters.</em></li><li><em>HLXCAEDBR001\
+            \ : Limit Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Limit Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
+            \ : Period Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Period Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount accepts numeric only, and should not exceed\
+            \ maximum 15 length allowed with 5 decimals.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount does not accept negative value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -367,7 +398,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/>"
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDGT002\
+            \ : Account number not found.</em></li><li><em>HLXCAEDBU001 : Card not\
+            \ found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -385,7 +418,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDLM001\
+            \ : Please enter the amount within maximum limit.</em></li><li><em>HLXCAEDNE002\
+            \ : Account not enabled.</em></li><li><em>HLXCAEDAC001 : Account is closed.</em></li><li><em>HLXCAEDLM002\
+            \ : Feature is not available for the product.</em></li><li><em>HLXCAEDNE001\
+            \ : Card is not enabled.</em></li><li><em>HLXCAEDIB001 : Card is blocked\
+            \ as <Lost/Stolen></em></li><li><em>HLXCAEDBV002 : Cannot retrieve details,\
+            \ card is not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -397,7 +436,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDUD002\
+            \ : There is an error while updating Limits, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -425,26 +465,26 @@ paths:
   /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/AuthRestriction/Retrieve:
     get:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: This API retrieves channel/device based access to products and services
         that the customer has in place.
       operationId: retrieveRestriction
       parameters:
-        - name: UniqueId
-          in: path
-          description: Unique identifier of the Restriction Level e.g. payment instrument
-            (FEPID)
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-        - name: UniqueIdType
-          in: path
-          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
-          required: true
-          schema:
-            maxLength: 4
-            type: string
+      - name: UniqueId
+        in: path
+        description: Unique identifier of the Restriction Level e.g. payment instrument
+          (FEPID)
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: UniqueIdType
+        in: path
+        description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+        required: true
+        schema:
+          maxLength: 4
+          type: string
       responses:
         "200":
           description: OK
@@ -534,34 +574,34 @@ paths:
   /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/Limits/Retrieve:
     get:
       tags:
-        - Customer Access Entitlement
+      - Customer Access Entitlement
       summary: "This API is used to inquire transaction spend limits (ATM, POS, Ecomm,\
         \ Contactless, Total spend, etc.)."
       operationId: retrieveLimits
       parameters:
-        - name: UniqueId
-          in: path
-          description: Unique identifier of the Restriction Level e.g. payment instrument
-            (FEPID)
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-        - name: UniqueIdType
-          in: path
-          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
-          required: true
-          schema:
-            maxLength: 4
-            type: string
-        - name: LimitType
-          in: query
-          schema:
-            type: string
-        - name: PeriodType
-          in: query
-          schema:
-            type: string
+      - name: UniqueId
+        in: path
+        description: Unique identifier of the Restriction Level e.g. payment instrument
+          (FEPID)
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: UniqueIdType
+        in: path
+        description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+        required: true
+        schema:
+          maxLength: 4
+          type: string
+      - name: LimitType
+        in: query
+        schema:
+          type: string
+      - name: PeriodType
+        in: query
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -682,12 +722,12 @@ components:
           type: string
     AddCardRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - RelatedAccount
-        - Cardholder
-        - CardholderType
+      - FinancialInstitution
+      - Brand
+      - Product
+      - RelatedAccount
+      - Cardholder
+      - CardholderType
       type: object
       properties:
         FinancialInstitution:
@@ -763,20 +803,20 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
         Product:
           allOf:
-            - $ref: "#/components/schemas/RetrieveProductResponse"
-            - description: Identification of the product
+          - $ref: "#/components/schemas/RetrieveProductResponse"
+          - description: Identification of the product
         Account:
           allOf:
-            - $ref: "#/components/schemas/RetrieveAgreementResponse"
-            - description: Identification of the account
+          - $ref: "#/components/schemas/RetrieveAgreementResponse"
+          - description: Identification of the account
         Cardholder:
           allOf:
-            - $ref: "#/components/schemas/RetrievePersonResponse"
-            - description: Identification of the cardholder
+          - $ref: "#/components/schemas/RetrievePersonResponse"
+          - description: Identification of the cardholder
         EventMsg:
           description: Specifies event message.
           type: string
@@ -813,8 +853,8 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -866,7 +906,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -882,8 +922,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-        - PartyIdentification
-        - PartyRole
+      - PartyIdentification
+      - PartyRole
       type: object
       properties:
         AgreementInvolvementId:
@@ -946,7 +986,7 @@ components:
             $ref: "#/components/schemas/Feature1"
     BundleRequestDto:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -957,8 +997,8 @@ components:
           nullable: false
     CapabilityCatalog:
       required:
-        - Version
-        - CapabilityName
+      - Version
+      - CapabilityName
       type: object
       properties:
         Version:
@@ -1022,14 +1062,14 @@ components:
           type: string
     ComputeLimitRequest:
       required:
-        - UniqueIdType
-        - UniqueId
-        - FinancialInstitution
-        - Brand
-        - Product
-        - FEAID
-        - TCV
-        - TxnAmt
+      - UniqueIdType
+      - UniqueId
+      - FinancialInstitution
+      - Brand
+      - Product
+      - FEAID
+      - TCV
+      - TxnAmt
       type: object
       properties:
         UniqueIdType:
@@ -1080,8 +1120,24 @@ components:
           nullable: false
     ConfigurationOption:
       required:
-        - Name
-        - ConfigurationParameter
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+          nullable: false
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -1097,27 +1153,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
-    ConfigurationOption1:
-      required:
-        - Name
-        - ConfigurationParameter
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          pattern: \S
-          type: string
-          nullable: false
-        ConfigurationParameter:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-        - Name
-        - Value
+      - Name
+      - Value
       type: object
       properties:
         Name:
@@ -1134,8 +1174,8 @@ components:
           nullable: false
     ElectronicAddress:
       required:
-        - Type
-        - Email
+      - Type
+      - Email
       type: object
       properties:
         Type:
@@ -1165,8 +1205,8 @@ components:
           type: string
         ServiceDomainIdentifier:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Specifies the service domain identifier
+          - $ref: "#/components/schemas/UUID"
+          - description: Specifies the service domain identifier
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -1185,16 +1225,16 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteAssignPANRequest:
       required:
-        - FeatureId
-        - FeatureIdentification
-        - ProductId
-        - FinancialInstitution
-        - AgreementFeatureId
-        - Agreement
+      - FeatureId
+      - FeatureIdentification
+      - ProductId
+      - FinancialInstitution
+      - AgreementFeatureId
+      - Agreement
       type: object
       properties:
         FeatureId:
@@ -1269,8 +1309,8 @@ components:
           type: string
     ExecuteContactLessOptRequest:
       required:
-        - ContactlessOptOutSwitch
-        - ReplaceCard
+      - ContactlessOptOutSwitch
+      - ReplaceCard
       type: object
       properties:
         ContactlessOptOutSwitch:
@@ -1295,8 +1335,8 @@ components:
       properties:
         FEPID:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
             card.
@@ -1309,12 +1349,12 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteGeneratePINRequest:
       required:
-        - FeatureId
-        - FinancialInstitution
+      - FeatureId
+      - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -1334,18 +1374,18 @@ components:
       properties:
         FEPID:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment instrument (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment instrument (FEPID)
     ExecuteReplaceCardResponse:
       type: object
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment card (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment card (FEPID)
     ExecuteTransferPINRequest:
       required:
-        - NewPaymentInstrumentId
+      - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -1362,7 +1402,7 @@ components:
             $ref: "#/components/schemas/Feature"
     ExecuteUnlinkProductFeatureRequest:
       required:
-        - RequestType
+      - RequestType
       type: object
       properties:
         Feature:
@@ -1386,8 +1426,8 @@ components:
           type: string
     ExecuteValidateCVV2Request:
       required:
-        - ExpiryDate
-        - CVV2
+      - ExpiryDate
+      - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -1402,8 +1442,8 @@ components:
           nullable: false
     ExecuteValidateCVVRequest:
       required:
-        - ExpiryDate
-        - CVV
+      - ExpiryDate
+      - CVV
       type: object
       properties:
         ExpiryDate:
@@ -1424,8 +1464,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-        - ExpiryDate
-        - iCVV
+      - ExpiryDate
+      - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -1440,8 +1480,8 @@ components:
           nullable: false
     ExecuteValidatePINRequest:
       required:
-        - PINBlock
-        - Association
+      - PINBlock
+      - Association
       type: object
       properties:
         PINBlock:
@@ -1480,7 +1520,7 @@ components:
           type: string
     Feature:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -1509,7 +1549,7 @@ components:
           type: string
     Feature2:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -1576,7 +1616,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -1596,11 +1636,11 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - AgreementInvolvement
-        - OpeningDate
+      - FinancialInstitution
+      - Brand
+      - Product
+      - AgreementInvolvement
+      - OpeningDate
       type: object
       properties:
         FinancialInstitution:
@@ -1647,7 +1687,7 @@ components:
           type: string
     InitiateFacilityAllocationRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -1670,9 +1710,9 @@ components:
           type: string
     IssuedDeviceActionRequest:
       required:
-        - BlockReason
-        - ReplaceCard
-        - GenerateNewPin
+      - BlockReason
+      - ReplaceCard
+      - GenerateNewPin
       type: object
       properties:
         BlockReason:
@@ -1705,12 +1745,12 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment instrument (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment instrument (FEPID)
         NewFepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the new payment instrument (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the new payment instrument (FEPID)
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1753,7 +1793,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -1835,7 +1875,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-        - Capability
+      - Capability
       type: object
       properties:
         Capability:
@@ -1847,10 +1887,10 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -1904,7 +1944,7 @@ components:
           type: string
     PersonDetailsDto:
       required:
-        - Surname
+      - Surname
       type: object
       properties:
         ExternalIdentification:
@@ -1963,8 +2003,8 @@ components:
             $ref: "#/components/schemas/ElectronicAddress"
     Phone:
       required:
-        - Type
-        - Number
+      - Type
+      - Number
       type: object
       properties:
         Type:
@@ -1998,9 +2038,9 @@ components:
           type: string
     PostalAddress:
       required:
-        - AddressType
-        - Country
-        - ContactPreference
+      - AddressType
+      - Country
+      - ContactPreference
       type: object
       properties:
         AddressType:
@@ -2085,12 +2125,12 @@ components:
       properties:
         Product:
           allOf:
-            - $ref: "#/components/schemas/RetrieveProductResponse"
-            - description: Identification of the product
+          - $ref: "#/components/schemas/RetrieveProductResponse"
+          - description: Identification of the product
     RegisterBundleRequest:
       required:
-        - Identification
-        - Name
+      - Identification
+      - Name
       type: object
       properties:
         Identification:
@@ -2121,7 +2161,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -2146,10 +2186,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-        - Identification
-        - Name
-        - Capability
-        - ConfigurationOption
+      - Identification
+      - Name
+      - Capability
+      - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -2178,7 +2218,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2187,8 +2227,8 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-        - FinancialInstitution
-        - TradingName
+      - FinancialInstitution
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -2235,8 +2275,8 @@ components:
             $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
       required:
-        - Surname
-        - FinancialInstitution
+      - Surname
+      - FinancialInstitution
       type: object
       properties:
         ExternalIdentification:
@@ -2312,7 +2352,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -2327,9 +2367,9 @@ components:
           $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
-        - Name
-        - Brand
-        - Identification
+      - Name
+      - Brand
+      - Identification
       type: object
       properties:
         Name:
@@ -2360,7 +2400,7 @@ components:
           type: string
     ReissueCardRequest:
       required:
-        - FinancialInstitution
+      - FinancialInstitution
       type: object
       properties:
         ProductId:
@@ -2383,11 +2423,11 @@ components:
             $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           allOf:
-            - $ref: "#/components/schemas/RetrieveProductResponse"
-            - description: Identification of the product
+          - $ref: "#/components/schemas/RetrieveProductResponse"
+          - description: Identification of the product
     RequestGetCVV2Request:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -2397,7 +2437,7 @@ components:
           nullable: false
     RequestGetCVVRequest:
       required:
-        - ExpiryDate
+      - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -2422,7 +2462,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-        - PAN
+      - PAN
       type: object
       properties:
         PAN:
@@ -2444,8 +2484,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-        - RSAKey
-        - Association
+      - RSAKey
+      - Association
       type: object
       properties:
         RSAKey:
@@ -2460,7 +2500,7 @@ components:
           nullable: false
     RequestViewPinRequest:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -2528,7 +2568,7 @@ components:
             $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
       required:
-        - AgreementInvolvement
+      - AgreementInvolvement
       type: object
       properties:
         Identification:
@@ -2667,8 +2707,8 @@ components:
             $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationFeatureParameterRequest1:
       required:
-        - FacilityIdentification
-        - Capability
+      - FacilityIdentification
+      - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -2730,7 +2770,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -2751,8 +2791,8 @@ components:
             $ref: "#/components/schemas/LimitResponseDto"
     RetrieveOrganisationResponse:
       required:
-        - FinancialInstitution
-        - TradingName
+      - FinancialInstitution
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -2809,8 +2849,8 @@ components:
       properties:
         FepId:
           allOf:
-            - $ref: "#/components/schemas/UUID"
-            - description: Unique identifier of the payment instrument (FEPID)
+          - $ref: "#/components/schemas/UUID"
+          - description: Unique identifier of the payment instrument (FEPID)
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -2932,16 +2972,16 @@ components:
       properties:
         PaymentInstrumentResponse:
           allOf:
-            - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
-            - description: Payment instrument details
+          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
+          - description: Payment instrument details
         VisaChipDataResponse:
           allOf:
-            - $ref: "#/components/schemas/VisaChipDataResponse"
-            - description: Visa Chip details for a given payment instrument
+          - $ref: "#/components/schemas/VisaChipDataResponse"
+          - description: Visa Chip details for a given payment instrument
         MasterCardChipDataResponse:
           allOf:
-            - $ref: "#/components/schemas/MasterCardChipDataResponse"
-            - description: MasterCard Chip details for a given payment instrument
+          - $ref: "#/components/schemas/MasterCardChipDataResponse"
+          - description: MasterCard Chip details for a given payment instrument
     RetrievePersonListRequest:
       type: object
       properties:
@@ -3103,12 +3143,12 @@ components:
           type: string
     RetrieveSpendLimitsRequest:
       required:
-        - UniqueIDType
-        - UniqueID
-        - FinancialInstitution
-        - Brand
-        - Product
-        - TxnAmt
+      - UniqueIDType
+      - UniqueID
+      - FinancialInstitution
+      - Brand
+      - Product
+      - TxnAmt
       type: object
       properties:
         UniqueIDType:
@@ -3169,9 +3209,9 @@ components:
           type: string
         ChipData:
           allOf:
-            - $ref: "#/components/schemas/ChipData"
-            - description: It's an object with chip sequence number and application
-                transaction counter value
+          - $ref: "#/components/schemas/ChipData"
+          - description: It's an object with chip sequence number and application
+              transaction counter value
     SystemUpdateResponse:
       type: object
       properties:
@@ -3187,22 +3227,22 @@ components:
           type: string
         ChipData:
           allOf:
-            - $ref: "#/components/schemas/ChipData"
-            - description: It's an object with chip sequence number and application
-                transaction counter value
+          - $ref: "#/components/schemas/ChipData"
+          - description: It's an object with chip sequence number and application
+              transaction counter value
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
     UpdateAuthRestrictionRequest:
       required:
-        - UniqueIdType
-        - UniqueId
-        - FreezeAll
-        - IsATMAllowed
-        - IsCNPAllowed
-        - IsPOSAllowed
-        - IsContactLessAllowed
+      - UniqueIdType
+      - UniqueId
+      - FreezeAll
+      - IsATMAllowed
+      - IsCNPAllowed
+      - IsPOSAllowed
+      - IsContactLessAllowed
       type: object
       properties:
         UniqueIdType:
@@ -3311,7 +3351,7 @@ components:
             $ref: "#/components/schemas/Feature1"
     UpdateFeatureRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -3327,7 +3367,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3357,14 +3397,14 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateLimitRequest:
       required:
-        - UniqueIdType
-        - UniqueId
-        - LimitType
-        - PeriodType
-        - CustomerMaximumLimitAmount
+      - UniqueIdType
+      - UniqueId
+      - LimitType
+      - PeriodType
+      - CustomerMaximumLimitAmount
       type: object
       properties:
         UniqueIdType:
@@ -3386,11 +3426,15 @@ components:
           nullable: false
         PeriodType:
           description: "Period type indicates single, daily or monthly"
+          minLength: 1
           type: string
+          nullable: false
         CustomerMaximumLimitAmount:
           description: An amount to set by the consumer.
+          minLength: 1
           pattern: "^\\d{1,10}([.]\\d{1,5})?$"
           type: string
+          nullable: false
     UpdateLimitResponse:
       type: object
       properties:
@@ -3421,8 +3465,8 @@ components:
           type: string
     UpdateProductRequest:
       required:
-        - Name
-        - Brand
+      - Name
+      - Brand
       type: object
       properties:
         Name:
