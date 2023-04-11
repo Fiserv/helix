@@ -91,13 +91,13 @@ paths:
             \ : Bundle ID required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Financial Institution cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
             \ : Brand required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Brand cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
             \ : Product required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Product is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Product exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Product cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
             \ : Payment Card Involvement required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Opening Date required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Opening Date has to be a valid date.</em></li><li><em>HLXAGDTAD001\
@@ -109,15 +109,15 @@ paths:
             \ value.</em></li><li><em>HLXAGDTAD001 : Clearing System Identification\
             \ Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Account Identification required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Account Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Account Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification is not valid, please provide\
             \ valid value.</em></li><li><em>HLXPTDTBR001 : Error in Financial Institution\
             \ Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Financial Institution Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Brand Identification cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
@@ -376,7 +376,7 @@ components:
         FepId:
           allOf:
           - $ref: "#/components/schemas/UUID"
-          - description: Unique identifier of the payment card (FEPID)
+          - description: Unique identifier for a Card.
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -947,17 +947,24 @@ components:
           type: boolean
     ExternalAccount:
       description: Provide Link to External Accounts
+      required:
+      - ClearingSystemIdentificationCode
+      - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
             Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
+          minLength: 1
           type: string
+          nullable: false
         AccountIdentification:
           description: Account number associated with External Clearing System
           maxLength: 37
+          pattern: \S
           type: string
+          nullable: false
         ClearingSystemMemberIdentification:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
@@ -1126,8 +1133,7 @@ components:
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
+          description: Unique identifier for an Account.
           maxLength: 37
           type: string
     InitiateBoardingRequest:
@@ -1827,7 +1833,7 @@ components:
       type: object
       properties:
         FECID:
-          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          description: Unique identifier for a Person.
           type: string
     RegisterProductFeatureRequest:
       required:
