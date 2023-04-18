@@ -4246,7 +4246,7 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^?\d*$
+          pattern: ^\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
@@ -4283,11 +4283,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*\Z).+
+          pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*\Z).+
+          pattern: \A(?!\s*$).+
           type: string
     UpdateBundleResponse:
       type: object
