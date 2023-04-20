@@ -2,11 +2,9 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-70
+  version: 1.1.0-71
 tags:
 - name: Customer Management
-  x-proxy-name: Retrieve an Organisation
-  x-group-name: Customer Management
 paths:
   /Helix/V1/Organisation/Register:
     post:
@@ -15,14 +13,19 @@ paths:
       summary: This method is used to register a new Organisation and will return
         a unique Fiserv Enterprise Organisation ID (FEOID)
       operationId: registerOrganisation
+      parameters:
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/RegisterOrganisationRequest'
       responses:
-        x-proxy-name: Add an Organisation
-        x-group-name: Customer Management
         "201":
           description: Created
           content:
@@ -34,8 +37,6 @@ paths:
                     description: Fiserv Enterprise Organisation ID - Unique identifier
                       for the organisation
                     type: string
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -70,48 +71,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
@@ -120,16 +109,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTAD002\
             \ : There is an error while adding an Organisation, please try again.</em></li></ul>"
@@ -137,32 +122,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add an Organisation
-          x-group-name: Customer Management
         "200":
           description: OK
       x-proxy-name: Add an Organisation
@@ -183,16 +160,12 @@ paths:
           pattern: ^\S*$
           type: string
       responses:
-        x-proxy-name: Retrieve an Organisation
-        x-group-name: Customer Management
         "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetrieveOrganisationResponse'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Organisation ID cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
@@ -201,24 +174,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT004\
             \ : Organisation not found.</em></li></ul>"
@@ -226,24 +193,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT002\
             \ : There is an error while getting Organisation details, please try again.</em></li></ul>"
@@ -251,32 +212,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve an Organisation
-          x-group-name: Customer Management
       x-proxy-name: Retrieve an Organisation
       x-group-name: Customer Management
   /Helix/V1/Person/Delete/Execute:
@@ -294,12 +247,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ExecuteDeletePersonRequest'
       responses:
-        x-proxy-name: Delete a Person
-        x-group-name: Customer Management
         "204":
           description: No Content
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : FECID required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -309,24 +258,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
             \ : Person not found.</em></li></ul>"
@@ -334,40 +277,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "422":
           description: Unprocessable Entity
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTDE001\
             \ : There is an error while deleting a Person, please try again.</em></li></ul>"
@@ -375,32 +308,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Delete a Person
-          x-group-name: Customer Management
         "200":
           description: OK
       x-proxy-name: Delete a Person
@@ -418,8 +343,6 @@ paths:
             schema:
               $ref: '#/components/schemas/RetrievePersonListRequest'
       responses:
-        x-proxy-name: Retrieve a Person List using FEPID or CRMID
-        x-group-name: Customer Management
         "200":
           description: OK
           content:
@@ -428,8 +351,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RetrievePersonResponse'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : FEPID cannot be more than 37 characters.</em></li><li><em>HLXPTDTBR001\
@@ -445,24 +366,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT007\
             \ : Person not found.</em></li><li><em>HLXPTDTGT009 : External Account\
@@ -472,16 +387,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE006\
             \ : Card not enabled.</em></li></ul>"
@@ -489,48 +400,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Retrieve a Person List using FEPID or CRMID
-          x-group-name: Customer Management
       x-proxy-name: Retrieve a Person List using FEPID or CRMID
       x-group-name: Customer Management
   /Helix/V1/Person/Register:
@@ -543,14 +442,19 @@ paths:
         \ store demographic information supplied and will return a unique FECID, which\
         \ is the ID that will identify the customer within the system."
       operationId: registerPerson
+      parameters:
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/RegisterPersonRequest'
       responses:
-        x-proxy-name: Add a Person
-        x-group-name: Customer Management
         "201":
           description: Created
           content:
@@ -559,11 +463,8 @@ paths:
                 type: object
                 properties:
                   FECID:
-                    description: Fiserv Enterprise Customer ID - Unique identifier
-                      for the person
+                    description: Unique identifier for a Person.
                     type: string
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -612,24 +513,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXPTDTUN002 : Brand\
@@ -638,24 +533,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXPTDTNE002 :\
@@ -664,16 +553,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTAD001\
             \ : There is an error while adding a Person, please try again.</em></li></ul>"
@@ -681,34 +566,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Add a Person
-          x-group-name: Customer Management
-        "200":
-          description: OK
       x-proxy-name: Add a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
@@ -730,16 +605,12 @@ paths:
           pattern: ^\S*$
           type: string
       responses:
-        x-proxy-name: Inquire on a Person
-        x-group-name: Customer Management
         "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetrievePersonResponse'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Person Identification cannot be more than 37 characters.</em></li></ul><li><em>HLXPTDTBR001\
@@ -748,24 +619,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT003\
             \ : Person not found.</em></li></ul>"
@@ -773,24 +638,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT001\
             \ : There is an error while getting Person details, please try again.</em></li></ul>"
@@ -798,32 +657,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Inquire on a Person
-          x-group-name: Customer Management
       x-proxy-name: Inquire on a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Update:
@@ -849,16 +700,12 @@ paths:
             schema:
               $ref: '#/components/schemas/PersonDetailsDto'
       responses:
-        x-proxy-name: Update a Person
-        x-group-name: Customer Management
         "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetrievePersonResponse'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Name Prefix exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -900,40 +747,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT015\
             \ : External Identification updates are not allowed.</em></li></ul>"
@@ -941,16 +778,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTUP001\
             \ : There is an error while updating a Person, please try again.</em></li></ul>"
@@ -958,32 +791,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Update a Person
-          x-group-name: Customer Management
       x-proxy-name: Update a Person
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Validate:
@@ -1003,12 +828,8 @@ paths:
           maxLength: 37
           type: string
       responses:
-        x-proxy-name: Validate person status
-        x-group-name: Customer Management
         "200":
           description: OK
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Person Identification cannot be more than 37 characters.</em></li></ul>"
@@ -1016,24 +837,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
             \ : Person not found.</em></li></ul>"
@@ -1041,8 +856,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTNE007\
             \ : Person not enabled.</em></li></ul>"
@@ -1050,16 +863,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
             \ : There is an error while validating Person details, please try again</em></li></ul>"
@@ -1067,16 +876,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-          x-proxy-name: Validate person status
-          x-group-name: Customer Management
       x-proxy-name: Validate person status
       x-group-name: Customer Management
 components:
@@ -1242,7 +1047,7 @@ components:
       type: object
       properties:
         FepId:
-          description: Unique identifier of the payment card (FEPID)
+          description: Unique identifier for a Card.
           type: string
           allOf:
           - $ref: '#/components/schemas/UUID'
@@ -2184,8 +1989,7 @@ components:
       type: object
       properties:
         Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
+          description: Unique identifier for an Account.
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
@@ -2371,10 +2175,10 @@ components:
           type: boolean
     OverrideParameter:
       required:
-      - Capability
+      - CapabilityName
       type: object
       properties:
-        Capability:
+        CapabilityName:
           description: Name of the system capability linked to a feature
           maxLength: 35
           pattern: \S
@@ -2848,7 +2652,7 @@ components:
       type: object
       properties:
         FECID:
-          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          description: Unique identifier for a Person.
           type: string
     RegisterProductFeatureRequest:
       required:
