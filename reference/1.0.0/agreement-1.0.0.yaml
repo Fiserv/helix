@@ -2,15 +2,115 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-91
+  version: 1.1.0-95
 tags:
-  - name: Account Management
-  - name: Agreement Feature Management
+- name: Account Management
+- name: Agreement Feature Management
 paths:
+  /Helix/V1/Agreement/CardFee/{paymentInstrumentId}/Retrieve:
+    get:
+      tags:
+      - Account Management
+      summary: Inquire card fee details
+      description: This API allows the user to retrieve the details of card fees associated
+        with a given card.
+      operationId: inquireCardFeeDetails
+      parameters:
+      - name: paymentInstrumentId
+        in: path
+        description: Unique identifier of the payment instrument (FEPID)
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveCardFeeDetailsResponse'
+        "204":
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Payment Instrument Identification less than minimum 36 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Payment Instrument Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTCF001\
+            \ : Card fee not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Inquire card fee details
+      x-group-name: Account Management
   /Helix/V1/Agreement/Delete/Execute:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: Delete an account using FEAID
       description: "This service is used to delete an account (agreement) to the system\
         \ using FEAID supplied in the request. This service will also delete external\
@@ -108,7 +208,7 @@ paths:
   /Helix/V1/Agreement/GetList/Request:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: This API is used to retrieve the list of accounts for a person (FECID)
         or an external account.
       operationId: retrieveAgreementList
@@ -219,7 +319,7 @@ paths:
   /Helix/V1/Agreement/Initiate:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: InCR Register a new agreement account
       description: "This service is used to add a new Account for the given customer\
         \ (person) to the system, that will also be associated with a card. This service\
@@ -227,12 +327,12 @@ paths:
         \ holder within the system."
       operationId: initiateAgreement
       parameters:
-        - name: idempotency-id
-          in: header
-          description: Idempotency ID
-          required: true
-          schema:
-            type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -321,7 +421,8 @@ paths:
             \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
             \ : Party not enabled.</em></li><li><em>HLXAGDTGT013 : Product not found\
             \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT014\
-            \ : Person <person-id> not found under Financial Institution <fi-id>.</em></li></ul>"
+            \ : Person <person-id> not found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT014\
+            \ : Person <person-id> not linked to Brand <brand-id>.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -362,20 +463,20 @@ paths:
   /Helix/V1/Agreement/{agreementId}/AgreementFeature/GetList/Request:
     post:
       tags:
-        - Agreement Feature Management
+      - Agreement Feature Management
       summary: Retrieve details about an agreement feature parameter
       description: "This service is used to inquire Agreement Feature parameter details\
         \ using FEAID, which is the ID that is used to identify the Agreement and\
         \ filter using the data given in request body."
       operationId: retrieveAgreementFeatureParameterList
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       requestBody:
         content:
           application/json:
@@ -439,26 +540,26 @@ paths:
   /Helix/V1/Agreement/{agreementId}/AgreementFeature/Initiate:
     post:
       tags:
-        - Agreement Feature Management
+      - Agreement Feature Management
       summary: Register a new Agreement Feature
       description: "This service is used to add a new Agreement Feature. This service\
         \ will return a unique ID, which is the ID that will identify the agreement\
         \ feature within the system."
       operationId: initiateAgreementFeature
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-        - name: idempotency-id
-          in: header
-          description: Idempotency ID
-          required: true
-          schema:
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -562,7 +663,7 @@ paths:
   /Helix/V1/Agreement/{agreementId}/AgreementFeature/Retrieve:
     get:
       tags:
-        - Agreement Feature Management
+      - Agreement Feature Management
       summary: Retrieve details about an agreement feature
       description: "This service is used to inquire an Agreement Feature details using\
         \ agreement identification, which is the ID that is used to identify the Agreement\
@@ -571,18 +672,18 @@ paths:
         \ all the available agreement feature details."
       operationId: retrieveAgreementFeatureByCapabilityName
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-        - name: capabilityName
-          in: query
-          description: Name of the Capability to be used as a filter
-          schema:
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: capabilityName
+        in: query
+        description: Name of the Capability to be used as a filter
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -640,7 +741,7 @@ paths:
   /Helix/V1/Agreement/{agreementId}/AgreementFeature/{agreementFeatureId}/Retrieve:
     get:
       tags:
-        - Agreement Feature Management
+      - Agreement Feature Management
       summary: Retrieve details about an agreement feature parameter
       description: "This service is used to inquire Agreement Feature Partmeter details\
         \ using FEAID, which is the ID that is used to identify the Agreement and\
@@ -648,19 +749,19 @@ paths:
         \ system ."
       operationId: retrieveAgreementFeatureParameter
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
-        - name: agreementFeatureId
-          in: path
-          description: Unique identifier of an Agreement Feature
-          required: true
-          schema:
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementFeatureId
+        in: path
+        description: Unique identifier of an Agreement Feature
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -718,20 +819,20 @@ paths:
   /Helix/V1/Agreement/{agreementId}/AgreementInvolvement/Update:
     patch:
       tags:
-        - Account Management
+      - Account Management
       summary: Register/Update agreement involvement for an account
       description: "This API Is used to update account involvements (e.g. joint account\
         \ holders). Account involvements specify an involvement (role) of a party\
         \ in an account (e.g. Account Holder, Power of Attorney etc)"
       operationId: updateAgreementInvolvement
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Account
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Account
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       requestBody:
         content:
           application/json:
@@ -825,18 +926,18 @@ paths:
   /Helix/V1/Agreement/{agreementId}/Closure/Execute:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: Initiate for Account Closure
       description: This service is used to close an account.
       operationId: closeAgreement
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Account
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Account
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       requestBody:
         content:
           application/json:
@@ -931,20 +1032,20 @@ paths:
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Delete/Execute:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: Delete a facility allocation using FacilityIdentification
       description: 'This service is used to delete a facility allocation data from
         the system using FacilityIdentification supplied in the request. '
       operationId: deleteFacilityAllocation
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          type: string
       requestBody:
         content:
           application/json:
@@ -1034,21 +1135,21 @@ paths:
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/GetFeatureParameter/Retrieve:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: "Retrieves Feature Parameters for given Agreement ID, Facility ID and\
         \ capability."
       description: This service is used to retrieve Feature Parameters using Facility
         Allocation and Capability.
       operationId: retrieveFacilityAllocationFeatureParameters
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          type: string
       requestBody:
         content:
           application/json:
@@ -1149,21 +1250,21 @@ paths:
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Initiate:
     post:
       tags:
-        - Account Management
+      - Account Management
       summary: Registers a new Facility Allocation for the given FEAID
       description: "This service is used to add a new Facility Allocation for the\
         \ given FEAID in the system, This service will return a unique Facility Allocation\
         \ ID, which will be used to identify the Facility."
       operationId: initiateFacilityAllocation
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          type: string
       requestBody:
         content:
           application/json:
@@ -1267,19 +1368,19 @@ paths:
   /Helix/V1/Agreement/{agreementId}/FacilityAllocation/Retrieve:
     get:
       tags:
-        - Account Management
+      - Account Management
       summary: Retrieves a Facility Allocation for the given FEAID
       description: This service is used to retrieve Facility Allocation details for
         the given FEAID.
       operationId: retrieveFacilityAllocationList
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       responses:
         "200":
           description: OK
@@ -1372,19 +1473,19 @@ paths:
   /Helix/V1/Agreement/{agreementId}/Retrieve:
     get:
       tags:
-        - Account Management
+      - Account Management
       summary: Retrieve details about agreement account
       description: "This service is used to inquire an Account details using FEAID\
         \ , which is the ID that is used to identify the Account within the system."
       operationId: retrieveAgreement
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       responses:
         "200":
           description: OK
@@ -1442,19 +1543,19 @@ paths:
   /Helix/V1/Agreement/{agreementId}/Validate:
     get:
       tags:
-        - Account Management
+      - Account Management
       summary: This method is used to validate the account details for the given FEAID
       description: This API allows the user to validate the account details for the
         given FEAID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>
       operationId: validateAgreement
       parameters:
-        - name: agreementId
-          in: path
-          description: Unique identifier of an Agreement
-          required: true
-          schema:
-            maxLength: 37
-            type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
       responses:
         "200":
           description: OK
@@ -1512,6 +1613,26 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Validate account status
       x-group-name: Account Management
+  /Helix/V1/Capability/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      parameters:
+      - name: capabilityName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     Account:
@@ -1551,12 +1672,12 @@ components:
           type: string
     AddCardRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - RelatedAccount
-        - Cardholder
-        - CardholderType
+      - FinancialInstitution
+      - Brand
+      - Product
+      - RelatedAccount
+      - Cardholder
+      - CardholderType
       type: object
       properties:
         FinancialInstitution:
@@ -1580,7 +1701,9 @@ components:
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         Cardholder:
-          description: Party entitled to use the card (FECID)
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         CardholderType:
@@ -1629,22 +1752,22 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         Product:
           description: Identification of the product
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: '#/components/schemas/RetrieveProductResponse'
         Account:
           description: Identification of the account
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrieveAgreementResponse'
+          - $ref: '#/components/schemas/RetrieveAgreementResponse'
         Cardholder:
           description: Identification of the cardholder
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrievePersonResponse'
+          - $ref: '#/components/schemas/RetrievePersonResponse'
         EventMsg:
           description: Specifies event message.
           type: string
@@ -1652,12 +1775,12 @@ components:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         FailedDateTime:
           description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         Brand:
           description: Identification of the Brand
           type: string
@@ -1685,7 +1808,7 @@ components:
           description: Unique identifier for a Card.
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1737,7 +1860,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -1753,8 +1876,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-        - PartyIdentification
-        - PartyRole
+      - PartyIdentification
+      - PartyRole
       type: object
       properties:
         AgreementInvolvementId:
@@ -1762,7 +1885,9 @@ components:
           pattern: "[0-9]+"
           type: string
         PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
           maxLength: 37
           pattern: \S
           type: string
@@ -1788,10 +1913,10 @@ components:
           type: boolean
     BrandEntryAddRequest:
       required:
-        - Name
-        - FinancialInstitutionIdentification
-        - Identification
-        - ReportingCurrency
+      - Name
+      - FinancialInstitutionIdentification
+      - Identification
+      - ReportingCurrency
       type: object
       properties:
         Name:
@@ -1803,7 +1928,7 @@ components:
           description: Registered address of the Brand
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -1849,7 +1974,7 @@ components:
           type: string
     BrandUpdateRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -1861,7 +1986,7 @@ components:
           description: Registered address of the Brand
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -1912,7 +2037,7 @@ components:
             $ref: '#/components/schemas/Feature1'
     BundleRequestDto:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -1922,8 +2047,8 @@ components:
           type: string
     CapabilityCatalog:
       required:
-        - Version
-        - CapabilityName
+      - Version
+      - CapabilityName
       type: object
       properties:
         Version:
@@ -1985,8 +2110,8 @@ components:
           type: string
     ConfigurationOption:
       required:
-        - Name
-        - ConfigurationParameter
+      - Name
+      - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -2003,8 +2128,8 @@ components:
             $ref: '#/components/schemas/ConfigurationParameter'
     ConfigurationOption1:
       required:
-        - Name
-        - ConfigurationParameter
+      - Name
+      - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -2019,8 +2144,8 @@ components:
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-        - Name
-        - Value
+      - Name
+      - Value
       type: object
       properties:
         Name:
@@ -2035,8 +2160,8 @@ components:
           type: string
     ElectronicAddress:
       required:
-        - Type
-        - Email
+      - Type
+      - Email
       type: object
       properties:
         Type:
@@ -2067,7 +2192,7 @@ components:
           description: Specifies the service domain identifier
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -2081,7 +2206,7 @@ components:
           description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/LocalDateTime'
+          - $ref: '#/components/schemas/LocalDateTime'
     ExecuteActivateCardResponse:
       type: object
       properties:
@@ -2089,15 +2214,15 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
     ExecuteAssignPANRequest:
       required:
-        - FeatureId
-        - FeatureIdentification
-        - ProductId
-        - FinancialInstitution
-        - AgreementFeatureId
-        - Agreement
+      - FeatureId
+      - FeatureIdentification
+      - ProductId
+      - FinancialInstitution
+      - AgreementFeatureId
+      - Agreement
       type: object
       properties:
         FeatureId:
@@ -2164,11 +2289,11 @@ components:
             Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
     ExecuteContactLessOptRequest:
       required:
-        - ContactlessOptOutSwitch
-        - ReplaceCard
+      - ContactlessOptOutSwitch
+      - ReplaceCard
       type: object
       properties:
         ContactlessOptOutSwitch:
@@ -2195,7 +2320,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
             card.
@@ -2210,10 +2335,10 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
     ExecuteDeleteAgreementRequest:
       required:
-        - FEAID
+      - FEAID
       type: object
       properties:
         FEAID:
@@ -2222,7 +2347,7 @@ components:
           type: string
     ExecuteDeleteFacilityAllocationRequest:
       required:
-        - FacilityIdentification
+      - FacilityIdentification
       type: object
       properties:
         FacilityIdentification:
@@ -2233,7 +2358,7 @@ components:
           type: string
     ExecuteDeletePersonRequest:
       required:
-        - FECID
+      - FECID
       type: object
       properties:
         FECID:
@@ -2241,8 +2366,8 @@ components:
           type: string
     ExecuteGeneratePINRequest:
       required:
-        - FeatureId
-        - FinancialInstitution
+      - FeatureId
+      - FinancialInstitution
       type: object
       properties:
         FeatureId:
@@ -2262,7 +2387,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -2270,10 +2395,10 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
     ExecuteTransferPINRequest:
       required:
-        - NewPaymentInstrumentId
+      - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -2289,7 +2414,7 @@ components:
             $ref: '#/components/schemas/Feature'
     ExecuteUnlinkProductFeatureRequest:
       required:
-        - RequestType
+      - RequestType
       type: object
       properties:
         Feature:
@@ -2312,8 +2437,8 @@ components:
           type: string
     ExecuteValidateCVV2Request:
       required:
-        - ExpiryDate
-        - CVV2
+      - ExpiryDate
+      - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -2326,8 +2451,8 @@ components:
           type: string
     ExecuteValidateCVVRequest:
       required:
-        - ExpiryDate
-        - CVV
+      - ExpiryDate
+      - CVV
       type: object
       properties:
         ExpiryDate:
@@ -2346,8 +2471,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-        - ExpiryDate
-        - iCVV
+      - ExpiryDate
+      - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -2360,8 +2485,8 @@ components:
           type: string
     ExecuteValidatePINRequest:
       required:
-        - PINBlock
-        - Association
+      - PINBlock
+      - Association
       type: object
       properties:
         PINBlock:
@@ -2381,8 +2506,8 @@ components:
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
-        - ClearingSystemIdentificationCode
-        - AccountIdentification
+      - ClearingSystemIdentificationCode
+      - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
@@ -2404,7 +2529,7 @@ components:
           type: string
     Feature:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -2432,7 +2557,7 @@ components:
           type: string
     Feature2:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -2479,9 +2604,9 @@ components:
           type: string
     FiRegisterRequest:
       required:
-        - Name
-        - Identification
-        - InvoiceCurrency
+      - Name
+      - Identification
+      - InvoiceCurrency
       type: object
       properties:
         Name:
@@ -2493,7 +2618,7 @@ components:
           description: Registered address of Financial Institution
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2538,7 +2663,7 @@ components:
           type: string
     FiUpdateRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -2550,7 +2675,7 @@ components:
           description: Registered address of Financial Institution
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -2597,7 +2722,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -2617,11 +2742,11 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-        - FinancialInstitution
-        - Brand
-        - Product
-        - AgreementInvolvement
-        - OpeningDate
+      - FinancialInstitution
+      - Brand
+      - Product
+      - AgreementInvolvement
+      - OpeningDate
       type: object
       properties:
         FinancialInstitution:
@@ -2666,7 +2791,7 @@ components:
           type: string
     InitiateFacilityAllocationRequest:
       required:
-        - AgreementFeature
+      - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -2694,9 +2819,9 @@ components:
       example: 2022-03-10T16:15:50Z
     IssuedDeviceActionRequest:
       required:
-        - BlockReason
-        - ReplaceCard
-        - GenerateNewPin
+      - BlockReason
+      - ReplaceCard
+      - GenerateNewPin
       type: object
       properties:
         BlockReason:
@@ -2731,12 +2856,12 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         NewFepId:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -2757,7 +2882,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -2847,7 +2972,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-        - CapabilityName
+      - CapabilityName
       type: object
       properties:
         CapabilityName:
@@ -2861,7 +2986,7 @@ components:
             $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
-        - Identification
+      - Identification
       type: object
       properties:
         Identification:
@@ -2916,7 +3041,7 @@ components:
           type: string
     PersonDetailsDto:
       required:
-        - Surname
+      - Surname
       type: object
       properties:
         ExternalIdentification:
@@ -2982,8 +3107,8 @@ components:
             $ref: '#/components/schemas/ElectronicAddress'
     Phone:
       required:
-        - Type
-        - Number
+      - Type
+      - Number
       type: object
       properties:
         Type:
@@ -3016,9 +3141,9 @@ components:
           type: string
     PostalAddress:
       required:
-        - AddressType
-        - Country
-        - ContactPreference
+      - AddressType
+      - Country
+      - ContactPreference
       type: object
       properties:
         AddressType:
@@ -3102,11 +3227,11 @@ components:
           description: Identification of the product
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: '#/components/schemas/RetrieveProductResponse'
     RegisterBundleRequest:
       required:
-        - Identification
-        - Name
+      - Identification
+      - Name
       type: object
       properties:
         Identification:
@@ -3136,7 +3261,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -3160,10 +3285,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-        - Identification
-        - Name
-        - Capability
-        - ConfigurationOption
+      - Identification
+      - Name
+      - Capability
+      - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -3199,8 +3324,8 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-        - FinancialInstitution
-        - TradingName
+      - FinancialInstitution
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -3245,8 +3370,8 @@ components:
             $ref: '#/components/schemas/Phone'
     RegisterPersonRequest:
       required:
-        - Surname
-        - FinancialInstitution
+      - Surname
+      - FinancialInstitution
       type: object
       properties:
         ExternalIdentification:
@@ -3317,7 +3442,8 @@ components:
           minLength: 1
           type: string
         Brand:
-          description: Identification of the brand associated with the person
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
     RegisterPersonResponse:
@@ -3328,7 +3454,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-        - Feature
+      - Feature
       type: object
       properties:
         Feature:
@@ -3343,9 +3469,9 @@ components:
           $ref: '#/components/schemas/Warning'
     RegisterProductRequest:
       required:
-        - Name
-        - Brand
-        - Identification
+      - Name
+      - Brand
+      - Identification
       type: object
       properties:
         Name:
@@ -3374,7 +3500,7 @@ components:
     RegistrationAddress:
       description: Registered Address
       required:
-        - Country
+      - Country
       type: object
       properties:
         AddressType:
@@ -3431,7 +3557,7 @@ components:
           type: string
     ReissueCardRequest:
       required:
-        - FinancialInstitution
+      - FinancialInstitution
       type: object
       properties:
         ProductId:
@@ -3455,10 +3581,10 @@ components:
           description: Identification of the product
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: '#/components/schemas/RetrieveProductResponse'
     RequestGetCVV2Request:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3467,7 +3593,7 @@ components:
           type: string
     RequestGetCVVRequest:
       required:
-        - ExpiryDate
+      - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -3491,7 +3617,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-        - PAN
+      - PAN
       type: object
       properties:
         PAN:
@@ -3512,8 +3638,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-        - RSAKey
-        - Association
+      - RSAKey
+      - Association
       type: object
       properties:
         RSAKey:
@@ -3526,7 +3652,7 @@ components:
           type: string
     RequestViewPinRequest:
       required:
-        - RSAPublicKey
+      - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -3593,7 +3719,7 @@ components:
             $ref: '#/components/schemas/AgreementFeature'
     RetrieveAgreementResponse:
       required:
-        - AgreementInvolvement
+      - AgreementInvolvement
       type: object
       properties:
         Identification:
@@ -3646,12 +3772,12 @@ components:
             Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         enabled:
           type: boolean
     RetrieveBrandResponse:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -3663,7 +3789,7 @@ components:
           description: Registered address of the Brand
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -3736,10 +3862,90 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
+    RetrieveCardFeeDetailsResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          description: Unique identifier of a card
+          type: string
+        LastCardMaintenanceFeeDate:
+          description: |-
+            Date when Card maintenance fee was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
+            Type: ISO Date (YYYY-MM-DD)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        LastCardMaintenanceFeeAmount:
+          description: |-
+            Card maintenance fee amount that was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
+            Type: Amount
+          type: string
+        NextCardMaintenanceFeeDate:
+          description: "Date when card maintenance fee (initial or recurring) would\
+            \ be next assessed on the card. This date may also be applicable for initial\
+            \ Card aintenance Fee, when the initial fee is configured to be assessed\
+            \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        LastLostOrStolenReplacementCardFeeDate:
+          description: "Date when Lost or Stolen card replacement fee was last assessed\
+            \ on the card. \nType: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        LastLostOrStolenReplacementCardFeeAmount:
+          description: "Lost or Stolen card replacement fee amount that was last assessed\
+            \ on the card. \nType: Amount"
+          type: string
+        TotalCardFeeAmountLifeToDate:
+          description: |-
+            The total amount of card fees (Card maintenance feeand Lost or Stolen card replacement fee) that has been assessed on the card till date. This field will also include any card fees that was assessed on the old card, if the current one was created from Lost or Stolen replacement process.
+            Type: Amount
+          type: string
+        CardMaintenanceFeeWaiveFlag:
+          description: |-
+            Identifies the type of waive option, if applicable for the Card maintenance fee.
+            Valid values are:
+
+            PERM - Permanently waive card maintenance fee
+            ONCE - Waive the next card maintenance fee once
+          type: string
+        CardMaintenanceFeeWaiveFlagUpdateDate:
+          description: |-
+            Date when Card Maintenance Fee Waive Flag was updated last time.
+            Type: ISO Date (YYYY-MM-DD)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        LastCardMaintenanceFeeWaiveAmount:
+          description: |-
+            Card maintenance fee amount that was last waived for the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
+            Type: Amount
+          type: string
+        LastCardMaintenanceFeeWaiveDate:
+          description: |-
+            Date when Card maintenance fee was last waived on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
+            Type: ISO Date (YYYY-MM-DD)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        LastLostOrStolenReplacementCardFeeWaiveAmount:
+          description: |-
+            Lost or Stolen fee amount that was last waived for the card.
+            Type: Amount
+          type: string
+        LastLostOrStolenReplacementCardFeeWaiveDate:
+          description: |-
+            Date when Lost or Stolen fee was last waived on the card.
+            Type: ISO Date (YYYY-MM-DD)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
     RetrieveFacilityAllocationFeatureParameterRequest:
       required:
-        - FacilityIdentification
-        - Capability
+      - FacilityIdentification
+      - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -3835,7 +4041,7 @@ components:
           type: string
     RetrieveFiResponse:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -3847,7 +4053,7 @@ components:
           description: Registered address of Financial Institution
           type: object
           allOf:
-            - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress'
         Email:
           description: Email address of Financial Institution
           maxLength: 256
@@ -3876,8 +4082,8 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-        - FinancialInstitution
-        - TradingName
+      - FinancialInstitution
+      - TradingName
       type: object
       properties:
         FinancialInstitution:
@@ -3934,7 +4140,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-            - $ref: '#/components/schemas/UUID'
+          - $ref: '#/components/schemas/UUID'
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -3951,17 +4157,17 @@ components:
             (YYYY-MM-dd).
           type: string
           allOf:
-            - $ref: '#/components/schemas/LocalDate'
+          - $ref: '#/components/schemas/LocalDate'
         ExpiryDate:
           description: Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-            - $ref: '#/components/schemas/LocalDate'
+          - $ref: '#/components/schemas/LocalDate'
         PriorCardExpiryDate:
           description: Prior Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-            - $ref: '#/components/schemas/LocalDate'
+          - $ref: '#/components/schemas/LocalDate'
         Cardholder:
           description: Party entitled to use the payment instrument (FECID)
           type: string
@@ -3989,7 +4195,7 @@ components:
           description: Date when the payment instrument was activated (YYYY-MM-dd).
           type: string
           allOf:
-            - $ref: '#/components/schemas/LocalDate'
+          - $ref: '#/components/schemas/LocalDate'
         Blocked:
           description: Indicates whether payment instrument is blocked
           type: string
@@ -4001,7 +4207,7 @@ components:
           description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the payment instrument
@@ -4018,7 +4224,7 @@ components:
             (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
           type: string
@@ -4039,7 +4245,7 @@ components:
           description: Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         DigitalCardType:
           description: Identifies the type of digital card. Possible Response Values
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
@@ -4064,17 +4270,17 @@ components:
           description: Payment instrument details
           type: object
           allOf:
-            - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+          - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
         VisaChipDataResponse:
           description: Visa Chip details for a given payment instrument
           type: object
           allOf:
-            - $ref: '#/components/schemas/VisaChipDataResponse'
+          - $ref: '#/components/schemas/VisaChipDataResponse'
         MasterCardChipDataResponse:
           description: MasterCard Chip details for a given payment instrument
           type: object
           allOf:
-            - $ref: '#/components/schemas/MasterCardChipDataResponse'
+          - $ref: '#/components/schemas/MasterCardChipDataResponse'
     RetrievePersonListRequest:
       type: object
       properties:
@@ -4253,7 +4459,7 @@ components:
             counter value
           type: object
           allOf:
-            - $ref: '#/components/schemas/ChipData'
+          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
@@ -4267,13 +4473,13 @@ components:
             was attempted on the card.
           type: string
           allOf:
-            - $ref: '#/components/schemas/Instant'
+          - $ref: '#/components/schemas/Instant'
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
           type: object
           allOf:
-            - $ref: '#/components/schemas/ChipData'
+          - $ref: '#/components/schemas/ChipData'
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
@@ -4315,7 +4521,7 @@ components:
             $ref: '#/components/schemas/Feature1'
     UpdateFeatureRequest:
       required:
-        - Name
+      - Name
       type: object
       properties:
         Name:
@@ -4363,8 +4569,8 @@ components:
             $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
-        - Name
-        - Brand
+      - Name
+      - Brand
       type: object
       properties:
         Name:
