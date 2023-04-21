@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-71
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Customer Management
 paths:
@@ -945,7 +945,9 @@ components:
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         Cardholder:
-          description: Party entitled to use the card (FECID)
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         CardholderType:
@@ -1127,7 +1129,9 @@ components:
           pattern: "[0-9]+"
           type: string
         PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
           maxLength: 37
           pattern: \S
           type: string
@@ -2645,7 +2649,8 @@ components:
           minLength: 1
           type: string
         Brand:
-          description: Identification of the brand associated with the person
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
     RegisterPersonResponse:
@@ -3558,7 +3563,7 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^\d*$
+          pattern: ^?\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
@@ -3595,11 +3600,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
     UpdateBundleResponse:
       type: object
