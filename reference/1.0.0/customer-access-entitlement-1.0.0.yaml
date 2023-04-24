@@ -2,16 +2,25 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-41
+  version: 1.1.0-47
 tags:
   - name: Customer Access Entitlement
 paths:
   /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
-    put:
+    patch:
       tags:
         - Customer Access Entitlement
       summary: This API updates channel/device based access to products and services
         that the customer has in place.
+      description: "This API enables you to update controls that are applied to an\
+        \ individual card. This API works in conjunction with the Restriction feature.\
+        \ The Restriction feature keeps the controls that are applicable to the newly\
+        \ issued cards within the product. Once issued, customer will be able to update\
+        \ them for their own card using this Update Restriction API.<br>The below\
+        \ mentioned parameters defines how the cardholder can use their card. When\
+        \ users attempt to use their card, the system evaluates the transaction against\
+        \ all controls applied to that card, if the details of the transaction violate\
+        \ any of the controls, the transaction declines."
       operationId: updateRestriction
       requestBody:
         content:
@@ -33,24 +42,36 @@ paths:
                     description: Unique identifier of the Restriciton Level
                     type: string
                   FreezeAll:
-                    description: Field used to freeze all transactions by cardholder
-                      for a given Payment Instrument
+                    description: "Field used to freeze all transactions by cardholder for a\
+                      \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
+                      \ Unfreeze all transactions"
                     type: string
                   IsATMAllowed:
-                    description: Field used to restrict all ATM transactions by cardholder
-                      for a given Payment Instrument
+                    description: "Field used to restrict all ATM transactions by cardholder\
+                      \ for a given Payment Instrument <br> Yes: ATM transactions are allowed\
+                      \ <br> No: ATM transactions not allowed"
                     type: string
                   IsCNPAllowed:
-                    description: Field used to restrict all Card Not Present transactions
-                      by cardholder for a given Payment Instrument
+                    description: "Field used to restrict all Card Not Present transactions\
+                      \ by cardholder for a given Payment Instrument <br> Yes: CNP\
+                      \ transactions are allowed <br> No: CNP transactions not allowed"
                     type: string
                   IsPOSAllowed:
-                    description: Field used to restrict all POS transactions by cardholder
-                      for a given Payment Instrument
+                    description: "Field used to restrict all POS transactions by cardholder\
+                      \ for a given Payment Instrument <br> Yes: POS transactions are allowed\
+                      \ <br> No: POS transactions not allowed"
                     type: string
                   IsContactLessAllowed:
-                    description: Field used to restrict all Contactless transactions
-                      by cardholder for a given Payment Instrument
+                    description: "Field used to restrict all Contactless transactions\
+                      \ by cardholder for a given Payment Instrument <br> Yes: Contactless\
+                      \ transactions are allowed <br> No: Contactless transactions\
+                      \ not allowed"
+                    type: string
+                  IsInternationalAllowed:
+                    description: "Field used to restrict all International transactions\
+                      \ by cardholder for a given Payment Instrument <br> Yes: International\
+                      \ transactions are allowed <br> No: International transactions\
+                      \ not allowed"
                     type: string
         "400":
           description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
@@ -578,7 +599,7 @@ paths:
           in: query
           description: "Type of transaction e.g., ATM, POS, ECOM, etc."
           schema:
-            pattern: (^$|ATM|POS|ECOM)
+            pattern: (^$|ATM|POS|ECOM|MOTO|ContactLess)
             type: string
         - name: PeriodType
           in: query
@@ -3299,10 +3320,6 @@ components:
         - UniqueIdType
         - UniqueId
         - FreezeAll
-        - IsATMAllowed
-        - IsCNPAllowed
-        - IsPOSAllowed
-        - IsContactLessAllowed
       type: object
       properties:
         UniqueIdType:
@@ -3316,29 +3333,35 @@ components:
           minLength: 1
           type: string
         FreezeAll:
-          description: Field used to freeze all transactions by cardholder for a given
-            Payment Instrument
+          description: "Field used to freeze all transactions by cardholder for a\
+            \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
+            \ Unfreeze all transactions"
           minLength: 1
           type: string
         IsATMAllowed:
-          description: Field used to restrict all ATM transactions by cardholder for
-            a given Payment Instrument
-          minLength: 1
+          description: "Field used to restrict all ATM transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: ATM transactions are allowed\
+            \ <br> No: ATM transactions not allowed"
           type: string
         IsCNPAllowed:
-          description: Field used to restrict all Card Not Present transactions by
-            cardholder for a given Payment Instrument
-          minLength: 1
+          description: "Field used to restrict all Card Not Present transactions by\
+            \ cardholder for a given Payment Instrument <br> Yes: CNP transactions\
+            \ are allowed <br> No: CNP transactions not allowed"
           type: string
         IsPOSAllowed:
-          description: Field used to restrict all POS transactions by cardholder for
-            a given Payment Instrument
-          minLength: 1
+          description: "Field used to restrict all POS transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: POS transactions are allowed\
+            \ <br> No: POS transactions not allowed"
           type: string
         IsContactLessAllowed:
-          description: Field used to restrict all Contactless transactions by cardholder
-            for a given Payment Instrument
-          minLength: 1
+          description: "Field used to restrict all Contactless transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: Contactless transactions are\
+            \ allowed <br> No: Contactless transactions not allowed"
+          type: string
+        IsInternationalAllowed:
+          description: "Field used to freeze all International transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: International transactions\
+            \ are allowed <br> No: International transactions not allowed"
           type: string
     UpdateAuthRestrictionResponse:
       type: object
@@ -3362,11 +3385,16 @@ components:
             cardholder for a given Payment Instrument
           type: string
         IsPOSAllowed:
-          description: Field used to restrict all POS transactions by cardholder for
-            a given Payment Instrument
+          description: "Field used to restrict all POS transactions by cardholder\
+                      \ for a given Payment Instrument <br> Yes: POS transactions\
+                      \ are allowed <br> No: POS transactions not allowed"
           type: string
         IsContactLessAllowed:
           description: Field used to restrict all Contactless transactions by cardholder
+            for a given Payment Instrument
+          type: string
+        IsInternationalAllowed:
+          description: Field used to restrict all International transactions by cardholder
             for a given Payment Instrument
           type: string
     UpdateBundleRequest:
@@ -3474,7 +3502,7 @@ components:
         LimitType:
           description: "Type of transaction e.g., ATM, POS, ECOM, etc."
           minLength: 1
-          pattern: (^$|ATM|POS|ECOM)
+          pattern: (^$|ATM|POS|ECOM|MOTO|ContactLess)
           type: string
         PeriodType:
           description: "Period type indicates single, daily or monthly"
