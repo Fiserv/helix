@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-159
+  version: 1.1.0-160
 tags:
   - name: Helix Core
 paths:
@@ -206,7 +206,10 @@ paths:
             \ : Capability <capability-name> has conflicting Features supplied by\
             \ Bundles.</em></li><li><em>HLXIDASAC009 : Error while creating Agreement\
             \ Feature.</em></li><li><em>HLXIDASAC008 : Error while creating facility\
-            \ allocation.</em></li><li><em>HLXIDASAC001 : Account is closed.</em></li></ul>"
+            \ allocation.</em></li><li><em>HLXIDASAC001 : Account is closed.</em></li><li><em>HLXIDASPA005\
+            \ : Person <person-id> not found under Financial Institution <fi-id>.\
+            \ </em></li><li><em>HLXIDASPA006 : Person <person-id> not linked to Brand\
+            \ <brand-id>. </em></li></ul>"
           content: {}
         "429":
           description: Too Many Request
@@ -2245,7 +2248,9 @@ components:
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         Cardholder:
-          description: Party entitled to use the card (FECID)
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
           pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         CardholderType:
@@ -2427,7 +2432,9 @@ components:
           pattern: "[0-9]+"
           type: string
         PartyIdentification:
-          description: Identifies the person which plays the role of contact ( FECID)
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
           maxLength: 37
           pattern: \S
           type: string
@@ -4076,7 +4083,8 @@ components:
           minLength: 1
           type: string
         Brand:
-          description: Identification of the brand associated with the person
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
     RegisterPersonResponse:
