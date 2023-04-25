@@ -2,10 +2,131 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-160
+  version: 1.1.0-164
 tags:
 - name: Helix Core
+  x-proxy-name: Delete Card
+  x-group-name: Card Management
 paths:
+  /Helix/V1/PaymentInstrument/Delete/Execute:
+    post:
+      tags:
+      - Helix Core
+      summary: This method is used to delete a card
+      description: This service allows to delete a card using provided payment instrument
+        id for account servicing.
+      operationId: deleteCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDeleteRequest'
+      responses:
+        x-proxy-name: Delete Card
+        x-group-name: Card Management
+        "204":
+          description: No Content
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : FEPID required, please provide value.</em></li><li><em>HLXIDASBR001\
+            \ : FEPID less than minimum 36 length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : FEPID exceeds maximum 37 length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : SkipFacilityAllocationDeletion is not valid, please provide valid\
+            \ value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCD001\
+            \ : Attempt to delete card has failed due to persistence error.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+          x-proxy-name: Delete Card
+          x-group-name: Card Management
+        "200":
+          description: OK
+      x-proxy-name: Delete Card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
@@ -945,6 +1066,119 @@ paths:
       x-proxy-name: Deactivate a Card
       x-group-name: Card Management
       x-api-scope: Internal
+  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Fraud/Execute:
+    post:
+      tags:
+      - Helix Core
+      summary: This method is used to update fraud on a card
+      description: This API allows to the user update fraud on a card.
+      operationId: updateFraudStatus
+      parameters:
+      - name: paymentInstrumentId
+        in: path
+        description: Unique identifier of the payment instrument (FEPID)
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteFraudRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteFraudResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBV001\
+            \ : Card is not enabled.</em></li><li><em>HLXIDASFR005 : If card fraud\
+            \ status is NONE, replacement card is not applicable.</em></li><li><em>HLXIDASFR004\
+            \ : If card fraud status is SFRD, replacement card is not applicable.</em></li><li><em>HLXIDASFR002\
+            \ : The card is already blocked as confirmed fraud.</em></li><li><em>HLXIDASFR003\
+            \ : The card is already blocked as confirmed fraud and Replacement Card\
+            \ is issued.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASFR006\
+            \ : fraud failed due to persistence error.</em></li><li><em>HLXIDASBR002\
+            \ : Attempt to block and replace the card has failed due to persistence\
+            \ error.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Update fraud on a card
+      x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     post:
       tags:
@@ -1627,6 +1861,21 @@ paths:
                     type: string
                   CancellationDate:
                     description: Indicates date/time when a card was cancelled.
+                    type: string
+                    allOf:
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                  FraudStatus:
+                    description: This field indicates if a card is fraudulent or not.
+                      Valid values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM>
+                      SFRD (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud)
+                      </EM></LI> </UL>
+                    type: string
+                  FraudStatusDate:
+                    description: Indicates date/time when a card was marked as fraudulent.
                     type: string
                     allOf:
                     - $ref: '#/components/schemas/Instant'
@@ -2609,6 +2858,55 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
+    CardDeleteRequest:
+      required:
+      - FEPID
+      type: object
+      properties:
+        FEPID:
+          description: Unique identifier for the payment instrument (FEPID)
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        SkipFacilityAllocationDeletion:
+          description: Boolean that indicate whether to skip facility allocation deletion.
+            Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false </EM></LI></UL>
+          pattern: ^(true|false)$
+          type: string
+    CardFraudStatusEvent:
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventName:
+          type: string
+        eventDescription:
+          type: string
+        serviceDomain:
+          type: string
+        timestamp:
+          type: string
+        productId:
+          type: string
+        primaryAccountNumber:
+          type: string
+        cardholderType:
+          type: string
+        cardTechnologyType:
+          type: string
+        feaId:
+          type: string
+        fecid:
+          type: string
+        cardHolderName:
+          type: string
+        entityId:
+          type: string
+        subEntityId:
+          type: string
+        fiId:
+          type: string
+        brandId:
+          type: string
     ChipData:
       type: object
       properties:
@@ -2999,6 +3297,50 @@ components:
       properties:
         FECID:
           description: Unique identifier of the Person (FECID)
+          type: string
+    ExecuteFraudRequest:
+      required:
+      - FraudStatus
+      - ReplaceCard
+      type: object
+      properties:
+        FraudStatus:
+          description: This field identifies the type of fraud status on the selected
+            card. Valid Values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD
+            (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI>
+            </UL>
+          minLength: 1
+          pattern: (^$|NONE|SFRD|CFRD)
+          type: string
+        ReplaceCard:
+          description: To identify whether a replacement card needs to be created
+            and sent to cardholder. New PIN will be issued with a replacement card.
+            Valid values are <UL><LI><EM> Yes </EM></LI> <LI><EM> No </EM></LI></UL>
+          minLength: 1
+          pattern: (^$|Yes|No)
+          type: string
+    ExecuteFraudResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Unique identifier of the payment instrument (FEPID)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        NewFEPID:
+          description: Unique identifier of the new payment instrument (FEPID)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        ActivationStatus:
+          description: Indicates whether card activation needs to occur for the most
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
     ExecuteGeneratePINRequest:
       required:
@@ -4857,6 +5199,16 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        FraudStatusDate:
+          description: Indicates date/time when a card was marked as fraudulent.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/Instant'
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -5048,7 +5400,7 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^\d*$
+          pattern: ^?\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
@@ -5085,11 +5437,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
     UpdateBundleResponse:
       type: object
