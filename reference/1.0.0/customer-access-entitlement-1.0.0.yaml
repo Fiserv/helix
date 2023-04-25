@@ -2,10 +2,120 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-47
+  version: 1.1.0-52
 tags:
   - name: Customer Access Entitlement
 paths:
+  /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Evaluate:
+    post:
+      tags:
+        - Customer Access Entitlement
+      summary: This API evaluates channel/device based restrictions to products and
+        services that the customer has in place.
+      operationId: evaluateRestriction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluateRestrictionRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UniqueIDType:
+                    description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+                    type: string
+                  UniqueID:
+                    description: Unique identifier of the Restriction Level e.g. payment
+                      instrument (FEPID)
+                    type: string
+                  Rslt:
+                    description: Result for the authorisation
+                    type: string
+                  RsltReasonCode:
+                    description: Result reason code for authorisation
+                    type: string
+                  RsltReasonDesc:
+                    description: Result reason code description
+                    type: string
+        "400":
+          description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Evaluate Restriction
+      x-group-name: Card Management
   /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
     patch:
       tags:
@@ -20,7 +130,9 @@ paths:
         \ mentioned parameters defines how the cardholder can use their card. When\
         \ users attempt to use their card, the system evaluates the transaction against\
         \ all controls applied to that card, if the details of the transaction violate\
-        \ any of the controls, the transaction declines."
+        \ any of the controls, the transaction declines. This service returns card\
+        \ freeze as 'No' with response code 200 when there is no restriction feature\
+        \ exists."
       operationId: updateRestriction
       requestBody:
         content:
@@ -42,14 +154,14 @@ paths:
                     description: Unique identifier of the Restriciton Level
                     type: string
                   FreezeAll:
-                    description: "Field used to freeze all transactions by cardholder for a\
-                      \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
-                      \ Unfreeze all transactions"
+                    description: "Field used to freeze all transactions by cardholder\
+                      \ for a given Payment Instrument <br> Yes: Freeze all transactions\
+                      \ <br> No: Unfreeze all transactions"
                     type: string
                   IsATMAllowed:
                     description: "Field used to restrict all ATM transactions by cardholder\
-                      \ for a given Payment Instrument <br> Yes: ATM transactions are allowed\
-                      \ <br> No: ATM transactions not allowed"
+                      \ for a given Payment Instrument <br> Yes: ATM transactions\
+                      \ are allowed <br> No: ATM transactions not allowed"
                     type: string
                   IsCNPAllowed:
                     description: "Field used to restrict all Card Not Present transactions\
@@ -58,8 +170,8 @@ paths:
                     type: string
                   IsPOSAllowed:
                     description: "Field used to restrict all POS transactions by cardholder\
-                      \ for a given Payment Instrument <br> Yes: POS transactions are allowed\
-                      \ <br> No: POS transactions not allowed"
+                      \ for a given Payment Instrument <br> Yes: POS transactions\
+                      \ are allowed <br> No: POS transactions not allowed"
                     type: string
                   IsContactLessAllowed:
                     description: "Field used to restrict all Contactless transactions\
@@ -68,7 +180,7 @@ paths:
                       \ not allowed"
                     type: string
                   IsInternationalAllowed:
-                    description: "Field used to restrict all International transactions\
+                    description: "Field used to freeze all International transactions\
                       \ by cardholder for a given Payment Instrument <br> Yes: International\
                       \ transactions are allowed <br> No: International transactions\
                       \ not allowed"
@@ -1216,6 +1328,70 @@ components:
           type: string
           allOf:
             - $ref: '#/components/schemas/LocalDateTime'
+    EvaluateRestrictionRequest:
+      required:
+        - UniqueIdType
+        - UniqueId
+        - FinancialInstitution
+        - Brand
+        - Product
+        - TCV
+      type: object
+      properties:
+        UniqueIdType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          minLength: 1
+          type: string
+        UniqueId:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          maxLength: 37
+          minLength: 1
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs
+          maxLength: 37
+          pattern: \S
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          pattern: \S
+          type: string
+        FEAID:
+          description: Agreement id associated with the payment card
+          maxLength: 37
+          type: string
+        TCV:
+          description: Transaction Criteria Value representing the bit value for different
+            criteria of a transaction.
+          minLength: 1
+          type: string
+    EvaluateRestrictionResponse:
+      type: object
+      properties:
+        UniqueIDType:
+          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          type: string
+        UniqueID:
+          description: Unique identifier of the Restriction Level e.g. payment instrument
+            (FEPID)
+          type: string
+        Rslt:
+          description: Result for the authorisation
+          type: string
+        RsltReasonCode:
+          description: Result reason code for authorisation
+          type: string
+        RsltReasonDesc:
+          description: Result reason code description
+          type: string
     EvaluateSpendLimitsRequest:
       required:
         - UniqueIDType
@@ -3373,29 +3549,34 @@ components:
           description: Unique identifier of the Restriciton Level
           type: string
         FreezeAll:
-          description: Field used to freeze all transactions by cardholder for a given
-            Payment Instrument
+          description: "Field used to freeze all transactions by cardholder for a\
+            \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
+            \ Unfreeze all transactions"
           type: string
         IsATMAllowed:
-          description: Field used to restrict all ATM transactions by cardholder for
-            a given Payment Instrument
+          description: "Field used to restrict all ATM transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: ATM transactions are allowed\
+            \ <br> No: ATM transactions not allowed"
           type: string
         IsCNPAllowed:
-          description: Field used to restrict all Card Not Present transactions by
-            cardholder for a given Payment Instrument
+          description: "Field used to restrict all Card Not Present transactions by\
+            \ cardholder for a given Payment Instrument <br> Yes: CNP transactions\
+            \ are allowed <br> No: CNP transactions not allowed"
           type: string
         IsPOSAllowed:
           description: "Field used to restrict all POS transactions by cardholder\
-                      \ for a given Payment Instrument <br> Yes: POS transactions\
-                      \ are allowed <br> No: POS transactions not allowed"
+            \ for a given Payment Instrument <br> Yes: POS transactions are allowed\
+            \ <br> No: POS transactions not allowed"
           type: string
         IsContactLessAllowed:
-          description: Field used to restrict all Contactless transactions by cardholder
-            for a given Payment Instrument
+          description: "Field used to restrict all Contactless transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: Contactless transactions are\
+            \ allowed <br> No: Contactless transactions not allowed"
           type: string
         IsInternationalAllowed:
-          description: Field used to restrict all International transactions by cardholder
-            for a given Payment Instrument
+          description: "Field used to freeze all International transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes: International transactions\
+            \ are allowed <br> No: International transactions not allowed"
           type: string
     UpdateBundleRequest:
       type: object
