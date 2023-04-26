@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-52
+  version: 1.1.0-57
 tags:
   - name: Customer Access Entitlement
 paths:
@@ -3495,7 +3495,6 @@ components:
       required:
         - UniqueIdType
         - UniqueId
-        - FreezeAll
       type: object
       properties:
         UniqueIdType:
@@ -3512,7 +3511,6 @@ components:
           description: "Field used to freeze all transactions by cardholder for a\
             \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
             \ Unfreeze all transactions"
-          minLength: 1
           type: string
         IsATMAllowed:
           description: "Field used to restrict all ATM transactions by cardholder\
