@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-164
+  version: 1.1.0-166
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -1618,7 +1618,8 @@ paths:
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASCS001\
             \ : Card replacement failed, chip sequence exceeds maximum value.</em></li><li><em>HLXIDASAC001\
             \ : Account is closed.</em></li><li><em>HLXIDASCR002 : Replacement cannot\
-            \ be processed for a non-physical card.</em></li></ul>"
+            \ be processed for a non-physical card.</em></li><li><em>HLXIDASID009\
+            \ : Card is cancelled.</em></li></ul>"
           content:
             application/json:
               schema:

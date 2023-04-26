@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-52
+  version: 1.1.0-57
 tags:
   - name: Customer Access Entitlement
 paths:
@@ -130,9 +130,7 @@ paths:
         \ mentioned parameters defines how the cardholder can use their card. When\
         \ users attempt to use their card, the system evaluates the transaction against\
         \ all controls applied to that card, if the details of the transaction violate\
-        \ any of the controls, the transaction declines. This service returns card\
-        \ freeze as 'No' with response code 200 when there is no restriction feature\
-        \ exists."
+        \ any of the controls, the transaction declines."
       operationId: updateRestriction
       requestBody:
         content:
@@ -3495,7 +3493,6 @@ components:
       required:
         - UniqueIdType
         - UniqueId
-        - FreezeAll
       type: object
       properties:
         UniqueIdType:
@@ -3512,7 +3509,6 @@ components:
           description: "Field used to freeze all transactions by cardholder for a\
             \ given Payment Instrument <br> Yes: Freeze all transactions <br> No:\
             \ Unfreeze all transactions"
-          minLength: 1
           type: string
         IsATMAllowed:
           description: "Field used to restrict all ATM transactions by cardholder\
