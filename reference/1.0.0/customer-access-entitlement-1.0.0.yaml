@@ -130,9 +130,7 @@ paths:
         \ mentioned parameters defines how the cardholder can use their card. When\
         \ users attempt to use their card, the system evaluates the transaction against\
         \ all controls applied to that card, if the details of the transaction violate\
-        \ any of the controls, the transaction declines. This service returns card\
-        \ freeze as 'No' with response code 200 when there is no restriction feature\
-        \ exists."
+        \ any of the controls, the transaction declines."
       operationId: updateRestriction
       requestBody:
         content:
