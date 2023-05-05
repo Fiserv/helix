@@ -3062,22 +3062,26 @@ components:
           maxLength: 20
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+          x-group-name: This works only in Hybrid mode
         GivenName:
           description: First name of a person.
           maxLength: 35
           pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
           type: string
+          x-group-name: This works only in Hybrid mode
         MiddleName:
           description: Second name of a person.
           maxLength: 35
           pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
           type: string
+          x-group-name: This works only in Hybrid mode
         Surname:
           description: "Surname is a name added to a given name and is part of a personal\
             \ name. In many cases, a surname is a family name."
           maxLength: 35
           pattern: "(^[a-zA-Z\\s'-]+$)"
           type: string
+          x-group-name: This works only in Hybrid mode
         BirthDate:
           description: Date on which a person is born <br/> Format must be ISO Date
             format (YYYY-MM-DD).
