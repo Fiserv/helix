@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-95
+  version: 1.1.0-107
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -18,10 +18,22 @@ paths:
       parameters:
       - name: paymentInstrumentId
         in: path
-        description: Unique identifier of the payment instrument (FEPID) for which the card fee details need to be retrieved.
+        description: Unique identifier of the payment instrument (FEPID) for which
+          the card fee details need to be retrieved.
         required: true
         schema:
           maxLength: 37
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
           type: string
       responses:
         "200":
@@ -117,6 +129,18 @@ paths:
         \ accounts, agreement involvement, agreement feature, agreement feature parameter,\
         \ facility allocation associated with that account."
       operationId: deleteAgreement
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -212,6 +236,18 @@ paths:
       summary: This API is used to retrieve the list of accounts for a person (FECID)
         or an external account.
       operationId: retrieveAgreementList
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -233,15 +269,15 @@ paths:
             \ : Clearing System Member Identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Clearing System Member Identification must be a combination of A-Z,\
             \ a-z, 0-9 with spaces or '-'.</em></li><li><em>HLXAGDTAD001 : Account\
-            \ Identification cannot be more than 37 characters.</em></li><li><em>HLXAGDTEI001\
+            \ Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTEI001\
             \ : Clearing System Identification Code is not valid for Account Identification\
             \ <account-id>.</em></li><li><em>HLXAGDTEI003 : Clearing System Member\
             \ Identification is required for Clearing System Identification Code <clearing-system-id>.</em></li><li><em>HLXAGDTEI004\
             \ : Account Identification is required for Clearing System Identification\
-            \ Code <clearing-system-id>.</em></li><li><em>HLXAGDTBR001 : Person must\
-            \ be at least 36 characters.</em></li><li><em>HLXAGDTBR001 : Person cannot\
-            \ be more than 37 characters.</em></li><li><em>HLXAGDTBR001 : Person is\
-            \ not valid, please provide valid value.</em></li></ul>"
+            \ Code <clearing-system-id>.</em></li><li><em>HLXAGDTBR001 : Person less\
+            \ than minimum 36 length allowed.</em></li><li><em>HLXAGDTBR001 : Person\
+            \ exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001 : Person\
+            \ is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -327,6 +363,17 @@ paths:
         \ holder within the system."
       operationId: initiateAgreement
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: idempotency-id
         in: header
         description: Idempotency ID
@@ -354,13 +401,13 @@ paths:
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Financial Institution cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Brand required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Brand cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Product required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Product is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Product cannot be more than 37 characters.</em></li><li><em>HLXAGDTAD001\
+            \ : Product exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Payment Card Involvement required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Opening Date required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Opening Date has to be a valid date.</em></li><li><em>HLXAGDTAD001\
@@ -373,7 +420,7 @@ paths:
             \ : Clearing System Member Identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
             \ : Clearing System Member Identification must be a combination of A-Z,\
             \ a-z, 0-9 with spaces or '-'.</em></li><li><em>HLXAGDTAD001 : Account\
-            \ Identification cannot be more than 37 characters.</em></li><li><em>HLXAGDTEI001\
+            \ Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTEI001\
             \ : Clearing System Identification Code is not valid for Account Identification\
             \ <account-id>.</em></li><li><em>HLXAGDTEI003 : Clearing System Member\
             \ Identification is required for Clearing System Identification Code <clearing-system-id>.</em></li><li><em>HLXAGDTEI004\
@@ -477,6 +524,17 @@ paths:
         schema:
           maxLength: 37
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -560,6 +618,17 @@ paths:
         required: true
         schema:
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -582,10 +651,10 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Agreement ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Feature required, please provide value.</em></li><li><em>HLXAGDTBR001\
             \ : Feature is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Feature cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Agreement Feature Parameter required, please provide value.</em></li></ul>"
           content:
             application/json:
@@ -684,6 +753,17 @@ paths:
         description: Name of the Capability to be used as a filter
         schema:
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -693,7 +773,7 @@ paths:
                 $ref: '#/components/schemas/RetrieveAgreementFeatureResponse'
         "400":
           description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID cannot be more than 37 characters.</em></li></ul>"
+            \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -762,6 +842,17 @@ paths:
         required: true
         schema:
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -771,7 +862,7 @@ paths:
                 $ref: '#/components/schemas/RetrieveAgreementFeatureParameterResponse'
         "400":
           description: "Bad Request  <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Agreement ID cannot be more than 37 characters.</em></li></ul>"
+            \ : Agreement ID exceeds maximum 37 length allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -832,6 +923,17 @@ paths:
         required: true
         schema:
           maxLength: 37
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
           type: string
       requestBody:
         content:
@@ -937,6 +1039,17 @@ paths:
         required: true
         schema:
           maxLength: 37
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
           type: string
       requestBody:
         content:
@@ -1046,6 +1159,17 @@ paths:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1057,10 +1181,10 @@ paths:
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
             \ : Facility Identification is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Facility Identification cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Facility Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Facility Identification required, please provide value.</em></li></ul>"
           content:
             application/json:
@@ -1150,6 +1274,17 @@ paths:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1165,10 +1300,10 @@ paths:
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
             \ : Facility Identification is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Facility Identification cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Facility Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Facility Identification required, please provide value.</em></li><li><em>HLXAGDTBR001\
             \ : Capability required, please provide value.</em></li></ul>"
           content:
@@ -1265,6 +1400,17 @@ paths:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1283,7 +1429,7 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number cannot be more than 37 characters.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
             \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
             \ : Agreement Feature ID required, please provide value.</em></li><li><em>HLXAGDTBR001\
             \ : Agreement Feature ID is not valid, please provide valid value.</em></li></ul>"
@@ -1381,6 +1527,17 @@ paths:
         schema:
           maxLength: 37
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -1393,7 +1550,7 @@ paths:
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number cannot be more than 37 characters.</em></li></ul>"
+            \ : Account number exceeds maximum 37 length allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1486,6 +1643,17 @@ paths:
         schema:
           maxLength: 37
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -1555,6 +1723,17 @@ paths:
         required: true
         schema:
           maxLength: 37
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
           type: string
       responses:
         "200":
@@ -2042,6 +2221,55 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
+    CardDeleteRequest:
+      required:
+      - FEPID
+      type: object
+      properties:
+        FEPID:
+          description: Unique identifier for the payment instrument (FEPID)
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        SkipFacilityAllocationDeletion:
+          description: Boolean that indicate whether to skip facility allocation deletion.
+            Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false </EM></LI></UL>
+          pattern: ^(true|false)$
+          type: string
+    CardFraudStatusEvent:
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventName:
+          type: string
+        eventDescription:
+          type: string
+        serviceDomain:
+          type: string
+        timestamp:
+          type: string
+        productId:
+          type: string
+        primaryAccountNumber:
+          type: string
+        cardholderType:
+          type: string
+        cardTechnologyType:
+          type: string
+        feaId:
+          type: string
+        fecid:
+          type: string
+        cardHolderName:
+          type: string
+        entityId:
+          type: string
+        subEntityId:
+          type: string
+        fiId:
+          type: string
+        brandId:
+          type: string
     ChipData:
       type: object
       properties:
@@ -2098,9 +2326,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2115,6 +2340,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2158,7 +2386,7 @@ components:
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTime:
+        DateTimeAdded:
           description: Time stamp when this email is set as the current electronic
             address
           type: string
@@ -2200,7 +2428,6 @@ components:
       - FeatureId
       - FeatureIdentification
       - ProductId
-      - FinancialInstitution
       - AgreementFeatureId
       - Agreement
       type: object
@@ -2216,11 +2443,6 @@ components:
           type: string
         ProductId:
           description: Product Id
-          maxLength: 37
-          pattern: \S
-          type: string
-        FinancialInstitution:
-          description: Financial Institution Id
           maxLength: 37
           pattern: \S
           type: string
@@ -2344,19 +2566,57 @@ components:
         FECID:
           description: Unique identifier of the Person (FECID)
           type: string
+    ExecuteFraudRequest:
+      required:
+      - FraudStatus
+      - ReplaceCard
+      type: object
+      properties:
+        FraudStatus:
+          description: This field identifies the type of fraud status on the selected
+            card. Valid Values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD
+            (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI>
+            </UL>
+          minLength: 1
+          pattern: (^$|NONE|SFRD|CFRD)
+          type: string
+        ReplaceCard:
+          description: To identify whether a replacement card needs to be created
+            and sent to cardholder. New PIN will be issued with a replacement card.
+            Valid values are <UL><LI><EM> Yes </EM></LI> <LI><EM> No </EM></LI></UL>
+          minLength: 1
+          pattern: (^$|Yes|No)
+          type: string
+    ExecuteFraudResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Unique identifier of the payment instrument (FEPID)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        NewFEPID:
+          description: Unique identifier of the new payment instrument (FEPID)
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        ActivationStatus:
+          description: Indicates whether card activation needs to occur for the most
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
+          type: string
     ExecuteGeneratePINRequest:
       required:
       - FeatureId
-      - FinancialInstitution
       type: object
       properties:
         FeatureId:
           description: Feature Id
-          maxLength: 37
-          pattern: \S
-          type: string
-        FinancialInstitution:
-          description: Financial Institution Id
           maxLength: 37
           pattern: \S
           type: string
@@ -2722,19 +2982,12 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - AgreementInvolvement
       - OpeningDate
       type: object
       properties:
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
         Brand:
           description: Brand to which the Agreement belongs
           maxLength: 37
@@ -2860,6 +3113,11 @@ components:
           maximum: 26
           minimum: 2
           type: string
+        isCancelled:
+          description: This field indicates if a card is cancelled or not. This field
+            will be set to Yes if a card is cancelled. A cancelled card cannot be
+            activated once it has been set.
+          type: string
     LinkBundleFeatureRequest:
       required:
       - Feature
@@ -2963,7 +3221,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -3107,15 +3365,15 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ phone number<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
         SmsPreference:
           description: "Indicates whether the person prefer to be receive SMS on this\
-            \ mobile number<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTime:
+        DateTimeAdded:
           description: Time stamp when this phone number is set as the current phone
             address
           type: string
@@ -3127,8 +3385,8 @@ components:
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Residential\
-            \ <br/> Business"
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
           pattern: \S
           type: string
         StreetName:
@@ -3197,7 +3455,7 @@ components:
             \ <br/> MayBeUsedForContact"
           pattern: \S
           type: string
-        DateTime:
+        DateTimeAdded:
           description: Time stamp when this address is set as the current address
           type: string
     ProductReissueEvent:
@@ -3295,7 +3553,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4014,7 +4272,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4241,6 +4499,25 @@ components:
             card. The field will not be present in the response if there is no customer
             preference.
           type: string
+        IsCancelled:
+          description: This field indicates if a card is cancelled or not. Valid values
+            are Yes and No. This field will be set to Yes if a card is cancelled.
+          type: string
+        CancellationDate:
+          description: Indicates date/time when a card was cancelled.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/Instant'
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        FraudStatusDate:
+          description: Indicates date/time when a card was marked as fraudulent.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/Instant'
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -4516,7 +4793,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4546,7 +4823,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateProductRequest:
       required:
       - Name
