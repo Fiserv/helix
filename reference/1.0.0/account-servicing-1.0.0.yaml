@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-20
+  version: 1.1.0-22
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -55,16 +55,16 @@ paths:
             \ : Brand required, please provide value.</em></li><li><em>HLXACSVBR001\
             \ : Delete Person required, please provide value.</em></li><li><em>HLXACSVBR001\
             \ : Delete Person  is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
-            \ : Delete person is requested, person identification is missing.</em></li><li><em>HLXACSVBR001\
-            \ : Delete person is not requested, person identification is provided.</em></li><li><em>HLXACSVBR001\
+            \ : Delete Person is requested, person identification is missing.</em></li><li><em>HLXACSVBR001\
+            \ : Delete Person is not requested, person identification is provided.</em></li><li><em>HLXACSVBR001\
             \ : Delete Account required, please provide value.</em></li><li><em>HLXACSVBR001\
             \ : Delete Account is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
-            \ : Delete account is requested, account identification is missing.</em></li><li><em>HLXACSVBR001\
-            \ : Delete account is not requested, account identification is provided.</em></li><li><em>HLXACSVBR001\
+            \ : Delete Account is requested, account identification is missing.</em></li><li><em>HLXACSVBR001\
+            \ : Delete Account is not requested, account identification is provided.</em></li><li><em>HLXACSVBR001\
             \ : Delete PaymentInstrument required, please provide value.</em></li><li><em>HLXACSVBR001\
             \ : Delete PaymentInstrument is not valid, please provide valid value.</em></li><li><em>HLXACSVBR001\
-            \ : Delete paymentInstrument is requested, paymentInstrument identification\
-            \ is missing.</em></li><li><em>HLXACSVBR001 : Delete paymentInstrument\
+            \ : Delete PaymentInstrument is requested, paymentInstrument identification\
+            \ is missing.</em></li><li><em>HLXACSVBR001 : Delete PaymentInstrument\
             \ is not requested, paymentInstrument identification is provided.</em></li><li><em>HLXIDASBR001\
             \ : FECID less than minimum 36 length allowed.</em></li><li><em>HLXIDASBR001\
             \ : FECID exceeds maximum 37 length allowed.</em></li><li><em>HLXIDASBR001\
@@ -808,9 +808,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -825,6 +822,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1708,7 +1708,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2040,7 +2040,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2645,7 +2645,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3125,7 +3125,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3155,7 +3155,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateProductRequest:
       required:
       - Name
