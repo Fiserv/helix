@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-108
+  version: 1.1.0-111
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -462,10 +462,11 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
             \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
-            \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTNE003\
-            \ : Party not enabled.</em></li><li><em>HLXAGDTGT013 : Product not found\
-            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT014\
-            \ : Person <person-id> not found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT014\
+            \ Brand not enabled.</em></li><li><em>HLXAGDTNE005 : Product not enabled.</em></li><li><em>HLXAGDTGT013\
+            \ : Product not found under Financial Institution and Brand.</em></li><li><em>HLXAGDTGT014\
+            \ : Person <person-id> not found.</em></li><li><em>HLXAGDTNE003 : Person\
+            \ <person-id> not enabled.</em></li><li><em>HLXAGDTGT016 : Person <person-id>\
+            \ not found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT017\
             \ : Person <person-id> not linked to Brand <brand-id>.</em></li></ul>"
           content:
             application/json:
@@ -943,6 +944,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AgreementInvolvement'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
+            \ : Party ID required, please provide value.</em></li><li><em>HLXAGDTAD001\
+            \ : Party Role required, please provide value.</em></li><li><em>HLXAGDTAD001\
+            \ : Party Role is not valid, please provide valid value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
         "401":
           description: Not Authorized
           content:
@@ -956,7 +966,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>GT004GT004\
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
             \ : Account number not found.</em></li></ul>"
           content:
             application/json:
@@ -975,10 +985,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
-            \ : Account is closed.</em></li><li><em>AI001AI001 : Agreement Involvement\
-            \ ID not found</em></li><li><em>AI002AI002 : Account Involvement Status\
-            \ cannot be set to False while adding a new Involvement.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE006\
+            \ : Account not enabled.</em></li><li><em>HLXAGDTAC002 : Account is closed.</em></li><li><em>HLXAGDTAI001\
+            \ : Agreement Involvement ID <agreement-involvement-id> not found</em></li><li><em>HLXAGDTAI002\
+            \ : Account Involvement Status cannot be set to False while adding a new\
+            \ Involvement.</em></li><li><em>HLXAGDTAI001 : Conflicting PartyIdentificaton\
+            \ specified for Involvement ID </em></li><li><em>HLXAGDTGT014 : Person\
+            \ <person-id> not found.</em></li><li><em>HLXAGDTNE003 : Person <person-id>\
+            \ not enabled.</em></li><li><em>HLXAGDTGT016 : Person <person-id> not\
+            \ found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT017\
+            \ : Person <person-id> not linked to Brand <brand-id>.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -990,7 +1006,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AI003AI003\
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAI003\
             \ : There is an error while persisting Agreement Involvements, please\
             \ try again</em></li></ul>"
           content:
@@ -1614,6 +1630,145 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve a Facility Allocation
       x-group-name: Account Management
+  /Helix/V1/Agreement/{agreementId}/NetworkAccountUpdaterOptionChange/Update:
+    put:
+      tags:
+      - Account Management
+      summary: Network account updater option
+      description: "This API allows the user to update network account updater option.\
+        \ By changing this option, the cardholder can opt-out or opt-in for Network\
+        \ Account Updater i.e; Mastercard Automatic Billing Updater(ABU) and Visa\
+        \ Account Updater(VAU). The opt-out or opt-in option affects all cards under\
+        \ the account."
+      operationId: updateNetworkAccountOption
+      parameters:
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNetworkAccountOptionRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNetworkAccountOptionResponse'
+        "204":
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Network Account Updater Option is not valid, please provide valid\
+            \ value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
+            \ : Account not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
+            \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li><li><em>HLXAGDTNU001\
+            \ : Cardholder has already opted in for Network Account Updater.</em></li><li><em>HLXAGDTNU001\
+            \ : Cardholder has already opted out of Network AccountUpdater.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT005\
+            \ : There is an error while validating Agreement, please try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Update Network Account Updater Option
+      x-group-name: Account Management
   /Helix/V1/Agreement/{agreementId}/Retrieve:
     get:
       tags:
@@ -1777,6 +1932,26 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Validate account status
       x-group-name: Account Management
+  /Helix/V1/Capability/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      responses:
+        "200":
+          description: OK
+  /Helix/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      parameters:
+      - name: capabilityName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     Account:
@@ -3996,6 +4171,11 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        NetworkAccountUpdaterOption:
+          description: ' Identifies whether the cardholder is currently opted-out
+            or opted-in for the Network Account Updater. The opt out option affects
+            all cards under the account. The valid values are OptOut and OptIn.'
+          type: string
         enabled:
           type: boolean
     RetrieveBrandResponse:
@@ -4809,6 +4989,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConfigurationOption'
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
     UpdateProductRequest:
       required:
       - Name
