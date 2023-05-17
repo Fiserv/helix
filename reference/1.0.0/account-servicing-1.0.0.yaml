@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-23
+  version: 1.1.0-24
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -807,6 +807,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -821,9 +824,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -922,13 +922,16 @@ components:
           pattern: ^(true|false)$
           type: string
         FECID:
-          description: Unique identifier of the customer record (FECID).
+          description: "<em> maxLength: 37 </em> <br> Unique identifier of the customer\
+            \ record (FECID)."
           type: string
         FEAID:
-          description: Unique identifier of the account record (FEAID).
+          description: "<em> maxLength: 37 </em> <br> Unique identifier of the account\
+            \ record (FEAID)."
           type: string
         FEPID:
-          description: ' Unique identifier of the card record (FEPID).'
+          description: "<em> maxLength: 37 </em> <br> Unique identifier of the card\
+            \ record (FEPID)."
           type: string
     ExecuteActivateCardResponse:
       type: object
@@ -1707,7 +1710,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2039,7 +2042,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2644,7 +2647,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3124,7 +3127,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3154,7 +3157,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name
