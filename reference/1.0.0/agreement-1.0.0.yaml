@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-107
+  version: 1.1.0-108
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -16,6 +16,16 @@ paths:
         with a given card.
       operationId: inquireCardFeeDetails
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: paymentInstrumentId
         in: path
         description: Unique identifier of the payment instrument (FEPID) for which
@@ -23,17 +33,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
           type: string
       responses:
         "200":
@@ -133,7 +132,6 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
@@ -240,7 +238,6 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
@@ -517,23 +514,22 @@ paths:
         \ filter using the data given in request body."
       operationId: retrieveAgreementFeatureParameterList
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Agreement
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -605,13 +601,6 @@ paths:
         \ feature within the system."
       operationId: initiateAgreementFeature
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Agreement
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: idempotency-id
         in: header
         description: Idempotency ID
@@ -621,13 +610,19 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -741,6 +736,16 @@ paths:
         \ all the available agreement feature details."
       operationId: retrieveAgreementFeatureByCapabilityName
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -751,17 +756,6 @@ paths:
       - name: capabilityName
         in: query
         description: Name of the Capability to be used as a filter
-        schema:
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
         schema:
           type: string
       responses:
@@ -829,6 +823,16 @@ paths:
         \ system ."
       operationId: retrieveAgreementFeatureParameter
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -840,17 +844,6 @@ paths:
         in: path
         description: Unique identifier of an Agreement Feature
         required: true
-        schema:
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
         schema:
           type: string
       responses:
@@ -917,23 +910,22 @@ paths:
         \ in an account (e.g. Account Holder, Power of Attorney etc)"
       operationId: updateAgreementInvolvement
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Account
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Account
+        required: true
+        schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -1033,23 +1025,22 @@ paths:
       description: This service is used to close an account.
       operationId: closeAgreement
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Account
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Account
+        required: true
+        schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -1151,6 +1142,16 @@ paths:
         the system using FacilityIdentification supplied in the request. '
       operationId: deleteFacilityAllocation
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -1158,17 +1159,6 @@ paths:
         schema:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
           type: string
       requestBody:
         content:
@@ -1266,6 +1256,16 @@ paths:
         Allocation and Capability.
       operationId: retrieveFacilityAllocationFeatureParameters
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -1273,17 +1273,6 @@ paths:
         schema:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
           type: string
       requestBody:
         content:
@@ -1392,6 +1381,16 @@ paths:
         \ ID, which will be used to identify the Facility."
       operationId: initiateFacilityAllocation
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -1399,17 +1398,6 @@ paths:
         schema:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
           type: string
       requestBody:
         content:
@@ -1520,23 +1508,22 @@ paths:
         the given FEAID.
       operationId: retrieveFacilityAllocationList
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Agreement
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
           type: string
       responses:
         "200":
@@ -1636,23 +1623,22 @@ paths:
         \ , which is the ID that is used to identify the Account within the system."
       operationId: retrieveAgreement
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Agreement
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
           type: string
       responses:
         "200":
@@ -1717,23 +1703,22 @@ paths:
         given FEAID <br/><br/><i> <b>Note</b>:This API is for Internal purpose only.</i>
       operationId: validateAgreement
       parameters:
-      - name: agreementId
-        in: path
-        description: Unique identifier of an Agreement
-        required: true
-        schema:
-          maxLength: 37
-          type: string
       - name: fi-id
         in: header
         description: Financial Institution Identification
-        required: true
         schema:
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
           type: string
       responses:
         "200":
@@ -2326,6 +2311,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2340,9 +2328,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3221,7 +3206,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -3553,7 +3538,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4272,7 +4257,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4793,7 +4778,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4823,7 +4808,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name

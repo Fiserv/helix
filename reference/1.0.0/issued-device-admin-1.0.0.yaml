@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-179
+  version: 1.1.0-180
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -250,13 +250,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -378,13 +379,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -869,13 +871,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -1122,13 +1125,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -1248,13 +1252,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -1374,20 +1379,23 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
       - name: paymentInstrumentId
         in: path
+        description: Unique identifier of the payment instrument (FEPID)
         required: true
         schema:
+          maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
       requestBody:
@@ -1637,13 +1645,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -2431,13 +2440,14 @@ paths:
       parameters:
       - name: fi-id
         in: header
-        description: Identification of Financial Institution
+        description: Financial Institution Identification
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
