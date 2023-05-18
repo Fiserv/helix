@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-73
 tags:
 - name: Customer Access Entitlement
 paths:
