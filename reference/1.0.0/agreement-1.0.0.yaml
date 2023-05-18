@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-111
+  version: 1.1.0-112
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -2486,9 +2486,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2503,6 +2500,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3381,7 +3381,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -3713,7 +3713,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4172,9 +4172,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/Instant'
         NetworkAccountUpdaterOption:
-          description: ' Identifies whether the cardholder is currently opted-out
-            or opted-in for the Network Account Updater. The opt out option affects
-            all cards under the account. The valid values are OptOut and OptIn.'
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
           type: string
         enabled:
           type: boolean
@@ -4437,7 +4437,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4874,7 +4874,7 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^\d*$
+          pattern: ^?\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
@@ -4911,7 +4911,7 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(!\s*$).+
           type: string
         Description:
           description: Description of a bundle
@@ -4958,7 +4958,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4988,7 +4988,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
