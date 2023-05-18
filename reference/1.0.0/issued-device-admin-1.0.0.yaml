@@ -2,12 +2,11 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-180
+  version: 1.1.0-186
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
   x-group-name: Card Management
-paths:
   /Helix/V1/PaymentInstrument/Delete/Execute:
     post:
       tags:
@@ -368,6 +367,8 @@ paths:
         "504":
           description: Gateway Timeout
           content: {}
+        "200":
+          description: OK
       x-proxy-name: Add a New Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/ReissueCards/Execute:
@@ -963,7 +964,8 @@ paths:
             \ as Lost.</em></li><li><em>HLXIDASID005 : Card is blocked as Stolen.</em></li><li><em>HLXIDASCL002\
             \ : Contactless opt out is not allowed.</em></li><li><em>HLXIDASCL003\
             \ : Contactless opt out preference cannot be set to the same value.</em></li><li><em>HLXIDASCR002\
-            \ : Replacement cannot be processed for a non-physical card.</em></li></ul>"
+            \ : Replacement cannot be processed for a non-physical card.</em></li><li><em>HLXIDASCC001\
+            \ : Opt out of contactless is not allowed for confirmed fraud cards.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1664,6 +1666,12 @@ paths:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       responses:
         "201":
           description: Created
@@ -1763,6 +1771,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
       x-proxy-name: Replace a Damaged Card
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
@@ -2289,7 +2299,9 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC001\
             \ : No value provided for update.</em></li><li><em>HLXIDASPC005 : Card\
-            \ is cancelled.</em></li></ul>"
+            \ is cancelled.</em></li><li><em>HLXIDASUN001 : Update Name is not allowed\
+            \ for confirmed fraud cards.</em></li><li><em>HLXIDASCC002 : Cancel Card\
+            \ is not allowed for confirmed fraud cards.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3822,19 +3834,12 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - AgreementInvolvement
       - OpeningDate
       type: object
       properties:
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
         Brand:
           description: Brand to which the Agreement belongs
           maxLength: 37
@@ -4409,16 +4414,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -4456,7 +4454,6 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
-      - FinancialInstitution
       type: object
       properties:
         ExternalIdentification:
@@ -4520,12 +4517,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -5185,16 +5176,9 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -5229,6 +5213,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          type: string
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
