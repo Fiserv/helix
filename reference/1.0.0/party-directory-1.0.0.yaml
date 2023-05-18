@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-87
+  version: 1.1.0-91
 tags:
 - name: Customer Management
 paths:
@@ -1463,6 +1463,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1477,9 +1480,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2358,7 +2358,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2517,6 +2517,7 @@ components:
     PostalAddress:
       required:
       - AddressType
+      - PostalCode
       - Country
       - ContactPreference
       type: object
@@ -2547,6 +2548,7 @@ components:
           description: Identifier consisting of a group of letters and/or numbers
             that is added to a postal address to assist the sorting of mail
           maxLength: 16
+          pattern: \S
           type: string
         AddressLine1:
           description: "AddressLine1 - Information that locates and identifies a specific\
@@ -2690,7 +2692,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2739,6 +2741,7 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
+      - PostalAddress
       type: object
       properties:
         ExternalIdentification:
@@ -3371,7 +3374,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3889,7 +3892,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3919,7 +3922,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name
