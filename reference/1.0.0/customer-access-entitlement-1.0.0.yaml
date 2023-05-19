@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-73
+  version: 1.1.0-74
 tags:
 - name: Customer Access Entitlement
 paths:
@@ -627,7 +627,7 @@ paths:
         \ them for their own card using this Update Restriction API.<br> <br> The\
         \ below mentioned parameters defines how the cardholder can use their card.\
         \ When users attempt to use their card, the system evaluates the transaction\
-        \ against all controls applied to that card, If the details of the transaction\
+        \ against all controls applied to that card. If the details of the transaction\
         \ violate any of the controls, the transaction declines."
       operationId: retrieveRestriction
       parameters:
@@ -1364,6 +1364,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1378,9 +1381,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2304,7 +2304,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2636,7 +2636,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3268,7 +3268,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3844,7 +3844,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3874,7 +3874,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateLimitRequest:
       required:
       - UniqueIdType
