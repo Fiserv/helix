@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-24
+  version: 1.1.0-28
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -21,6 +21,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
         x-proxy-name: Delete Account Entities
@@ -274,7 +275,7 @@ paths:
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -307,7 +308,12 @@ paths:
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Electronic Address information received in request.</em></li><li><em>HLXPTDTBR001\
-            \ : Email exceeds maximum 256 length allowed.</em></li></ul>"
+            \ : Email exceeds maximum 256 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : External Identification with Type Of Identification Code %s is duplicated\
+            \ within request.</em></li></ul>"
           content: {}
           x-proxy-name: Account Open
           x-group-name: Account Maintenance
@@ -424,7 +430,6 @@ components:
           type: string
     AddCardRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - RelatedAccount
@@ -432,12 +437,6 @@ components:
       - CardholderType
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
-          type: string
         Brand:
           description: Identification of the brand associated with the payment card
           maxLength: 37
@@ -500,30 +499,28 @@ components:
     AddCardRequestEvent:
       type: object
       properties:
-        FepId:
+        FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-          allOf:
-          - $ref: '#/components/schemas/UUID'
-        Product:
+        ProductId:
           description: Identification of the product
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
-        Account:
+          type: string
+        FEAID:
           description: Identification of the account
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrieveAgreementResponse'
-        Cardholder:
+          type: string
+        FECID:
           description: Identification of the cardholder
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrievePersonResponse'
-        EventMsg:
+          type: string
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -533,17 +530,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -1285,6 +1288,25 @@ components:
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
+    ExternalIdentification:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          pattern: \S
+          type: string
     Feature:
       required:
       - Identification
@@ -1402,19 +1424,12 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - AgreementInvolvement
       - OpeningDate
       type: object
       properties:
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
         Brand:
           description: Brand to which the Agreement belongs
           maxLength: 37
@@ -1771,11 +1786,6 @@ components:
       - Surname
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -1817,6 +1827,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -1869,13 +1885,14 @@ components:
     PostalAddress:
       required:
       - AddressType
+      - PostalCode
       - Country
       - ContactPreference
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Residential\
-            \ <br/> Business"
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
           pattern: \S
           type: string
         StreetName:
@@ -1899,6 +1916,7 @@ components:
           description: Identifier consisting of a group of letters and/or numbers
             that is added to a postal address to assist the sorting of mail
           maxLength: 16
+          pattern: \S
           type: string
         AddressLine1:
           description: "AddressLine1 - Information that locates and identifies a specific\
@@ -2051,16 +2069,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -2098,14 +2109,8 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
-      - FinancialInstitution
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -2147,6 +2152,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -2162,12 +2173,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2225,18 +2230,10 @@ components:
         Identification:
           type: string
     ReissueCardRequest:
-      required:
-      - FinancialInstitution
       type: object
       properties:
         ProductId:
           description: ID of the banking product
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
           type: string
     ReissueCardRequestEvent:
       type: object
@@ -2442,6 +2439,11 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
+          type: string
         enabled:
           type: boolean
     RetrieveBundleListRequest:
@@ -2556,6 +2558,22 @@ components:
           allOf:
           - $ref: '#/components/schemas/LocalDate'
     RetrieveFacilityAllocationFeatureParameterRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+    RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
         Id:
@@ -2583,22 +2601,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -2654,16 +2656,9 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -2698,6 +2693,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          type: string
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
@@ -3158,6 +3157,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConfigurationOption'
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
     UpdateProductRequest:
       required:
       - Name
