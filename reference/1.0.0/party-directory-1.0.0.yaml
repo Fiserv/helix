@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-91
+  version: 1.1.0-93
 tags:
 - name: Customer Management
 paths:
@@ -529,7 +529,7 @@ paths:
             \ : Brand Identification is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Error in Brand Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Brand Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Name Prefix invalid - only alphabet allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name invalid - only alphabet, space, apostrophe, or hyphen allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Given Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -562,7 +562,12 @@ paths:
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
-            \ : Email exceeds maximum 256 length allowed.</em></li>></ul>"
+            \ : Email exceeds maximum 256 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : External Identification with Type Of Identification Code %s is duplicated\
+            \ within request.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1904,6 +1909,25 @@ components:
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
+    ExternalIdentification:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          pattern: \S
+          type: string
     Feature:
       required:
       - Identification
@@ -2419,11 +2443,6 @@ components:
       - Surname
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -2465,6 +2484,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -2741,14 +2766,8 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
-      - PostalAddress
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -2790,6 +2809,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
