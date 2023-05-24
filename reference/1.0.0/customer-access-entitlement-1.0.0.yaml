@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-74
+  version: 1.1.0-76
 tags:
 - name: Customer Access Entitlement
 paths:
@@ -150,6 +150,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -500,6 +501,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -648,6 +650,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -807,6 +810,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -1006,7 +1010,7 @@ components:
         FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-        BankingProduct:
+        ProductId:
           description: Identification of the product
           type: string
         FEAID:
@@ -1015,10 +1019,16 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventMsg:
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -1028,17 +1038,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -3014,6 +3030,11 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
+          type: string
         enabled:
           type: boolean
     RetrieveAuthRestrictionResponse:
@@ -3177,6 +3198,22 @@ components:
           allOf:
           - $ref: '#/components/schemas/LocalDate'
     RetrieveFacilityAllocationFeatureParameterRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+    RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
         Id:
@@ -3204,22 +3241,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -3936,6 +3957,26 @@ components:
         CumulativeAmount:
           description: Accumulated amount of approved transactions by cardholder for
             a particular LCV
+          type: string
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
           type: string
     UpdateProductRequest:
       required:

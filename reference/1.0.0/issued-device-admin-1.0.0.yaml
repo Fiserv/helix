@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-186
+  version: 1.1.0-192
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -16,6 +16,24 @@ paths:
       description: This service allows to delete a card using provided payment instrument
         id for account servicing.
       operationId: deleteCard
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+        x-proxy-name: Delete Card
+        x-group-name: Card Management
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+        x-proxy-name: Delete Card
+        x-group-name: Card Management
       requestBody:
         content:
           application/json:
@@ -143,6 +161,20 @@ paths:
         \ date/time (latest blocked card showing first)</li><li> Cancelled cards will\
         \ be sorted by cancellation date/time (latest cancelled card showing first)</li></ol>"
       operationId: getPaymentInstrumentList
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       requestBody:
         content:
           application/json:
@@ -488,6 +520,19 @@ paths:
         \ activation prior to first use."
       operationId: activateCard
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       - name: paymentInstrumentId
         in: path
         description: Unique identifier of the payment instrument (FEPID)
@@ -605,6 +650,19 @@ paths:
         in the platform.
       operationId: getIssuedDeviceWithChipDetails
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       - name: paymentInstrumentId
         in: path
         description: Unique identifier of the payment instrument (FEPID)
@@ -1013,6 +1071,19 @@ paths:
       description: This API allows the user to deactivate a card
       operationId: deactivateCard
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       - name: paymentInstrumentId
         in: path
         description: Unique identifier of the payment instrument (FEPID)
@@ -1534,6 +1605,19 @@ paths:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       responses:
         "200":
           description: OK
@@ -1786,6 +1870,19 @@ paths:
         in the platform.
       operationId: getIssuedDevice
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       - name: paymentInstrumentId
         in: path
         description: Unique identifier of the payment instrument (FEPID)
@@ -2090,6 +2187,19 @@ paths:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
       requestBody:
         content:
           application/json:
@@ -2222,6 +2332,19 @@ paths:
         schema:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -2357,6 +2480,19 @@ paths:
         in: path
         description: Unique identifier of the payment instrument (FEPID)
         required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
         schema:
           maxLength: 37
           type: string
@@ -2673,7 +2809,7 @@ components:
         FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-        BankingProduct:
+        ProductId:
           description: Identification of the product
           type: string
         FEAID:
@@ -2682,10 +2818,16 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventMsg:
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -2695,17 +2837,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -3081,6 +3229,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3095,9 +3246,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4074,7 +4222,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -4406,7 +4554,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -5129,7 +5277,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -5647,7 +5795,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -5677,7 +5825,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name
