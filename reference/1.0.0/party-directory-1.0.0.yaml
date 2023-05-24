@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-93
+  version: 1.1.0-94
 tags:
 - name: Customer Management
 paths:

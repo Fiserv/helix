@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-112
+  version: 1.1.0-116
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -19,12 +19,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: paymentInstrumentId
         in: path
@@ -132,12 +135,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -238,12 +244,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       requestBody:
         content:
@@ -365,11 +374,13 @@ paths:
         description: Financial Institution Identification
         required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: idempotency-id
         in: header
@@ -518,12 +529,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -611,12 +625,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -740,12 +757,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -827,12 +847,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -914,12 +937,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1044,12 +1070,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1161,12 +1190,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1275,12 +1307,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1400,12 +1435,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1527,12 +1565,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1642,6 +1683,25 @@ paths:
         \ the account."
       operationId: updateNetworkAccountOption
       parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       - name: agreementId
         in: path
         description: Unique identifier of an Agreement
@@ -1649,23 +1709,6 @@ paths:
         schema:
           maxLength: 37
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
-          type: string
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-      - name: idempotency-id
-        in: header
-        description: Idempotency ID
-        required: true
-        schema:
           type: string
       requestBody:
         content:
@@ -1731,7 +1774,7 @@ paths:
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
             \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li><li><em>HLXAGDTNU001\
             \ : Cardholder has already opted in for Network Account Updater.</em></li><li><em>HLXAGDTNU001\
-            \ : Cardholder has already opted out of Network AccountUpdater.</em></li></ul>"
+            \ : Cardholder has already opted out of Network Account Updater.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1781,12 +1824,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1861,12 +1907,15 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
+          maxLength: 37
           type: string
       - name: brand-id
         in: header
         description: Brand Identification
         schema:
+          maxLength: 37
           type: string
       - name: agreementId
         in: path
@@ -1971,7 +2020,6 @@ components:
           type: string
     AddCardRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - RelatedAccount
@@ -1979,12 +2027,6 @@ components:
       - CardholderType
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
-          type: string
         Brand:
           description: Identification of the brand associated with the payment card
           maxLength: 37
@@ -2047,30 +2089,28 @@ components:
     AddCardRequestEvent:
       type: object
       properties:
-        FepId:
+        FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-          allOf:
-          - $ref: '#/components/schemas/UUID'
-        Product:
+        ProductId:
           description: Identification of the product
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
-        Account:
+          type: string
+        FEAID:
           description: Identification of the account
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrieveAgreementResponse'
-        Cardholder:
+          type: string
+        FECID:
           description: Identification of the cardholder
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/RetrievePersonResponse'
-        EventMsg:
+          type: string
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -2080,17 +2120,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -2907,6 +2953,25 @@ components:
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
+    ExternalIdentification:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          pattern: \S
+          type: string
     Feature:
       required:
       - Identification
@@ -3422,11 +3487,6 @@ components:
       - Surname
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -3468,6 +3528,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -3520,6 +3586,7 @@ components:
     PostalAddress:
       required:
       - AddressType
+      - PostalCode
       - Country
       - ContactPreference
       type: object
@@ -3550,6 +3617,7 @@ components:
           description: Identifier consisting of a group of letters and/or numbers
             that is added to a postal address to assist the sorting of mail
           maxLength: 16
+          pattern: \S
           type: string
         AddressLine1:
           description: "AddressLine1 - Information that locates and identifies a specific\
@@ -3702,16 +3770,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -3749,14 +3810,8 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
-      - FinancialInstitution
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -3798,6 +3853,12 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -3813,12 +3874,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -3934,18 +3989,10 @@ components:
           pattern: \S
           type: string
     ReissueCardRequest:
-      required:
-      - FinancialInstitution
       type: object
       properties:
         ProductId:
           description: ID of the banking product
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
           type: string
     ReissueCardRequestEvent:
       type: object
@@ -4465,16 +4512,9 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -4509,6 +4549,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          type: string
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation

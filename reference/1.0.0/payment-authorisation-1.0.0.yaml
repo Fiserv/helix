@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-66
+  version: 1.1.0-70
 tags:
 - name: Helix Core
 paths:
@@ -901,7 +901,6 @@ components:
       required:
       - UniqueIdType
       - UniqueId
-      - FinancialInstitution
       - Brand
       - Product
       - FEAID
@@ -918,12 +917,6 @@ components:
             (FEPID)
           maxLength: 37
           minLength: 1
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
           type: string
         Brand:
           description: Brand to which the Agreement belongs
@@ -1223,7 +1216,6 @@ components:
       required:
       - UniqueIdType
       - UniqueId
-      - FinancialInstitution
       - Brand
       - Product
       - TCV
@@ -1238,12 +1230,6 @@ components:
             (FEPID)
           maxLength: 37
           minLength: 1
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
-          maxLength: 37
-          pattern: \S
           type: string
         Brand:
           description: Brand to which the Agreement belongs
@@ -1287,7 +1273,6 @@ components:
       required:
       - UniqueIDType
       - UniqueID
-      - FinancialInstitution
       - Brand
       - Product
       - TCV
@@ -1300,12 +1285,6 @@ components:
         UniqueID:
           description: Unique identifier of the Restriction Level e.g. payment instrument
             (FEPID)
-          maxLength: 37
-          pattern: \S
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the payment card
           maxLength: 37
           pattern: \S
           type: string
@@ -2167,19 +2146,12 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - FinancialInstitution
       - Brand
       - Product
       - AgreementInvolvement
       - OpeningDate
       type: object
       properties:
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
         Brand:
           description: Brand to which the Agreement belongs
           maxLength: 37
@@ -2814,16 +2786,9 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -2861,7 +2826,6 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
-      - FinancialInstitution
       type: object
       properties:
         ExternalIdentification:
@@ -2925,12 +2889,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the person
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -3261,6 +3219,11 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
+          type: string
         enabled:
           type: boolean
     RetrieveAssociationKeyRequest:
@@ -3391,6 +3354,11 @@ components:
             \ for a given Payment Instrument <br> Yes: Contactless transactions are\
             \ allowed <br> No: Contactless transactions not allowed"
           type: string
+        IsInternationalAllowed:
+          description: "Field used to freeze all International transactions by cardholder\
+            \ for a given Payment Instrument <br> Yes:  International transactions\
+            \ are allowed <br> No: International transactions not allowed"
+          type: string
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -3519,6 +3487,22 @@ components:
           allOf:
           - $ref: '#/components/schemas/LocalDate'
     RetrieveFacilityAllocationFeatureParameterRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+    RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
         Id:
@@ -3546,22 +3530,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -3681,16 +3649,9 @@ components:
             $ref: '#/components/schemas/LimitResponseDto'
     RetrieveOrganisationResponse:
       required:
-      - FinancialInstitution
       - TradingName
       type: object
       properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the organisation
-          maxLength: 37
-          minLength: 1
-          type: string
         Brand:
           description: Identification of the brand associated with the organisation
           maxLength: 37
@@ -3725,6 +3686,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Phone'
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the organisation
+          type: string
         Identification:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
@@ -4385,6 +4350,26 @@ components:
         CumulativeAmount:
           description: Accumulated amount of approved transactions by cardholder for
             a particular LCV
+          type: string
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
           type: string
     UpdateProductRequest:
       required:
