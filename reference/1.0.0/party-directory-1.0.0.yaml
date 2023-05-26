@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-94
+  version: 1.1.0-95
 tags:
 - name: Customer Management
 paths:
@@ -777,14 +777,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonDetailsDto'
+              $ref: '#/components/schemas/RegisterPersonRequest1'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetrievePersonResponse'
+                $ref: '#/components/schemas/UpdatePersonResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Name Prefix exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -804,9 +804,10 @@ paths:
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Postal Address  information in request is already present on the person.</em></li>Street\
-            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Address  information in request is already present on the person.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li>Street Name\
+            \ exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001 : Building\
+            \ Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -815,13 +816,20 @@ paths:
             \ : Address Line3 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Address Line4 exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Town Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Postal Code required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Country required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : At least one of the following fields is required: Address Line 1,\
+            \ Building Number or Building Name. Please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one address entry per address type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Phone  information in request is already present on the person.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one entry per phone type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Electronic Address  information in request is already present on the\
             \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
-            \ allowed.</em></li>></ul>"
+            \ allowed.</em></li><li><em>HLXPTDTBR001 : Only one entry per email type\
+            \ is allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1468,9 +1476,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1485,6 +1490,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1531,6 +1539,26 @@ components:
         DateTimeAdded:
           description: Time stamp when this email is set as the current electronic
             address
+          type: string
+    ElectronicAddressDtoUpdateRequest:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
     ErrorEvent:
       type: object
@@ -2382,7 +2410,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2490,22 +2518,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalIdentification'
-        PostalAddress:
-          description: Current postal address of the person.
-          type: array
-          items:
-            $ref: '#/components/schemas/PostalAddress'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/Phone'
-        ElectronicAddress:
-          description: Address which is accessed by electronic means.
-          type: array
-          items:
-            $ref: '#/components/schemas/ElectronicAddress'
     Phone:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    PhoneDtoUpdateRequest:
       required:
       - Type
       - Number
@@ -2557,11 +2604,14 @@ components:
           maxLength: 70
           type: string
         BuildingNumber:
-          description: Number that identifies the position of a building on a street
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 35
           type: string
         BuildingName:
-          description: Name of a building or house
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
           maxLength: 70
           type: string
         PostOfficeBox:
@@ -2576,9 +2626,10 @@ components:
           pattern: \S
           type: string
         AddressLine1:
-          description: "AddressLine1 - Information that locates and identifies a specific\
-            \ address, as defined by postal services, that is presented in free format\
-            \ text"
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 70
           type: string
         AddressLine2:
@@ -2717,7 +2768,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2764,6 +2815,79 @@ components:
           items:
             $ref: '#/components/schemas/Phone'
     RegisterPersonRequest:
+      required:
+      - Surname
+      - PostalAddress
+      type: object
+      properties:
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)"
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          pattern: (^(aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|in|io|is|it|iu|iw|ja|ji|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mo|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)$)|(^$)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
+        Brand:
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
+          maxLength: 37
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: '#/components/schemas/PostalAddress'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: '#/components/schemas/ElectronicAddress'
+    RegisterPersonRequest1:
       required:
       - Surname
       type: object
@@ -2815,6 +2939,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalIdentification'
+        Brand:
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
+          maxLength: 37
+          type: string
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -2824,17 +2953,12 @@ components:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/PhoneDtoUpdateRequest'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
-        Brand:
-          description: Identification of the brand associated with the person.<br/><b>Note:</b>
-            Person assigned to a Brand cannot be shared across Brands.
-          maxLength: 37
-          type: string
+            $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
     RegisterPersonResponse:
       type: object
       properties:
@@ -3399,7 +3523,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3917,7 +4041,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3947,7 +4071,96 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
+    UpdatePersonResponse:
+      type: object
+      properties:
+        FECID:
+          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the person record in the system <br> Valid values\
+            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          maxLength: 37
+          type: string
+        Brand:
+          description: Identification of the brand associated with the person
+          maxLength: 37
+          type: string
+        FiName:
+          description: Name of the financial institution associated with the person
+          maxLength: 70
+          type: string
+        BrandName:
+          description: Name of the brand associated with the person
+          maxLength: 70
+          type: string
+        ExternalIdentification:
+          description: |
+            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
+          maxLength: 35
+          type: string
+        NamePrefix:
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
+          type: string
+        GivenName:
+          description: First name of a person
+          maxLength: 35
+          type: string
+        MiddleName:
+          description: Second name of a person
+          maxLength: 35
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name"
+          maxLength: 35
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD)
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
+          type: string
+        Email:
+          description: Address for electronic mail (e-mail)
+          maxLength: 256
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication
+          maxLength: 20
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word
+          maxLength: 35
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: '#/components/schemas/PostalAddress'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: '#/components/schemas/ElectronicAddress'
+        enabled:
+          type: boolean
     UpdateProductRequest:
       required:
       - Name
