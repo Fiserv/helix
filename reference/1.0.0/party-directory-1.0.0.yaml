@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-95
+  version: 1.1.0-98
 tags:
 - name: Customer Management
 paths:
@@ -397,14 +397,19 @@ paths:
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : FEPID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : CRMID exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : ClearingSystemIdentificationCode is not valid, please provide valid\
             \ value.</em></li><li><em>HLXPTDTBR001 : ClearingSystemIdentificationCode\
             \ exceeds maximum 13 length allowed.</em></li><li><em>HLXPTDTBR001 : AccountIdentification\
             \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTGT013 : Card\
             \ ID required, please provide valid value.</em></li><li><em>HLXPTDTGT011\
             \ : AccountIdentification required, please provide value.</em></li><li><em>HLXPTDTGT011\
-            \ : ClearingSystemIdentificationCode required, please provide value.</em></li></ul>"
+            \ : ClearingSystemIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Please provide one search criteria only.</em></li><li><em>HLXPTDTBR001\
+            \ : At least one search criteria required.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3793,10 +3798,11 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           maxLength: 37
           type: string
-        CrmId:
-          description: External identifier of the person (CRMID)
-          maxLength: 35
-          type: string
+        ExternalIdentification:
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
@@ -3841,10 +3847,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -4101,10 +4108,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
