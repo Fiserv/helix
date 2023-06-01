@@ -2,37 +2,37 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-29
+  version: 1.1.0-30
 tags:
-- name: Helix Core
-  x-proxy-name: Account Open
-  x-group-name: Account Maintenance
+  - name: Helix Core
+    x-proxy-name: Account Open
+    x-group-name: Account Maintenance
 paths:
   /Helix/V1/AccountServicing/AccountDelete/Execute:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to delete account entities
       description: "This API allows the user to delete a Person, Account and Card\
         \ entity added to the platform in case of a failure or time-out scenario to\
         \ initiate a rollback within NextGen system."
       operationId: accountDelete
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-        x-proxy-name: Delete Account Entities
-        x-group-name: Account Maintenance
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-        x-proxy-name: Delete Account Entities
-        x-group-name: Account Maintenance
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            type: string
+          x-proxy-name: Delete Account Entities
+          x-group-name: Account Maintenance
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            type: string
+          x-proxy-name: Delete Account Entities
+          x-group-name: Account Maintenance
       requestBody:
         content:
           application/json:
@@ -135,7 +135,7 @@ paths:
   /Helix/V1/AccountServicing/Boarding/Initiate:
     post:
       tags:
-      - Helix Core
+        - Helix Core
       summary: This method is used to open an account
       description: "This API allows the user to add a new Person, Account and Card\
         \ to the platform. In addition, this API is designed to support selective\
@@ -146,21 +146,21 @@ paths:
         \ Account </EM></LI></UL>"
       operationId: accountOpen
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-        x-proxy-name: Account Open
-        x-group-name: Account Maintenance
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-        x-proxy-name: Account Open
-        x-group-name: Account Maintenance
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            type: string
+          x-proxy-name: Account Open
+          x-group-name: Account Maintenance
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            type: string
+          x-proxy-name: Account Open
+          x-group-name: Account Maintenance
       requestBody:
         content:
           application/json:
@@ -180,29 +180,29 @@ paths:
                     description: Details of the created Person.
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
+                      - $ref: '#/components/schemas/RegisterPersonResponse'
+                      - $ref: '#/components/schemas/RegisterPersonResponse'
+                      - $ref: '#/components/schemas/RegisterPersonResponse'
+                      - $ref: '#/components/schemas/RegisterPersonResponse'
+                      - $ref: '#/components/schemas/RegisterPersonResponse'
                   Agreement:
                     description: Details of the created Agreement.
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
+                      - $ref: '#/components/schemas/InitiateAgreementResponse'
+                      - $ref: '#/components/schemas/InitiateAgreementResponse'
+                      - $ref: '#/components/schemas/InitiateAgreementResponse'
+                      - $ref: '#/components/schemas/InitiateAgreementResponse'
+                      - $ref: '#/components/schemas/InitiateAgreementResponse'
                   PaymentInstrument:
                     description: Details of the created PaymentInstrument.
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
+                      - $ref: '#/components/schemas/AddCardResponse'
+                      - $ref: '#/components/schemas/AddCardResponse'
+                      - $ref: '#/components/schemas/AddCardResponse'
+                      - $ref: '#/components/schemas/AddCardResponse'
+                      - $ref: '#/components/schemas/AddCardResponse'
           x-proxy-name: Account Open
           x-group-name: Account Maintenance
         "400":
@@ -430,11 +430,11 @@ components:
           type: string
     AddCardRequest:
       required:
-      - Brand
-      - Product
-      - RelatedAccount
-      - Cardholder
-      - CardholderType
+        - Brand
+        - Product
+        - RelatedAccount
+        - Cardholder
+        - CardholderType
       type: object
       properties:
         Brand:
@@ -524,12 +524,12 @@ components:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         FailedDateTime:
           description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         BrandId:
           description: Identification of the Brand
           type: string
@@ -563,15 +563,39 @@ components:
           description: Unique identifier for a Card.
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
-            Account Number)
+          description: "Long number that appears on the front of the card (Primary\
+            \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
+          type: string
+        CardholderType:
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
+          type: string
+        NameLine1:
+          description: Cardholder name as it appears on the card.
+          type: string
+        NameLine2:
+          description: Details on second name line as it appears on the card.
+          type: string
+        ServiceCode:
+          description: "Identifies the card usage restrictions, and is also used in\
+            \ calculation of CVV value that is encoded on the magnetic strip of the\
+            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -615,7 +639,7 @@ components:
           type: string
     AgreementFeatureRequestDto:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -631,8 +655,8 @@ components:
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
-      - PartyIdentification
-      - PartyRole
+        - PartyIdentification
+        - PartyRole
       type: object
       properties:
         AgreementInvolvementId:
@@ -697,7 +721,7 @@ components:
             $ref: '#/components/schemas/Feature1'
     BundleRequestDto:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -707,7 +731,7 @@ components:
           type: string
     CardDeleteRequest:
       required:
-      - FEPID
+        - FEPID
       type: object
       properties:
         FEPID:
@@ -802,8 +826,8 @@ components:
           type: string
     ConfigurationOption:
       required:
-      - Name
-      - ConfigurationParameter
+        - Name
+        - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -817,8 +841,8 @@ components:
             $ref: '#/components/schemas/ConfigurationParameter'
     ConfigurationOption1:
       required:
-      - Name
-      - ConfigurationParameter
+        - Name
+        - ConfigurationParameter
       type: object
       properties:
         Name:
@@ -836,8 +860,8 @@ components:
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
-      - Name
-      - Value
+        - Name
+        - Value
       type: object
       properties:
         Name:
@@ -852,8 +876,8 @@ components:
           type: string
     ElectronicAddress:
       required:
-      - Type
-      - Email
+        - Type
+        - Email
       type: object
       properties:
         Type:
@@ -884,7 +908,7 @@ components:
           description: Specifies the service domain identifier
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -898,12 +922,12 @@ components:
           description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDateTime'
+            - $ref: '#/components/schemas/LocalDateTime'
     ExecuteAccountDeleteRequest:
       required:
-      - DeletePerson
-      - DeleteAccount
-      - DeletePaymentInstrument
+        - DeletePerson
+        - DeleteAccount
+        - DeletePaymentInstrument
       type: object
       properties:
         DeletePerson:
@@ -943,14 +967,14 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
     ExecuteAssignPANRequest:
       required:
-      - FeatureId
-      - FeatureIdentification
-      - ProductId
-      - AgreementFeatureId
-      - Agreement
+        - FeatureId
+        - FeatureIdentification
+        - ProductId
+        - AgreementFeatureId
+        - Agreement
       type: object
       properties:
         FeatureId:
@@ -1012,11 +1036,11 @@ components:
             Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
     ExecuteContactLessOptRequest:
       required:
-      - ContactlessOptOutSwitch
-      - ReplaceCard
+        - ContactlessOptOutSwitch
+        - ReplaceCard
       type: object
       properties:
         ContactlessOptOutSwitch:
@@ -1043,7 +1067,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
             card.
@@ -1058,10 +1082,10 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
     ExecuteDeleteAgreementRequest:
       required:
-      - FEAID
+        - FEAID
       type: object
       properties:
         FEAID:
@@ -1070,7 +1094,7 @@ components:
           type: string
     ExecuteDeleteFacilityAllocationRequest:
       required:
-      - FacilityIdentification
+        - FacilityIdentification
       type: object
       properties:
         FacilityIdentification:
@@ -1081,7 +1105,7 @@ components:
           type: string
     ExecuteDeletePersonRequest:
       required:
-      - FECID
+        - FECID
       type: object
       properties:
         FECID:
@@ -1089,8 +1113,8 @@ components:
           type: string
     ExecuteFraudRequest:
       required:
-      - FraudStatus
-      - ReplaceCard
+        - FraudStatus
+        - ReplaceCard
       type: object
       properties:
         FraudStatus:
@@ -1115,7 +1139,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         FraudStatus:
           description: This field indicates if a card is fraudulent or not. Valid
             values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
@@ -1125,7 +1149,7 @@ components:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1133,7 +1157,7 @@ components:
           type: string
     ExecuteGeneratePINRequest:
       required:
-      - FeatureId
+        - FeatureId
       type: object
       properties:
         FeatureId:
@@ -1148,7 +1172,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -1156,10 +1180,10 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
     ExecuteTransferPINRequest:
       required:
-      - NewPaymentInstrumentId
+        - NewPaymentInstrumentId
       type: object
       properties:
         NewPaymentInstrumentId:
@@ -1175,7 +1199,7 @@ components:
             $ref: '#/components/schemas/Feature'
     ExecuteUnlinkProductFeatureRequest:
       required:
-      - RequestType
+        - RequestType
       type: object
       properties:
         Feature:
@@ -1198,8 +1222,8 @@ components:
           type: string
     ExecuteValidateCVV2Request:
       required:
-      - ExpiryDate
-      - CVV2
+        - ExpiryDate
+        - CVV2
       type: object
       properties:
         ExpiryDate:
@@ -1212,8 +1236,8 @@ components:
           type: string
     ExecuteValidateCVVRequest:
       required:
-      - ExpiryDate
-      - CVV
+        - ExpiryDate
+        - CVV
       type: object
       properties:
         ExpiryDate:
@@ -1232,8 +1256,8 @@ components:
           type: boolean
     ExecuteValidateICVVRequest:
       required:
-      - ExpiryDate
-      - iCVV
+        - ExpiryDate
+        - iCVV
       type: object
       properties:
         ExpiryDate:
@@ -1246,8 +1270,8 @@ components:
           type: string
     ExecuteValidatePINRequest:
       required:
-      - PINBlock
-      - Association
+        - PINBlock
+        - Association
       type: object
       properties:
         PINBlock:
@@ -1267,8 +1291,8 @@ components:
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
+        - ClearingSystemIdentificationCode
+        - AccountIdentification
       type: object
       properties:
         ClearingSystemIdentificationCode:
@@ -1290,8 +1314,8 @@ components:
           type: string
     ExternalIdentification:
       required:
-      - TypeOfIdentificationCode
-      - Identification
+        - TypeOfIdentificationCode
+        - Identification
       type: object
       properties:
         TypeOfIdentificationCode:
@@ -1309,7 +1333,7 @@ components:
           type: string
     Feature:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -1337,7 +1361,7 @@ components:
           type: string
     Feature2:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -1404,7 +1428,7 @@ components:
           type: string
     InitiateAgreementFeatureRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         AgreementFeature:
@@ -1424,10 +1448,10 @@ components:
           type: string
     InitiateAgreementRequest:
       required:
-      - Brand
-      - Product
-      - AgreementInvolvement
-      - OpeningDate
+        - Brand
+        - Product
+        - AgreementInvolvement
+        - OpeningDate
       type: object
       properties:
         Brand:
@@ -1466,9 +1490,9 @@ components:
           type: string
     InitiateBoardingRequest:
       required:
-      - CreatePerson
-      - CreateAccount
-      - CreateCard
+        - CreatePerson
+        - CreateAccount
+        - CreateCard
       type: object
       properties:
         CreatePerson:
@@ -1494,20 +1518,23 @@ components:
             \ when CreatePerson is true."
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegisterPersonRequest'
+            - $ref: '#/components/schemas/RegisterPersonRequest'
         Agreement:
           description: This object is used to add a new Account into the system. This
             object is required when CreateAccount is true.
           type: object
           allOf:
-          - $ref: '#/components/schemas/InitiateAgreementRequest'
+            - $ref: '#/components/schemas/InitiateAgreementRequest'
         PaymentInstrument:
-          description: "This object is used to add a new Card into the system, along\
-            \ with  an optional Bundle and Parameter overrides that can be supplied.\
-            \ This object is required when CreateCard is true."
+          description: "<p>This object is used to add a new Card into the system,\
+            \ along with  an optional Bundle and Parameter overrides that can be supplied.\
+            \ This object is required when CreateCard is true.<br><p>Note:<br> <ul><li>PAN,\
+            \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
+            \ and Service code attributes are only returned when the Financial Institution\
+            \ is processing in Hybrid Mode.</li></ul>"
           type: object
           allOf:
-          - $ref: '#/components/schemas/AddCardRequest'
+            - $ref: '#/components/schemas/AddCardRequest'
     InitiateBoardingResponse:
       type: object
       properties:
@@ -1515,20 +1542,20 @@ components:
           description: Details of the created Person.
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegisterPersonResponse'
+            - $ref: '#/components/schemas/RegisterPersonResponse'
         Agreement:
           description: Details of the created Agreement.
           type: object
           allOf:
-          - $ref: '#/components/schemas/InitiateAgreementResponse'
+            - $ref: '#/components/schemas/InitiateAgreementResponse'
         PaymentInstrument:
           description: Details of the created PaymentInstrument.
           type: object
           allOf:
-          - $ref: '#/components/schemas/AddCardResponse'
+            - $ref: '#/components/schemas/AddCardResponse'
     InitiateFacilityAllocationRequest:
       required:
-      - AgreementFeature
+        - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
@@ -1556,9 +1583,9 @@ components:
       example: 2022-03-10T16:15:50Z
     IssuedDeviceActionRequest:
       required:
-      - BlockReason
-      - ReplaceCard
-      - GenerateNewPin
+        - BlockReason
+        - ReplaceCard
+        - GenerateNewPin
       type: object
       properties:
         BlockReason:
@@ -1593,12 +1620,12 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         NewFepId:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1624,7 +1651,7 @@ components:
           type: string
     LinkBundleFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -1714,7 +1741,7 @@ components:
           type: boolean
     OverrideParameter:
       required:
-      - CapabilityName
+        - CapabilityName
       type: object
       properties:
         CapabilityName:
@@ -1728,7 +1755,7 @@ components:
             $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
-      - Identification
+        - Identification
       type: object
       properties:
         Identification:
@@ -1779,11 +1806,13 @@ components:
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
         ExternalIdentification:
-          maxLength: 35
-          type: string
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ExternalIdentification'
     PersonDetailsDto:
       required:
-      - Surname
+        - Surname
       type: object
       properties:
         NamePrefix:
@@ -1850,8 +1879,8 @@ components:
             $ref: '#/components/schemas/ElectronicAddress'
     Phone:
       required:
-      - Type
-      - Number
+        - Type
+        - Number
       type: object
       properties:
         Type:
@@ -1884,10 +1913,10 @@ components:
           type: string
     PostalAddress:
       required:
-      - AddressType
-      - PostalCode
-      - Country
-      - ContactPreference
+        - AddressType
+        - PostalCode
+        - Country
+        - ContactPreference
       type: object
       properties:
         AddressType:
@@ -1972,11 +2001,11 @@ components:
           description: Identification of the product
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+            - $ref: '#/components/schemas/RetrieveProductResponse'
     RegisterBundleRequest:
       required:
-      - Identification
-      - Name
+        - Identification
+        - Name
       type: object
       properties:
         Identification:
@@ -2006,7 +2035,7 @@ components:
           type: string
     RegisterConfigurationOptionRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -2030,10 +2059,10 @@ components:
           type: integer
     RegisterFeatureRequest:
       required:
-      - Identification
-      - Name
-      - Capability
-      - ConfigurationOption
+        - Identification
+        - Name
+        - Capability
+        - ConfigurationOption
       type: object
       properties:
         Identification:
@@ -2069,7 +2098,7 @@ components:
           type: string
     RegisterOrganisationRequest:
       required:
-      - TradingName
+        - TradingName
       type: object
       properties:
         Brand:
@@ -2108,7 +2137,7 @@ components:
             $ref: '#/components/schemas/Phone'
     RegisterPersonRequest:
       required:
-      - Surname
+        - Surname
       type: object
       properties:
         NamePrefix:
@@ -2186,7 +2215,7 @@ components:
           type: string
     RegisterProductFeatureRequest:
       required:
-      - Feature
+        - Feature
       type: object
       properties:
         Feature:
@@ -2201,9 +2230,9 @@ components:
           $ref: '#/components/schemas/Warning'
     RegisterProductRequest:
       required:
-      - Name
-      - Brand
-      - Identification
+        - Name
+        - Brand
+        - Identification
       type: object
       properties:
         Name:
@@ -2247,10 +2276,10 @@ components:
           description: Identification of the product
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+            - $ref: '#/components/schemas/RetrieveProductResponse'
     RequestGetCVV2Request:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -2259,7 +2288,7 @@ components:
           type: string
     RequestGetCVVRequest:
       required:
-      - ExpiryDate
+        - ExpiryDate
       type: object
       properties:
         ExpiryDate:
@@ -2283,7 +2312,7 @@ components:
           type: string
     RequestViewInstrumentIdRequest:
       required:
-      - PAN
+        - PAN
       type: object
       properties:
         PAN:
@@ -2304,8 +2333,8 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-      - RSAKey
-      - Association
+        - RSAKey
+        - Association
       type: object
       properties:
         RSAKey:
@@ -2318,7 +2347,7 @@ components:
           type: string
     RequestViewPinRequest:
       required:
-      - RSAPublicKey
+        - RSAPublicKey
       type: object
       properties:
         RSAPublicKey:
@@ -2385,7 +2414,7 @@ components:
             $ref: '#/components/schemas/AgreementFeature'
     RetrieveAgreementResponse:
       required:
-      - AgreementInvolvement
+        - AgreementInvolvement
       type: object
       properties:
         Identification:
@@ -2438,7 +2467,7 @@ components:
             Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         NetworkAccountUpdaterOption:
           description: Identifies whether the cardholder is currently opted-out or
             opted-in for the Network Account Updater. The opt out option affects all
@@ -2489,7 +2518,7 @@ components:
             Type: ISO Date (YYYY-MM-DD)
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         LastCardMaintenanceFeeAmount:
           description: |-
             Card maintenance fee amount that was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
@@ -2502,13 +2531,13 @@ components:
             \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         LastLostOrStolenReplacementCardFeeDate:
           description: "Date when Lost or Stolen card replacement fee was last assessed\
             \ on the card. \nType: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         LastLostOrStolenReplacementCardFeeAmount:
           description: "Lost or Stolen card replacement fee amount that was last assessed\
             \ on the card. \nType: Amount"
@@ -2532,7 +2561,7 @@ components:
             Type: ISO Date (YYYY-MM-DD)
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         LastCardMaintenanceFeeWaiveAmount:
           description: |-
             Card maintenance fee amount that was last waived for the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
@@ -2544,7 +2573,7 @@ components:
             Type: ISO Date (YYYY-MM-DD)
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         LastLostOrStolenReplacementCardFeeWaiveAmount:
           description: |-
             Lost or Stolen fee amount that was last waived for the card.
@@ -2556,11 +2585,11 @@ components:
             Type: ISO Date (YYYY-MM-DD)
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
     RetrieveFacilityAllocationFeatureParameterRequest:
       required:
-      - FacilityIdentification
-      - Capability
+        - FacilityIdentification
+        - Capability
       type: object
       properties:
         FacilityIdentification:
@@ -2656,7 +2685,7 @@ components:
           type: string
     RetrieveOrganisationResponse:
       required:
-      - TradingName
+        - TradingName
       type: object
       properties:
         Brand:
@@ -2711,7 +2740,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+            - $ref: '#/components/schemas/UUID'
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -2728,17 +2757,17 @@ components:
             (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         ExpiryDate:
           description: Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         PriorCardExpiryDate:
           description: Prior Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         Cardholder:
           description: Party entitled to use the payment instrument (FECID)
           type: string
@@ -2766,7 +2795,7 @@ components:
           description: Date when the payment instrument was activated (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+            - $ref: '#/components/schemas/LocalDate'
         Blocked:
           description: Indicates whether payment instrument is blocked
           type: string
@@ -2778,7 +2807,7 @@ components:
           description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the payment instrument
@@ -2795,7 +2824,7 @@ components:
             (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
           type: string
@@ -2816,7 +2845,7 @@ components:
           description: Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         DigitalCardType:
           description: Identifies the type of digital card. Possible Response Values
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
@@ -2840,7 +2869,7 @@ components:
           description: Indicates date/time when a card was cancelled.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         FraudStatus:
           description: This field indicates if a card is fraudulent or not. Valid
             values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
@@ -2850,7 +2879,7 @@ components:
           description: Indicates date/time when a card was marked as fraudulent.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -2860,17 +2889,17 @@ components:
           description: Payment instrument details
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+            - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
         VisaChipDataResponse:
           description: Visa Chip details for a given payment instrument
           type: object
           allOf:
-          - $ref: '#/components/schemas/VisaChipDataResponse'
+            - $ref: '#/components/schemas/VisaChipDataResponse'
         MasterCardChipDataResponse:
           description: MasterCard Chip details for a given payment instrument
           type: object
           allOf:
-          - $ref: '#/components/schemas/MasterCardChipDataResponse'
+            - $ref: '#/components/schemas/MasterCardChipDataResponse'
     RetrievePersonListRequest:
       type: object
       properties:
@@ -3042,14 +3071,14 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^\d*$
+          pattern: ^?\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
           type: object
           allOf:
-          - $ref: '#/components/schemas/ChipData'
+            - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
@@ -3063,13 +3092,13 @@ components:
             was attempted on the card.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+            - $ref: '#/components/schemas/Instant'
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
           type: object
           allOf:
-          - $ref: '#/components/schemas/ChipData'
+            - $ref: '#/components/schemas/ChipData'
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
@@ -3079,11 +3108,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
     UpdateBundleResponse:
       type: object
@@ -3111,7 +3140,7 @@ components:
             $ref: '#/components/schemas/Feature1'
     UpdateFeatureRequest:
       required:
-      - Name
+        - Name
       type: object
       properties:
         Name:
@@ -3159,7 +3188,7 @@ components:
             $ref: '#/components/schemas/ConfigurationOption1'
     UpdateNetworkAccountOptionRequest:
       required:
-      - NetworkAccountUpdaterOption
+        - NetworkAccountUpdaterOption
       type: object
       properties:
         NetworkAccountUpdaterOption:
@@ -3179,8 +3208,8 @@ components:
           type: string
     UpdateProductRequest:
       required:
-      - Name
-      - Brand
+        - Name
+        - Brand
       type: object
       properties:
         Name:
