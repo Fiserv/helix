@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-100
+  version: 1.1.0-103
 tags:
 - name: Customer Management
 paths:
@@ -554,8 +554,11 @@ paths:
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Incomplete Postal Address information received in request.</em></li>Street\
-            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Incomplete Postal Address information received in request.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one address entry per address type is allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -568,9 +571,15 @@ paths:
             \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Phone information received in request.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one entry per phone type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
             \ : Email exceeds maximum 256 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one entry per email type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -875,7 +884,9 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT015\
-            \ : External Identification updates are not allowed.</em></li></ul>"
+            \ : External Identification with Type Of Identification Code %s and value\
+            \ %s is already updated on Person.</em></li><li><em>HLXPTDTNF004 : External\
+            \ Identification with Type Of Identification Code %s not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1492,9 +1503,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1509,6 +1517,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1967,6 +1978,24 @@ components:
           maxLength: 37
           pattern: \S
           type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          type: string
     Feature:
       required:
       - Identification
@@ -2421,7 +2450,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2523,12 +2552,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
       required:
       - Type
@@ -2767,7 +2790,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2860,12 +2883,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2886,6 +2903,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
     RegisterPersonRequest1:
       required:
       - Surname
@@ -2932,12 +2955,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2958,6 +2975,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentificationUpdateDto'
     RegisterPersonResponse:
       type: object
       properties:
@@ -3546,7 +3569,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4187,7 +4210,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4217,7 +4240,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdatePersonResponse:
       type: object
       properties:
