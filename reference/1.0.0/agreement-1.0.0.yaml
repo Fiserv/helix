@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-121
+  version: 1.1.0-126
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1771,7 +1771,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC002\
             \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li><li><em>HLXAGDTNU001\
             \ : Cardholder has already opted in for Network Account Updater.</em></li><li><em>HLXAGDTNU001\
             \ : Cardholder has already opted out of Network Account Updater.</em></li></ul>"
@@ -1915,6 +1915,7 @@ paths:
       - name: brand-id
         in: header
         description: Unique identifier for a Brand associated with the Account.
+        required: true
         schema:
           maxLength: 37
           type: string
@@ -1936,7 +1937,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUpdateRequest1'
+              $ref: '#/components/schemas/SystemUpdateRequest'
       responses:
         "200":
           description: OK
@@ -1992,8 +1993,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>AC002AC002\
-            \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li></ul>"
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC002\
+            \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li><li><em>HLXAGDTAI005\
+            \ : PartyRole is not valid for Involvement ID <AgreementInvolvementID>.</em></li><li><em>HLXAGDTAI002\
+            \ : Account Involvement Status cannot be set to False while adding a new\
+            \ Involvement.</em></li><li><em>HLXAGDTAI004 : Involvement already exists\
+            \ for Person %s, on the account.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2117,26 +2122,6 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Validate account status
       x-group-name: Account Management
-  /Helix/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /Helix/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
 components:
   schemas:
     Account:
@@ -2390,7 +2375,7 @@ components:
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
           maxLength: 37
-          pattern: \S
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
@@ -2731,6 +2716,26 @@ components:
         DateTimeAdded:
           description: Time stamp when this email is set as the current electronic
             address
+          type: string
+    ElectronicAddressDtoUpdateRequest:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
     ErrorEvent:
       type: object
@@ -3690,22 +3695,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalIdentification'
-        PostalAddress:
-          description: Current postal address of the person.
-          type: array
-          items:
-            $ref: '#/components/schemas/PostalAddress'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/Phone'
-        ElectronicAddress:
-          description: Address which is accessed by electronic means.
-          type: array
-          items:
-            $ref: '#/components/schemas/ElectronicAddress'
     Phone:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    PhoneDtoUpdateRequest:
       required:
       - Type
       - Number
@@ -3757,11 +3781,14 @@ components:
           maxLength: 70
           type: string
         BuildingNumber:
-          description: Number that identifies the position of a building on a street
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 35
           type: string
         BuildingName:
-          description: Name of a building or house
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
           maxLength: 70
           type: string
         PostOfficeBox:
@@ -3776,9 +3803,10 @@ components:
           pattern: \S
           type: string
         AddressLine1:
-          description: "AddressLine1 - Information that locates and identifies a specific\
-            \ address, as defined by postal services, that is presented in free format\
-            \ text"
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 70
           type: string
         AddressLine2:
@@ -3966,6 +3994,7 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
+      - PostalAddress
       type: object
       properties:
         NamePrefix:
@@ -4015,6 +4044,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalIdentification'
+        Brand:
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
+          maxLength: 37
+          type: string
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -4030,11 +4064,78 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+    RegisterPersonRequest1:
+      required:
+      - Surname
+      type: object
+      properties:
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)"
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          pattern: (^(aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|in|io|is|it|iu|iw|ja|ji|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mo|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)$)|(^$)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: '#/components/schemas/PostalAddress'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDtoUpdateRequest'
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
     RegisterPersonResponse:
       type: object
       properties:
@@ -4890,10 +4991,11 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           maxLength: 37
           type: string
-        CrmId:
-          description: External identifier of the person (CRMID)
-          maxLength: 35
-          type: string
+        ExternalIdentification:
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
@@ -4938,10 +5040,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -5051,6 +5154,28 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "True".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementInvolvement'
+    SystemUpdateRequest1:
+      type: object
+      properties:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
@@ -5062,26 +5187,6 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementInvolvement'
     SystemUpdateResponse:
       type: object
       properties:
