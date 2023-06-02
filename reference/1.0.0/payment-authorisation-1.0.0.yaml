@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-72
 tags:
 - name: Helix Core
 paths:
