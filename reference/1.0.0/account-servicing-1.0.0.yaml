@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-31
+  version: 1.1.0-32
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -195,7 +195,11 @@ paths:
                     - $ref: '#/components/schemas/InitiateAgreementResponse'
                     - $ref: '#/components/schemas/InitiateAgreementResponse'
                   PaymentInstrument:
-                    description: Details of the created PaymentInstrument.
+                    description: "Details of the created PaymentInstrument.<p>Note:<br>\
+                      \ <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
+                      \ NameLine1, NameLine2 and Service code attributes are only\
+                      \ returned when the Financial Institution is processing in Hybrid\
+                      \ Mode.</li></ul>"
                     type: object
                     allOf:
                     - $ref: '#/components/schemas/AddCardResponse'
@@ -834,6 +838,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -848,9 +855,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1532,6 +1536,7 @@ components:
             \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
             \ and Service code attributes are only returned when the Financial Institution\
             \ is processing in Hybrid Mode.</li></ul>"
+
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardRequest'
@@ -1549,7 +1554,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/InitiateAgreementResponse'
         PaymentInstrument:
-          description: Details of the created PaymentInstrument.
+          description: "Details of the created PaymentInstrument.<p>Note:<br> <ul><li>PAN,\
+            \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
+            \ and Service code attributes are only returned when the Financial Institution\
+            \ is processing in Hybrid Mode.</li></ul>"
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardResponse'
@@ -1752,7 +1760,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2089,7 +2097,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2678,7 +2686,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3155,7 +3163,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3185,7 +3193,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
