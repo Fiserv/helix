@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-29
+  version: 1.1.0-32
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -195,7 +195,11 @@ paths:
                     - $ref: '#/components/schemas/InitiateAgreementResponse'
                     - $ref: '#/components/schemas/InitiateAgreementResponse'
                   PaymentInstrument:
-                    description: Details of the created PaymentInstrument.
+                    description: "Details of the created PaymentInstrument.<p>Note:<br>\
+                      \ <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
+                      \ NameLine1, NameLine2 and Service code attributes are only\
+                      \ returned when the Financial Institution is processing in Hybrid\
+                      \ Mode.</li></ul>"
                     type: object
                     allOf:
                     - $ref: '#/components/schemas/AddCardResponse'
@@ -570,8 +574,32 @@ components:
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
-            Account Number)
+          description: "Long number that appears on the front of the card (Primary\
+            \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
+          type: string
+        CardholderType:
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
+          type: string
+        NameLine1:
+          description: Cardholder name as it appears on the card.
+          type: string
+        NameLine2:
+          description: Details on second name line as it appears on the card.
+          type: string
+        ServiceCode:
+          description: "Identifies the card usage restrictions, and is also used in\
+            \ calculation of CVV value that is encoded on the magnetic strip of the\
+            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -810,6 +838,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -824,9 +855,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1502,9 +1530,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/InitiateAgreementRequest'
         PaymentInstrument:
-          description: "This object is used to add a new Card into the system, along\
-            \ with  an optional Bundle and Parameter overrides that can be supplied.\
-            \ This object is required when CreateCard is true."
+          description: "<p>This object is used to add a new Card into the system,\
+            \ along with  an optional Bundle and Parameter overrides that can be supplied.\
+            \ This object is required when CreateCard is true.<br>"
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardRequest'
@@ -1522,7 +1550,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/InitiateAgreementResponse'
         PaymentInstrument:
-          description: Details of the created PaymentInstrument.
+          description: "Details of the created PaymentInstrument.<p>Note:<br> <ul><li>PAN,\
+            \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
+            \ and Service code attributes are only returned when the Financial Institution\
+            \ is processing in Hybrid Mode.</li></ul>"
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardResponse'
@@ -1725,7 +1756,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -1779,8 +1810,10 @@ components:
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
         ExternalIdentification:
-          maxLength: 35
-          type: string
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
     PersonDetailsDto:
       required:
       - Surname
@@ -2060,7 +2093,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2649,7 +2682,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3126,7 +3159,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3156,7 +3189,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
