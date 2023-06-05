@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-103
+  version: 1.1.0-106
 tags:
 - name: Customer Management
 paths:
@@ -853,7 +853,12 @@ paths:
             \ : Electronic Address  information in request is already present on the\
             \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Only one entry per email type\
-            \ is allowed.</em></li></ul>"
+            \ is allowed.</em></li><li><em>HLXPTDTBR001 : TypeOfIdentificationCode\
+            \ required, please provide value.</em></li><li><em>HLXPTDTBR001 : TypeOfIdentificationCode\
+            \ is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : External Identification with Type Of Identification Code %s is duplicated\
+            \ within request.</em></li></ul>"
           content:
             application/json:
               schema:
