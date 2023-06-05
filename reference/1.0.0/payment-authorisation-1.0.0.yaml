@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-70
+  version: 1.1.0-72
 tags:
 - name: Helix Core
 paths:
@@ -482,6 +482,15 @@ components:
         CardAccountType:
           description: Type of cardholder account used for the transaction
           type: string
+    Acqrr:
+      type: object
+      properties:
+        Id:
+          description: ID of the acquirer
+          type: string
+        Ctry:
+          description: 3 byte numeric country code of the acquirer
+          type: string
     AddCapabilityCatalogResponse:
       type: object
       properties:
@@ -563,7 +572,7 @@ components:
         FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-        BankingProduct:
+        ProductId:
           description: Identification of the product
           type: string
         FEAID:
@@ -572,10 +581,16 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventMsg:
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -585,17 +600,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -731,6 +752,101 @@ components:
         Association:
           description: Identifies the association Key
           pattern: \S
+          type: string
+    BrandEntryAddRequest:
+      required:
+      - Name
+      - FinancialInstitutionIdentification
+      - Identification
+      - ReportingCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        Identification:
+          description: Identification of the Brand
+          maxLength: 37
+          minLength: 1
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          pattern: \S
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          maxLength: 2
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    BrandUpdateRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
           type: string
     Bundle:
       type: object
@@ -1102,6 +1218,16 @@ components:
     Envt:
       type: object
       properties:
+        Acqrr:
+          description: Acquirer
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acqrr'
+        Orgtr:
+          description: Originator
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Orgtr'
         Termnl:
           description: "Identifies the terminal, from where the transaction is triggered."
           type: object
@@ -2065,6 +2191,104 @@ components:
         CapabilityVersion:
           description: Capability version
           type: string
+    FiRegisterRequest:
+      required:
+      - Name
+      - Identification
+      - InvoiceCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        Identification:
+          description: Identification of the financial institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          pattern: \S
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
+    FiRegisterResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of Financial Institution
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+        Name:
+          description: Name of Financial Institution
+          type: string
+    FiUpdateRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
     HelixErrorDetails:
       type: object
       properties:
@@ -2302,7 +2526,7 @@ components:
       type: object
       properties:
         LimitType:
-          description: "Type of transaction e.g., ATM, POS, Ecomm, etc."
+          description: "Type of transaction e.g., ATM, POS, ECOM, International, etc."
           type: string
         PeriodType:
           description: "Period type indicates whether transaction is single, daily\
@@ -2410,6 +2634,15 @@ components:
           type: string
         enabled:
           type: boolean
+    Orgtr:
+      type: object
+      properties:
+        Id:
+          description: ID of the originator
+          type: string
+        Ctry:
+          description: 3 byte numeric country code of the originator
+          type: string
     OverrideParameter:
       required:
       - CapabilityName
@@ -2945,6 +3178,64 @@ components:
       properties:
         Identification:
           type: string
+    RegistrationAddress:
+      description: Registered Address
+      required:
+      - Country
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          pattern: \S
+          type: string
     ReissueCardRequest:
       type: object
       properties:
@@ -3359,6 +3650,46 @@ components:
             \ for a given Payment Instrument <br> Yes:  International transactions\
             \ are allowed <br> No: International transactions not allowed"
           type: string
+    RetrieveBrandResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -3582,6 +3913,47 @@ components:
         CreateAgreementFeature:
           type: string
         CreateFacility:
+          type: string
+    RetrieveFiResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
           type: string
     RetrieveInstrumentKeyRequest:
       required:
@@ -4211,11 +4583,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*?).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*?).+
           type: string
     UpdateBundleResponse:
       type: object
@@ -4309,7 +4681,7 @@ components:
           minLength: 1
           type: string
         LimitType:
-          description: "Type of transaction e.g., ATM, POS, ECOM, etc."
+          description: "Type of transaction e.g., ATM, POS, ECOM, International, etc."
           minLength: 1
           pattern: (^$|ATM|POS|ECOM|MOTO|ContactLess|International|TotalSpend)
           type: string
@@ -4333,7 +4705,7 @@ components:
           description: Unique identifier of the Restriciton Level
           type: string
         LimitType:
-          description: "Type of transaction e.g., ATM, POS, Ecomm, etc."
+          description: "Type of transaction e.g., ATM, POS, ECOM, International, etc."
           type: string
         PeriodType:
           description: "Period type indicates whether transaction is single, daily\

@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-192
+  version: 1.1.0-204
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -233,7 +233,11 @@ paths:
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASNE007\
             \ : Person not enabled.</em></li><li><em>HLXIDASNE006 : Account not enabled.</em></li><li><em>HLXIDASID003\
-            \ : Card not found.</em></li></ul>"
+            \ : Card not found.</em></li><li><em>HLXIDASEI001 : Identification exceeds\
+            \ maximum 37 length allowed.</em></li><li><em>HLXIDASEI001 : TypeOfIdentificationCode\
+            \ required, please provide value.</em></li><li><em>HLXIDASEI001 : TypeOfIdentificationCode\
+            \ is not valid, please provide valid value.</em></li><li><em>HLXIDASEI001\
+            \ : Identification required, please provide value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -275,9 +279,12 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to create new card
-      description: This API allows the user to add a new card to the platform. The
-        new card will be linked to the Person ID and Account ID provided in the request
-        message. It is not intended to be used to replace an existing card.
+      description: "<p>This API allows the user to add a new card to the platform.\
+        \ The new card will be linked to the Person ID and Account ID provided in\
+        \ the request message. It is not intended to be used to replace an existing\
+        \ card.<br><p>Note:<br> <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
+        \ NameLine1, NameLine2 and Service code attributes are only returned when\
+        \ the Financial Institution is processing in Hybrid Mode.</li></ul>"
       operationId: create
       parameters:
       - name: fi-id
@@ -328,8 +335,36 @@ paths:
                       ACMP (ActivationComplete) </EM></LI></UL>
                     type: string
                   PAN:
-                    description: Long number that appears on the front of the card
-                      (Primary Account Number)
+                    description: "Long number that appears on the front of the card\
+                      \ (Primary Account Number).</br> Notes: </br> <ul><li>PAN is\
+                      \ returned in clear.</li></ul>"
+                    type: string
+                  CardholderType:
+                    description: Indicates if the card holder of the account is a
+                      Primary account Holder or an Additional Account Holder. Possible
+                      Response Values are:</br><ul><li>PRIM (Primary)</li><li>ADNL
+                      (Additional)</li></ul>
+                    type: string
+                  CardTechnology:
+                    description: Indicates the technology type supported by the physical
+                      card.
+                    type: string
+                  DigitalCardType:
+                    description: Identifies the type of digital card. Possible values
+                      are:</br><ul><li>FTRM (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN
+                      (Transient)</li><li>NDIG (NonDigital)</li></ul>
+                    type: string
+                  NameLine1:
+                    description: Cardholder name as it appears on the card.
+                    type: string
+                  NameLine2:
+                    description: Details on second name line as it appears on the
+                      card.
+                    type: string
+                  ServiceCode:
+                    description: "Identifies the card usage restrictions, and is also\
+                      \ used in calculation of CVV value that is encoded on the magnetic\
+                      \ strip of the card."
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -1218,6 +1253,12 @@ paths:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1472,6 +1513,12 @@ paths:
           maxLength: 37
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1587,6 +1634,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
       x-proxy-name: Report a Card as Lost or Stolen
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
@@ -2425,7 +2474,11 @@ paths:
             \ : No value provided for update.</em></li><li><em>HLXIDASPC005 : Card\
             \ is cancelled.</em></li><li><em>HLXIDASUN001 : Update Name is not allowed\
             \ for confirmed fraud cards.</em></li><li><em>HLXIDASCC002 : Cancel Card\
-            \ is not allowed for confirmed fraud cards.</em></li></ul>"
+            \ is not allowed for confirmed fraud cards.</em></li><li><em>HLXIDASBL001\
+            \ : Card blocked as Lost, name update not allowed.</em></li><li><em>HLXIDASBL001\
+            \ : Card blocked as Stolen, name update not allowed.</em></li><li><em>HLXIDASBL001\
+            \ : Card blocked as Lost, cancel update not allowed.</em></li><li><em>HLXIDASBL001\
+            \ : Card blocked as Stolen, cancel update not allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2877,8 +2930,32 @@ components:
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
-            Account Number)
+          description: "Long number that appears on the front of the card (Primary\
+            \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
+          type: string
+        CardholderType:
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
+          type: string
+        NameLine1:
+          description: Cardholder name as it appears on the card.
+          type: string
+        NameLine2:
+          description: Details on second name line as it appears on the card.
+          type: string
+        ServiceCode:
+          description: "Identifies the card usage restrictions, and is also used in\
+            \ calculation of CVV value that is encoded on the magnetic strip of the\
+            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -3391,6 +3468,26 @@ components:
           description: Time stamp when this email is set as the current electronic
             address
           type: string
+    ElectronicAddressDtoUpdateRequest:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
     ErrorEvent:
       type: object
       properties:
@@ -3767,6 +3864,25 @@ components:
             with the external account.'
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
+          type: string
+    ExternalIdentification:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          pattern: \S
           type: string
     Feature:
       required:
@@ -4276,18 +4392,15 @@ components:
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
         ExternalIdentification:
-          maxLength: 35
-          type: string
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
     PersonDetailsDto:
       required:
       - Surname
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -4329,22 +4442,47 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        PostalAddress:
-          description: Current postal address of the person.
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/Phone'
-        ElectronicAddress:
-          description: Address which is accessed by electronic means.
-          type: array
-          items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    PhoneDtoUpdateRequest:
       required:
       - Type
       - Number
@@ -4381,6 +4519,7 @@ components:
     PostalAddress:
       required:
       - AddressType
+      - PostalCode
       - Country
       - ContactPreference
       type: object
@@ -4395,11 +4534,14 @@ components:
           maxLength: 70
           type: string
         BuildingNumber:
-          description: Number that identifies the position of a building on a street
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 35
           type: string
         BuildingName:
-          description: Name of a building or house
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
           maxLength: 70
           type: string
         PostOfficeBox:
@@ -4411,11 +4553,13 @@ components:
           description: Identifier consisting of a group of letters and/or numbers
             that is added to a postal address to assist the sorting of mail
           maxLength: 16
+          pattern: \S
           type: string
         AddressLine1:
-          description: "AddressLine1 - Information that locates and identifies a specific\
-            \ address, as defined by postal services, that is presented in free format\
-            \ text"
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 70
           type: string
         AddressLine2:
@@ -4603,13 +4747,9 @@ components:
     RegisterPersonRequest:
       required:
       - Surname
+      - PostalAddress
       type: object
       properties:
-        ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
         NamePrefix:
           description: Specifies the terms used to formally address a person.
           maxLength: 20
@@ -4651,6 +4791,17 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
+        Brand:
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
+          maxLength: 37
+          type: string
         PostalAddress:
           description: Current postal address of the person.
           type: array
@@ -4666,11 +4817,78 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+    RegisterPersonRequest1:
+      required:
+      - Surname
+      type: object
+      properties:
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)"
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          pattern: (^(aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|in|io|is|it|iu|iw|ja|ji|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mo|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)$)|(^$)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: '#/components/schemas/PostalAddress'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDtoUpdateRequest'
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
     RegisterPersonResponse:
       type: object
       properties:
@@ -5547,10 +5765,11 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           maxLength: 37
           type: string
-        CrmId:
-          description: External identifier of the person (CRMID)
-          maxLength: 35
-          type: string
+        ExternalIdentification:
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
@@ -5595,10 +5814,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -5748,11 +5968,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*?).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*?).+
           type: string
     UpdateBundleResponse:
       type: object

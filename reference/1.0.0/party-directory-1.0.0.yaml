@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-95
+  version: 1.1.0-103
 tags:
 - name: Customer Management
 paths:
@@ -173,6 +173,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -266,6 +267,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -373,6 +375,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -397,14 +400,19 @@ paths:
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : FEPID exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : CRMID exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : ClearingSystemIdentificationCode is not valid, please provide valid\
             \ value.</em></li><li><em>HLXPTDTBR001 : ClearingSystemIdentificationCode\
             \ exceeds maximum 13 length allowed.</em></li><li><em>HLXPTDTBR001 : AccountIdentification\
             \ exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTGT013 : Card\
             \ ID required, please provide valid value.</em></li><li><em>HLXPTDTGT011\
             \ : AccountIdentification required, please provide value.</em></li><li><em>HLXPTDTGT011\
-            \ : ClearingSystemIdentificationCode required, please provide value.</em></li></ul>"
+            \ : ClearingSystemIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Please provide one search criteria only.</em></li><li><em>HLXPTDTBR001\
+            \ : At least one search criteria required.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -546,8 +554,11 @@ paths:
             \ word exceeds maximum 20 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : Incomplete Postal Address information received in request.</em></li>Street\
-            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Incomplete Postal Address information received in request.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one address entry per address type is allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Street Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -560,9 +571,15 @@ paths:
             \ : Country Sub Division exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Phone information received in request.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one entry per phone type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Incomplete Electronic Address information received in request.</em></li<li><em>HLXPTDTBR001\
             \ : Email exceeds maximum 256 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one entry per email type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : TypeOfIdentificationCode required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -666,6 +683,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -766,6 +784,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -805,9 +824,10 @@ paths:
             \ : Memorable word reminder accepts alphabets only.</em></li><li><em>HLXPTDTBR001\
             \ : Memorable word reminder exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Postal Address  information in request is already present on the person.</em></li><li><em>HLXPTDTBR001\
-            \ : Address Type required, please provide value.</em></li>Street Name\
-            \ exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001 : Building\
-            \ Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li>Street\
+            \ Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Building Number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Building Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Post Office Box exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
@@ -822,10 +842,14 @@ paths:
             \ : At least one of the following fields is required: Address Line 1,\
             \ Building Number or Building Name. Please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Only one address entry per address type is allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Phone  information in request is already present on the person.</em></li><li><em>HLXPTDTBR001\
             \ : Only one entry per phone type is allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile number exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Extension exceeds maximum 10 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address - Type is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Electronic Address  information in request is already present on the\
             \ person.</em></li<li><em>HLXPTDTBR001 : Email exceeds maximum 256 length\
             \ allowed.</em></li><li><em>HLXPTDTBR001 : Only one entry per email type\
@@ -860,7 +884,9 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT015\
-            \ : External Identification updates are not allowed.</em></li></ul>"
+            \ : External Identification with Type Of Identification Code %s and value\
+            \ %s is already updated on Person.</em></li><li><em>HLXPTDTNF004 : External\
+            \ Identification with Type Of Identification Code %s not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -917,6 +943,7 @@ paths:
       - name: fi-id
         in: header
         description: Financial Institution Identification
+        required: true
         schema:
           type: string
       - name: brand-id
@@ -1536,14 +1563,9 @@ components:
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this email is set as the current electronic
-            address
-          type: string
     ElectronicAddressDtoUpdateRequest:
       required:
       - Type
-      - Email
       type: object
       properties:
         Type:
@@ -1955,6 +1977,24 @@ components:
           description: Specifies the value of the External Identification.
           maxLength: 37
           pattern: \S
+          type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
           type: string
     Feature:
       required:
@@ -2512,12 +2552,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
       required:
       - Type
@@ -2548,14 +2582,9 @@ components:
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
-          type: string
     PhoneDtoUpdateRequest:
       required:
       - Type
-      - Number
       type: object
       properties:
         Type:
@@ -2581,10 +2610,6 @@ components:
           description: "Indicates whether the person prefer to be receive SMS on this\
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
           type: string
     PostalAddress:
       required:
@@ -2669,9 +2694,6 @@ components:
             \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
             \ <br/> MayBeUsedForContact"
           pattern: \S
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this address is set as the current address
           type: string
     ProductReissueEvent:
       type: object
@@ -2861,12 +2883,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2887,6 +2903,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
     RegisterPersonRequest1:
       required:
       - Surname
@@ -2933,12 +2955,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2959,6 +2975,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentificationUpdateDto'
     RegisterPersonResponse:
       type: object
       properties:
@@ -3431,6 +3453,30 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/LocalDate'
+    RetrieveElectronicAddressResponse:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this email is set as the current electronic
+            address
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
       type: object
       properties:
@@ -3793,10 +3839,11 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           maxLength: 37
           type: string
-        CrmId:
-          description: External identifier of the person (CRMID)
-          maxLength: 35
-          type: string
+        ExternalIdentification:
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
@@ -3841,10 +3888,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -3888,19 +3936,140 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: '#/components/schemas/RetrievePostalAddressResponse'
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/RetrieveElectronicAddressResponse'
         enabled:
           type: boolean
+    RetrievePhoneResponse:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    RetrievePostalAddressResponse:
+      required:
+      - AddressType
+      - PostalCode
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          pattern: \S
+          type: string
+        AddressLine1:
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
+            \ <br/> MayBeUsedForContact"
+          pattern: \S
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this address is set as the current address
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -4101,10 +4270,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -4148,17 +4318,17 @@ components:
           description: Current postal address of the person.
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: '#/components/schemas/RetrievePostalAddressResponse'
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/RetrieveElectronicAddressResponse'
         enabled:
           type: boolean
     UpdateProductRequest:
