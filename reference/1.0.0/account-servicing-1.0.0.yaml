@@ -1532,11 +1532,7 @@ components:
         PaymentInstrument:
           description: "<p>This object is used to add a new Card into the system,\
             \ along with  an optional Bundle and Parameter overrides that can be supplied.\
-            \ This object is required when CreateCard is true.<br><p>Note:<br> <ul><li>PAN,\
-            \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
-            \ and Service code attributes are only returned when the Financial Institution\
-            \ is processing in Hybrid Mode.</li></ul>"
-
+            \ This object is required when CreateCard is true.<br>"
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardRequest'
@@ -3116,11 +3112,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*?).+
+          pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*?).+
+          pattern: \A(?!\s*$).+
           type: string
     UpdateBundleResponse:
       type: object
