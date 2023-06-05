@@ -1927,7 +1927,7 @@ paths:
           type: string
       - name: agreementId
         in: path
-        description: Unique identifier of an Agreement
+        description: Unique identifier of an Account.
         required: true
         schema:
           maxLength: 37
