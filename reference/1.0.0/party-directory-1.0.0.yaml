@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-106
+  version: 1.1.0-108
 tags:
 - name: Customer Management
 paths:
@@ -3942,11 +3942,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RetrievePostalAddressResponse'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
@@ -4324,11 +4319,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RetrievePostalAddressResponse'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
