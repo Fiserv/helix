@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-108
+  version: 1.1.0-110
 tags:
 - name: Customer Management
 paths:
@@ -3938,10 +3938,17 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \            \"historic or inactive addresses will not be returned in\
+            \ this API.<b/><br/> "
           type: array
           items:
             $ref: '#/components/schemas/RetrievePostalAddressResponse'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
@@ -4315,10 +4322,17 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \            \"historic or inactive addresses will not be returned in\
+            \ this API.<b/><br/> "
           type: array
           items:
             $ref: '#/components/schemas/RetrievePostalAddressResponse'
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
