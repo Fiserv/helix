@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-111
+  version: 1.1.0-113
 tags:
 - name: Customer Management
 paths:
@@ -661,6 +661,203 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Add a Person
+      x-group-name: Customer Management
+  /Helix/V1/Person/{partyId}/AllPostalAddresses/Retrieve:
+    get:
+      tags:
+      - Customer Management
+      summary: This service is used to retrieve all postal addresses for a person
+        including historic (inactive) records.
+      operationId: getPostalAddressById
+      parameters:
+      - name: partyId
+        in: path
+        description: Fiserv Enterprise Customer ID (FECID)
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                required:
+                - AddressType
+                - PostalCode
+                - Country
+                - ContactPreference
+                type: object
+                properties:
+                  AddressType:
+                    description: "Type of address<br/> Valid values are : <br/> Current\
+                      \ Residential <br/> Business <br/> Registered Residential"
+                    pattern: \S
+                    type: string
+                  StreetName:
+                    description: Name of a street or thoroughfare
+                    maxLength: 70
+                    type: string
+                  BuildingNumber:
+                    description: "Number that identifies the position of a building\
+                      \ on a street. At least one of Address Line 1, Building Number\
+                      \ or Building Name is required for a postal address."
+                    maxLength: 35
+                    type: string
+                  BuildingName:
+                    description: "Name of a building or house. At least one of Address\
+                      \ Line 1, Building Number or Building Name is required for a\
+                      \ postal address."
+                    maxLength: 70
+                    type: string
+                  PostOfficeBox:
+                    description: "Numbered box in a post office, assigned to a person\
+                      \ or organisation, where letters are kept until called for"
+                    maxLength: 16
+                    type: string
+                  PostalCode:
+                    description: Identifier consisting of a group of letters and/or
+                      numbers that is added to a postal address to assist the sorting
+                      of mail
+                    maxLength: 16
+                    pattern: \S
+                    type: string
+                  AddressLine1:
+                    description: "Information that locates and identifies a specific\
+                      \ address, as defined by postal services, that is presented\
+                      \ in free format text. At least one of Address Line 1, Building\
+                      \ Number or Building Name is required for a postal address."
+                    maxLength: 70
+                    type: string
+                  AddressLine2:
+                    description: "AddressLine2 - Information that locates and identifies\
+                      \ a specific address, as defined by postal services, that is\
+                      \ presented in free format text"
+                    maxLength: 70
+                    type: string
+                  AddressLine3:
+                    description: "AddressLine3 - Information that locates and identifies\
+                      \ a specific address, as defined by postal services, that is\
+                      \ presented in free format text"
+                    maxLength: 70
+                    type: string
+                  AddressLine4:
+                    description: "AddressLine4 - Information that locates and identifies\
+                      \ a specific address, as defined by postal services, that is\
+                      \ presented in free format text"
+                    maxLength: 70
+                    type: string
+                  TownName:
+                    description: Name of town / city from the address
+                    maxLength: 35
+                    type: string
+                  CountrySubDivision:
+                    description: "Identifies a subdivision of a country such as state,\
+                      \ region, county"
+                    maxLength: 35
+                    type: string
+                  Country:
+                    description: "Nation with its own government occupying a particular\
+                      \ territory <br/> Valid values are : 2 character ISO Country\
+                      \ Codes "
+                    pattern: \S
+                    type: string
+                  ContactPreference:
+                    description: "Indicates whether the person prefer to be contacted\
+                      \ on this address<br/> Valid values are : <br/> PreferredForContact\
+                      \ <br/> NotPreferredForContact <br/> MayBeUsedForContact"
+                    pattern: \S
+                    type: string
+                  DateTimeAdded:
+                    description: Time stamp when this address is set as the current
+                      address
+                    type: string
+                  isActive:
+                    description: Identifies the latest active address of a specific
+                      type added to the system. Valid values are True and False. If
+                      it is set to True it means that this is the last address of
+                      that address type that was added into the system and that is
+                      still active.
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
+            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul><li><em>HLXPTDTBR001\
+            \ : Error in Person Identification field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT003\
+            \ : Person not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT016\
+            \ : There is an error while getting Postal Address details, please try\
+            \ again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Inquire on a Postal Address
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
     get:
@@ -1508,9 +1705,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1525,6 +1719,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2455,7 +2652,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2795,7 +2992,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3574,7 +3771,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4076,6 +4273,12 @@ components:
         DateTimeAdded:
           description: Time stamp when this address is set as the current address
           type: string
+        isActive:
+          description: Identifies the latest active address of a specific type added
+            to the system. Valid values are True and False. If it is set to True it
+            means that this is the last address of that address type that was added
+            into the system and that is still active.
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -4216,7 +4419,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4246,7 +4449,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdatePersonResponse:
       type: object
       properties:
