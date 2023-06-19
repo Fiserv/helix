@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-204
+  version: 1.1.0-212
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -2289,7 +2289,12 @@ paths:
                     - $ref: '#/components/schemas/ChipData'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Card not found.</em></li></ul>"
+            \ : Card not found.</em></li><li><em>HLXIDASBR001 : Name Line 1 less than\
+            \ minimum length allowed.</em></li><li><em>HLXIDASBR001 : Name Line 1\
+            \ exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001 : Name\
+            \ Line 2 less than minimum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Cardholder is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2368,7 +2373,7 @@ paths:
       x-proxy-name: System Update
       x-group-name: Card Management
   /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
-    put:
+    patch:
       tags:
       - Helix Core
       summary: This method is used to update the issued device information
@@ -2434,7 +2439,12 @@ paths:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Card not found.</em></li></ul>"
+            \ : Card not found.</em></li><li><em>HLXIDASBR001 : Name Line 1 less than\
+            \ minimum length allowed.</em></li><li><em>HLXIDASBR001 : Name Line 1\
+            \ exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001 : Name\
+            \ Line 2 less than minimum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Name Line 2 exceeds maximum length allowed.</em></li><li><em>HLXIDASBR001\
+            \ : Cardholder is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2478,7 +2488,8 @@ paths:
             \ : Card blocked as Lost, name update not allowed.</em></li><li><em>HLXIDASBL001\
             \ : Card blocked as Stolen, name update not allowed.</em></li><li><em>HLXIDASBL001\
             \ : Card blocked as Lost, cancel update not allowed.</em></li><li><em>HLXIDASBL001\
-            \ : Card blocked as Stolen, cancel update not allowed.</em></li></ul>"
+            \ : Card blocked as Stolen, cancel update not allowed.</em></li><li><em>HLXIDASPA006\
+            \ : New Cardholder Brand conflicts with the Brand assigned to the card.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3306,9 +3317,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3323,6 +3331,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4226,14 +4237,18 @@ components:
           minimum: 2
           type: string
         NameLine2:
-          description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
+          description: Details on second name line as it appears on the card.
           type: string
         isCancelled:
           description: This field indicates if a card is cancelled or not. This field
             will be set to Yes if a card is cancelled. A cancelled card cannot be
             activated once it has been set.
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> A\
+            \ Person assigned to a Brand, can only be assigned to cards within the\
+            \ same Brand."
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
     LinkBundleFeatureRequest:
       required:
@@ -4338,7 +4353,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -4698,7 +4713,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -5495,7 +5510,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6015,7 +6030,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6045,7 +6060,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateProductRequest:
       required:
       - Name
