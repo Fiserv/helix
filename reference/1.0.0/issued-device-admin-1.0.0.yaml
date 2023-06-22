@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-212
+  version: 1.1.0-214
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -2487,8 +2487,9 @@ paths:
             \ is not allowed for confirmed fraud cards.</em></li><li><em>HLXIDASBL001\
             \ : Card blocked as Lost, name update not allowed.</em></li><li><em>HLXIDASBL001\
             \ : Card blocked as Stolen, name update not allowed.</em></li><li><em>HLXIDASBL001\
-            \ : Card blocked as Lost, cancel update not allowed.</em></li><li><em>HLXIDASBL001\
-            \ : Card blocked as Stolen, cancel update not allowed.</em></li><li><em>HLXIDASPA006\
+            \ : The card is blocked as Lost and is replaced. Card cancellation is\
+            \ not allowed.</em></li><li><em>HLXIDASBL001 : The card is blocked as\
+            \ Stolen and is replaced. Card cancellation is not allowed.</em></li><li><em>HLXIDASPA006\
             \ : New Cardholder Brand conflicts with the Brand assigned to the card.</em></li></ul>"
           content:
             application/json:
@@ -5983,11 +5984,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*?).+
+          pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*?).+
+          pattern: \A(?!\s*$).+
           type: string
     UpdateBundleResponse:
       type: object
