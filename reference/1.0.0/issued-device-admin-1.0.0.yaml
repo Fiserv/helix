@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-214
+  version: 1.1.0-215
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -2139,7 +2139,7 @@ paths:
                       </EM></LI> </UL>
                     type: string
                   FraudStatusDate:
-                    description: Indicates date/time when a card was marked as fraudulent.
+                    description: Indicates date/time when fraud status was last updated.
                     type: string
                     allOf:
                     - $ref: '#/components/schemas/Instant'
@@ -3318,6 +3318,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3332,9 +3335,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4354,7 +4354,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -4714,7 +4714,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -5511,7 +5511,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -5750,7 +5750,7 @@ components:
             </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
           type: string
         FraudStatusDate:
-          description: Indicates date/time when a card was marked as fraudulent.
+          description: Indicates date/time when fraud status was last updated.
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
@@ -6031,7 +6031,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6061,7 +6061,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name
