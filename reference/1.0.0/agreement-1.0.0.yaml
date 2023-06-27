@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-126
+  version: 1.1.0-135
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -971,10 +971,17 @@ paths:
                 items:
                   $ref: '#/components/schemas/AgreementInvolvement'
         "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAD001\
-            \ : Party ID required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Party Role required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Party Role is not valid, please provide valid value.</em></li></ul>"
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : AgreementInvolvementId accepts numbers only.</em></li><li><em>HLXAGDTBR001\
+            \ : Party ID required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Party ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Party ID less than minimum 36 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Party Identification is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Party Role required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Party Role is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Agreement Involvement Id <AgreementInvolvementId> is duplicated within\
+            \ request.</em></li><li><em>HLXAGDTBR001 : Party Identification <PartyIdentification>\
+            \ is duplicated within request.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1015,11 +1022,13 @@ paths:
             \ : Account not enabled.</em></li><li><em>HLXAGDTAC002 : Account is closed.</em></li><li><em>HLXAGDTAI001\
             \ : Agreement Involvement ID <agreement-involvement-id> not found</em></li><li><em>HLXAGDTAI002\
             \ : Account Involvement Status cannot be set to False while adding a new\
-            \ Involvement.</em></li><li><em>HLXAGDTAI001 : Conflicting PartyIdentificaton\
-            \ specified for Involvement ID </em></li><li><em>HLXAGDTGT014 : Person\
-            \ <person-id> not found.</em></li><li><em>HLXAGDTNE003 : Person <person-id>\
-            \ not enabled.</em></li><li><em>HLXAGDTGT016 : Person <person-id> not\
-            \ found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT017\
+            \ Involvement.</em></li><li><em>HLXAGDTAI002 : Account Involvement Status\
+            \ cannot be set to False while updating Party Identification on an existing\
+            \ Involvement.</em></li><li><em>HLXAGDTAI004 : Involvement already exists\
+            \ for Person <PartyIdentification>, on the account.</em></li><li><em>HLXAGDTGT014\
+            \ : Person <person-id> not found.</em></li><li><em>HLXAGDTNE003 : Person\
+            \ <person-id> not enabled.</em></li><li><em>HLXAGDTGT016 : Person <person-id>\
+            \ not found under Financial Institution <fi-id>.</em></li><li><em>HLXAGDTGT017\
             \ : Person <person-id> not linked to Brand <brand-id>.</em></li></ul>"
           content:
             application/json:
@@ -1937,7 +1946,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUpdateRequest'
+              $ref: '#/components/schemas/SystemUpdateRequest1'
       responses:
         "200":
           description: OK
@@ -2301,8 +2310,32 @@ components:
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
-            Account Number)
+          description: "Long number that appears on the front of the card (Primary\
+            \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
+          type: string
+        CardholderType:
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
+          type: string
+        NameLine1:
+          description: Cardholder name as it appears on the card.
+          type: string
+        NameLine2:
+          description: Details on second name line as it appears on the card.
+          type: string
+        ServiceCode:
+          description: "Identifies the card usage restrictions, and is also used in\
+            \ calculation of CVV value that is encoded on the magnetic strip of the\
+            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -2374,8 +2407,7 @@ components:
           description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
-          maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
@@ -3641,8 +3673,10 @@ components:
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
         ExternalIdentification:
-          maxLength: 35
-          type: string
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
     PersonDetailsDto:
       required:
       - Surname
@@ -5154,6 +5188,20 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ChipData'
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -5173,20 +5221,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
@@ -5378,20 +5412,12 @@ components:
             the request.
           type: string
     UpdateProductRequest:
-      required:
-      - Name
-      - Brand
       type: object
       properties:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \S
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          maxLength: 37
-          minLength: 1
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
