@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-32
+  version: 1.1.0-38
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -197,9 +197,8 @@ paths:
                   PaymentInstrument:
                     description: "Details of the created PaymentInstrument.<p>Note:<br>\
                       \ <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
-                      \ NameLine1, NameLine2 and Service code attributes are only\
-                      \ returned when the Financial Institution is processing in Hybrid\
-                      \ Mode.</li></ul>"
+                      \ NameLine1 and NameLine2 attributes are only returned when\
+                      \ the Financial Institution is processing in Hybrid Mode.</li></ul>"
                     type: object
                     allOf:
                     - $ref: '#/components/schemas/AddCardResponse'
@@ -595,11 +594,6 @@ components:
           type: string
         NameLine2:
           description: Details on second name line as it appears on the card.
-          type: string
-        ServiceCode:
-          description: "Identifies the card usage restrictions, and is also used in\
-            \ calculation of CVV value that is encoded on the magnetic strip of the\
-            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -1551,9 +1545,9 @@ components:
           - $ref: '#/components/schemas/InitiateAgreementResponse'
         PaymentInstrument:
           description: "Details of the created PaymentInstrument.<p>Note:<br> <ul><li>PAN,\
-            \ CardholderType, DigitalCardType, CardTechnology, NameLine1, NameLine2\
-            \ and Service code attributes are only returned when the Financial Institution\
-            \ is processing in Hybrid Mode.</li></ul>"
+            \ CardholderType, DigitalCardType, CardTechnology, NameLine1 and NameLine2\
+            \ attributes are only returned when the Financial Institution is processing\
+            \ in Hybrid Mode.</li></ul>"
           type: object
           allOf:
           - $ref: '#/components/schemas/AddCardResponse'
@@ -1644,14 +1638,18 @@ components:
           minimum: 2
           type: string
         NameLine2:
-          description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
+          description: Details on second name line as it appears on the card.
           type: string
         isCancelled:
           description: This field indicates if a card is cancelled or not. This field
             will be set to Yes if a card is cancelled. A cancelled card cannot be
             activated once it has been set.
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> A\
+            \ Person assigned to a Brand, can only be assigned to cards within the\
+            \ same Brand."
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
     LinkBundleFeatureRequest:
       required:
@@ -2880,7 +2878,7 @@ components:
             </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
           type: string
         FraudStatusDate:
-          description: Indicates date/time when a card was marked as fraudulent.
+          description: Indicates date/time when fraud status was last updated.
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
