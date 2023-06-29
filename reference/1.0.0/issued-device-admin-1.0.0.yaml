@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-215
+  version: 1.1.0-216
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -283,8 +283,8 @@ paths:
         \ The new card will be linked to the Person ID and Account ID provided in\
         \ the request message. It is not intended to be used to replace an existing\
         \ card.<br><p>Note:<br> <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
-        \ NameLine1, NameLine2 and Service code attributes are only returned when\
-        \ the Financial Institution is processing in Hybrid Mode.</li></ul>"
+        \ NameLine1 and NameLine2 attributes are only returned when the Financial\
+        \ Institution is processing in Hybrid Mode.</li></ul>"
       operationId: create
       parameters:
       - name: fi-id
@@ -360,11 +360,6 @@ paths:
                   NameLine2:
                     description: Details on second name line as it appears on the
                       card.
-                    type: string
-                  ServiceCode:
-                    description: "Identifies the card usage restrictions, and is also\
-                      \ used in calculation of CVV value that is encoded on the magnetic\
-                      \ strip of the card."
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -2963,11 +2958,6 @@ components:
           type: string
         NameLine2:
           description: Details on second name line as it appears on the card.
-          type: string
-        ServiceCode:
-          description: "Identifies the card usage restrictions, and is also used in\
-            \ calculation of CVV value that is encoded on the magnetic strip of the\
-            \ card."
           type: string
     AddOrganisationResponse:
       type: object

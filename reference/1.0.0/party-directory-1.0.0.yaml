@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-113
+  version: 1.1.0-116
 tags:
 - name: Customer Management
 paths:
@@ -700,7 +700,9 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: object
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievePostalAddressResponse'
                 properties:
                   AddressType:
                     description: "Type of address<br/> Valid values are : <br/> Current\
@@ -858,6 +860,127 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on a Postal Address
+      x-group-name: Customer Management
+  /Helix/V1/Person/{partyId}/DeactivateAddress/Execute:
+    patch:
+      tags:
+      - Customer Management
+      summary: This method is used to deactivate the person details
+      description: This service is used to deactivate customer's (person's) postal
+        address. Deactivated postal addresses are not returned on Customer/Person
+        inquiry APIs. The only active address for a person cannot be deactivated.
+      operationId: deactivatePostalAddressById
+      parameters:
+      - name: partyId
+        in: path
+        description: Fiserv Enterprise Customer ID (FECID)
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivatePostalAddressRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HelixMessage'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
+            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul><li><em>HLXPTDTBR001\
+            \ : Error in Person Identification field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT014\
+            \ : Person not found.</em></li><li><em>HLXPTDTNF005 : Address is not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTPT001\
+            \ : At least one active address is required.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTGT001\
+            \ : There is an error while getting Person details, please try again.</em></li><li><em>HLXPTDTUP002\
+            \ : There is an error while deactivating a Postal Address, please try\
+            \ again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Deactivate a Postal Address
       x-group-name: Customer Management
   /Helix/V1/Person/{partyId}/Retrieve:
     get:
@@ -1314,7 +1437,7 @@ components:
         FEPID:
           description: Unique identifier of the payment card (FEPID)
           type: string
-        BankingProduct:
+        ProductId:
           description: Identification of the product
           type: string
         FEAID:
@@ -1323,10 +1446,16 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventMsg:
+        EventDescription:
           description: Specifies event message.
           type: string
-        CreatedDateTime:
+        EventName:
+          description: Specifies event name for the message.
+          type: string
+        EventId:
+          description: Specifies event id generated for the card creation.
+          type: string
+        Timestamp:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -1336,17 +1465,23 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        Brand:
+        BrandId:
           description: Identification of the Brand
           type: string
-        FinancialInstitution:
+        FiId:
           description: Identification of the financial institution
           type: string
-        CardTechnology:
+        CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
         DigitalCardType:
           description: Indicates the type of digital card
+          type: string
+        CardholderType:
+          description: Indicates the cardholder type
+          type: string
+        ActivationStatus:
+          description: Indicates the activation status of the card
           type: string
         CardMaintenanceWaiveFlag:
           description: Flag to describe the type of Card Maintenance Waive Fee
@@ -1370,8 +1505,32 @@ components:
             </EM></LI> <EM><LI> ACMP (ActivationComplete) </EM></LI></UL>
           type: string
         PAN:
-          description: Long number that appears on the front of the card (Primary
-            Account Number)
+          description: "Long number that appears on the front of the card (Primary\
+            \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
+          type: string
+        CardholderType:
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
+          type: string
+        NameLine1:
+          description: Cardholder name as it appears on the card.
+          type: string
+        NameLine2:
+          description: Details on second name line as it appears on the card.
+          type: string
+        ServiceCode:
+          description: "Identifies the card usage restrictions, and is also used in\
+            \ calculation of CVV value that is encoded on the magnetic strip of the\
+            \ card."
           type: string
     AddOrganisationResponse:
       type: object
@@ -1443,8 +1602,7 @@ components:
           description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
-          maxLength: 37
-          pattern: \S
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
@@ -1617,17 +1775,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         primaryAccountNumber:
           type: string
@@ -1705,6 +1863,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1719,9 +1880,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1744,6 +1902,15 @@ components:
           description: Value of a configuration parameter
           maxLength: 40000
           pattern: \S
+          type: string
+    DeactivatePostalAddressRequest:
+      required:
+      - AddressType
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
           type: string
     ElectronicAddress:
       required:
@@ -2540,14 +2707,16 @@ components:
           minimum: 2
           type: string
         NameLine2:
-          description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
+          description: Details on second name line as it appears on the card.
           type: string
         isCancelled:
           description: This field indicates if a card is cancelled or not. This field
             will be set to Yes if a card is cancelled. A cancelled card cannot be
             activated once it has been set.
+          type: string
+        Cardholder:
+          description: Party entitled to use the card (FECID).
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
     LinkBundleFeatureRequest:
       required:
@@ -2652,7 +2821,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2706,8 +2875,10 @@ components:
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
         ExternalIdentification:
-          maxLength: 35
-          type: string
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ExternalIdentification'
     PersonDetailsDto:
       required:
       - Surname
@@ -2992,7 +3163,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3502,6 +3673,11 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
+          type: string
         enabled:
           type: boolean
     RetrieveBrandResponse:
@@ -3680,6 +3856,22 @@ components:
             address
           type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+    RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
         Id:
@@ -3707,22 +3899,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -3771,7 +3947,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4343,6 +4519,28 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "True".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementInvolvement'
     SystemUpdateResponse:
       type: object
       properties:
@@ -4419,7 +4617,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4449,7 +4647,27 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
     UpdatePersonResponse:
       type: object
       properties:
