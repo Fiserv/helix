@@ -2,13 +2,13 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-38
+  version: 1.1.0-48
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
   x-group-name: Account Maintenance
 paths:
-  /Helix/V1/AccountServicing/AccountDelete/Execute:
+  /AccountServicing/V1/AccountDelete/Execute:
     post:
       tags:
       - Helix Core
@@ -132,7 +132,7 @@ paths:
           x-group-name: Account Maintenance
       x-proxy-name: Delete Account Entities
       x-group-name: Account Maintenance
-  /Helix/V1/AccountServicing/Boarding/Initiate:
+  /AccountServicing/V1/Boarding/Initiate:
     post:
       tags:
       - Helix Core
