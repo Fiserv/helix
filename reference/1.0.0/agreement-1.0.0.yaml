@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-135
+  version: 1.1.0-139
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1946,7 +1946,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemUpdateRequest1'
+              $ref: '#/components/schemas/SystemUpdateRequest'
       responses:
         "200":
           description: OK
@@ -5188,20 +5188,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/ChipData'
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -5209,7 +5195,7 @@ components:
           type: string
         IsClosed:
           description: Flag to be used to set an account to closed status. This API
-            only accepts value "True".
+            only accepts value "true".
           pattern: (^$|true)
           type: string
         ClosureRequestDate:
@@ -5221,6 +5207,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
