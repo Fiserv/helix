@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-219
+  version: 1.1.0-220
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -2282,6 +2282,11 @@ paths:
                     - $ref: '#/components/schemas/ChipData'
                     - $ref: '#/components/schemas/ChipData'
                     - $ref: '#/components/schemas/ChipData'
+                  Cardholder:
+                    description: "Party entitled to use the card (FECID).<br/><b>Note:</b>\
+                      \ Person assigned to a Brand, can only be used when adding cards\
+                      \ under the same Brand."
+                    type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
             \ : Card not found.</em></li><li><em>HLXIDASBR001 : Name Line 1 less than\
@@ -5970,6 +5975,11 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
