@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-116
+  version: 1.1.0-118
 tags:
 - name: Customer Management
 paths:
@@ -700,7 +700,7 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: array
+                type: object
                 items:
                   $ref: '#/components/schemas/RetrievePostalAddressResponse'
                 properties:
@@ -902,15 +902,12 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  messages:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/HelixMessage'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
-            \ : Person Identification exceeds maximum 37 length allowed.</em></li></ul><li><em>HLXPTDTBR001\
-            \ : Error in Person Identification field. Spaces are not allowed.</em></li></ul>"
+            \ : Person Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Error in Person Identification field. Spaces are not allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Address Type is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1602,7 +1599,7 @@ components:
           description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
@@ -1775,17 +1772,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        EventId:
+        eventId:
           type: string
-        EventName:
+        eventName:
           type: string
-        EventDescription:
+        eventDescription:
           type: string
-        ServiceDomain:
+        serviceDomain:
           type: string
-        Timestamp:
+        timestamp:
           type: string
-        ProductId:
+        productId:
           type: string
         primaryAccountNumber:
           type: string
@@ -1911,6 +1908,7 @@ components:
         AddressType:
           description: "Type of address<br/> Valid values are : <br/> Current Residential\
             \ <br/> Business <br/> Registered Residential"
+          pattern: \S
           type: string
     ElectronicAddress:
       required:
@@ -4508,20 +4506,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/ChipData'
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -4541,6 +4525,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
