@@ -1995,7 +1995,7 @@ components:
           description: Specifies the type of external identification. E.g. CRIM (Customer
             Relationship Management system assigned identifier). <br>Accepted Values
             are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
-            CRID - CRM id as generated in the FIâ€™s Customer Relationship management
+            CRID - CRM id as generated in the FI’s Customer Relationship management
             (CRM) system </EM></LI></UL>
           pattern: \S
           type: string
