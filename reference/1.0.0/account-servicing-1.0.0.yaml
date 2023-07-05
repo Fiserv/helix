@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-48
+  version: 1.1.0-53
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -832,9 +832,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -849,6 +846,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -958,6 +958,12 @@ components:
           description: "<em> maxLength: 37 </em> <br> Unique identifier of the card\
             \ record (FEPID)."
           type: string
+        RollbackID:
+          description: Unique identifier sent in original account opening request
+            as idempotency ID.
+          type: string
+        identificationNotPresent:
+          type: boolean
     ExecuteActivateCardResponse:
       type: object
       properties:
@@ -1754,7 +1760,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2091,7 +2097,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2680,7 +2686,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3157,7 +3163,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3187,7 +3193,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
