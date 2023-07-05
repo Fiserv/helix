@@ -962,8 +962,6 @@ components:
           description: Unique identifier sent in original account opening request
             as idempotency ID.
           type: string
-        identificationNotPresent:
-          type: boolean
     ExecuteActivateCardResponse:
       type: object
       properties:
