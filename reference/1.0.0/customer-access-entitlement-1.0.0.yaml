@@ -2,11 +2,11 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-98
+  version: 1.1.0-107
 tags:
 - name: Customer Access Entitlement
 paths:
-  /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Evaluate:
+  /CustomerAccessEntitlement/V1/AuthRestriction/Evaluate:
     post:
       tags:
       - Customer Access Entitlement
@@ -128,7 +128,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Evaluate Restriction
       x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/AuthRestriction/Update:
+  /CustomerAccessEntitlement/V1/AuthRestriction/Update:
     patch:
       tags:
       - Customer Access Entitlement
@@ -283,340 +283,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Update Restriction
       x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/Limits/Compute:
-    post:
-      tags:
-      - Customer Access Entitlement
-      summary: This API computes limit for given UniqueID and UniqueIDType.
-      operationId: computeLimit
-      parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ComputeLimitRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-        "400":
-          description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "404":
-          description: Not Found <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "422":
-          description: Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "500":
-          description: Internal Server Error <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-      x-proxy-name: Compute Limits
-      x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/Limits/Evaluate:
-    post:
-      tags:
-      - Customer Access Entitlement
-      summary: This API evaluate Spend Limits capability based on Unique id and feaid.
-      operationId: evaluateLimits
-      parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EvaluateSpendLimitsRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EvaluateSpendLimitsResponse'
-        "400":
-          description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "500":
-          description: Internal Server Error <br/><br/> <b>Error codes list:</b><br/>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-      x-proxy-name: Retrieve Spend Limit
-      x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/Limits/Update:
-    put:
-      tags:
-      - Customer Access Entitlement
-      summary: This API creates/updates limit for given UniqueID and UniqueIDType.
-      operationId: customerLimitsUpdate
-      parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateLimitRequest'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateLimitResponse'
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDBR001\
-            \ : Unique ID Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
-            \ : Card ID required, please provide value.</em></li><li><em>HLXCAEDBR001\
-            \ : Unique ID exceeds maximum length allowed.</em></li><li><em>HLXCAEDBR001\
-            \ : Limit Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
-            \ : Limit Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
-            \ : Period Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
-            \ : Period Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
-            \ : CustomerMaximumLimitAmount required, please provide value.</em></li><li><em>HLXCAEDBR001\
-            \ : CustomerMaximumLimitAmount accepts numeric only, and should not exceed\
-            \ maximum 15 length allowed with 5 decimals.</em></li><li><em>HLXCAEDBR001\
-            \ : CustomerMaximumLimitAmount does not accept negative value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDGT002\
-            \ : Account number not found.</em></li><li><em>HLXCAEDBU001 : Card not\
-            \ found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "413":
-          description: Payload Too large
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "422":
-          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDLM001\
-            \ : Customer limit is greater than bank limit.</em></li><li><em>HLXCAEDNE002\
-            \ : Account not enabled.</em></li><li><em>HLXCAEDAC001 : Account is closed.</em></li><li><em>HLXCAEDLM002\
-            \ : Feature is not available for the product.</em></li><li><em>HLXCAEDNE001\
-            \ : Card is not enabled.</em></li><li><em>HLXCAEDIB001 : Card is blocked\
-            \ as <Lost/Stolen></em></li><li><em>HLXCAEDBV002 : Cannot retrieve details,\
-            \ card is not enabled.</em></li><li><em>HLXCAEDCF001 : Card is marked\
-            \ as confirmed fraud.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDUD002\
-            \ : There is an error while updating Limits, please try again.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HelixErrorDetails'
-      x-proxy-name: Update Limits
-      x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/AuthRestriction/Retrieve:
+  /CustomerAccessEntitlement/V1/AuthRestriction/{UniqueIdType}/{UniqueId}/Retrieve:
     get:
       tags:
       - Customer Access Entitlement
@@ -772,7 +439,366 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve Restriction
       x-group-name: Card Management
-  /Helix/V1/CustomerAccessEntitlement/{UniqueIdType}/{UniqueId}/Limits/Retrieve:
+  /CustomerAccessEntitlement/V1/Capability/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      responses:
+        "200":
+          description: OK
+  /CustomerAccessEntitlement/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+      - Capability Resource
+      parameters:
+      - name: capabilityName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAccessEntitlement/V1/Limits/Compute:
+    post:
+      tags:
+      - Customer Access Entitlement
+      summary: This API computes limit for given UniqueID and UniqueIDType.
+      operationId: computeLimit
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComputeLimitRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Compute Limits
+      x-group-name: Card Management
+  /CustomerAccessEntitlement/V1/Limits/Evaluate:
+    post:
+      tags:
+      - Customer Access Entitlement
+      summary: This API evaluate Spend Limits capability based on Unique id and feaid.
+      operationId: evaluateLimits
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluateSpendLimitsRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluateSpendLimitsResponse'
+        "400":
+          description: Bad Request <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error <br/><br/> <b>Error codes list:</b><br/>
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve Spend Limit
+      x-group-name: Card Management
+  /CustomerAccessEntitlement/V1/Limits/Update:
+    put:
+      tags:
+      - Customer Access Entitlement
+      summary: "This API is used to update transaction spend limits (ATM, POS, Ecomm,\
+        \ Contactless, Total spend, etc.)."
+      operationId: customerLimitsUpdate
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLimitRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateLimitResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDBR001\
+            \ : Unique ID Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Card ID required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Unique ID exceeds maximum length allowed.</em></li><li><em>HLXCAEDBR001\
+            \ : Limit Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Limit Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
+            \ : Period Type required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : Period Type is not valid, please provide valid value.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount required, please provide value.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount accepts numeric only, and should not exceed\
+            \ maximum 15 length allowed with 5 decimals.</em></li><li><em>HLXCAEDBR001\
+            \ : CustomerMaximumLimitAmount does not accept negative value.</em></li><li><em>HLXCAEDBR001\
+            \ : FromDateTime must be a in yyyy-MM-ddThh:mm:ssZ format.</em></li><li><em>HLXCAEDBR001\
+            \ : ToDateTime cannot be empty, please provide valid value.</em></li><li><em>HLXCAEDBR001\
+            \ : ToDateTime must be a in yyyy-MM-ddThh:mm:ssZ format.</em></li><li><em>HLXCAEDBR001\
+            \ : ToDateTime must be greater than start date/time.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDGT002\
+            \ : Account number not found.</em></li><li><em>HLXCAEDBU001 : Card not\
+            \ found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDLM001\
+            \ : Customer limit is greater than bank limit.</em></li><li><em>HLXCAEDNE002\
+            \ : Account not enabled.</em></li><li><em>HLXCAEDAC001 : Account is closed.</em></li><li><em>HLXCAEDLM002\
+            \ : Feature is not available for the product.</em></li><li><em>HLXCAEDNE001\
+            \ : Card is not enabled.</em></li><li><em>HLXCAEDIB001 : Card is blocked\
+            \ as <Lost/Stolen></em></li><li><em>HLXCAEDBV002 : Cannot retrieve details,\
+            \ card is not enabled.</em></li><li><em>HLXCAEDCF001 : Card is marked\
+            \ as confirmed fraud.</em></li><li><em>HLXCAEDCF001 : Cannot change start\
+            \ date as flexi limit is already in effect.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXCAEDUD002\
+            \ : There is an error while updating Limits, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Update Limits
+      x-group-name: Card Management
+  /CustomerAccessEntitlement/V1/Limits/{UniqueIdType}/{UniqueId}/Retrieve:
     get:
       tags:
       - Customer Access Entitlement
@@ -805,7 +831,7 @@ paths:
         description: "Indicates how long the limit will be valid for. Valid values\
           \ are: Single (Valid for one transaction), Daily, Monthly."
         schema:
-          pattern: (^$|Single|Daily|Monthly)
+          pattern: (^$|Single|Daily|Monthly|Flexi)
           type: string
       - name: fi-id
         in: header
@@ -1403,6 +1429,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1417,9 +1446,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2382,7 +2408,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -2742,7 +2768,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3453,7 +3479,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3859,20 +3885,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/ChipData'
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -3892,6 +3904,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
@@ -4053,7 +4079,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4083,7 +4109,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateLimitRequest:
       required:
       - UniqueIdType
@@ -4094,57 +4120,88 @@ components:
       type: object
       properties:
         UniqueIdType:
-          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          description: "Type of Unique ID<br/>FEPID: Payment Instrument ID<br/>FEAID:\
+            \ Account ID<br/>FECID: Customer ID"
           minLength: 1
           type: string
         UniqueId:
-          description: Unique identifier of the Restriction Level e.g. payment instrument
-            (FEPID)
+          description: "Unique identifier to retrieve update limit details. \nExample:\
+            \ payment instrument (FEPID)"
           maxLength: 37
           minLength: 1
           type: string
         LimitType:
-          description: "Type of transaction e.g., ATM, POS, ECOM, International, etc."
+          description: Indicates what type of transaction.<br/>Example:<br/>ATM<br/>POS<br/>Ecomm<br/>Contactless<br/>Totalspend<br/>International<br/>
           minLength: 1
           pattern: (^$|ATM|POS|ECOM|MOTO|ContactLess|International|TotalSpend)
           type: string
         PeriodType:
-          description: "Period type indicates single, daily or monthly"
+          description: "Indicates how long the limit will be valid for. Valid values\
+            \ are: <ul><li>Single (only Issuer limit)</li><br/><li>Daily</li><br/><li>Monthly</li><br/><li>Flexi</li></ul>"
           minLength: 1
-          pattern: (^$|Single|Daily|Monthly)
+          pattern: (^$|Single|Daily|Monthly|Flexi)
           type: string
         CustomerMaximumLimitAmount:
-          description: An amount to set by the consumer.
+          description: "Indicates spend limit, which is set by the customer."
           minLength: 1
           pattern: "(^[^-]{1}.*$)"
+          type: string
+        FromDateTime:
+          description: "Indicates the date and time that this limit takes effect.\
+            \ If the value is in the past or not supplied, then this will be set to\
+            \ today's date and the system time when the request was received."
+          type: string
+        ToDateTime:
+          description: ToDateTime indicates the date and time that this limit will
+            end. It can be updated for only Limit Type FLEX. For other limits it is
+            automatically calculated to end at 23:59:59. The value must be greater
+            than the FromDateTime.
+          type: string
+        Status:
+          description: "Indicates whether flexi limit is active or not. <br/>Values\
+            \ are, <br/>ENAB<br/>DELE"
+          pattern: (^$|ENAB|DELE)
           type: string
     UpdateLimitResponse:
       type: object
       properties:
         UniqueIdType:
-          description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
+          description: "Type of Unique ID<br/>FEPID: Payment Instrument ID<br/>FEAID:\
+            \ Account ID<br/>FECID: Customer ID"
           type: string
         UniqueId:
-          description: Unique identifier of the Restriciton Level
+          description: "Unique identifier to retrieve update limit details. \nExample:\
+            \ payment instrument (FEPID)\n(FEPID)"
           type: string
         LimitType:
-          description: "Type of transaction e.g., ATM, POS, ECOM, International, etc."
+          description: Indicates what type of transaction.<br/>Example:<br/>ATM<br/>POS<br/>Ecomm<br/>Contactless<br/>Totalspend<br/>International<br/>
           type: string
         PeriodType:
-          description: "Period type indicates whether transaction is single, daily\
-            \ or monthly"
+          description: "Indicates how long the limit will be valid for. Valid values\
+            \ are: <ul><li>Single (only Issuer limit)</li><br/><li>Daily</li><br/><li>Monthly</li><br/><li>Flexi</li></ul>"
           type: string
         CustomerMaximumLimitAmount:
-          description: An amount used to restrict total amount of transactions by
-            cardholder for a particular LCV
+          description: "Indicates spend limit, which is set by the customer."
           type: string
         FeatureMaximumLimitAmount:
-          description: An amount used to restrict total amount of transactions by
-            feature for a particular LCV
+          description: "Indicates spend limit, which is set by the issuer."
           type: string
         CumulativeAmount:
-          description: Accumulated amount of approved transactions by cardholder for
-            a particular LCV
+          description: Which stores value for accumulated transaction amount.
+          type: string
+        FromDateTime:
+          description: "Indicates the date and time that this limit takes effect.\
+            \ If the value is in the past or not supplied, then this will be set to\
+            \ today's date and the system time when the request was received."
+          type: string
+        ToDateTime:
+          description: Indicates the date and time that this limit will end. It can
+            be updated for only Limit Type FLEX. For other limits it is automatically
+            calculated to end at 23:59:59. The value must be greater than the FromDateTime.
+          type: string
+        Status:
+          description: "Indicates whether flexi limit is active or not. <br/>Values\
+            \ are, <br/>ENAB<br/>DELE"
           type: string
     UpdateNetworkAccountOptionRequest:
       required:
