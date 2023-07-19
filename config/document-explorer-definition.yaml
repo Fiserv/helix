@@ -29,6 +29,6 @@
 ################################################################################
 
 - sections:
-    - title: Introduction
+    - title: Getting Started
       link: docs/introduction/introduction.md
       open: true
