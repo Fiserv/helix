@@ -1,0 +1,3430 @@
+---
+openapi: 3.0.3
+info:
+  title: product-directory
+  version: 1.1.0-110
+tags:
+- name: Bundle Management
+- name: Feature Management
+- name: Product Feature Management
+- name: Product Management
+paths:
+  /Helix/V1/Bundle/Register:
+    post:
+      tags:
+      - Bundle Management
+      summary: This method is used to register a new Bundle
+      operationId: registerBundleRequest
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBundleRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                required:
+                - Identification
+                - Name
+                type: object
+                properties:
+                  Identification:
+                    description: Identification of a bundle
+                    maxLength: 37
+                    minLength: 1
+                    pattern: ^\S*$
+                    type: string
+                  Name:
+                    description: Name of a bundle
+                    maxLength: 35
+                    pattern: \S
+                    type: string
+                  Description:
+                    description: Description of a bundle
+                    maxLength: 140
+                    type: string
+                  Feature:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature1'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Description exceeds maximum 140 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD028\
+            \ : Bundle Identification already exists.</em></li><li><em>HLXPRDTGT009\
+            \ : Feature %s is duplicated within request.</em></li><li><em>HLXPRDTGT008\
+            \ : Feature <Feature_Identification> not found.</em></li><li><em>HLXPRDTGT012\
+            \ : Feature <Feature_Identification> not enabled.</em></li><li><em>HLXPRDTGT010\
+            \ : Capability <Capability_Name> has multiple features <featureIds> in\
+            \ the request.</em></li><li><em>HLXPRDTGT011 : Feature <Feature_Identification>\
+            \ cannot be linked to a Bundle.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD027\
+            \ : There is an error while adding Bundle, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Bundle/Retrieve:
+    post:
+      tags:
+      - Bundle Management
+      summary: This method is used to retrieve List of Bundle by FI ID.
+      operationId: retrieveBundleList
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrieveBundleListRequest'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrieveBundleResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT013\
+            \ : Bundle <bundleIdentification> not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT014\
+            \ : There is an error while getting Feature list, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Bundle/{bundleIdentification}/BundleFeature/Deregister:
+    post:
+      tags:
+      - Bundle Management
+      summary: This method is used to unlink Feature from Bundle by Bundle ID.
+      operationId: unlinkFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: bundleIdentification
+        in: path
+        description: Identification of bundle
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteUnlinkBundleFeatureRequest'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json: {}
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Bundle Identification Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Bundle Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT013\
+            \ : Bundle not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTDL002 :\
+            \ At least one Feature is expected in the unlink request.</em></li><li><em>HLXPRDTDL003\
+            \ : Feature <Feature_Identification> is not linked to Bundle.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTDL004\
+            \ : There is an error while Unlinking Feature list, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Bundle/{bundleIdentification}/BundleFeature/Register:
+    post:
+      tags:
+      - Bundle Management
+      summary: This method is used to link Features to Bundle Feature
+      operationId: linkBundleFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: bundleIdentification
+        in: path
+        description: Identification of Bundle
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkBundleFeatureRequest'
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json: {}
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Feature required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTGT013 :\
+            \ Bundle not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT009\
+            \ : Feature %s is duplicated within request.</em></li><li><em>HLXPRDTGT008\
+            \ : Feature <Feature_Identification> not found.</em></li><li><em>HLXPRDTGT012\
+            \ : Feature <Feature_Identification> not enabled.</em></li><li><em>HLXPRDTGT011\
+            \ : Feature <Feature_Identification> cannot be linked to a Bundle.</em></li><li><em>HLXPRDTGT010\
+            \ : Capability <Capability_Name> has multiple features <featureIds> in\
+            \ the request.</em></li><li><em>HLXPRDTGT015 : Feature <Feature_Identification>\
+            \ is already linked to the Bundle.</em></li><li><em>HLXPRDTGT016 : Capability\
+            \ <Capability_Name> already has a Feature linked, unable to link  <featureIds>\
+            \ to Bundle.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD029\
+            \ : Failed to link features to bundle feature, please try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Bundle/{bundleIdentification}/Retrieve:
+    get:
+      tags:
+      - Bundle Management
+      summary: This method is used to retrieve a Bundle by Bundle ID.
+      operationId: retrieveBundleByIdentification
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: bundleIdentification
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the product
+                    type: string
+                  Identification:
+                    description: Identification of a bundle
+                    type: string
+                  Name:
+                    description: Name of the bundle
+                    type: string
+                  Description:
+                    description: Description of a bundle
+                    type: string
+                  Status:
+                    description: Status of a bundle
+                    type: string
+                  Feature:
+                    description: List of linked features
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Bundle Identification Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Bundle Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT013\
+            \ : Bundle not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT014\
+            \ : There is an error while getting Feature list, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Bundle/{bundleIdentification}/Update:
+    patch:
+      tags:
+      - Bundle Management
+      summary: "This method is used to update Bundle details. Currently, this will\
+        \ allow updation of bundle name and description."
+      operationId: updateBundle
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: bundleIdentification
+        in: path
+        description: Identification of Bundle
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBundleRequest'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the product
+                    type: string
+                  Identification:
+                    description: Identification of a bundle
+                    type: string
+                  Name:
+                    description: Name of the bundle
+                    type: string
+                  Description:
+                    description: Description of a bundle
+                    type: string
+                  Status:
+                    description: Status of a bundle
+                    type: string
+                  Feature:
+                    description: List of linked features
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Bundle Identification Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Bundle Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : At least one attribute must be specified for update.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT013\
+            \ : Bundle not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE005 :\
+            \ Bundle not enabled.</em></li><li><em>HLXPRDTUB001 : Attribute value(s)\
+            \ in the request matches current attribute values, no updates performed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTUB002\
+            \ : Failed to update bundle, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Feature/Register:
+    post:
+      tags:
+      - Feature Management
+      summary: This method is used to register a new Feature
+      operationId: registerFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterFeatureRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Identification:
+                    description: Identification of a feature
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Specification exceeds maximum 140 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Capability required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Capability exceeds maximum 35 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Identification required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Name exceeds maximum 140 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT004\
+            \ : Capability does not exist.</em></li><li><em>HLXPRDTGT002 : Product\
+            \ does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTAD005 :\
+            \ Feature Identification already exists.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD006\
+            \ : There is an error while adding Feature, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Feature/Retrieve:
+    get:
+      tags:
+      - Feature Management
+      summary: "This method is used to retrieve list of Features for a Financial Institution,\
+        \ with optional filter - Capability name"
+      operationId: retrieveFeatureList
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: capabilityName
+        in: query
+        description: Capability name
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrieveFeatureResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT007\
+            \ : There is an error while getting Feature list, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Feature/{featureIdentification}/ConfigurationOption/Register:
+    post:
+      tags:
+      - Feature Management
+      summary: This method is used to register Configuration options and parameters
+        for a Feature
+      operationId: registerConfigurationOption
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: featureIdentification
+        in: path
+        description: Identification of Feature
+        required: true
+        schema:
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterConfigurationOptionRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    format: int64
+                    type: integer
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature ID field. Spaces are not allowed.</em></li></ul><ul><li><em>HLXPRDTBR001\
+            \ : Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Name exceeds maximum 35 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Specification exceeds maximum 140 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Value exceeds maximum 40000 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT002\
+            \ : Feature not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE004 :\
+            \ Feature not enabled.</em></li></ul><ul><li><em>HLXPRDTNF003 : Feature\
+            \ not found.</em></li><li><em>HLXPRDTGT005 : Configuration option does\
+            \ not exist within capability.</em></li><li><em>HLXPRDTAD007 : Configuration\
+            \ option already exists on Feature for a Product.</em></li><li><em>HLXPRDTGT006\
+            \ : Configuration parameter does not exist within capability.</em></li><li><em>HLXPRDTAD011\
+            \ : Configuration parameter should be added under the corresponding configuration\
+            \ option.</em></li><li><em>HLXPRDTAD013 : <Parameter_Name> required, please\
+            \ provide valid value.</em></li><li><em>HLXPRDTAD014 : <Parameter_Name>\
+            \ should be greater than .</em></li><li><em>HLXPRDTAD014 : <Parameter_Name>\
+            \ should be less than .</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD002\
+            \ : Failed to add a Config option, please try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Feature/{featureIdentification}/Retrieve:
+    get:
+      tags:
+      - Feature Management
+      summary: This method is used to retrieve Feature details for a given Feature
+        ID
+      operationId: retrieveFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: featureIdentification
+        in: path
+        description: Identification of Feature
+        required: true
+        schema:
+          pattern: ^\S*$
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    description: Id of the feature
+                    type: string
+                  Identification:
+                    description: Identification of the feature
+                    type: string
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the product
+                    type: string
+                  Name:
+                    description: Name of a feature
+                    type: string
+                  Specification:
+                    description: Description of a feature
+                    type: string
+                  Capability:
+                    description: Name of the system capability linked to a feature
+                    type: string
+                  Status:
+                    description: Status of the feature record in the system
+                    type: string
+                  ConfigurationOption:
+                    description: Configuration Option of the feature record in the
+                      system
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConfigurationOption1'
+                  CreateAgreementFeature:
+                    type: string
+                  CreateFacility:
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature ID field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNF006\
+            \ : Feature not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE004 :\
+            \ Feature not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNF006\
+            \ : Error while getting Feature details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Feature/{featureIdentification}/Update:
+    patch:
+      tags:
+      - Feature Management
+      summary: This method is used to update the existing feature
+      operationId: updateFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: featureIdentification
+        in: path
+        description: Identification of Feature
+        required: true
+        schema:
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFeatureRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    description: Id of the feature
+                    type: string
+                  Identification:
+                    description: Identification of the feature
+                    type: string
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the product
+                    type: string
+                  Name:
+                    description: Name of a feature
+                    type: string
+                  Specification:
+                    description: Description of a feature
+                    type: string
+                  Capability:
+                    description: Name of the system capability linked to a feature
+                    type: string
+                  Status:
+                    description: Status of the feature record in the system
+                    type: string
+                  ConfigurationOption:
+                    description: Configuration Option of the feature record in the
+                      system
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConfigurationOption1'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/Register:
+    post:
+      tags:
+      - Product Management
+      summary: This method is used to register a new Product
+      operationId: registerProduct
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterProductRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Identification:
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Product Identification required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Identification is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Product Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Brand field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE002 :\
+            \ Brand not enabled.</em></li><li><em>HLXPRDTAD004 : Product Identification\
+            \ already exists.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD001\
+            \ : Error While Adding Banking Product.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/Retrieve:
+    get:
+      tags:
+      - Product Management
+      summary: "This method is used to retrieve list of products for a Financial Institution,\
+        \ with optional filters - Brand ID and Product Type"
+      operationId: retrieveProductListForFi
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: Brand
+        in: query
+        description: Identification of Brand
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      - name: ProductType
+        in: query
+        description: Type of product category (DebitCard/CreditCard)
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrieveProductResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Brand field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE002 :\
+            \ Brand not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT001\
+            \ : There is an error while getting product list, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productIdentification}/ProductFeature/GetList/Request:
+    post:
+      tags:
+      - Product Feature Management
+      summary: This method is used to get list of Feature details with config options
+        and config parameters
+      operationId: retrieveProductFeatureList
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productIdentification
+        in: path
+        description: Identification of Product
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrieveProductFeatureListRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrieveFeatureResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Product Id is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Id exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Capability Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Capability Name exceeds maximum 35 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT002\
+            \ : Product does not exist.</em></li><li><em>HLXPRDTGT004 : Capability\
+            \ does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNF006\
+            \ : Error while getting Feature details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productIdentification}/ProductFeature/Register:
+    post:
+      tags:
+      - Product Feature Management
+      summary: This method is used to register a new Product Feature
+      operationId: registerProductFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productIdentification
+        in: path
+        description: Identification of Product
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterProductFeatureRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Warning:
+                    $ref: '#/components/schemas/Warning'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Feature required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature Identification required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature DefaultIndicator is not valid, please provide valid value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT004\
+            \ : Capability does not exist.</em></li><li><em>HLXPRDTGT002 : Product\
+            \ does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD005\
+            \ : Feature already exists on Product.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD003\
+            \ : Failed to add a Feature, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productIdentification}/ProductFeature/UnlinkFeature/Execute:
+    post:
+      tags:
+      - Product Feature Management
+      summary: This method is used to unlink Features from Product
+      operationId: unlinkProductFeature
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productIdentification
+        in: path
+        description: Identification of Product
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteUnlinkProductFeatureRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                required:
+                - RequestType
+                type: object
+                properties:
+                  Feature:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature1'
+                  RequestType:
+                    description: Request Type of Unlink Feature
+                    minLength: 1
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Feature required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Feature Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT002\
+            \ : Product does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTAD005 :\
+            \ Feature Identification already exists.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTAD003\
+            \ : Failed to unlink features, please try again</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productIdentification}/ProductFeatures/Retrieve:
+    get:
+      tags:
+      - Product Feature Management
+      summary: This method is used to get list of Product Features for a Product
+      operationId: retrieveProductFeatureListByProductId
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productIdentification
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          pattern: \S
+          type: string
+      - name: capabilityName
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FinancialInstitution:
+                    description: Identification of the financial institution associated
+                      with the product
+                    type: string
+                  Brand:
+                    description: Identification of the brand associated with the product
+                    type: string
+                  Product:
+                    description: Identification of the product
+                    type: string
+                  Type:
+                    description: Type of the product
+                    type: string
+                  Feature:
+                    description: List of linked features
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature3'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Product Id is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Id exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT002\
+            \ : Product does not exist.</em></li><li><em>HLXPRDTNF004 : No Feature\
+            \ found.</em></li><li><em>HLXPRDTGT004 : Capability does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTMP001\
+            \ : Failed to map capability.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNF006\
+            \ : Error while getting Feature details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productIdentification}/Retrieve:
+    get:
+      tags:
+      - Product Management
+      summary: This method is used to return the product details for the given Product
+        identification for a Financial Institution
+      operationId: retrieveProductByFiAndId
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productIdentification
+        in: path
+        description: Identification of Product
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Identification:
+                    type: string
+                  ExternalIdentification:
+                    type: string
+                  Name:
+                    type: string
+                  FinancialInstitution:
+                    type: string
+                  Brand:
+                    type: string
+                  BrandName:
+                    type: string
+                  Type:
+                    type: string
+                  Status:
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Id exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Product Id field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT002\
+            \ : Product does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTGT001\
+            \ : Error while getting product details by Id.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /Helix/V1/Product/{productId}/Update:
+    patch:
+      tags:
+      - Product Management
+      summary: This method is used to update Product details
+      operationId: updateProduct
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        schema:
+          maxLength: 37
+          type: string
+      - name: productId
+        in: path
+        description: Identification of Product
+        required: true
+        schema:
+          maxLength: 37
+          pattern: ^\S*$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTBR001\
+            \ : Product Identification required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Identification is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Product Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Product Identification field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Name required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Name exceeds maximum 70 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Financial Institution field. Spaces are not allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand required, please provide value.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXPRDTBR001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXPRDTBR001\
+            \ : Error in Brand field. Spaces are not allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTUP002\
+            \ : Product does not exist.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXPRDTNE002 :\
+            \ Brand not enabled.</em></li><li><em>HLXPRDTAE001 : Product Identification\
+            \ already exists.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPRDTUP001\
+            \ : Error While Updating Banking Product.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+components:
+  schemas:
+    AddCapabilityCatalogResponse:
+      type: object
+      properties:
+        CPID:
+          description: Capability Catalog ID - Unique identifier for the Capability
+            Catalog
+          type: string
+    BrandEntryAddRequest:
+      required:
+      - Name
+      - FinancialInstitutionIdentification
+      - Identification
+      - ReportingCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        Identification:
+          description: Identification of the Brand
+          maxLength: 37
+          minLength: 1
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          pattern: \S
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          maxLength: 2
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    BrandUpdateRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress1'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+    Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    BundleCommonDto:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    CapabilityCatalog:
+      required:
+      - Version
+      - CapabilityName
+      type: object
+      properties:
+        Version:
+          description: Version of the Capability
+          pattern: \S
+          type: string
+        CapabilityName:
+          description: Name of the Capability
+          pattern: \S
+          type: string
+        CapabilityDefinition:
+          description: Definition of Capability
+          type: string
+    ConfigurationOption:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationParameter'
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationParameter'
+    ConfigurationParameter:
+      description: Parameter used for configuring options
+      required:
+      - Name
+      - Value
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration parameter
+          maxLength: 35
+          pattern: \S
+          type: string
+        Value:
+          description: Value of a configuration parameter
+          maxLength: 40000
+          pattern: \S
+          type: string
+    ExecuteUnlinkBundleFeatureRequest:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature1'
+    ExecuteUnlinkProductFeatureRequest:
+      required:
+      - RequestType
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature1'
+        RequestType:
+          description: Request Type of Unlink Feature
+          minLength: 1
+          type: string
+    ExecuteUnlinkProductFeatureResponse:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature1'
+        RequestType:
+          description: Request Type of Unlink Feature
+          type: string
+    Feature:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of the feature
+          type: string
+        Specification:
+          description: Specification of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        CapabilityVersion:
+          description: Version of the system capability linked to a feature
+          type: string
+    Feature1:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          type: string
+    Feature2:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        DefaultIndicator:
+          description: Default feature indicator
+          type: string
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Flag to indicate default feature
+          type: boolean
+    FiRegisterRequest:
+      required:
+      - Name
+      - ClientIdentification
+      - Identification
+      - InvoiceCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
+        Identification:
+          description: Identification of the financial institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          pattern: \S
+          type: string
+    FiRegisterResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of Financial Institution
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+        Name:
+          description: Name of Financial Institution
+          type: string
+    FiUpdateRequest:
+      required:
+      - Name
+      - ClientIdentification
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelixMessage'
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    LinkBundleFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature1'
+    OverrideParameter:
+      required:
+      - CapabilityName
+      type: object
+      properties:
+        CapabilityName:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationOption'
+    RegisterBundleRequest:
+      required:
+      - Identification
+      - Name
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        Name:
+          description: Name of a bundle
+          maxLength: 35
+          pattern: \S
+          type: string
+        Description:
+          description: Description of a bundle
+          maxLength: 140
+          type: string
+        Feature:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature1'
+    RegisterBundleResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          type: string
+    RegisterConfigurationOptionRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          maxLength: 35
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          maxLength: 140
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationParameter'
+    RegisterConfigurationOptionResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+    RegisterFeatureRequest:
+      required:
+      - Identification
+      - Name
+      - Capability
+      - ConfigurationOption
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+        ConfigurationOption:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationOption1'
+    RegisterFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          type: string
+    RegisterProductFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature2'
+    RegisterProductFeatureResponse:
+      type: object
+      properties:
+        Warning:
+          $ref: '#/components/schemas/Warning'
+    RegisterProductRequest:
+      required:
+      - Name
+      - Brand
+      - Identification
+      type: object
+      properties:
+        Name:
+          description: Name of a product
+          maxLength: 70
+          pattern: \S
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          maxLength: 37
+          minLength: 1
+          type: string
+        Type:
+          description: Specifies the type of product category
+          type: string
+        Identification:
+          description: Unique identifier for the product
+          maxLength: 37
+          minLength: 1
+          type: string
+    RegisterProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+    RegistrationAddress:
+      description: Registered Address
+      required:
+      - Country
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          type: string
+    RetrieveBrandResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+    RetrieveBundleListRequest:
+      type: object
+      properties:
+        Bundle:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bundle'
+    RetrieveBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    RetrieveCapabilityResponse:
+      type: object
+      properties:
+        CPID:
+          description: Capability Catalog ID - Unique identifier for the Capability
+            Catalog
+          type: string
+        Version:
+          description: Version of the Capability
+          type: string
+        CapabilityName:
+          description: Name of the Capability
+          type: string
+        CapabilityDefinition:
+          description: Definition of Capability
+          type: string
+    RetrieveFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationOption1'
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
+    RetrieveFiResponse:
+      required:
+      - Name
+      - ClientIdentification
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RegistrationAddress'
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
+    RetrieveProductFeatureListRequest:
+      type: object
+      properties:
+        CapabilityName:
+          maxLength: 35
+          type: string
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
+    RetrieveProductFeatureResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          type: string
+        Product:
+          description: Identification of the product
+          type: string
+        Type:
+          description: Type of the product
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature3'
+    RetrieveProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        BrandName:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+    UpdateBundleRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a bundle
+          pattern: \A(?!\s*$).+
+          type: string
+        Description:
+          description: Description of a bundle
+          pattern: \A(?!\s*$).+
+          type: string
+    UpdateBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+    UpdateFeatureRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationOption1'
+    UpdateFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationOption1'
+    UpdateProductRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a product
+          maxLength: 70
+          pattern: \A(?!\s*$).+
+          type: string
+        Type:
+          description: Specifies the type of product category
+          type: string
+    Warning:
+      type: object
+      properties:
+        responseCode:
+          format: int32
+          type: integer
+        message:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningMessage'
+    WarningMessage:
+      type: object
+      properties:
+        message:
+          type: string
