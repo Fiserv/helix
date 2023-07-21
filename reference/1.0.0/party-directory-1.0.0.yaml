@@ -2,11 +2,11 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-118
+  version: 1.1.0-121
 tags:
 - name: Customer Management
 paths:
-  /Helix/V1/Organisation/Register:
+  /PartyDirectory/V1/Organisation/Register:
     post:
       tags:
       - Customer Management
@@ -155,7 +155,7 @@ paths:
           description: OK
       x-proxy-name: Add an Organisation
       x-group-name: Customer Management
-  /Helix/V1/Organisation/{partyId}/Retrieve:
+  /PartyDirectory/V1/Organisation/{partyId}/Retrieve:
     get:
       tags:
       - Customer Management
@@ -254,7 +254,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve an Organisation
       x-group-name: Customer Management
-  /Helix/V1/Person/Delete/Execute:
+  /PartyDirectory/V1/Person/Delete/Execute:
     post:
       tags:
       - Customer Management
@@ -364,7 +364,7 @@ paths:
           description: OK
       x-proxy-name: Delete a Person
       x-group-name: Customer Management
-  /Helix/V1/Person/GetList/Request:
+  /PartyDirectory/V1/Person/GetList/Request:
     post:
       tags:
       - Customer Management
@@ -483,7 +483,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve a Person List using FEPID or CRMID
       x-group-name: Customer Management
-  /Helix/V1/Person/Register:
+  /PartyDirectory/V1/Person/Register:
     post:
       tags:
       - Customer Management
@@ -527,6 +527,8 @@ paths:
                   FECID:
                     description: Unique identifier for a Person.
                     type: string
+                  Warning:
+                    $ref: '#/components/schemas/Warning1'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -584,7 +586,10 @@ paths:
             \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : External Identification with Type Of Identification Code %s is duplicated\
-            \ within request.</em></li></ul>"
+            \ within request.</em></li><li><em>HLXPTDTBR001 : ContactPreference flag\
+            \ has to be set for at least one address.</em></li><li><em>HLXPTDTBR001\
+            \ : ContactPreference flag has to be set for only one address.</em></li><li><em>HLXPTDTBR001\
+            \ : Address added and set to Preferred for Contact.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -662,7 +667,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Add a Person
       x-group-name: Customer Management
-  /Helix/V1/Person/{partyId}/AllPostalAddresses/Retrieve:
+  /PartyDirectory/V1/Person/{partyId}/AllPostalAddresses/Retrieve:
     get:
       tags:
       - Customer Management
@@ -700,7 +705,7 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: object
+                type: array
                 items:
                   $ref: '#/components/schemas/RetrievePostalAddressResponse'
                 properties:
@@ -778,9 +783,14 @@ paths:
                     pattern: \S
                     type: string
                   ContactPreference:
-                    description: "Indicates whether the person prefer to be contacted\
-                      \ on this address<br/> Valid values are : <br/> PreferredForContact\
-                      \ <br/> NotPreferredForContact <br/> MayBeUsedForContact"
+                    description: "Indicates that this address will be used for all\
+                      \ correspondence, including card and PIN mailers. Configuration\
+                      \ exists on the Card Delivery Capability that can be used by\
+                      \ the bank to define whether the address of the cardholder,\
+                      \ or the account holder, should be used for the delivery of\
+                      \ cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
+                      \ <br/> NotPreferredForContact <br/><br/><br/> NOTE: MayBeUsedForContact\
+                      \ is no longer in use"
                     pattern: \S
                     type: string
                   DateTimeAdded:
@@ -861,7 +871,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on a Postal Address
       x-group-name: Customer Management
-  /Helix/V1/Person/{partyId}/DeactivateAddress/Execute:
+  /PartyDirectory/V1/Person/{partyId}/DeactivateAddress/Execute:
     patch:
       tags:
       - Customer Management
@@ -979,7 +989,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Deactivate a Postal Address
       x-group-name: Customer Management
-  /Helix/V1/Person/{partyId}/Retrieve:
+  /PartyDirectory/V1/Person/{partyId}/Retrieve:
     get:
       tags:
       - Customer Management
@@ -1081,7 +1091,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on a Person
       x-group-name: Customer Management
-  /Helix/V1/Person/{partyId}/Update:
+  /PartyDirectory/V1/Person/{partyId}/Update:
     patch:
       tags:
       - Customer Management
@@ -1246,7 +1256,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Update a Person
       x-group-name: Customer Management
-  /Helix/V1/Person/{partyId}/Validate:
+  /PartyDirectory/V1/Person/{partyId}/Validate:
     get:
       tags:
       - Customer Management
@@ -1683,20 +1693,17 @@ components:
           description: Name of Brand
           type: string
     BrandUpdateRequest:
-      required:
-      - Name
       type: object
       properties:
         Name:
           description: Name of the Brand
           maxLength: 70
-          pattern: \S
           type: string
         RegistrationAddress:
           description: Registered address of the Brand
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress1'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -1706,15 +1713,6 @@ components:
         PhoneNumber:
           description: Phone number of the Brand
           pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
           type: string
     Bundle:
       type: object
@@ -1860,9 +1858,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1877,6 +1872,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2441,6 +2439,7 @@ components:
     FiRegisterRequest:
       required:
       - Name
+      - ClientIdentification
       - Identification
       - InvoiceCurrency
       type: object
@@ -2472,6 +2471,11 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
         Identification:
           description: Identification of the financial institution
           maxLength: 37
@@ -2480,10 +2484,6 @@ components:
         InvoiceCurrency:
           description: Invoice Currency
           pattern: \S
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -2500,6 +2500,7 @@ components:
     FiUpdateRequest:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -2529,12 +2530,13 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
+          pattern: \S
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
           type: string
     HelixErrorDetails:
       type: object
@@ -2819,7 +2821,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -3061,9 +3063,13 @@ components:
           pattern: \S
           type: string
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
-            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
-            \ <br/> MayBeUsedForContact"
+          description: "Indicates that this address will be used for all correspondence,\
+            \ including card and PIN mailers. Configuration exists on the Card Delivery\
+            \ Capability that can be used by the bank to define whether the address\
+            \ of the cardholder, or the account holder, should be used for the delivery\
+            \ of cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
+            \ <br/> NotPreferredForContact <br/><br/><br/> NOTE: MayBeUsedForContact\
+            \ is no longer in use"
           pattern: \S
           type: string
     ProductReissueEvent:
@@ -3161,7 +3167,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3358,6 +3364,8 @@ components:
         FECID:
           description: Unique identifier for a Person.
           type: string
+        Warning:
+          $ref: '#/components/schemas/Warning1'
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -3460,6 +3468,61 @@ components:
         Country:
           description: Country
           pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
           type: string
     ReissueCardRequest:
       type: object
@@ -3945,7 +4008,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -3953,6 +4016,7 @@ components:
     RetrieveFiResponse:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -3990,6 +4054,8 @@ components:
           type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
           type: string
     RetrieveOrganisationResponse:
       required:
@@ -4439,9 +4505,13 @@ components:
           pattern: \S
           type: string
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
-            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
-            \ <br/> MayBeUsedForContact"
+          description: "Indicates that this address will be used for all correspondence,\
+            \ including card and PIN mailers. Configuration exists on the Card Delivery\
+            \ Capability that can be used by the bank to define whether the address\
+            \ of the cardholder, or the account holder, should be used for the delivery\
+            \ of cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
+            \ <br/> NotPreferredForContact <br/><br/><br/> NOTE: MayBeUsedForContact\
+            \ is no longer in use"
           pattern: \S
           type: string
         DateTimeAdded:
@@ -4615,7 +4685,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4645,7 +4715,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -4852,7 +4922,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WarningMessage'
+    Warning1:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningMessage1'
     WarningMessage:
+      type: object
+      properties:
+        message:
+          type: string
+    WarningMessage1:
       type: object
       properties:
         message:
