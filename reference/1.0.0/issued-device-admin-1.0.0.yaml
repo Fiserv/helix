@@ -2,13 +2,13 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-221
+  version: 1.1.0-225
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
   x-group-name: Card Management
 paths:
-  /Helix/V1/PaymentInstrument/Delete/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/Delete/Execute:
     post:
       tags:
       - Helix Core
@@ -145,7 +145,7 @@ paths:
           description: OK
       x-proxy-name: Delete Card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/GetList/Request:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/GetList/Request:
     post:
       tags:
       - Helix Core
@@ -274,7 +274,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve a list of cards
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/Initiate:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/Initiate:
     post:
       tags:
       - Helix Core
@@ -434,7 +434,7 @@ paths:
           description: OK
       x-proxy-name: Add a New Card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/ReissueCards/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/ReissueCards/Execute:
     post:
       tags:
       - Helix Core
@@ -541,7 +541,7 @@ paths:
       x-proxy-name: Reissue a Card
       x-group-name: Card Management
       x-api-scope: Internal
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ActivateCard/Execute:
     put:
       tags:
       - Helix Core
@@ -670,7 +670,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Activate a Card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/AllData/Retrieve:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/AllData/Retrieve:
     get:
       tags:
       - Helix Core
@@ -812,7 +812,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on Card Details with chip data
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
       - Helix Core
@@ -951,7 +951,7 @@ paths:
       x-proxy-name: Retrieve chip data details
       x-group-name: Card Management
       x-api-scope: Internal
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ContactLessOptChange/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ContactLessOptChange/Execute:
     post:
       tags:
       - Helix Core
@@ -1093,7 +1093,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Opt in/out contactless card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/DeactivateCard/Execute:
     put:
       tags:
       - Helix Core
@@ -1219,7 +1219,7 @@ paths:
       x-proxy-name: Deactivate a Card
       x-group-name: Card Management
       x-api-scope: Internal
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Fraud/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Fraud/Execute:
     post:
       tags:
       - Helix Core
@@ -1351,7 +1351,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Update fraud on a card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/GetCVV2/Request:
     post:
       tags:
       - Helix Core
@@ -1474,7 +1474,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Generate CVV2
       x-group-name: Card Sensitive Data
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/LostStolen/Execute:
     put:
       tags:
       - Helix Core
@@ -1633,7 +1633,7 @@ paths:
           description: OK
       x-proxy-name: Report a Card as Lost or Stolen
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
     post:
       tags:
       - Helix Core
@@ -1761,7 +1761,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Pin Try Counter Reset
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Replace/Execute:
     post:
       tags:
       - Helix Core
@@ -1904,7 +1904,7 @@ paths:
           description: OK
       x-proxy-name: Replace a Damaged Card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Retrieve:
     get:
       tags:
       - Helix Core
@@ -2215,7 +2215,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on Card Details
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/SystemUpdate:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/SystemUpdate:
     patch:
       tags:
       - Helix Core
@@ -2371,7 +2371,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: System Update
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Update:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Update:
     patch:
       tags:
       - Helix Core
@@ -2529,7 +2529,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Update Name on a Card
       x-group-name: Card Management
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
     get:
       tags:
       - Helix Core
@@ -2642,7 +2642,7 @@ paths:
       x-proxy-name: Validate card status
       x-group-name: Card Management
       x-api-scope: Internal
-  /Helix/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
     post:
       tags:
       - Helix Core
@@ -2870,11 +2870,20 @@ components:
     AddCardRequestEvent:
       type: object
       properties:
-        FEPID:
-          description: Unique identifier of the payment card (FEPID)
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
           type: string
         ProductId:
-          description: Identification of the product
+          type: string
+        FEPID:
+          description: Unique identifier of the payment card (FEPID)
           type: string
         FEAID:
           description: Identification of the account
@@ -2882,16 +2891,7 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventDescription:
-          description: Specifies event message.
-          type: string
-        EventName:
-          description: Specifies event name for the message.
-          type: string
-        EventId:
-          description: Specifies event id generated for the card creation.
-          type: string
-        Timestamp:
+        CreatedDateTime:
           description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
@@ -2901,12 +2901,6 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-        BrandId:
-          description: Identification of the Brand
-          type: string
-        FiId:
-          description: Identification of the financial institution
-          type: string
         CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
@@ -3118,20 +3112,17 @@ components:
           description: Name of Brand
           type: string
     BrandUpdateRequest:
-      required:
-      - Name
       type: object
       properties:
         Name:
           description: Name of the Brand
           maxLength: 70
-          pattern: \S
           type: string
         RegistrationAddress:
           description: Registered address of the Brand
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress1'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -3141,15 +3132,6 @@ components:
         PhoneNumber:
           description: Phone number of the Brand
           pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
           type: string
     Bundle:
       type: object
@@ -3224,17 +3206,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         primaryAccountNumber:
           type: string
@@ -3312,6 +3294,9 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3326,9 +3311,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3350,6 +3332,16 @@ components:
         Value:
           description: Value of a configuration parameter
           maxLength: 40000
+          pattern: \S
+          type: string
+    DeactivatePostalAddressRequest:
+      required:
+      - AddressType
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
           pattern: \S
           type: string
     DecisionContext:
@@ -3470,14 +3462,9 @@ components:
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this email is set as the current electronic
-            address
-          type: string
     ElectronicAddressDtoUpdateRequest:
       required:
       - Type
-      - Email
       type: object
       properties:
         Type:
@@ -3890,6 +3877,24 @@ components:
           maxLength: 37
           pattern: \S
           type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          type: string
     Feature:
       required:
       - Identification
@@ -3968,6 +3973,7 @@ components:
     FiRegisterRequest:
       required:
       - Name
+      - ClientIdentification
       - Identification
       - InvoiceCurrency
       type: object
@@ -3999,6 +4005,11 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
         Identification:
           description: Identification of the financial institution
           maxLength: 37
@@ -4007,10 +4018,6 @@ components:
         InvoiceCurrency:
           description: Invoice Currency
           pattern: \S
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -4027,6 +4034,7 @@ components:
     FiUpdateRequest:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -4056,12 +4064,13 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
+          pattern: \S
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
           type: string
     HelixErrorDetails:
       type: object
@@ -4348,7 +4357,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     Party:
       required:
       - Identification
@@ -4452,12 +4461,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
       required:
       - Type
@@ -4488,14 +4491,9 @@ components:
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
-          type: string
     PhoneDtoUpdateRequest:
       required:
       - Type
-      - Number
       type: object
       properties:
         Type:
@@ -4521,10 +4519,6 @@ components:
           description: "Indicates whether the person prefer to be receive SMS on this\
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
           type: string
     PostalAddress:
       required:
@@ -4609,9 +4603,6 @@ components:
             \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
             \ <br/> MayBeUsedForContact"
           pattern: \S
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this address is set as the current address
           type: string
     ProductReissueEvent:
       type: object
@@ -4708,7 +4699,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4801,12 +4792,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -4827,6 +4812,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
     RegisterPersonRequest1:
       required:
       - Surname
@@ -4873,12 +4864,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -4899,6 +4884,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentificationUpdateDto'
     RegisterPersonResponse:
       type: object
       properties:
@@ -5007,6 +4998,61 @@ components:
         Country:
           description: Country
           pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
           type: string
     ReissueCardRequest:
       type: object
@@ -5413,6 +5459,30 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/LocalDate'
+    RetrieveElectronicAddressResponse:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this email is set as the current electronic
+            address
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
       type: object
       properties:
@@ -5505,7 +5575,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -5513,6 +5583,7 @@ components:
     RetrieveFiResponse:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -5550,6 +5621,8 @@ components:
           type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
           type: string
     RetrieveOrganisationResponse:
       required:
@@ -5869,22 +5942,150 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \ historic or inactive addresses will not be returned in this API.<b/><br/> "
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: '#/components/schemas/RetrievePostalAddressResponse'
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/RetrieveElectronicAddressResponse'
         enabled:
           type: boolean
+    RetrievePhoneResponse:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    RetrievePostalAddressResponse:
+      required:
+      - AddressType
+      - PostalCode
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          pattern: \S
+          type: string
+        AddressLine1:
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
+            \ <br/> MayBeUsedForContact"
+          pattern: \S
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this address is set as the current address
+          type: string
+        isActive:
+          description: Identifies the latest active address of a specific type added
+            to the system. Valid values are True and False. If it is set to True it
+            means that this is the last address of that address type that was added
+            into the system and that is still active.
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -6035,7 +6236,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6065,7 +6266,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     UpdateProductRequest:
       required:
       - Name
