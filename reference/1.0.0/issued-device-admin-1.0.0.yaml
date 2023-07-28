@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-225
+  version: 1.1.0-227
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -201,7 +201,8 @@ paths:
             \ : Person exceeds maximum 37 length allowed.</em></li><li><em>HLXIDASBR001\
             \ : Person is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXIDASBR001\
-            \ : External Identification is not valid, please provide valid value.</em></li></ul>"
+            \ : External Identification is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
+            \ : Search criteria combination is only allowed for Person and Account.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3294,9 +3295,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3311,6 +3309,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4357,7 +4358,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -4699,7 +4700,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -5575,7 +5576,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6236,7 +6237,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6266,7 +6267,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateProductRequest:
       required:
       - Name
