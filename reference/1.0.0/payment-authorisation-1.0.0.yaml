@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-88
+  version: 1.1.0-99
 tags:
 - name: Helix Core
 paths:
@@ -330,6 +330,129 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire an authorisation
       x-group-name: Authorisation
+  /PaymentAuthorisation/V1/AuthReasonCodes/Register:
+    post:
+      tags:
+      - Helix Core
+      summary: This method is used to add new entries of ResultReasonCode.
+      description: This API allows the user to add new entries of ResultReasonCode.
+      operationId: register
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterAuthReasonCodesRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterAuthReasonCodesResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBR001\
+            \ : Financial Institution required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXAUTHBR001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXAUTHBR001\
+            \ : Brand required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXAUTHBR001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXAUTHBR001\
+            \ : RsltReasonCode required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : Duplicate Result Reason Codes are present in the request.</em></li><li><em>HLXAUTHBR001\
+            \ : Switch Reason Code for Result Reason Code %s required, please provide\
+            \ value.</em></li><li><em>HLXAUTHBR001 : Validation name for Result Reason\
+            \ Code %s required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : Result Reason Description for Result Reason Code %s required, please\
+            \ provide value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAR03\
+            \ : Duplicate Result Reason Code %s, Already present in the system.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAR01\
+            \ : There is an error while registering payment authorisation reason codes,\
+            \ please try again.</em></li><li><em>HLXAUTHAR02 : There is an error while\
+            \ retrieving payment authorisation reason codes, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Register ResultReasonCode
+      x-group-name: AuthReasonCodes
+      x-api-scope: Internal
   /PaymentAuthorisation/V1/Authorisation/Evaluate:
     post:
       tags:
@@ -377,6 +500,11 @@ paths:
                   ARPC:
                     description: Authorisation Response Cryptogram
                     type: string
+                  Cntxt:
+                    description: Describes conditions and characteristics of the transaction.
+                    type: object
+                    allOf:
+                    - $ref: '#/components/schemas/Cntxt'
         "400":
           description: Bad Request
           content:
@@ -662,11 +790,6 @@ components:
         NameLine2:
           description: Details on second name line as it appears on the card.
           type: string
-        ServiceCode:
-          description: "Identifies the card usage restrictions, and is also used in\
-            \ calculation of CVV value that is encoded on the magnetic strip of the\
-            \ card."
-          type: string
     AddOrganisationResponse:
       type: object
       properties:
@@ -883,20 +1006,17 @@ components:
           description: Name of Brand
           type: string
     BrandUpdateRequest:
-      required:
-      - Name
       type: object
       properties:
         Name:
           description: Name of the Brand
           maxLength: 70
-          pattern: \S
           type: string
         RegistrationAddress:
           description: Registered address of the Brand
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegistrationAddress'
+          - $ref: '#/components/schemas/RegistrationAddress1'
         Email:
           description: Email of the Brand
           maxLength: 256
@@ -906,15 +1026,6 @@ components:
         PhoneNumber:
           description: Phone number of the Brand
           pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
           type: string
     Bundle:
       type: object
@@ -1044,6 +1155,12 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/PtOfSvcCntxt'
+        Vrfctn:
+          description: "Verification details for the verifications performed on CVV,\
+            \ CVV2, iCVV and ARQC if provided in the input."
+          type: array
+          items:
+            $ref: '#/components/schemas/Vrfctn'
     CommonChipDataResponse:
       type: object
       properties:
@@ -1136,9 +1253,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1153,6 +1267,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1259,6 +1376,16 @@ components:
           format: int64
           description: ID defining the number of record created
           type: integer
+    DeactivatePostalAddressRequest:
+      required:
+      - AddressType
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
     ElectronicAddress:
       required:
       - Type
@@ -1279,14 +1406,9 @@ components:
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this email is set as the current electronic
-            address
-          type: string
     ElectronicAddressDtoUpdateRequest:
       required:
       - Type
-      - Email
       type: object
       properties:
         Type:
@@ -1437,6 +1559,11 @@ components:
         ARPC:
           description: Authorisation Response Cryptogram
           type: string
+        Cntxt:
+          description: Describes conditions and characteristics of the transaction.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Cntxt'
     EvaluateRestrictionRequest:
       required:
       - UniqueIdType
@@ -2234,6 +2361,24 @@ components:
           maxLength: 37
           pattern: \S
           type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          type: string
     Feature:
       required:
       - Identification
@@ -2312,6 +2457,7 @@ components:
     FiRegisterRequest:
       required:
       - Name
+      - ClientIdentification
       - Identification
       - InvoiceCurrency
       type: object
@@ -2343,6 +2489,11 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
+          type: string
         Identification:
           description: Identification of the financial institution
           maxLength: 37
@@ -2351,10 +2502,6 @@ components:
         InvoiceCurrency:
           description: Invoice Currency
           pattern: \S
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
           type: string
     FiRegisterResponse:
       type: object
@@ -2371,6 +2518,7 @@ components:
     FiUpdateRequest:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -2400,12 +2548,13 @@ components:
           description: Indicates whether FI is on Hybrid model and is integrated with
             an Account Management system like FirstVision
           type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
+          pattern: \S
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
           type: string
     HelixErrorDetails:
       type: object
@@ -2615,14 +2764,18 @@ components:
           minimum: 2
           type: string
         NameLine2:
-          description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
+          description: Details on second name line as it appears on the card.
           type: string
         isCancelled:
           description: This field indicates if a card is cancelled or not. This field
             will be set to Yes if a card is cancelled. A cancelled card cannot be
             activated once it has been set.
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> A\
+            \ Person assigned to a Brand, can only be assigned to cards within the\
+            \ same Brand."
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
     KeyBaseRequest:
       required:
@@ -2783,7 +2936,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: '#/components/schemas/ConfigurationOption'
     Party:
       required:
       - Identification
@@ -2887,12 +3040,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
       required:
       - Type
@@ -2923,14 +3070,9 @@ components:
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
-          type: string
     PhoneDtoUpdateRequest:
       required:
       - Type
-      - Number
       type: object
       properties:
         Type:
@@ -2956,10 +3098,6 @@ components:
           description: "Indicates whether the person prefer to be receive SMS on this\
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
           type: string
     PostalAddress:
       required:
@@ -3045,9 +3183,6 @@ components:
             \ <br/> MayBeUsedForContact"
           pattern: \S
           type: string
-        DateTimeAdded:
-          description: Time stamp when this address is set as the current address
-          type: string
     ProductReissueEvent:
       type: object
       properties:
@@ -3078,6 +3213,38 @@ components:
           description: "Code which identifies transaction entry mode, whether transaction\
             \ is contactless or magnetic stripe, etc."
           type: string
+    RegisterAuthReasonCodesRequest:
+      type: object
+      properties:
+        AuthReasonCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisterAuthReasonCodesRequestDto'
+    RegisterAuthReasonCodesRequestDto:
+      required:
+      - RsltReasonCode
+      type: object
+      properties:
+        RsltReasonCode:
+          description: Result reason code for authorisation
+          pattern: \S
+          type: string
+        RsltReasonDesc:
+          description: Result reason code description
+          type: string
+        SwitchReasonCode:
+          description: Switch specific reason code
+          type: string
+        ValidationName:
+          description: Validation name
+          type: string
+    RegisterAuthReasonCodesResponse:
+      type: object
+      properties:
+        AuthReasonCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisterAuthReasonCodesRequestDto'
     RegisterBundleRequest:
       required:
       - Identification
@@ -3165,7 +3332,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3258,12 +3425,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -3284,6 +3445,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
     RegisterPersonRequest1:
       required:
       - Surname
@@ -3330,12 +3497,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -3356,6 +3517,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentificationUpdateDto'
     RegisterPersonResponse:
       type: object
       properties:
@@ -3464,6 +3631,61 @@ components:
         Country:
           description: Country
           pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
           type: string
     ReissueCardRequest:
       type: object
@@ -4046,6 +4268,30 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/LocalDate'
+    RetrieveElectronicAddressResponse:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this email is set as the current electronic
+            address
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
       required:
       - FacilityIdentification
@@ -4138,7 +4384,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4146,6 +4392,7 @@ components:
     RetrieveFiResponse:
       required:
       - Name
+      - ClientIdentification
       type: object
       properties:
         Name:
@@ -4183,6 +4430,8 @@ components:
           type: string
         ClientIdentification:
           description: Identification of Client Financial Institution
+          maxLength: 5
+          pattern: \S
           type: string
     RetrieveInstrumentKeyRequest:
       required:
@@ -4441,7 +4690,7 @@ components:
             </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
           type: string
         FraudStatusDate:
-          description: Indicates date/time when a card was marked as fraudulent.
+          description: Indicates date/time when fraud status was last updated.
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
@@ -4566,22 +4815,150 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \ historic or inactive addresses will not be returned in this API.<b/><br/> "
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: '#/components/schemas/RetrievePostalAddressResponse'
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/RetrieveElectronicAddressResponse'
         enabled:
           type: boolean
+    RetrievePhoneResponse:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    RetrievePostalAddressResponse:
+      required:
+      - AddressType
+      - PostalCode
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          pattern: \S
+          type: string
+        AddressLine1:
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
+            \ <br/> MayBeUsedForContact"
+          pattern: \S
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this address is set as the current address
+          type: string
+        isActive:
+          description: Identifies the latest active address of a specific type added
+            to the system. Valid values are True and False. If it is set to True it
+            means that this is the last address of that address type that was added
+            into the system and that is still active.
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -4668,6 +5045,11 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     SystemUpdateResponse:
       type: object
       properties:
@@ -4688,6 +5070,11 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     Termnl:
       type: object
       properties:
@@ -4888,7 +5275,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4918,7 +5305,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: '#/components/schemas/ConfigurationOption1'
     UpdateLimitRequest:
       required:
       - UniqueIdType
@@ -5078,6 +5465,24 @@ components:
           type: string
         enabled:
           type: boolean
+    Vrfctn:
+      type: object
+      properties:
+        Tp:
+          description: "Identifies the type of field like CVV/iCVV (NVSC), CVV2 (CSCV)\
+            \ and ARQC."
+          type: string
+        VrfctnRslt:
+          description: "Verification Results like Failure, Success, Error or NoVerification."
+          type: array
+          items:
+            $ref: '#/components/schemas/VrfctnRslt'
+    VrfctnRslt:
+      type: object
+      properties:
+        Rslt:
+          description: "Verification Results like Failure, Success, Error or NoVerification."
+          type: string
     Warning:
       type: object
       properties:
