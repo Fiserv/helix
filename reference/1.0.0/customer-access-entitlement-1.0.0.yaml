@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: customer-access-entitlement
-  version: 1.1.0-108
+  version: 1.1.0-118
 tags:
 - name: Customer Access Entitlement
 paths:
@@ -761,7 +761,9 @@ paths:
             \ as <Lost/Stolen></em></li><li><em>HLXCAEDBV002 : Cannot retrieve details,\
             \ card is not enabled.</em></li><li><em>HLXCAEDCF001 : Card is marked\
             \ as confirmed fraud.</em></li><li><em>HLXCAEDCF001 : Cannot change start\
-            \ date as flexi limit is already in effect.</em></li></ul>"
+            \ date as flexi limit is already in effect.</em></li><li><em>HLXCAEDNA001\
+            \ : Temporary limit is not available for this card.</em></li><li><em>HLXCAEDND001\
+            \ : <Limittype> <Periodtype> limit cannot be deleted.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -1127,11 +1129,6 @@ components:
         NameLine2:
           description: Details on second name line as it appears on the card.
           type: string
-        ServiceCode:
-          description: "Identifies the card usage restrictions, and is also used in\
-            \ calculation of CVV value that is encoded on the magnetic strip of the\
-            \ card."
-          type: string
     AddOrganisationResponse:
       type: object
       properties:
@@ -1297,17 +1294,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         primaryAccountNumber:
           type: string
@@ -1470,6 +1467,16 @@ components:
           maxLength: 40000
           pattern: \S
           type: string
+    DeactivatePostalAddressRequest:
+      required:
+      - AddressType
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
     ElectronicAddress:
       required:
       - Type
@@ -1490,14 +1497,9 @@ components:
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this email is set as the current electronic
-            address
-          type: string
     ElectronicAddressDtoUpdateRequest:
       required:
       - Type
-      - Email
       type: object
       properties:
         Type:
@@ -2031,6 +2033,24 @@ components:
           maxLength: 37
           pattern: \S
           type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          type: string
     Feature:
       required:
       - Identification
@@ -2275,14 +2295,18 @@ components:
           minimum: 2
           type: string
         NameLine2:
-          description: Details on second name line as it appears on the card
-          maximum: 26
-          minimum: 2
+          description: Details on second name line as it appears on the card.
           type: string
         isCancelled:
           description: This field indicates if a card is cancelled or not. This field
             will be set to Yes if a card is cancelled. A cancelled card cannot be
             activated once it has been set.
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> A\
+            \ Person assigned to a Brand, can only be assigned to cards within the\
+            \ same Brand."
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
     LimitResponseDto:
       type: object
@@ -2520,12 +2544,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
     Phone:
       required:
       - Type
@@ -2556,14 +2574,9 @@ components:
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
-          type: string
     PhoneDtoUpdateRequest:
       required:
       - Type
-      - Number
       type: object
       properties:
         Type:
@@ -2589,10 +2602,6 @@ components:
           description: "Indicates whether the person prefer to be receive SMS on this\
             \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
             \ NotPreferredForContact <br/> MayBeUsedForContact"
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
           type: string
     PostalAddress:
       required:
@@ -2677,9 +2686,6 @@ components:
             \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
             \ <br/> MayBeUsedForContact"
           pattern: \S
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this address is set as the current address
           type: string
     ProductReissueEvent:
       type: object
@@ -2869,12 +2875,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2895,6 +2895,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddress'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentification'
     RegisterPersonRequest1:
       required:
       - Surname
@@ -2941,12 +2947,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
         Brand:
           description: Identification of the brand associated with the person.<br/><b>Note:</b>
             Person assigned to a Brand cannot be shared across Brands.
@@ -2967,6 +2967,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ElectronicAddressDtoUpdateRequest'
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentificationUpdateDto'
     RegisterPersonResponse:
       type: object
       properties:
@@ -3395,6 +3401,30 @@ components:
           type: string
           allOf:
           - $ref: '#/components/schemas/LocalDate'
+    RetrieveElectronicAddressResponse:
+      required:
+      - Type
+      - Email
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
+            \ <br/> WorkEmail"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this email is set as the current electronic
+            address
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
       required:
       - FacilityIdentification
@@ -3701,7 +3731,7 @@ components:
             </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
           type: string
         FraudStatusDate:
-          description: Indicates date/time when a card was marked as fraudulent.
+          description: Indicates date/time when fraud status was last updated.
           type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
@@ -3826,22 +3856,150 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \ historic or inactive addresses will not be returned in this API.<b/><br/> "
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: '#/components/schemas/RetrievePostalAddressResponse'
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: '#/components/schemas/RetrievePhoneResponse'
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: '#/components/schemas/RetrieveElectronicAddressResponse'
         enabled:
           type: boolean
+    RetrievePhoneResponse:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
+            \ <br/> WorkPhone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
+            \ NotPreferredForContact <br/> MayBeUsedForContact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    RetrievePostalAddressResponse:
+      required:
+      - AddressType
+      - PostalCode
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> Current Residential\
+            \ <br/> Business <br/> Registered Residential"
+          pattern: \S
+          type: string
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          pattern: \S
+          type: string
+        AddressLine1:
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
+            \ <br/> MayBeUsedForContact"
+          pattern: \S
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this address is set as the current address
+          type: string
+        isActive:
+          description: Identifies the latest active address of a specific type added
+            to the system. Valid values are True and False. If it is set to True it
+            means that this is the last address of that address type that was added
+            into the system and that is still active.
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -3895,6 +4053,25 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ChipData'
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -3914,20 +4091,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/ChipData'
     SystemUpdateResponse:
       type: object
       properties:
@@ -3948,6 +4111,11 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ChipData'
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
@@ -4240,10 +4408,7 @@ components:
         Name:
           description: Name of a product
           maxLength: 70
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          maxLength: 37
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
