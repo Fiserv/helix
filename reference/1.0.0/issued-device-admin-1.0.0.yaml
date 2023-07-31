@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-227
+  version: 1.1.0-228
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -175,6 +175,15 @@ paths:
         schema:
           maxLength: 37
           type: string
+      - name: listType
+        in: query
+        description: "Filter for retrieving cards falling in specific status. <br\
+          \ />Accepted Values are: <br /><ul><li> inOperation - Retrieve cards that\
+          \ are  Enabled, isCancelled = false, not blocked as Lost/Stolen, not confirmed\
+          \ fraud and expiry dateis greater than or equal to current processing date.</li>\
+          \ </ul>"
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -202,7 +211,8 @@ paths:
             \ : Person is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
             \ : External Identification exceeds maximum 35 length allowed.</em></li><li><em>HLXIDASBR001\
             \ : External Identification is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
-            \ : Search criteria combination is only allowed for Person and Account.</em></li></ul>"
+            \ : Search criteria combination is only allowed for Person and Account.</em></li><li><em>HLXIDASBR001\
+            \ : listType is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
