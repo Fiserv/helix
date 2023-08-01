@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-228
+  version: 1.1.0-230
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -153,9 +153,12 @@ paths:
         account (FEAID) or a person (FECID) or an external identification (CRM ID)
       description: "This method is used to return the list of payment instruments\
         \ for an account (FEAID) or a person (FECID) or an external identification\
-        \ (CRM ID). The order that the payment instruments will be returned in depends\
-        \ on their status, i.e.<br /><ol><li> Activated cards are returned first and\
-        \ will be sorted in activation date order (latest activated card showing first)</li><li>\
+        \ (CRM ID). Combined search using Account and Person - Use Account Identifier\
+        \ (FEAID) and Person Identifier (FECID) combination to retrieve list of cards\
+        \ associated with an Account, which belongs to a specific Person.The order\
+        \ that the payment instruments will be returned in depends on their status,\
+        \ i.e.<br /><ol><li> Activated cards are returned first and will be sorted\
+        \ in activation date order (latest activated card showing first)</li><li>\
         \ Not yet activated cards will be sorted by card creation date/time (latest\
         \ created card shown first)</li><li> Lost/stolen cards will be sorted by block\
         \ date/time (latest blocked card showing first)</li><li> Cancelled cards will\
@@ -200,8 +203,7 @@ paths:
                   $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Provide one search criteria only.</em></li><li><em>HLXIDASBR001 :\
-            \ Party or Account or CRM ID search criteria required, please provide\
+            \ : Party or Account or CRM ID search criteria required, please provide\
             \ at least one value.</em></li><li><em>HLXIDASBR001 : Account less than\
             \ minimum 36 length allowed.</em></li><li><em>HLXIDASBR001 : Account exceeds\
             \ maximum 37 length allowed.</em></li><li><em>HLXIDASBR001 : Account is\
