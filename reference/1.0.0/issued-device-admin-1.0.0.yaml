@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-230
+  version: 1.1.0-231
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -153,16 +153,16 @@ paths:
         account (FEAID) or a person (FECID) or an external identification (CRM ID)
       description: "This method is used to return the list of payment instruments\
         \ for an account (FEAID) or a person (FECID) or an external identification\
-        \ (CRM ID). Combined search using Account and Person - Use Account Identifier\
-        \ (FEAID) and Person Identifier (FECID) combination to retrieve list of cards\
-        \ associated with an Account, which belongs to a specific Person.The order\
-        \ that the payment instruments will be returned in depends on their status,\
-        \ i.e.<br /><ol><li> Activated cards are returned first and will be sorted\
-        \ in activation date order (latest activated card showing first)</li><li>\
-        \ Not yet activated cards will be sorted by card creation date/time (latest\
-        \ created card shown first)</li><li> Lost/stolen cards will be sorted by block\
-        \ date/time (latest blocked card showing first)</li><li> Cancelled cards will\
-        \ be sorted by cancellation date/time (latest cancelled card showing first)</li></ol>"
+        \ (CRM ID). This method also supports retrieving a list of cards associated\
+        \ with an Account that belongs to a specific Person, by supplying a search\
+        \ request using Account and Person combination.The order that the payment\
+        \ instruments will be returned in depends on their status, i.e.<br /><ol><li>\
+        \ Activated cards are returned first and will be sorted in activation date\
+        \ order (latest activated card showing first)</li><li> Not yet activated cards\
+        \ will be sorted by card creation date/time (latest created card shown first)</li><li>\
+        \ Lost/stolen cards will be sorted by block date/time (latest blocked card\
+        \ showing first)</li><li> Cancelled cards will be sorted by cancellation date/time\
+        \ (latest cancelled card showing first)</li></ol>"
       operationId: getPaymentInstrumentList
       parameters:
       - name: fi-id
