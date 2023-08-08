@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-99
+  version: 1.1.0-108
 tags:
 - name: Helix Core
 paths:
@@ -353,14 +353,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterAuthReasonCodesRequest'
+              $ref: '#/components/schemas/AuthReasonCodesRequest'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegisterAuthReasonCodesResponse'
+                $ref: '#/components/schemas/AuthReasonCodesResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBR001\
             \ : Financial Institution required, please provide value.</em></li><li><em>HLXAUTHBR001\
@@ -453,6 +453,226 @@ paths:
       x-proxy-name: Register ResultReasonCode
       x-group-name: AuthReasonCodes
       x-api-scope: Internal
+  /PaymentAuthorisation/V1/AuthReasonCodes/Retrieve:
+    get:
+      tags:
+      - Helix Core
+      summary: This method is used to return the list of authorisation reason codes
+        for a given ValidationName.
+      description: This API allows the user to retrieve list of authorisation reason
+        codes for a given ValidationName.
+      operationId: retrieve
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: ValidationName
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthReasonCodesResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAR01\
+            \ : There is an error while registering payment authorisation reason codes,\
+            \ please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve ResultReasonCode with ValidationName
+      x-group-name: AuthReasonCodes
+      x-api-scope: Internal
+  /PaymentAuthorisation/V1/AuthReasonCodes/Update:
+    patch:
+      tags:
+      - Helix Core
+      summary: This method is used to update payment authorisation result reason code
+        details.
+      description: This API allows the user to update payment authorisation result
+        reason code details.
+      operationId: update
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthReasonCodesRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthReasonCodesResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAR04\
+            \ : Result Reason Code %s not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHAR05\
+            \ : There is an error while updating payment authorisation reason code\
+            \ details, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Update ResultReasonCode details
+      x-group-name: AuthReasonCodes
+      x-api-scope: Internal
   /PaymentAuthorisation/V1/Authorisation/Evaluate:
     post:
       tags:
@@ -505,6 +725,11 @@ paths:
                     type: object
                     allOf:
                     - $ref: '#/components/schemas/Cntxt'
+                  SwitchReasonCode:
+                    description: Switch has to respond to schemes with the specifications
+                      provided by the relevant schemes. Switch uses Reason Code to
+                      derive the corresponding Scheme specific Response Code.
+                    type: string
         "400":
           description: Bad Request
           content:
@@ -899,20 +1124,52 @@ components:
           description: Identifies the association Key
           pattern: \S
           type: string
+    AuthReasonCodesRequest:
+      type: object
+      properties:
+        AuthReasonCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthReasonCodesRequestDto'
+    AuthReasonCodesRequestDto:
+      required:
+      - RsltReasonCode
+      type: object
+      properties:
+        RsltReasonCode:
+          description: Result reason code for authorisation
+          pattern: \S
+          type: string
+        RsltReasonDesc:
+          description: Result reason code description
+          type: string
+        SwitchReasonCode:
+          description: Switch specific reason code
+          type: string
+        ValidationName:
+          description: Validation name
+          type: string
+    AuthReasonCodesResponse:
+      type: object
+      properties:
+        AuthReasonCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthReasonCodesRequestDto'
     AuthorisationAdviceReversalEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         FEAID:
           type: string
@@ -1100,17 +1357,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         primaryAccountNumber:
           type: string
@@ -1564,6 +1821,11 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/Cntxt'
+        SwitchReasonCode:
+          description: Switch has to respond to schemes with the specifications provided
+            by the relevant schemes. Switch uses Reason Code to derive the corresponding
+            Scheme specific Response Code.
+          type: string
     EvaluateRestrictionRequest:
       required:
       - UniqueIdType
@@ -3213,38 +3475,6 @@ components:
           description: "Code which identifies transaction entry mode, whether transaction\
             \ is contactless or magnetic stripe, etc."
           type: string
-    RegisterAuthReasonCodesRequest:
-      type: object
-      properties:
-        AuthReasonCodes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RegisterAuthReasonCodesRequestDto'
-    RegisterAuthReasonCodesRequestDto:
-      required:
-      - RsltReasonCode
-      type: object
-      properties:
-        RsltReasonCode:
-          description: Result reason code for authorisation
-          pattern: \S
-          type: string
-        RsltReasonDesc:
-          description: Result reason code description
-          type: string
-        SwitchReasonCode:
-          description: Switch specific reason code
-          type: string
-        ValidationName:
-          description: Validation name
-          type: string
-    RegisterAuthReasonCodesResponse:
-      type: object
-      properties:
-        AuthReasonCodes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RegisterAuthReasonCodesRequestDto'
     RegisterBundleRequest:
       required:
       - Identification
