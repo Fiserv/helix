@@ -1,5 +1,5 @@
 ################################################################################
-# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
+# Copyrights © 2023-2024 Fiserv, Inc. or its affiliates. 
 # Fiserv is a trademark of Fiserv, Inc., 
 # registered or used in the United States and foreign countries, 
 # and may or may not be registered in your country.  
@@ -29,15 +29,15 @@
 ################################################################################
 header:
   productName: REPLACEME
-  productionDescription: Helix is our state-of-the-art card management solution - a cloud native system that uses event driven architecture to drive your business forward at the speed you need it to.  
-  whoIsItFor: Helix is a card management solution used by banks and card processors to issue debit cards (with more coming soon).
+  productionDescription: VisionNext is our state-of-the-art card management solution - a cloud native system that uses event driven architecture to drive your business forward at the speed you need it to.  
+  whoIsItFor: VisionNext is a card management solution used by banks and card processors to issue debit cards (with more coming soon).
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
     altText: REPLACEME™
 getStarted: /docs/introduction/introduction.md
 featuredFeatures:
-  - title: Debit Issuance
-    description:  Helix allows Financial Institutions to issue and manage Debit Card products to and for their end customers.
+  - title: Card Issuance
+    description:  Helix allows Financial Institutions to issue and manage card products to and for their end customers.
     tags: ["REPLACEME", "REPLACEME", "REPLACEME"]
     bullets: ["REPLACEME", "REPLACEME" ]  
     relatedDocs:
