@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-128
+  version: 1.1.0-135
 tags:
 - name: Customer Management
 paths:
@@ -528,7 +528,7 @@ paths:
                     description: Unique identifier for a Person.
                     type: string
                   Warning:
-                    $ref: "#/components/schemas/Warning1"
+                    $ref: "#/components/schemas/Warning"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -707,7 +707,7 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: array
+                type: object
                 items:
                   $ref: "#/components/schemas/RetrievePostalAddressResponse"
                 properties:
@@ -950,7 +950,9 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "422":
           description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTPT001\
-            \ : At least one active address is required.</em></li></ul>"
+            \ : At least one active address is required.</em></li><li><em>HLXPTDTUP003\
+            \ : ContactPreference must be set for another address before deactivating\
+            \ this address.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3354,7 +3356,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -3369,7 +3371,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -4563,28 +4565,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "True".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-    SystemUpdateRequest1:
-      type: object
-      properties:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
@@ -4601,6 +4581,28 @@ components:
             \ assigned to a Brand, can only be used when adding cards under the same\
             \ Brand."
           type: string
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -4639,7 +4641,7 @@ components:
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*&).+
+          pattern: \A(?!\s*$).+
           type: string
     UpdateBundleResponse:
       type: object
@@ -4912,17 +4914,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
