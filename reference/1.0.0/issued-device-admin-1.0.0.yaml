@@ -2,12 +2,32 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-237
+  version: 1.1.0-242
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
   x-group-name: Card Management
 paths:
+  /IssuedDeviceAdmin/V1/Capability/Retrieve:
+    get:
+      tags:
+      - Capability Definition Resource
+      responses:
+        "200":
+          description: OK
+  /IssuedDeviceAdmin/V1/Capability/{capabilityName}/Retrieve:
+    get:
+      tags:
+      - Capability Definition Resource
+      parameters:
+      - name: capabilityName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
   /IssuedDeviceAdmin/V1/PaymentInstrument/Delete/Execute:
     post:
       tags:
@@ -286,6 +306,133 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve a list of cards
+      x-group-name: Card Management
+  /IssuedDeviceAdmin/V1/PaymentInstrument/GetPANContactDetails/Request:
+    get:
+      tags:
+      - Helix Core
+      summary: This method is used to return the Contact details of a given PAN
+      description: "3D Secure authentication is a security protocol designed to reduce\
+        \ the risk of fraud, identity theft and other suspicious activities during\
+        \ CNP (Card Not Present) transactions. It requires customer to complete an\
+        \ additional verification step with the card issuer when paying.\nThis API\
+        \ allows issuer to retrieve contact details of the cardholder from system\
+        \ and send it to ACS (Access Control Server)\nto conduct 3D Secure authentication."
+      operationId: getPanContactDetails
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetrievePanContactDetailsRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mobile:
+                    description: Mobile number of the cardholder
+                    type: string
+                  DateMobileModified:
+                    description: "Date and time when mobile number was last updated,\
+                      \ This will be present only when mobile number is present in\
+                      \ response (YYYYMMDD HH:MM:SS)."
+                    type: string
+                  Email:
+                    description: Email address that is marked as preferred for contact
+                      by the cardholder
+                    type: string
+                  DateEmailModified:
+                    description: "Date and time when email address was last updated,\
+                      \ This will be present only when email address is present in\
+                      \ response (YYYYMMDD HH:MM:SS)."
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li><li><em>HLXIDASBR001 : Primary Account Number\
+            \ required, please provide value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Card Contact Details
       x-group-name: Card Management
   /IssuedDeviceAdmin/V1/PaymentInstrument/Initiate:
     post:
@@ -858,7 +1005,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExecuteChangePINRequest"
+              $ref: "#/components/schemas/ExecuteChangePINRequest1"
       responses:
         "200":
           description: OK
@@ -909,8 +1056,7 @@ paths:
             \ blocked as Lost.</em></li><li><em>HLXIDASBV002 : Card already blocked\
             \ as Stolen.</em></li><li><em>HLXIDASAC001 : Account is closed.</em></li><li><em>HLXIDASID009\
             \ : Card is cancelled.</em></li><li><em>HLXIDASPC009 : CHANGE_PIN is not\
-            \ allowed for confirmed fraud cards.</em></li><li><em>HLXIDASPC010 : CHANGE_PINError\
-            \ while while calling Issued Device Security service for PIN change</em></li></ul>"
+            \ allowed for confirmed fraud cards.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2382,7 +2528,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "201":
           description: Created
@@ -3690,25 +3836,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3727,6 +3854,25 @@ components:
         ExpiryDate:
           description: Date on which the payment instrument expires (YYMM).
           pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -4211,7 +4357,7 @@ components:
         Name:
           description: Name of Financial Institution
           maxLength: 70
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         RegistrationAddress:
           description: Registered address of Financial Institution
@@ -5846,6 +5992,35 @@ components:
         Status:
           description: Status of the organisation record in the system
           type: string
+    RetrievePanContactDetailsRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+    RetrievePanContactDetailsResponse:
+      type: object
+      properties:
+        Mobile:
+          description: Mobile number of the cardholder
+          type: string
+        DateMobileModified:
+          description: "Date and time when mobile number was last updated, This will\
+            \ be present only when mobile number is present in response (YYYYMMDD\
+            \ HH:MM:SS)."
+          type: string
+        Email:
+          description: Email address that is marked as preferred for contact by the
+            cardholder
+          type: string
+        DateEmailModified:
+          description: "Date and time when email address was last updated, This will\
+            \ be present only when email address is present in response (YYYYMMDD\
+            \ HH:MM:SS)."
+          type: string
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
@@ -6315,25 +6490,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6353,6 +6509,25 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^?\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     SystemUpdateResponse:
       type: object
       properties:
@@ -6387,11 +6562,11 @@ components:
       properties:
         Name:
           description: Name of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
     UpdateBundleResponse:
       type: object
@@ -6491,7 +6666,7 @@ components:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Type:
           description: Specifies the type of product category
