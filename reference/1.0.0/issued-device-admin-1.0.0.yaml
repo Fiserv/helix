@@ -332,7 +332,7 @@ paths:
                   DateMobileModified:
                     description: "Date and time when mobile number was last updated,\
                       \ This will be present only when mobile number is present in\
-                      \ response (YYYYMMDD HH:MM:SS)."
+                      \ response (YYYY-MM-DD hh:mm:ss [. fraction ])."
                     type: string
                   Email:
                     description: Email address that is marked as preferred for contact
@@ -341,7 +341,7 @@ paths:
                   DateEmailModified:
                     description: "Date and time when email address was last updated,\
                       \ This will be present only when email address is present in\
-                      \ response (YYYYMMDD HH:MM:SS)."
+                      \ response (YYYY-MM-DD hh:mm:ss [. fraction ])."
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBU001\
