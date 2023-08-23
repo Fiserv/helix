@@ -1072,6 +1072,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Execute Change PIN for the given FEPID
+      x-group-name: Card Management
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
