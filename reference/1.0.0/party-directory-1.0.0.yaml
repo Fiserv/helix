@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-135
+  version: 1.1.0-140
 tags:
 - name: Customer Management
 paths:
@@ -528,7 +528,7 @@ paths:
                     description: Unique identifier for a Person.
                     type: string
                   Warning:
-                    $ref: "#/components/schemas/Warning"
+                    $ref: "#/components/schemas/Warning1"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -591,7 +591,15 @@ paths:
             \ ContactPreference has to be set for only one address.</em></li><li><em>HLXPTDTBR001\
             \ : Address added and set to Preferred for Contact.</em></li><li><em>HLXPTDTBR001\
             \ : Postal Address - Contact Preference is not valid, please provide valid\
-            \ value.</em></li></ul>"
+            \ value.</em></li><li><em>HLXPTDTBR001 : One of the email address must\
+            \ have contact preference as 'PreferredForContact'.</em></li><li><em>HLXPTDTBR001\
+            \ : Only one email address can have contact preference as 'PreferredForContact'.</em></li><li><em>HLXPTDTBR001\
+            \ : Electronic Address added and set to Preferred for Contact.</em></li><li><em>HLXPTDTBR001\
+            \ : Personal Email - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Work Email - Contact Preference required, please provide value.</em></li><li><em>HLXPTDTBR001\
+            \ : Personal Email - Contact Preference is not valid, please provide valid\
+            \ value.</em></li><li><em>HLXPTDTBR001 : Work Email - Contact Preference\
+            \ is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -707,7 +715,7 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: object
+                type: array
                 items:
                   $ref: "#/components/schemas/RetrievePostalAddressResponse"
                 properties:
@@ -1860,9 +1868,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1877,6 +1882,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1914,6 +1922,7 @@ components:
       required:
       - Type
       - Email
+      - ContactPreference
       type: object
       properties:
         Type:
@@ -1928,7 +1937,7 @@ components:
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ MayBeUsedForContact"
           type: string
     ElectronicAddressDtoUpdateRequest:
       required:
@@ -2813,7 +2822,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -3158,7 +3167,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3356,7 +3365,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -3371,7 +3380,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -3887,6 +3896,7 @@ components:
       required:
       - Type
       - Email
+      - ContactPreference
       type: object
       properties:
         Type:
@@ -3901,7 +3911,7 @@ components:
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
             \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ MayBeUsedForContact"
           type: string
         DateTimeAdded:
           description: Time stamp when this email is set as the current electronic
@@ -3999,7 +4009,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4351,10 +4361,6 @@ components:
           description: "Language in which a person communicates <br> Valid values\
             \ are : 2 character ISO Language Codes"
           type: string
-        Email:
-          description: Address for electronic mail (e-mail)
-          maxLength: 256
-          type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
             authentication
@@ -4565,25 +4571,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -4603,6 +4590,25 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     SystemUpdateResponse:
       type: object
       properties:
@@ -4684,7 +4690,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -4714,7 +4720,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -4794,10 +4800,6 @@ components:
         Language:
           description: "Language in which a person communicates <br> Valid values\
             \ are : 2 character ISO Language Codes"
-          type: string
-        Email:
-          description: Address for electronic mail (e-mail)
-          maxLength: 256
           type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
@@ -4914,17 +4916,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
