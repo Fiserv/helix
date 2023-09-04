@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-53
+  version: 1.1.0-96
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExecuteAccountDeleteRequest'
+              $ref: "#/components/schemas/ExecuteAccountDeleteRequest"
       responses:
         x-proxy-name: Delete Account Entities
         x-group-name: Account Maintenance
@@ -165,7 +165,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InitiateBoardingRequest'
+              $ref: "#/components/schemas/InitiateBoardingRequest"
       responses:
         x-proxy-name: Account Open
         x-group-name: Account Maintenance
@@ -180,20 +180,20 @@ paths:
                     description: Details of the created Person.
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
-                    - $ref: '#/components/schemas/RegisterPersonResponse'
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
+                    - $ref: "#/components/schemas/RegisterPersonResponse"
                   Agreement:
                     description: Details of the created Agreement.
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
-                    - $ref: '#/components/schemas/InitiateAgreementResponse'
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
+                    - $ref: "#/components/schemas/InitiateAgreementResponse"
                   PaymentInstrument:
                     description: "Details of the created PaymentInstrument.<p>Note:<br>\
                       \ <ul><li>PAN, CardholderType, DigitalCardType, CardTechnology,\
@@ -201,11 +201,11 @@ paths:
                       \ the Financial Institution is processing in Hybrid Mode.</li></ul>"
                     type: object
                     allOf:
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
-                    - $ref: '#/components/schemas/AddCardResponse'
+                    - $ref: "#/components/schemas/AddCardResponse"
+                    - $ref: "#/components/schemas/AddCardResponse"
+                    - $ref: "#/components/schemas/AddCardResponse"
+                    - $ref: "#/components/schemas/AddCardResponse"
+                    - $ref: "#/components/schemas/AddCardResponse"
           x-proxy-name: Account Open
           x-group-name: Account Maintenance
         "400":
@@ -489,7 +489,7 @@ components:
         OverrideParameterValues:
           type: array
           items:
-            $ref: '#/components/schemas/OverrideParameter'
+            $ref: "#/components/schemas/OverrideParameter"
         Bundle:
           description: "Bundles are a collection of multiple Features, that can be\
             \ used to further segment a Product, in order to provide alternate set(s)\
@@ -498,15 +498,24 @@ components:
             \ fees etc. or any combination of these during the onboarding process."
           type: array
           items:
-            $ref: '#/components/schemas/BundleRequestDto'
+            $ref: "#/components/schemas/BundleRequestDto"
     AddCardRequestEvent:
       type: object
       properties:
-        FEPID:
-          description: Unique identifier of the payment card (FEPID)
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
           type: string
         ProductId:
-          description: Identification of the product
+          type: string
+        FEPID:
+          description: Unique identifier of the payment card (FEPID)
           type: string
         FEAID:
           description: Identification of the account
@@ -514,31 +523,16 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventDescription:
-          description: Specifies event message.
-          type: string
-        EventName:
-          description: Specifies event name for the message.
-          type: string
-        EventId:
-          description: Specifies event id generated for the card creation.
-          type: string
-        Timestamp:
-          description: Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ).
+        CreatedDateTime:
+          description: "Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         FailedDateTime:
-          description: Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when the Add card request failed (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
-        BrandId:
-          description: Identification of the Brand
-          type: string
-        FiId:
-          description: Identification of the financial institution
-          type: string
+          - $ref: "#/components/schemas/Instant"
         CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
@@ -558,7 +552,7 @@ components:
           description: List of feature overridden in request
           type: array
           items:
-            $ref: '#/components/schemas/FeatureOverride'
+            $ref: "#/components/schemas/FeatureOverride"
     AddCardResponse:
       type: object
       properties:
@@ -566,7 +560,7 @@ components:
           description: Unique identifier for a Card.
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -577,17 +571,17 @@ components:
             \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
           type: string
         CardholderType:
-          description: Indicates if the card holder of the account is a Primary account
-            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
-            (Primary)</li><li>ADNL (Additional)</li></ul>
+          description: "Indicates if the card holder of the account is a Primary account\
+            \ Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM\
+            \ (Primary)</li><li>ADNL (Additional)</li></ul>"
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
           type: string
         DigitalCardType:
-          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
-            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
-            (NonDigital)</li></ul>
+          description: "Identifies the type of digital card. Possible values are:</br><ul><li>FTRM\
+            \ (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG\
+            \ (NonDigital)</li></ul>"
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -625,7 +619,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementFeatureParameter:
       type: object
       properties:
@@ -649,7 +643,7 @@ components:
         AgreementFeatureParameter:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -665,8 +659,7 @@ components:
           description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
-          maxLength: 37
-          pattern: \S
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
@@ -685,7 +678,7 @@ components:
           pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)"
           type: string
         ExternalAccount:
-          $ref: '#/components/schemas/ExternalAccount'
+          $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
     Bundle:
@@ -716,7 +709,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature1'
+            $ref: "#/components/schemas/Feature1"
     BundleRequestDto:
       required:
       - Identification
@@ -744,17 +737,17 @@ components:
     CardFraudStatusEvent:
       type: object
       properties:
-        eventId:
+        EventId:
           type: string
-        eventName:
+        EventName:
           type: string
-        eventDescription:
+        EventDescription:
           type: string
-        serviceDomain:
+        ServiceDomain:
           type: string
-        timestamp:
+        Timestamp:
           type: string
-        productId:
+        ProductId:
           type: string
         primaryAccountNumber:
           type: string
@@ -836,7 +829,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationOption1:
       required:
       - Name
@@ -854,7 +847,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
@@ -872,15 +865,26 @@ components:
           maxLength: 40000
           pattern: \S
           type: string
+    DeactivatePostalAddressRequest:
+      required:
+      - AddressType
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
+          pattern: \S
+          type: string
     ElectronicAddress:
       required:
       - Type
       - Email
+      - ContactPreference
       type: object
       properties:
         Type:
-          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
-            \ <br/> WorkEmail"
+          description: "Type of email <br/> Valid values are : <br/> PERS - Personal\
+            \ Email <br/> WORK - Work Email"
           pattern: \S
           type: string
         Email:
@@ -889,12 +893,33 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ (at least one email should have this preference) <br/> MAYB - May be\
+            \ used for contact (When one email is set as preferred contact, rest of\
+            \ the email should have this preference)"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this email is set as the current electronic
-            address
+    ElectronicAddressDtoUpdateRequest:
+      required:
+      - Type
+      - Email
+      - ContactPreference
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/>PERS - Personal\
+            \ Email <br/> WORK - Work Email"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> MAYB - May be used for contact"
+          pattern: \S
           type: string
     ErrorEvent:
       type: object
@@ -906,7 +931,7 @@ components:
           description: Specifies the service domain identifier
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         ServiceDomainIdentifierName:
           description: Specifies the service domain identifier name
           type: string
@@ -917,10 +942,10 @@ components:
           description: Specifies the error reason
           type: string
         FailedDateTime:
-          description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDateTime'
+          - $ref: "#/components/schemas/LocalDateTime"
     ExecuteAccountDeleteRequest:
       required:
       - DeletePerson
@@ -962,6 +987,8 @@ components:
           description: Unique identifier sent in original account opening request
             as idempotency ID.
           type: string
+        identificationNotPresent:
+          type: boolean
     ExecuteActivateCardResponse:
       type: object
       properties:
@@ -969,7 +996,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
     ExecuteAssignPANRequest:
       required:
       - FeatureId
@@ -1008,6 +1035,49 @@ components:
         PAN:
           description: Primary Account Number
           type: string
+    ExecuteChangePINRequest:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      - ExpiryDate
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
+          type: string
     ExecuteClosureRequest:
       type: object
       properties:
@@ -1034,11 +1104,11 @@ components:
             ISO Date format (YYYY-MM-DD).
           type: string
         ClosingDate:
-          description: Date and Time on which the Account was closed by the system.
-            Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
     ExecuteContactLessOptRequest:
       required:
       - ContactlessOptOutSwitch
@@ -1069,7 +1139,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
             card.
@@ -1084,7 +1154,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
     ExecuteDeleteAgreementRequest:
       required:
       - FEAID
@@ -1141,7 +1211,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         FraudStatus:
           description: This field indicates if a card is fraudulent or not. Valid
             values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
@@ -1151,7 +1221,7 @@ components:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1174,7 +1244,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -1182,7 +1252,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
     ExecuteTransferPINRequest:
       required:
       - NewPaymentInstrumentId
@@ -1198,7 +1268,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     ExecuteUnlinkProductFeatureRequest:
       required:
       - RequestType
@@ -1207,7 +1277,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
         RequestType:
           description: Request Type of Unlink Feature
           minLength: 1
@@ -1218,7 +1288,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
         RequestType:
           description: Request Type of Unlink Feature
           type: string
@@ -1333,6 +1403,24 @@ components:
           maxLength: 37
           pattern: \S
           type: string
+    ExternalIdentificationUpdateDto:
+      required:
+      - TypeOfIdentificationCode
+      - Identification
+      type: object
+      properties:
+        TypeOfIdentificationCode:
+          description: Specifies the type of external identification. E.g. CRIM (Customer
+            Relationship Management system assigned identifier). <br>Accepted Values
+            are <UL><LI><EM> AMID - Account Management Identification </EM></LI> <LI><EM>
+            CRID - CRM id as generated in the FI’s Customer Relationship management
+            (CRM) system </EM></LI></UL>
+          pattern: \S
+          type: string
+        Identification:
+          description: Specifies the value of the External Identification.
+          maxLength: 37
+          type: string
     Feature:
       required:
       - Identification
@@ -1414,7 +1502,7 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/HelixMessage'
+            $ref: "#/components/schemas/HelixMessage"
     HelixMessage:
       type: object
       properties:
@@ -1437,7 +1525,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureRequestDto'
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
     InitiateAgreementFeatureResponse:
       type: object
       properties:
@@ -1472,7 +1560,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -1482,7 +1570,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1520,20 +1608,20 @@ components:
             \ when CreatePerson is true."
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegisterPersonRequest'
+          - $ref: "#/components/schemas/RegisterPersonRequest"
         Agreement:
           description: This object is used to add a new Account into the system. This
             object is required when CreateAccount is true.
           type: object
           allOf:
-          - $ref: '#/components/schemas/InitiateAgreementRequest'
+          - $ref: "#/components/schemas/InitiateAgreementRequest"
         PaymentInstrument:
           description: "<p>This object is used to add a new Card into the system,\
             \ along with  an optional Bundle and Parameter overrides that can be supplied.\
             \ This object is required when CreateCard is true.<br>"
           type: object
           allOf:
-          - $ref: '#/components/schemas/AddCardRequest'
+          - $ref: "#/components/schemas/AddCardRequest"
     InitiateBoardingResponse:
       type: object
       properties:
@@ -1541,12 +1629,12 @@ components:
           description: Details of the created Person.
           type: object
           allOf:
-          - $ref: '#/components/schemas/RegisterPersonResponse'
+          - $ref: "#/components/schemas/RegisterPersonResponse"
         Agreement:
           description: Details of the created Agreement.
           type: object
           allOf:
-          - $ref: '#/components/schemas/InitiateAgreementResponse'
+          - $ref: "#/components/schemas/InitiateAgreementResponse"
         PaymentInstrument:
           description: "Details of the created PaymentInstrument.<p>Note:<br> <ul><li>PAN,\
             \ CardholderType, DigitalCardType, CardTechnology, NameLine1 and NameLine2\
@@ -1554,7 +1642,7 @@ components:
             \ in Hybrid Mode.</li></ul>"
           type: object
           allOf:
-          - $ref: '#/components/schemas/AddCardResponse'
+          - $ref: "#/components/schemas/AddCardResponse"
     InitiateFacilityAllocationRequest:
       required:
       - AgreementFeature
@@ -1582,7 +1670,7 @@ components:
     Instant:
       format: date-time
       type: string
-      example: 2022-03-10T16:15:50Z
+      example: "2022-03-10T16:15:50Z"
     IssuedDeviceActionRequest:
       required:
       - BlockReason
@@ -1622,12 +1710,12 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         NewFepId:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
@@ -1664,7 +1752,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     LocalDate:
       format: date
       type: string
@@ -1672,7 +1760,7 @@ components:
     LocalDateTime:
       format: date-time
       type: string
-      example: 2022-03-10T12:15:50
+      example: "2022-03-10T12:15:50"
     MasterCardChipDataResponse:
       type: object
       properties:
@@ -1758,7 +1846,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -1815,7 +1903,7 @@ components:
           description: Specifies an External Identification associated with the Person.
           type: object
           allOf:
-          - $ref: '#/components/schemas/ExternalIdentification'
+          - $ref: "#/components/schemas/ExternalIdentification"
     PersonDetailsDto:
       required:
       - Surname
@@ -1862,27 +1950,6 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
-        ExternalIdentification:
-          description: Specifies a list of External Identification associated with
-            the Person.
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalIdentification'
-        PostalAddress:
-          description: Current postal address of the person.
-          type: array
-          items:
-            $ref: '#/components/schemas/PostalAddress'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/Phone'
-        ElectronicAddress:
-          description: Address which is accessed by electronic means.
-          type: array
-          items:
-            $ref: '#/components/schemas/ElectronicAddress'
     Phone:
       required:
       - Type
@@ -1890,8 +1957,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
-            \ <br/> WorkPhone"
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
           pattern: \S
           type: string
         Number:
@@ -1905,17 +1972,46 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
         SmsPreference:
           description: "Indicates whether the person prefer to be receive SMS on this\
-            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
-        DateTimeAdded:
-          description: Time stamp when this phone number is set as the current phone
-            address
+    PhoneDtoUpdateRequest:
+      required:
+      - Type
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
     PostalAddress:
       required:
@@ -1926,8 +2022,8 @@ components:
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Current Residential\
-            \ <br/> Business <br/> Registered Residential"
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
           pattern: \S
           type: string
         StreetName:
@@ -1935,11 +2031,14 @@ components:
           maxLength: 70
           type: string
         BuildingNumber:
-          description: Number that identifies the position of a building on a street
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 35
           type: string
         BuildingName:
-          description: Name of a building or house
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
           maxLength: 70
           type: string
         PostOfficeBox:
@@ -1954,9 +2053,10 @@ components:
           pattern: \S
           type: string
         AddressLine1:
-          description: "AddressLine1 - Information that locates and identifies a specific\
-            \ address, as defined by postal services, that is presented in free format\
-            \ text"
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
           maxLength: 70
           type: string
         AddressLine2:
@@ -1992,13 +2092,13 @@ components:
           pattern: \S
           type: string
         ContactPreference:
-          description: "Indicates whether the person prefer to be contacted on this\
-            \ address<br/> Valid values are : <br/> PreferredForContact <br/> NotPreferredForContact\
-            \ <br/> MayBeUsedForContact"
+          description: "Indicates that this address will be used for all correspondence,\
+            \ including card and PIN mailers. Configuration exists on the Card Delivery\
+            \ Capability that can be used by the bank to define whether the address\
+            \ of the cardholder, or the account holder, should be used for the delivery\
+            \ of cards and PINs.<br/> Valid values are : <br/> PREF - Preferred for\
+            \ contact <br/> NOTP - Not preferred for contact "
           pattern: \S
-          type: string
-        DateTimeAdded:
-          description: Time stamp when this address is set as the current address
           type: string
     ProductReissueEvent:
       type: object
@@ -2007,7 +2107,7 @@ components:
           description: Identification of the product
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
     RegisterBundleRequest:
       required:
       - Identification
@@ -2032,7 +2132,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: '#/components/schemas/Feature'
+            $ref: "#/components/schemas/Feature"
     RegisterBundleResponse:
       type: object
       properties:
@@ -2056,7 +2156,7 @@ components:
         ConfigurationParameter:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationParameter'
+            $ref: "#/components/schemas/ConfigurationParameter"
     RegisterConfigurationOptionResponse:
       type: object
       properties:
@@ -2095,7 +2195,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -2135,13 +2235,86 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
     RegisterPersonRequest:
+      required:
+      - Surname
+      - PostalAddress
+      type: object
+      properties:
+        NamePrefix:
+          description: Specifies the terms used to formally address a person.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        GivenName:
+          description: First name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        MiddleName:
+          description: Second name of a person.
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)|(^$)"
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name."
+          maxLength: 35
+          pattern: "(^[a-zA-Z\\s'-]+$)"
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes."
+          pattern: (^(aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|in|io|is|it|iu|iw|ja|ji|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mo|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)$)|(^$)
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication.
+          maxLength: 20
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word.
+          maxLength: 35
+          pattern: "(^[a-zA-Z]+$)|(^$)"
+          type: string
+        Brand:
+          description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
+            \ Person assigned to a Brand cannot be shared across Brands."
+          maxLength: 37
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/Phone"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddress"
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalIdentification"
+    RegisterPersonRequest1:
       required:
       - Surname
       type: object
@@ -2187,38 +2360,40 @@ components:
           maxLength: 35
           pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
+        Brand:
+          description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
+            \ Person assigned to a Brand cannot be shared across Brands."
+          maxLength: 37
+          type: string
+        PostalAddress:
+          description: Current postal address of the person.
+          type: array
+          items:
+            $ref: "#/components/schemas/PostalAddress"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/PhoneDtoUpdateRequest"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/ElectronicAddressDtoUpdateRequest"
         ExternalIdentification:
           description: Specifies a list of External Identification associated with
             the Person.
           type: array
           items:
-            $ref: '#/components/schemas/ExternalIdentification'
-        PostalAddress:
-          description: Current postal address of the person.
-          type: array
-          items:
-            $ref: '#/components/schemas/PostalAddress'
-        Phone:
-          description: Collection of information that identifies a phone address.
-          type: array
-          items:
-            $ref: '#/components/schemas/Phone'
-        ElectronicAddress:
-          description: Address which is accessed by electronic means.
-          type: array
-          items:
-            $ref: '#/components/schemas/ElectronicAddress'
-        Brand:
-          description: Identification of the brand associated with the person.<br/><b>Note:</b>
-            Person assigned to a Brand cannot be shared across Brands.
-          maxLength: 37
-          type: string
+            $ref: "#/components/schemas/ExternalIdentificationUpdateDto"
     RegisterPersonResponse:
       type: object
       properties:
         FECID:
           description: Unique identifier for a Person.
           type: string
+        Warning:
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -2228,12 +2403,12 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Feature2'
+            $ref: "#/components/schemas/Feature2"
     RegisterProductFeatureResponse:
       type: object
       properties:
         Warning:
-          $ref: '#/components/schemas/Warning'
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -2277,12 +2452,12 @@ components:
           description: List of PaymentInstrument
           type: array
           items:
-            $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+            $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         Product:
           description: Identification of the product
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrieveProductResponse'
+          - $ref: "#/components/schemas/RetrieveProductResponse"
     RequestGetCVV2Request:
       required:
       - RSAPublicKey
@@ -2389,7 +2564,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -2417,7 +2592,7 @@ components:
         AgreementFeature:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeature'
+            $ref: "#/components/schemas/AgreementFeature"
     RetrieveAgreementResponse:
       required:
       - AgreementInvolvement
@@ -2448,7 +2623,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: "#/components/schemas/AgreementInvolvement"
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -2457,7 +2632,7 @@ components:
         ExternalAccount:
           type: array
           items:
-            $ref: '#/components/schemas/ExternalAccount'
+            $ref: "#/components/schemas/ExternalAccount"
         IsClosed:
           description: This field identifies if an account is closed or not. Valid
             values are True and False. This field will be set to True if an account
@@ -2469,11 +2644,11 @@ components:
             ISO Date format (YYYY-MM-DD).
           type: string
         ClosingDate:
-          description: Date and Time on which the Account was closed by the system.
-            Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         NetworkAccountUpdaterOption:
           description: Identifies whether the cardholder is currently opted-out or
             opted-in for the Network Account Updater. The opt out option affects all
@@ -2487,7 +2662,7 @@ components:
         Bundle:
           type: array
           items:
-            $ref: '#/components/schemas/Bundle'
+            $ref: "#/components/schemas/Bundle"
     RetrieveBundleResponse:
       type: object
       properties:
@@ -2511,7 +2686,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature1'
+            $ref: "#/components/schemas/Feature1"
     RetrieveCardFeeDetailsResponse:
       type: object
       properties:
@@ -2519,16 +2694,18 @@ components:
           description: Unique identifier of a card
           type: string
         LastCardMaintenanceFeeDate:
-          description: |-
-            Date when Card maintenance fee was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: ISO Date (YYYY-MM-DD)
+          description: "Date when Card maintenance fee was last assessed on the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         LastCardMaintenanceFeeAmount:
-          description: |-
-            Card maintenance fee amount that was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: Amount
+          description: "Card maintenance fee amount that was last assessed on the\
+            \ card. This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: Amount"
           type: string
         NextCardMaintenanceFeeDate:
           description: "Date when card maintenance fee (initial or recurring) would\
@@ -2537,61 +2714,86 @@ components:
             \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         LastLostOrStolenReplacementCardFeeDate:
           description: "Date when Lost or Stolen card replacement fee was last assessed\
             \ on the card. \nType: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         LastLostOrStolenReplacementCardFeeAmount:
           description: "Lost or Stolen card replacement fee amount that was last assessed\
             \ on the card. \nType: Amount"
           type: string
         TotalCardFeeAmountLifeToDate:
-          description: |-
-            The total amount of card fees (Card maintenance feeand Lost or Stolen card replacement fee) that has been assessed on the card till date. This field will also include any card fees that was assessed on the old card, if the current one was created from Lost or Stolen replacement process.
-            Type: Amount
+          description: "The total amount of card fees (Card maintenance feeand Lost\
+            \ or Stolen card replacement fee) that has been assessed on the card till\
+            \ date. This field will also include any card fees that was assessed on\
+            \ the old card, if the current one was created from Lost or Stolen replacement\
+            \ process.\nType: Amount"
           type: string
         CardMaintenanceFeeWaiveFlag:
-          description: |-
-            Identifies the type of waive option, if applicable for the Card maintenance fee.
-            Valid values are:
-
-            PERM - Permanently waive card maintenance fee
-            ONCE - Waive the next card maintenance fee once
+          description: "Identifies the type of waive option, if applicable for the\
+            \ Card maintenance fee.\nValid values are:\n\nPERM - Permanently waive\
+            \ card maintenance fee\nONCE - Waive the next card maintenance fee once"
           type: string
         CardMaintenanceFeeWaiveFlagUpdateDate:
-          description: |-
-            Date when Card Maintenance Fee Waive Flag was updated last time.
-            Type: ISO Date (YYYY-MM-DD)
+          description: "Date when Card Maintenance Fee Waive Flag was updated last\
+            \ time.\nType: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         LastCardMaintenanceFeeWaiveAmount:
-          description: |-
-            Card maintenance fee amount that was last waived for the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: Amount
+          description: "Card maintenance fee amount that was last waived for the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: Amount"
           type: string
         LastCardMaintenanceFeeWaiveDate:
-          description: |-
-            Date when Card maintenance fee was last waived on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: ISO Date (YYYY-MM-DD)
+          description: "Date when Card maintenance fee was last waived on the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         LastLostOrStolenReplacementCardFeeWaiveAmount:
-          description: |-
-            Lost or Stolen fee amount that was last waived for the card.
-            Type: Amount
+          description: "Lost or Stolen fee amount that was last waived for the card.\n\
+            Type: Amount"
           type: string
         LastLostOrStolenReplacementCardFeeWaiveDate:
-          description: |-
-            Date when Lost or Stolen fee was last waived on the card.
-            Type: ISO Date (YYYY-MM-DD)
+          description: "Date when Lost or Stolen fee was last waived on the card.\n\
+            Type: ISO Date (YYYY-MM-DD)"
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
+    RetrieveElectronicAddressResponse:
+      required:
+      - Type
+      - Email
+      - ContactPreference
+      type: object
+      properties:
+        Type:
+          description: "Type of email <br/> Valid values are : <br/> PERS - Personal\
+            \ Email <br/> WORK - Work Email"
+          pattern: \S
+          type: string
+        Email:
+          description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
+            \ (e-mail)"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ (at least one email should have this preference) <br/> MAYB - May be\
+            \ used for contact (When one email is set as preferred contact, rest of\
+            \ the email should have this preference)"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this email is set as the current electronic
+            address
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
       required:
       - FacilityIdentification
@@ -2635,7 +2837,7 @@ components:
           description: List of Feature Parameter
           type: array
           items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -2684,7 +2886,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -2722,12 +2924,12 @@ components:
           description: Address which is accessed by electronic means
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/ElectronicAddress"
         Phone:
           description: Collection of information that identifies a phone address
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/Phone"
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the organisation
@@ -2739,6 +2941,35 @@ components:
         Status:
           description: Status of the organisation record in the system
           type: string
+    RetrievePanContactDetailsRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+    RetrievePanContactDetailsResponse:
+      type: object
+      properties:
+        Mobile:
+          description: Mobile number of the cardholder
+          type: string
+        DateMobileModified:
+          description: "Date and time when mobile number was last updated, This will\
+            \ be present only when mobile number is present in response (YYYY-MM-DD\
+            \ hh:mm:ss [. fraction ])."
+          type: string
+        Email:
+          description: Email address that is marked as preferred for contact by the
+            cardholder
+          type: string
+        DateEmailModified:
+          description: "Date and time when email address was last updated, This will\
+            \ be present only when email address is present in response (YYYY-MM-DD\
+            \ hh:mm:ss [. fraction ])."
+          type: string
     RetrievePaymentInstrumentResponse:
       type: object
       properties:
@@ -2746,7 +2977,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: '#/components/schemas/UUID'
+          - $ref: "#/components/schemas/UUID"
         Product:
           description: Banking product associated with the payment instrument
           type: string
@@ -2763,17 +2994,17 @@ components:
             (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         ExpiryDate:
           description: Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         PriorCardExpiryDate:
           description: Prior Date on which the payment instrument expires (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         Cardholder:
           description: Party entitled to use the payment instrument (FECID)
           type: string
@@ -2801,7 +3032,7 @@ components:
           description: Date when the payment instrument was activated (YYYY-MM-dd).
           type: string
           allOf:
-          - $ref: '#/components/schemas/LocalDate'
+          - $ref: "#/components/schemas/LocalDate"
         Blocked:
           description: Indicates whether payment instrument is blocked
           type: string
@@ -2810,10 +3041,11 @@ components:
             Accepted Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           type: string
         BlockedDateTime:
-          description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which the payment instrument was blocked\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         FinancialInstitution:
           description: Identification of the financial institution associated with
             the payment instrument
@@ -2826,11 +3058,11 @@ components:
             Account Number) in masked form showing only the last 4 digits
           type: string
         PlasticCreationDateTime:
-          description: Date and time at which plastic created for the payment instrument
-            (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time at which plastic created for the payment instrument\
+            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
           type: string
@@ -2848,10 +3080,10 @@ components:
           description: Number of Invalid PIN Tries before reset.
           type: integer
         LastInvalidPinTryDateTime:
-          description: Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ).
+          description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         DigitalCardType:
           description: Identifies the type of digital card. Possible Response Values
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
@@ -2875,7 +3107,7 @@ components:
           description: Indicates date/time when a card was cancelled.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         FraudStatus:
           description: This field indicates if a card is fraudulent or not. Valid
             values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
@@ -2885,7 +3117,7 @@ components:
           description: Indicates date/time when fraud status was last updated.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -2895,17 +3127,17 @@ components:
           description: Payment instrument details
           type: object
           allOf:
-          - $ref: '#/components/schemas/RetrievePaymentInstrumentResponse'
+          - $ref: "#/components/schemas/RetrievePaymentInstrumentResponse"
         VisaChipDataResponse:
           description: Visa Chip details for a given payment instrument
           type: object
           allOf:
-          - $ref: '#/components/schemas/VisaChipDataResponse'
+          - $ref: "#/components/schemas/VisaChipDataResponse"
         MasterCardChipDataResponse:
           description: MasterCard Chip details for a given payment instrument
           type: object
           allOf:
-          - $ref: '#/components/schemas/MasterCardChipDataResponse'
+          - $ref: "#/components/schemas/MasterCardChipDataResponse"
     RetrievePersonListRequest:
       type: object
       properties:
@@ -2913,10 +3145,11 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           maxLength: 37
           type: string
-        CrmId:
-          description: External identifier of the person (CRMID)
-          maxLength: 35
-          type: string
+        ExternalIdentification:
+          description: Specifies an External Identification associated with the Person.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ExternalIdentification"
         ClearingSystemIdentificationCode:
           description: Specifies the clearing system identification code. E.g. GBDSC
             (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
@@ -2941,7 +3174,8 @@ components:
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
-            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
+            \ are : <br> ENAB - Enabled <br> DISA - Disabled <br> DELE - Deleted <br>\
+            \ PROF - ProForma"
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -2961,10 +3195,11 @@ components:
           maxLength: 70
           type: string
         ExternalIdentification:
-          description: |
-            Identification of the customer issued by the client financial institution. (CRM/CIS/CIF)
-          maxLength: 35
-          type: string
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalIdentification"
         NamePrefix:
           description: "Specifies the terms used to formally address a person <br>\
             \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
@@ -2991,10 +3226,6 @@ components:
           description: "Language in which a person communicates <br> Valid values\
             \ are : 2 character ISO Language Codes"
           type: string
-        Email:
-          description: Address for electronic mail (e-mail)
-          maxLength: 256
-          type: string
         MemorableWord:
           description: Memorable word selected by the customer to be used for customer
             authentication
@@ -3005,22 +3236,155 @@ components:
           maxLength: 35
           type: string
         PostalAddress:
-          description: Current postal address of the person.
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \ historic or inactive addresses will not be returned in this API.<b/><br/> "
           type: array
           items:
-            $ref: '#/components/schemas/PostalAddress'
+            $ref: "#/components/schemas/RetrievePostalAddressResponse"
         Phone:
           description: Collection of information that identifies a phone address.
           type: array
           items:
-            $ref: '#/components/schemas/Phone'
+            $ref: "#/components/schemas/RetrievePhoneResponse"
         ElectronicAddress:
           description: Address which is accessed by electronic means.
           type: array
           items:
-            $ref: '#/components/schemas/ElectronicAddress'
+            $ref: "#/components/schemas/RetrieveElectronicAddressResponse"
         enabled:
           type: boolean
+    RetrievePhoneResponse:
+      required:
+      - Type
+      - Number
+      type: object
+      properties:
+        Type:
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
+          pattern: \S
+          type: string
+        Number:
+          description: "Collection of information that identifies a phone number,\
+            \ as defined by telecom services. Phone number must start with special\
+            \ character '+', followed by numbers [0 - 9], with minimum length of 8\
+            \ digits and maximum length of 15 digits excluding + symbol."
+          type: string
+        Extension:
+          description: "<em> maxLength: 10 </em> <br/> Phone extension number"
+          type: string
+        ContactPreference:
+          description: "Indicates whether the person prefer to be contacted on this\
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
+          type: string
+        SmsPreference:
+          description: "Indicates whether the person prefer to be receive SMS on this\
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this phone number is set as the current phone
+            address
+          type: string
+    RetrievePostalAddressResponse:
+      required:
+      - AddressType
+      - PostalCode
+      - Country
+      - ContactPreference
+      type: object
+      properties:
+        AddressType:
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
+          pattern: \S
+          type: string
+        StreetName:
+          description: Name of a street or thoroughfare
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: "Number that identifies the position of a building on a street.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: "Name of a building or house. At least one of Address Line\
+            \ 1, Building Number or Building Name is required for a postal address."
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: "Numbered box in a post office, assigned to a person or organisation,\
+            \ where letters are kept until called for"
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Identifier consisting of a group of letters and/or numbers
+            that is added to a postal address to assist the sorting of mail
+          maxLength: 16
+          pattern: \S
+          type: string
+        AddressLine1:
+          description: "Information that locates and identifies a specific address,\
+            \ as defined by postal services, that is presented in free format text.\
+            \ At least one of Address Line 1, Building Number or Building Name is\
+            \ required for a postal address."
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: "AddressLine2 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: "AddressLine3 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: "AddressLine4 - Information that locates and identifies a specific\
+            \ address, as defined by postal services, that is presented in free format\
+            \ text"
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of town / city from the address
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: "Identifies a subdivision of a country such as state, region,\
+            \ county"
+          maxLength: 35
+          type: string
+        Country:
+          description: "Nation with its own government occupying a particular territory\
+            \ <br/> Valid values are : 2 character ISO Country Codes "
+          pattern: \S
+          type: string
+        ContactPreference:
+          description: "Indicates that this address will be used for all correspondence,\
+            \ including card and PIN mailers. Configuration exists on the Card Delivery\
+            \ Capability that can be used by the bank to define whether the address\
+            \ of the cardholder, or the account holder, should be used for the delivery\
+            \ of cards and PINs.<br/> Valid values are : <br/> PREF - Preferred for\
+            \ contact <br/> NOTP - Not preferred for contact "
+          pattern: \S
+          type: string
+        DateTimeAdded:
+          description: Time stamp when this address is set as the current address
+          type: string
+        isActive:
+          description: Identifies the latest active address of a specific type added
+            to the system. Valid values are True and False. If it is set to True it
+            means that this is the last address of that address type that was added
+            into the system and that is still active.
+          type: string
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -3051,7 +3415,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature3'
+            $ref: "#/components/schemas/Feature3"
     RetrieveProductResponse:
       type: object
       properties:
@@ -3084,7 +3448,34 @@ components:
             counter value
           type: object
           allOf:
-          - $ref: '#/components/schemas/ChipData'
+          - $ref: "#/components/schemas/ChipData"
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -3098,13 +3489,18 @@ components:
             was attempted on the card.
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
           type: object
           allOf:
-          - $ref: '#/components/schemas/ChipData'
+          - $ref: "#/components/schemas/ChipData"
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
@@ -3143,7 +3539,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: '#/components/schemas/Feature1'
+            $ref: "#/components/schemas/Feature1"
     UpdateFeatureRequest:
       required:
       - Name
@@ -3161,7 +3557,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -3191,7 +3587,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -3212,21 +3608,103 @@ components:
             opt-in for the Network Account Updater. This contains the value set in
             the request.
           type: string
+    UpdatePersonResponse:
+      type: object
+      properties:
+        FECID:
+          description: Fiserv Enterprise Customer ID - Unique identifier for the person
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the person record in the system <br> Valid values\
+            \ are : <br> ENAB - Enabled <br> DISA - Disabled <br> DELE - Deleted <br>\
+            \ PROF - ProForma"
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the person
+          maxLength: 37
+          type: string
+        Brand:
+          description: Identification of the brand associated with the person
+          maxLength: 37
+          type: string
+        FiName:
+          description: Name of the financial institution associated with the person
+          maxLength: 70
+          type: string
+        BrandName:
+          description: Name of the brand associated with the person
+          maxLength: 70
+          type: string
+        ExternalIdentification:
+          description: Specifies a list of External Identification associated with
+            the Person.
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalIdentification"
+        NamePrefix:
+          description: "Specifies the terms used to formally address a person <br>\
+            \ Valid values are : <br> Doctor<br> Mister <br> Miss <br> Madam <br>\
+            \ GenderNeutral"
+          type: string
+        GivenName:
+          description: First name of a person
+          maxLength: 35
+          type: string
+        MiddleName:
+          description: Second name of a person
+          maxLength: 35
+          type: string
+        Surname:
+          description: "Surname is a name added to a given name and is part of a personal\
+            \ name. In many cases, a surname is a family name"
+          maxLength: 35
+          type: string
+        BirthDate:
+          description: Date on which a person is born <br/> Format must be ISO Date
+            format (YYYY-MM-DD)
+          type: string
+        Language:
+          description: "Language in which a person communicates <br> Valid values\
+            \ are : 2 character ISO Language Codes"
+          type: string
+        MemorableWord:
+          description: Memorable word selected by the customer to be used for customer
+            authentication
+          maxLength: 20
+          type: string
+        MemorableWordReminder:
+          description: Reminder set by the person to remember the memorable word
+          maxLength: 35
+          type: string
+        PostalAddress:
+          description: "Current active postal addresses of the person.<br/> <b>Note:\
+            \ historic or inactive addresses will not be returned in this API.<b/><br/> "
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrievePostalAddressResponse"
+        Phone:
+          description: Collection of information that identifies a phone address.
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrievePhoneResponse"
+        ElectronicAddress:
+          description: Address which is accessed by electronic means.
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrieveElectronicAddressResponse"
+        enabled:
+          type: boolean
+        Warning:
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
-      required:
-      - Name
-      - Brand
       type: object
       properties:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \S
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          maxLength: 37
-          minLength: 1
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
@@ -3300,14 +3778,26 @@ components:
     Warning:
       type: object
       properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/WarningMessage"
+    Warning1:
+      type: object
+      properties:
         responseCode:
           format: int32
           type: integer
         message:
           type: array
           items:
-            $ref: '#/components/schemas/WarningMessage'
+            $ref: "#/components/schemas/WarningMessage1"
     WarningMessage:
+      type: object
+      properties:
+        message:
+          type: string
+    WarningMessage1:
       type: object
       properties:
         message:
