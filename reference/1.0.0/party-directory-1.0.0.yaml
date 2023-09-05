@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-140
+  version: 1.1.0-144
 tags:
 - name: Customer Management
 paths:
@@ -528,7 +528,7 @@ paths:
                     description: Unique identifier for a Person.
                     type: string
                   Warning:
-                    $ref: "#/components/schemas/Warning1"
+                    $ref: "#/components/schemas/Warning"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -715,13 +715,14 @@ paths:
                 - PostalCode
                 - Country
                 - ContactPreference
-                type: array
+                type: object
                 items:
                   $ref: "#/components/schemas/RetrievePostalAddressResponse"
                 properties:
                   AddressType:
-                    description: "Type of address<br/> Valid values are : <br/> Current\
-                      \ Residential <br/> Business <br/> Registered Residential"
+                    description: "Type of address<br/> Valid values are : <br/> HOME\
+                      \ - Current Residential <br/> BIZZ - Business <br/> REGR - Registered\
+                      \ Residential"
                     pattern: \S
                     type: string
                   StreetName:
@@ -798,8 +799,8 @@ paths:
                       \ exists on the Card Delivery Capability that can be used by\
                       \ the bank to define whether the address of the cardholder,\
                       \ or the account holder, should be used for the delivery of\
-                      \ cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
-                      \ <br/> NotPreferredForContact "
+                      \ cards and PINs.<br/> Valid values are : <br/> PREF - Preferred\
+                      \ for contact <br/> NOTP - Not preferred for contact "
                     pattern: \S
                     type: string
                   DateTimeAdded:
@@ -1914,8 +1915,8 @@ components:
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Current Residential\
-            \ <br/> Business <br/> Registered Residential"
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
           pattern: \S
           type: string
     ElectronicAddress:
@@ -1926,8 +1927,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
-            \ <br/> WorkEmail"
+          description: "Type of email <br/> Valid values are : <br/> PERS - Personal\
+            \ Email <br/> WORK - Work Email"
           pattern: \S
           type: string
         Email:
@@ -1936,27 +1937,33 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ MayBeUsedForContact"
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ (at least one email should have this preference) <br/> MAYB - May be\
+            \ used for contact (When one email is set as preferred contact, rest of\
+            \ the email should have this preference)"
           type: string
     ElectronicAddressDtoUpdateRequest:
       required:
       - Type
+      - Email
+      - ContactPreference
       type: object
       properties:
         Type:
-          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
-            \ <br/> WorkEmail"
+          description: "Type of email <br/> Valid values are : <br/>PERS - Personal\
+            \ Email <br/> WORK - Work Email"
           pattern: \S
           type: string
         Email:
           description: "<em> maxLength: 256 </em> <br/> Address for electronic mail\
             \ (e-mail)"
+          pattern: \S
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> MAYB - May be used for contact"
+          pattern: \S
           type: string
     ErrorEvent:
       type: object
@@ -2933,8 +2940,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
-            \ <br/> WorkPhone"
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
           pattern: \S
           type: string
         Number:
@@ -2948,13 +2955,15 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
         SmsPreference:
           description: "Indicates whether the person prefer to be receive SMS on this\
-            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
     PhoneDtoUpdateRequest:
       required:
@@ -2962,8 +2971,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
-            \ <br/> WorkPhone"
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
           pattern: \S
           type: string
         Number:
@@ -2977,13 +2986,15 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
         SmsPreference:
           description: "Indicates whether the person prefer to be receive SMS on this\
-            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
     PostalAddress:
       required:
@@ -2994,8 +3005,8 @@ components:
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Current Residential\
-            \ <br/> Business <br/> Registered Residential"
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
           pattern: \S
           type: string
         StreetName:
@@ -3068,8 +3079,8 @@ components:
             \ including card and PIN mailers. Configuration exists on the Card Delivery\
             \ Capability that can be used by the bank to define whether the address\
             \ of the cardholder, or the account holder, should be used for the delivery\
-            \ of cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
-            \ <br/> NotPreferredForContact "
+            \ of cards and PINs.<br/> Valid values are : <br/> PREF - Preferred for\
+            \ contact <br/> NOTP - Not preferred for contact "
           pattern: \S
           type: string
     ProductReissueEvent:
@@ -3365,7 +3376,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -3380,7 +3391,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -3900,8 +3911,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of email <br/> Valid values are : <br/> PersonalEmail\
-            \ <br/> WorkEmail"
+          description: "Type of email <br/> Valid values are : <br/> PERS - Personal\
+            \ Email <br/> WORK - Work Email"
           pattern: \S
           type: string
         Email:
@@ -3910,8 +3921,10 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ email address<br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ MayBeUsedForContact"
+            \ email address<br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ (at least one email should have this preference) <br/> MAYB - May be\
+            \ used for contact (When one email is set as preferred contact, rest of\
+            \ the email should have this preference)"
           type: string
         DateTimeAdded:
           description: Time stamp when this email is set as the current electronic
@@ -4310,7 +4323,8 @@ components:
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
-            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
+            \ are : <br> ENAB - Enabled <br> DISA - Disabled <br> DELE - Deleted <br>\
+            \ PROF - ProForma"
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -4395,8 +4409,8 @@ components:
       type: object
       properties:
         Type:
-          description: "Type of phone <br/> Valid values are : <br/> Phone <br/> Mobile\
-            \ <br/> WorkPhone"
+          description: "Type of phone <br/> Valid values are : <br/> PHON - Phone\
+            \ <br/> MOBL - Mobile <br/> WORK - Work Phone"
           pattern: \S
           type: string
         Number:
@@ -4410,13 +4424,15 @@ components:
           type: string
         ContactPreference:
           description: "Indicates whether the person prefer to be contacted on this\
-            \ phone number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ phone number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
         SmsPreference:
           description: "Indicates whether the person prefer to be receive SMS on this\
-            \ mobile number <br/> Valid values are : <br/> PreferredForContact <br/>\
-            \ NotPreferredForContact <br/> MayBeUsedForContact"
+            \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
+            \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
+            \ contact"
           type: string
         DateTimeAdded:
           description: Time stamp when this phone number is set as the current phone
@@ -4431,8 +4447,8 @@ components:
       type: object
       properties:
         AddressType:
-          description: "Type of address<br/> Valid values are : <br/> Current Residential\
-            \ <br/> Business <br/> Registered Residential"
+          description: "Type of address<br/> Valid values are : <br/> HOME - Current\
+            \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
           pattern: \S
           type: string
         StreetName:
@@ -4505,8 +4521,8 @@ components:
             \ including card and PIN mailers. Configuration exists on the Card Delivery\
             \ Capability that can be used by the bank to define whether the address\
             \ of the cardholder, or the account holder, should be used for the delivery\
-            \ of cards and PINs.<br/> Valid values are : <br/> PreferredForContact\
-            \ <br/> NotPreferredForContact "
+            \ of cards and PINs.<br/> Valid values are : <br/> PREF - Preferred for\
+            \ contact <br/> NOTP - Not preferred for contact "
           pattern: \S
           type: string
         DateTimeAdded:
@@ -4750,7 +4766,8 @@ components:
           type: string
         Status:
           description: "Status of the person record in the system <br> Valid values\
-            \ are : <br> Enabled <br> Disabled <br> Deleted <br> ProForma"
+            \ are : <br> ENAB - Enabled <br> DISA - Disabled <br> DELE - Deleted <br>\
+            \ PROF - ProForma"
           type: string
         FinancialInstitution:
           description: Identification of the financial institution associated with
@@ -4828,6 +4845,8 @@ components:
             $ref: "#/components/schemas/RetrieveElectronicAddressResponse"
         enabled:
           type: boolean
+        Warning:
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       required:
       - Name
@@ -4916,17 +4935,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
