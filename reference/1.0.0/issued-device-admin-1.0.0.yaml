@@ -6522,7 +6522,7 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^?\d*$
+          pattern: ^\d*$
           type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
