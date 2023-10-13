@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-257
+  version: 1.1.0-271
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -1072,8 +1072,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Execute Change PIN for the given FEPID
-      x-group-name: Card Management
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
     get:
       tags:
@@ -1140,6 +1138,10 @@ paths:
                   VlpTransactionAmountLimit:
                     type: string
                   OfflinePin:
+                    type: string
+                  StagedScript:
+                    type: string
+                  SentScript:
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -1210,6 +1212,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
+      deprecated: true
       x-proxy-name: Retrieve chip data details
       x-group-name: Card Management
       x-api-scope: Internal
@@ -2514,7 +2517,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest1"
+              $ref: "#/components/schemas/SystemUpdateRequest"
       responses:
         "201":
           description: Created
@@ -2797,7 +2800,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Update Name on a Card
+      x-proxy-name: Update a Card
       x-group-name: Card Management
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Validate:
     get:
@@ -3144,12 +3147,6 @@ components:
           type: string
         EventName:
           type: string
-        EventDescription:
-          type: string
-        ServiceDomain:
-          type: string
-        Timestamp:
-          type: string
         ProductId:
           type: string
         FEPID:
@@ -3325,6 +3322,7 @@ components:
       - FinancialInstitutionIdentification
       - Identification
       - ReportingCurrency
+      - SchemeOperatingRegion
       type: object
       properties:
         Name:
@@ -3367,6 +3365,10 @@ components:
         CountryOfOperation:
           description: Country of Operation
           maxLength: 2
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
           type: string
     BrandRegisterResponse:
       type: object
@@ -3479,33 +3481,19 @@ components:
           type: string
         EventName:
           type: string
-        EventDescription:
+        PrimaryAccountNumber:
           type: string
-        ServiceDomain:
+        CardholderType:
           type: string
-        Timestamp:
+        CardTechnologyType:
           type: string
-        ProductId:
+        FEAID:
           type: string
-        primaryAccountNumber:
+        FECID:
           type: string
-        cardholderType:
+        FEPID:
           type: string
-        cardTechnologyType:
-          type: string
-        feaId:
-          type: string
-        fecid:
-          type: string
-        cardHolderName:
-          type: string
-        entityId:
-          type: string
-        subEntityId:
-          type: string
-        fiId:
-          type: string
-        brandId:
+        CardHolderName:
           type: string
     ChipData:
       type: object
@@ -3516,6 +3504,32 @@ components:
         Chip:
           description: Chip Sequence Number
           type: string
+        SentScript:
+          description: "Issuer script that has already been sent to the card, during\
+            \ a previous online contact authorisation.<br> Valid values are: <UL><LI>\
+            \ CARD BLOCK - This script when sent to the card, will shut down all proprietary\
+            \ and non-proprietary applications that reside on the card, to prevent\
+            \ further use of the card.</LI> <LI> PIN CHANGE -  This script when sent\
+            \ to the card, can be used to change the offline PIN as well as reset\
+            \ the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent\
+            \ to the card, can be used to reset the PIN Try Counter, to enable usage\
+            \ of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
+        StagedScript:
+          description: "Issuer script that is pending delivery to the card, upon the\
+            \ receipt of the next online contact authorisation.<br> Valid values are:\
+            \ <UL><LI> CARD BLOCK - This script when sent to the card, will shut down\
+            \ all proprietary and non-proprietary applications that reside on the\
+            \ card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This\
+            \ script when sent to the card, can be used to change the offline PIN\
+            \ as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This\
+            \ script when sent to the card, can be used to reset the PIN Try Counter,\
+            \ to enable usage of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
     CommonChipDataResponse:
       type: object
       properties:
@@ -3553,6 +3567,10 @@ components:
           type: string
         Ucol:
           type: string
+        StagedScript:
+          type: string
+        SentScript:
+          type: string
     ConfigurationOption:
       required:
       - Name
@@ -3562,6 +3580,9 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3577,9 +3598,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4616,6 +4634,10 @@ components:
           type: string
         Ucol:
           type: string
+        StagedScript:
+          type: string
+        SentScript:
+          type: string
         Ndcf:
           type: string
         Lcota:
@@ -4664,7 +4686,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -5013,7 +5035,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -5211,7 +5233,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -5226,7 +5248,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -5653,6 +5675,9 @@ components:
         CountryOfOperation:
           description: Country of Operation
           type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          type: string
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -5899,7 +5924,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6497,6 +6522,29 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6516,29 +6564,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -6577,11 +6602,13 @@ components:
       properties:
         Name:
           description: Name of a bundle
+          maxLength: 35
           pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          maxLength: 140
+          pattern: \A(?!\s*$).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -6624,7 +6651,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6654,7 +6681,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -6764,7 +6791,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -6813,6 +6840,10 @@ components:
           type: string
         Ucol:
           type: string
+        StagedScript:
+          type: string
+        SentScript:
+          type: string
         CurrencyConversionFactor:
           type: string
         SecondaryAppCurrencyCode:
@@ -6845,17 +6876,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
