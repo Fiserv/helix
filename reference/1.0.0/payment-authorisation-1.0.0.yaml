@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-157
+  version: 1.1.0-159
 tags:
 - name: Helix Core
 paths:
@@ -800,7 +800,7 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to change PIN.
-      description: This API allows the user to change existing PIN.
+      description: This API allows the user to change existing PIN via ATM.
       operationId: execute
       parameters:
       - name: fi-id
@@ -899,7 +899,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Change PIN
-      x-group-name: Card Management
+      x-group-name: Authorisation
       x-api-scope: External
 components:
   schemas:
@@ -1352,7 +1352,7 @@ components:
           description: ICC Related Data
           type: object
           allOf:
-          - $ref: "#/components/schemas/ICCRelatedData"
+          - $ref: "#/components/schemas/ICCRelatedData1"
     BrandEntryAddRequest:
       required:
       - Name
@@ -1745,12 +1745,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1765,6 +1759,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2094,7 +2094,7 @@ components:
           description: ICC Related Data
           type: object
           allOf:
-          - $ref: "#/components/schemas/ICCRelatedData"
+          - $ref: "#/components/schemas/ICCRelatedData1"
         DelydAuthstnInd:
           description: Delayed Authorisation Indicator
           type: string
@@ -2341,6 +2341,25 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -2362,25 +2381,6 @@ components:
           type: string
         KeyType:
           description: Type of a key.
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
           type: string
     ExecuteChangePinRequest:
       required:
@@ -3290,6 +3290,12 @@ components:
     ICCRelatedData:
       type: object
       properties:
+        AuthorisationResponseCryptogram:
+          description: Authorisation Response Cryptogram
+          type: string
+    ICCRelatedData1:
+      type: object
+      properties:
         AuthorisationRequestCryptogram:
           description: Application Cryptogram
           type: string
@@ -3331,12 +3337,6 @@ components:
           type: string
         IssuerAuthenticationData:
           description: Issuer Authentication Data
-          type: string
-    ICCRelatedData1:
-      type: object
-      properties:
-        AuthorisationResponseCryptogram:
-          description: Authorisation Response Cryptogram
           type: string
     ICCRelatedData2:
       type: object
@@ -3746,7 +3746,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     PINData:
       type: object
       properties:
@@ -4187,7 +4187,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4385,7 +4385,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4400,7 +4400,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -4732,7 +4732,7 @@ components:
           description: ICC Related Data
           type: object
           allOf:
-          - $ref: "#/components/schemas/ICCRelatedData1"
+          - $ref: "#/components/schemas/ICCRelatedData"
     ResultData:
       type: object
       properties:
@@ -5289,7 +5289,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -5969,6 +5969,28 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
+      type: object
+      properties:
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
@@ -5989,28 +6011,6 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -6370,7 +6370,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6400,7 +6400,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6662,7 +6662,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       type: object
       properties:
@@ -6801,17 +6801,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
