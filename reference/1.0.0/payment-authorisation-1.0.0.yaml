@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-152
+  version: 1.1.0-157
 tags:
 - name: Helix Core
 paths:
@@ -706,7 +706,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EvaluateAuthorisationRequest"
+              $ref: "#/components/schemas/AuthorisationRequest"
       responses:
         "200":
           description: OK
@@ -715,36 +715,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  Rslt:
-                    description: Result for the authorisation
-                    type: string
-                  RsltReasonCode:
-                    description: Result reason code for authorisation
-                    type: string
-                  RsltReasonDesc:
-                    description: Result reason code description
-                    type: string
-                  AuthAssessmentId:
-                    description: Authorisation Assessment ID
-                    type: string
-                  ARPC:
-                    description: Authorisation Response Cryptogram
-                    type: string
-                  Cntxt:
-                    description: Describes conditions and characteristics of the transaction.
+                  Body:
+                    description: Body
                     type: object
                     allOf:
-                    - $ref: "#/components/schemas/Cntxt1"
-                  SwitchReasonCode:
-                    description: Switch has to respond to schemes with the specifications
-                      provided by the relevant schemes. Switch uses Reason Code to
-                      derive the corresponding Scheme specific Response Code.
-                    type: string
-                  ChipData:
-                    description: Chip Data.
-                    type: object
-                    allOf:
-                    - $ref: "#/components/schemas/ChipData1"
+                    - $ref: "#/components/schemas/ResponseBody"
         "400":
           description: Bad Request
           content:
@@ -843,14 +818,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExecuteChangePinRequest1"
+              $ref: "#/components/schemas/AuthorisationRequest"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecuteChangePinResponse1"
+                $ref: "#/components/schemas/AuthorisationResponse"
         "400":
           description: Bad Request
           content:
@@ -924,7 +899,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Change PIN
-      x-group-name: CardManagement
+      x-group-name: Card Management
       x-api-scope: External
 components:
   schemas:
@@ -963,6 +938,15 @@ components:
           description: ID of the acquirer
           type: string
         Ctry:
+          description: 3 byte numeric country code of the acquirer
+          type: string
+    Acquirer:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the acquirer
+          type: string
+        Country:
           description: 3 byte numeric country code of the acquirer
           type: string
     AddCapabilityCatalogResponse:
@@ -1131,6 +1115,24 @@ components:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
+    AdditionalCardData:
+      type: object
+      properties:
+        Type:
+          description: Type of additional card data
+          type: string
+        Value:
+          description: Value of additional card data
+          type: string
+    AdditionalResultInformation:
+      type: object
+      properties:
+        Type:
+          description: Type of additional result information
+          type: string
+        Value:
+          description: Value of additional result information
+          type: string
     AgreementFeature:
       type: object
       properties:
@@ -1294,18 +1296,63 @@ components:
           type: string
         TxTp:
           type: string
-        Cntxt:
-          $ref: "#/components/schemas/Cntxt1"
-        Envt:
-          $ref: "#/components/schemas/Envt"
-        Tx:
-          $ref: "#/components/schemas/Tx"
+        Context:
+          $ref: "#/components/schemas/Context"
+        Environment:
+          $ref: "#/components/schemas/Environment1"
+        Transaction:
+          $ref: "#/components/schemas/Transaction"
         SwitchTxnId:
           type: string
         OriginalSwitchTxnId:
           type: string
         ReversalSource:
           type: string
+    AuthorisationRequest:
+      type: object
+      properties:
+        Header:
+          description: Header
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Header"
+        Body:
+          description: Body
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Body"
+    AuthorisationResponse:
+      type: object
+      properties:
+        Body:
+          description: Body
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ResponseBody"
+    Body:
+      type: object
+      properties:
+        Environment:
+          description: Contains the information pertaining to various entities interacting
+            with the transaction
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Environment1"
+        Context:
+          description: Describes conditions and characteristics of the transaction
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Context"
+        Transaction:
+          description: Card transaction for which an authorisation is requested
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Transaction"
+        ICCRelatedData:
+          description: ICC Related Data
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ICCRelatedData"
     BrandEntryAddRequest:
       required:
       - Name
@@ -1453,13 +1500,21 @@ components:
     Card:
       type: object
       properties:
+        AdditionalCardData:
+          description: Additional Card Data
+          type: array
+          items:
+            $ref: "#/components/schemas/AdditionalCardData"
+    Card1:
+      type: object
+      properties:
         PAN:
           description: Primary Account Number
           type: string
-        CardSeqNb:
+        CardSequenceNumber:
           description: Card Chip Sequence number
           type: string
-        XpryDt:
+        ExpiryDate:
           description: "Expiry Date for the card, Valid format is YYMM"
           type: string
     CardDeleteRequest:
@@ -1497,7 +1552,40 @@ components:
           type: string
         CardHolderName:
           type: string
+    CardholderBillingAmount:
+      type: object
+      properties:
+        Amount:
+          description: Amount of the transaction expressed in the currency of the
+            terminal or as a reversed amount of a previous authorisation
+          type: number
+        Currency:
+          description: Currency code associated with the transaction amount. ISO 4217
+            Codes for the representation of currencies and funds
+          type: string
     ChipData:
+      type: object
+      properties:
+        ChipSequence:
+          type: string
+        ApplicationTxnCntr:
+          format: int32
+          type: integer
+        PinTryLimit:
+          type: string
+        OfflinePin:
+          type: string
+        Version:
+          type: string
+        CryptogramKeyIndex:
+          type: string
+        CryptogramVersion:
+          type: string
+        MacKeyIndex:
+          type: string
+        EncryptionKeyIndex:
+          type: string
+    ChipData1:
       type: object
       properties:
         ApplicationTxnCntr:
@@ -1532,37 +1620,7 @@ components:
           pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
           type: string
           example: CARD BLOCK
-    ChipData1:
-      type: object
-      properties:
-        ChipSequence:
-          type: string
-        ApplicationTxnCntr:
-          format: int32
-          type: integer
-        PinTryLimit:
-          type: string
-        OfflinePin:
-          type: string
-        Version:
-          type: string
-        CryptogramKeyIndex:
-          type: string
-        CryptogramVersion:
-          type: string
-        MacKeyIndex:
-          type: string
-        EncryptionKeyIndex:
-          type: string
     Cntxt:
-      type: object
-      properties:
-        Verification:
-          description: Verification performed on PIN data
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/Verification"
-    Cntxt1:
       type: object
       properties:
         TxCntxt:
@@ -1687,6 +1745,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1701,9 +1765,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -1727,14 +1788,34 @@ components:
           maxLength: 40000
           pattern: \S
           type: string
+    Context:
+      type: object
+      properties:
+        PointOfServiceContext:
+          description: Contains point of interaction information specific to a given
+            transaction
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/PointOfServiceContext"
+        TransactionContext:
+          description: Describes the details of the card payment transaction
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/TransactionContext"
+        Verification:
+          description: "Verification details for the verifications performed on CVV,\
+            \ CVV2, iCVV and ARQC if provided in the input"
+          type: array
+          items:
+            $ref: "#/components/schemas/Verification"
     CrdhldrBllgAmt:
       type: object
       properties:
-        Amt:
+        Amount:
           description: Amount of the transaction expressed in the currency of the
             terminal or as a reversed amount of a previous authorisation.
           type: number
-        Ccy:
+        Currency:
           description: Currency code associated with the transaction amount. ISO 4217
             Codes for the representation of currencies and funds.
           type: string
@@ -1890,6 +1971,42 @@ components:
             \ <br/> MAYB - May be used for contact"
           pattern: \S
           type: string
+    Environment:
+      type: object
+      properties:
+        Card:
+          description: Card details
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Card"
+    Environment1:
+      type: object
+      properties:
+        Acquirer:
+          description: Acquirer
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Acquirer"
+        Originator:
+          description: Originator
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Originator"
+        Terminal:
+          description: "Identifies the terminal, from where the transaction is triggered"
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Terminal"
+        Card:
+          description: Card
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Card1"
+        Token:
+          description: Token
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Token"
     Envt:
       type: object
       properties:
@@ -1958,6 +2075,9 @@ components:
         NcrptdPINBlck:
           description: Encrypted Pin Block
           type: string
+        NewEncryptedPinBlock:
+          description: New Encrypted Pin Block
+          type: string
         Association:
           description: Association
           type: string
@@ -1988,7 +2108,7 @@ components:
           description: Describes conditions and characteristics of the transaction.
           type: object
           allOf:
-          - $ref: "#/components/schemas/Cntxt1"
+          - $ref: "#/components/schemas/Cntxt"
         Tx:
           description: Card transaction for which an authorisation is requested.
           type: object
@@ -2033,7 +2153,7 @@ components:
           description: Describes conditions and characteristics of the transaction.
           type: object
           allOf:
-          - $ref: "#/components/schemas/Cntxt1"
+          - $ref: "#/components/schemas/Cntxt"
         SwitchReasonCode:
           description: Switch has to respond to schemes with the specifications provided
             by the relevant schemes. Switch uses Reason Code to derive the corresponding
@@ -2043,7 +2163,12 @@ components:
           description: Chip Data.
           type: object
           allOf:
-          - $ref: "#/components/schemas/ChipData1"
+          - $ref: "#/components/schemas/ChipData"
+        Host:
+          description: Host
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Host"
     EvaluateRestrictionRequest:
       required:
       - UniqueIdType
@@ -2301,51 +2426,11 @@ components:
         DecimalizationTable:
           pattern: \S
           type: string
-    ExecuteChangePinRequest1:
-      type: object
-      properties:
-        Association:
-          description: Association
-          type: string
-        Card:
-          description: Card Related Details
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/Card"
-        ICCRelatedData:
-          description: ICC Related Data
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ICCRelatedData1"
-        Cntxt:
-          description: Describes conditions and characteristics of the transaction.
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/Cntxt"
-        SwitchTxnId:
-          description: Unique identifier assigned by the switch to the authorisation
-            txn
-          type: string
     ExecuteChangePinResponse:
       type: object
       properties:
         NewPinfOffset:
           description: New Pin Offset
-          type: string
-    ExecuteChangePinResponse1:
-      type: object
-      properties:
-        Rslt:
-          description: Result for the authorisation
-          type: string
-        RsltReasonCode:
-          description: Result reason code for authorisation
-          type: string
-        RsltReasonDesc:
-          description: Result reason code description
-          type: string
-        ARPC:
-          description: Authorisation Response Cryptogram
           type: string
     ExecuteClosureRequest:
       type: object
@@ -3160,6 +3245,23 @@ components:
           description: Identification of Client Financial Institution
           maxLength: 5
           type: string
+    Header:
+      type: object
+      properties:
+        MessageFunction:
+          description: Indicate if this is a normal request (REQU) or an Advice (ADVC)
+          type: string
+        MessageTypeId:
+          description: Indicate if the message is for an authorisation transaction
+            (AUTH) or a reversal transaction (RVSL)
+          type: string
+        SwitchTransactionId:
+          description: Unique identifier assigned by the switch to the authorisation
+            txn
+          type: string
+        Association:
+          description: Association
+          type: string
     HelixErrorDetails:
       type: object
       properties:
@@ -3180,10 +3282,15 @@ components:
           type: string
         instance:
           type: string
+    Host:
+      type: object
+      properties:
+        IssuerScriptCommand:
+          type: string
     ICCRelatedData:
       type: object
       properties:
-        ARQC:
+        AuthorisationRequestCryptogram:
           description: Application Cryptogram
           type: string
         AuthorisationAmount:
@@ -3216,13 +3323,25 @@ components:
         IssuerApplicationData:
           description: Issuer Application Data
           type: string
-        ARC:
+        AuthorisationResponseCode:
           description: Authorization Response Code.
+          type: string
+        ApplicationTransactionCounter:
+          description: Application transaction counter
+          type: string
+        IssuerAuthenticationData:
+          description: Issuer Authentication Data
           type: string
     ICCRelatedData1:
       type: object
       properties:
-        ARQC:
+        AuthorisationResponseCryptogram:
+          description: Authorisation Response Cryptogram
+          type: string
+    ICCRelatedData2:
+      type: object
+      properties:
+        AuthorisationRequestCryptogram:
           description: Application Cryptogram
           type: string
         AuthorisationAmount:
@@ -3255,8 +3374,11 @@ components:
         IssuerApplicationData:
           description: Issuer Application Data
           type: string
-        ARC:
+        AuthorisationResponseCode:
           description: Authorization Response Code.
+          type: string
+        ApplicationTransactionCounter:
+          description: Application transaction counter
           type: string
         ApplicationTxnCntr:
           description: Application transaction counter
@@ -3572,7 +3694,7 @@ components:
     NewPINData:
       type: object
       properties:
-        NcrptdNewPINBlck:
+        EncryptedPINBlock:
           description: Encrypted new pin block
           type: string
     OrgnlTxAmts:
@@ -3593,6 +3715,24 @@ components:
         Ctry:
           description: 3 byte numeric country code of the originator
           type: string
+    OriginalTransactionAmounts:
+      type: object
+      properties:
+        AmountQualifier:
+          description: Transaction Amount Qualifier
+          type: string
+        CardholderBillingAmount:
+          description: Cardholder Billing Amount
+          type: string
+    Originator:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the originator
+          type: string
+        Country:
+          description: 3 byte numeric country code of the originator
+          type: string
     OverrideParameter:
       required:
       - CapabilityName
@@ -3606,7 +3746,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     PINData:
       type: object
       properties:
@@ -3810,6 +3950,31 @@ components:
             \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
             \ contact"
           type: string
+    PointOfServiceContext:
+      type: object
+      properties:
+        CardPresent:
+          description: Indicates whether the transaction has been initiated by a card
+            physically present or not
+          type: boolean
+        CardholderPresent:
+          description: Indicates whether the transaction has been initiated in presence
+            of the cardholder or not
+          type: boolean
+        ECommerceIndicator:
+          description: Indicates whether transaction is ecommerce transaction or not
+          type: boolean
+        MOTOCode:
+          description: Code which identifies whether transaction is mail order or
+            Telephone order
+          type: string
+        DelayedAuthorisationIndicator:
+          description: Delayed Authorisation Indicator
+          type: string
+        CardDataEntryMode:
+          description: "Code which identifies transaction entry mode, whether transaction\
+            \ is contactless or magnetic stripe, etc"
+          type: string
     PostalAddress:
       required:
       - AddressType
@@ -3897,6 +4062,14 @@ components:
             \ contact <br/> NOTP - Not preferred for contact "
           pattern: \S
           type: string
+    ProcessingResult:
+      type: object
+      properties:
+        ResultData:
+          description: Result data
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ResultData"
     ProductReissueEvent:
       type: object
       properties:
@@ -4014,7 +4187,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4537,6 +4710,40 @@ components:
         EncryptedPIN:
           description: Encrypted PIN
           type: string
+    ResponseBody:
+      type: object
+      properties:
+        Environment:
+          description: Environment
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Environment"
+        Context:
+          description: Describes conditions and characteristics of the transaction
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Context"
+        ProcessingResult:
+          description: Processing result
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ProcessingResult"
+        IccRelatedData:
+          description: ICC Related Data
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ICCRelatedData1"
+    ResultData:
+      type: object
+      properties:
+        Result:
+          description: Result
+          type: string
+        AdditionalResultInformation:
+          description: Additional result information
+          type: array
+          items:
+            $ref: "#/components/schemas/AdditionalResultInformation"
     RetrieveAgreementFeatureParameterResponse:
       type: object
       properties:
@@ -5082,7 +5289,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -5767,7 +5974,7 @@ components:
             counter value
           type: object
           allOf:
-          - $ref: "#/components/schemas/ChipData"
+          - $ref: "#/components/schemas/ChipData1"
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
@@ -5823,7 +6030,7 @@ components:
             counter value
           type: object
           allOf:
-          - $ref: "#/components/schemas/ChipData"
+          - $ref: "#/components/schemas/ChipData1"
         Cardholder:
           description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
             \ assigned to a Brand, can only be used when adding cards under the same\
@@ -5833,6 +6040,15 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
+    Terminal:
+      type: object
+      properties:
+        TerminalIdentification:
+          description: Indicates the terminal ID for where the transaction is triggered
+          type: string
+        Type:
+          description: "Identifies type of terminal, (POS, MPOS,ATM, etc.)"
+          type: string
     Termnl:
       type: object
       properties:
@@ -5879,6 +6095,67 @@ components:
         OtherProtectionMethod:
           description: Other national or private protection method code.
           type: string
+    Transaction:
+      type: object
+      properties:
+        TransactionType:
+          description: Transaction Type
+          type: string
+        TransactionAttribute:
+          description: Transaction Attribute
+          type: string
+        NewPINData:
+          description: New PIN data consisting of encrypted new pin block
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/NewPINData"
+        TransactionAmounts:
+          description: Amounts of the card transaction.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/TransactionAmounts"
+    TransactionAmount:
+      type: object
+      properties:
+        Amount:
+          description: Amount of the transaction expressed in the currency of the
+            terminal or as a reversed amount of a previous authorisation
+          type: number
+        Currency:
+          description: Currency code associated with the transaction amount. ISO 4217
+            Codes for the representation of currencies and funds
+          type: string
+    TransactionAmounts:
+      type: object
+      properties:
+        TransactionAmount:
+          description: Actual amount of the transaction.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/TransactionAmount"
+        CardholderBillingAmount:
+          description: Currency code in which the cardholder will be billed.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/CardholderBillingAmount"
+        OriginalTransactionAmounts:
+          description: Original Transaction Amounts.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/OriginalTransactionAmounts"
+    TransactionContext:
+      type: object
+      properties:
+        MerchantCategoryCode:
+          description: "Category code related to the type of services or goods the\
+            \ merchant provides for the transaction in accordance with ISO 18245.\
+            \ Code used to enable the classification of merchants into specific categories\
+            \ based on the type of business, trade or services supplied. Values are\
+            \ specified only for those merchant categories that are generally expected\
+            \ to originate retail financial transactions (ISO 18245). The code is\
+            \ checked against the list of merchant categories coded with four digit\
+            \ characters, defined in the standard."
+          type: string
     Tx:
       type: object
       properties:
@@ -5890,11 +6167,11 @@ components:
     TxAmt:
       type: object
       properties:
-        Amt:
+        Amount:
           description: Amount of the transaction expressed in the currency of the
             terminal or as a reversed amount of a previous authorisation.
           type: number
-        Ccy:
+        Currency:
           description: Currency code associated with the transaction amount. ISO 4217
             Codes for the representation of currencies and funds.
           type: string
@@ -6093,7 +6370,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6123,7 +6400,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6400,25 +6677,39 @@ components:
     Verification:
       type: object
       properties:
+        Type:
+          description: "Identifies the type of field like CVV/iCVV (NVSC), CVV2 (CSCV)\
+            \ and ARQC."
+          type: string
         VerificationInformation:
           description: Verification information for the verifications performed on
             PIN data.
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/VerificationInformation"
+          type: array
+          items:
+            $ref: "#/components/schemas/VerificationInformation"
+        VerificationResult:
+          description: "Verification Results like Failure, Success, Error or NoVerification."
+          type: array
+          items:
+            $ref: "#/components/schemas/VerificationResult"
     VerificationInformation:
       type: object
       properties:
-        PINData:
-          description: PIN data consisting of encrypted pin block
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/PINData"
-        NewPINData:
-          description: New PIN data consisting of encrypted new pin block
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/NewPINData"
+        Type:
+          description: Type of verification information
+          type: string
+        Value:
+          description: Value of verification information
+          type: string
+    VerificationResult:
+      type: object
+      properties:
+        Type:
+          description: Type of verification result
+          type: string
+        Result:
+          description: "Verification Results like Failure, Success, Error or NoVerification."
+          type: string
     VisaChipDataResponse:
       type: object
       properties:

@@ -439,26 +439,6 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve Restriction
       x-group-name: Card Management
-  /CustomerAccessEntitlement/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      responses:
-        "200":
-          description: OK
-  /CustomerAccessEntitlement/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
   /CustomerAccessEntitlement/V1/Limits/Compute:
     post:
       tags:
