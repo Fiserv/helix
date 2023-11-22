@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: exception-management-application API
-  version: 1.1.0-9
+  version: 1.1.0-11
 tags:
 - name: Retrieve Exception Log API
 paths:
@@ -68,7 +68,7 @@ paths:
         "504":
           description: Gateway Timeout
           content: {}
-      x-proxy-name: Exception Management Retrieve
+      x-proxy-name: Retrieve Exception Log
       x-group-name: Exception Management
 components:
   schemas:
