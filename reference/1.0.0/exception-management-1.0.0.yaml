@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: exception-management-application API
-  version: 1.1.0-11
+  version: 1.1.0-13
 tags:
 - name: Retrieve Exception Log API
 paths:
@@ -10,15 +10,18 @@ paths:
     post:
       tags:
       - Retrieve Exception Log API
-      summary: "\"The Retrieve Exception Log API is designed to facilitate the retrieval\
+      summary: This method is used to retrieve list of Exception logs for a given
+        search criteria
+      description: "The Retrieve Exception Log API is designed to facilitate the retrieval\
         \ of logged exceptions and error messages generated from all event triggered\
         \ processes within the system. It offers a straightforward and efficient means\
         \ for authorized users and applications to access detailed exception information.\
         \ This API is a valuable tool for system administrators, developers, and support\
-        \ teams, enabling them to monitor, diagnose, and troubleshoot issues effectively.\n\
-        \nThis service is used to retrieve exception records based on the following\
-        \ mandatory search inputs:\n• FI plus entity id or\n• FI plus BusinessFunction\
-        \  or\n• FI plus ExceptionCategory"
+        \ teams, enabling them to monitor, diagnose, and troubleshoot issues effectively.<p>This\
+        \ service is used to retrieve exception records based on the following mandatory\
+        \ search inputs:</p><ul><li><em>FI plus entity id or</em></li><li><em>FI plus\
+        \ BusinessFunction or</em></li><li><em>FI plus ExceptionCategory</em></li></ul>The\
+        \ API will return a list of results that match the search criteria provided."
       operationId: retrieveExceptionLog
       parameters:
       - name: fi-id
@@ -781,11 +784,7 @@ components:
             \ boarding a new card with a bundle override.\n• VABU - The Business Function\
             \ entails sending VAU updates to VISA and ABU updates to MasterCard, in\
             \ response to card issuance, card activation, loss or theft, and opt-out\
-            \ events.\n• SYNC - The Business Function is centered around synchronizing\
-            \ data between VisionNext and the Account Management System in a Hybrid\
-            \ model.\n• ROLL - The Business Function is responsible for processing\
-            \ the deletion of entities when a rollback request for account boarding\
-            \ is initiated."
+            \ events."
           type: string
         ExceptionCategory:
           description: "\"Category of the exception.\n\nValid values are:\n• BUSS\
@@ -796,9 +795,15 @@ components:
           type: string
         FromDateTime:
           description: Start Date and Time of the exception.
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
           type: string
         ToDateTime:
           description: End Date and Time of the exception.
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
           type: string
         Brand:
           description: Identification of the Brand associated with the exception entry.
@@ -836,11 +841,7 @@ components:
             \ boarding a new card with a bundle override.\n• VABU - The Business Function\
             \ entails sending VAU updates to VISA and ABU updates to MasterCard, in\
             \ response to card issuance, card activation, loss or theft, and opt-out\
-            \ events.\n• SYNC - The Business Function is centered around synchronizing\
-            \ data between VisionNext and the Account Management System in a Hybrid\
-            \ model.\n• ROLL - The Business Function is responsible for processing\
-            \ the deletion of entities when a rollback request for account boarding\
-            \ is initiated."
+            \ events.\n"
           type: string
         ExceptionCategory:
           description: "\"Category of the exception.\n\nValid values are:\n• BUSS\
@@ -953,6 +954,25 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -974,25 +994,6 @@ components:
           type: string
         KeyType:
           description: Type of a key.
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -2265,7 +2266,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -2280,7 +2281,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -3776,7 +3777,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -3861,17 +3862,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
