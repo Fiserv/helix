@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-201
+  version: 1.1.0-203
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1120,11 +1120,14 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
             \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Account numberBlockedReasonCode required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account numberBlockedReasonCode invalid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account numberAction required, please provide value.</em></li><li><em>HLXAGDTBR001\
-            \ : Account numberAction is not valid, please provide valid value.</em></li></ul>"
+            \ : BlockedReasonCode required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : BlockedReasonCode invalid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : BlockedReasonCode invalid, must be 4 characters in length.</em></li><li><em>HLXAGDTBR001\
+            \ : Action required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Action is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2224,7 +2227,12 @@ paths:
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
             \ : Account number exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
-            \ : Account number is not valid, please provide valid value.</em></li></ul>"
+            \ : Account number is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : BlockedReasonCode required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : BlockedReasonCode invalid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : BlockedReasonCode invalid, must be 4 characters in length.</em></li><li><em>HLXAGDTBR001\
+            \ : Action required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Action is not valid, please provide valid value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3286,25 +3294,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3326,6 +3315,25 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
