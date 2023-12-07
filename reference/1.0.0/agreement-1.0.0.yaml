@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-203
+  version: 1.1.0-204
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -2209,7 +2209,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest1"
+              $ref: "#/components/schemas/SystemUpdateRequest"
       responses:
         "200":
           description: OK
@@ -2275,7 +2275,10 @@ paths:
             \ : PartyRole is not valid for Involvement ID <AgreementInvolvementID>.</em></li><li><em>HLXAGDTAI002\
             \ : Account Involvement Status cannot be set to False while adding a new\
             \ Involvement.</em></li><li><em>HLXAGDTAI004 : Involvement already exists\
-            \ for Person %s, on the account.</em></li></ul>"
+            \ for Person %s, on the account.</em></li><li><em>HLXAGDTGT005 : BlockedReasonCode\
+            \ %s is duplicate.</em></li><li><em>HLXAGDTGT005 : BlockedReasonCode %s\
+            \ already exist.</em></li><li><em>HLXAGDTGT005 : BlockedReasonCode exceeds\
+            \ maximum number of code(s) allowed.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -3021,21 +3024,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        ConfigurationParameter:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/ConfigurationParameter"
-    ConfigurationOption1:
-      required:
-      - Name
-      - ConfigurationParameter
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          pattern: \S
-          type: string
         Specification:
           description: Description of a configuration option
           type: string
@@ -3049,6 +3037,21 @@ components:
             $ref: "#/components/schemas/ConfigurationParameter"
         identification:
           type: string
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
@@ -4149,7 +4152,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -4498,7 +4501,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4696,7 +4699,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4711,7 +4714,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -5439,7 +5442,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6103,29 +6106,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6147,6 +6127,29 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*Z
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -6323,7 +6326,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6353,7 +6356,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6521,7 +6524,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -6606,17 +6609,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
