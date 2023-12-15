@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: exception-management-application API
-  version: 1.1.0-13
+  version: 1.1.0-15
 tags:
 - name: Retrieve Exception Log API
 paths:
@@ -368,6 +368,94 @@ components:
           description: Description of the association Key
           maxLength: 140
           type: string
+    BrandEntryAddRequest:
+      required:
+      - Name
+      - FinancialInstitutionIdentification
+      - Identification
+      - ReportingCurrency
+      - SchemeOperatingRegion
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        Identification:
+          description: Identification of the Brand
+          maxLength: 37
+          minLength: 1
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          pattern: \S
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          maxLength: 2
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    BrandUpdateRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress1"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
     Bundle:
       type: object
       properties:
@@ -554,8 +642,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
-        identification:
-          type: string
     ConfigurationParameter:
       description: Parameter used for configuring options
       required:
@@ -757,41 +843,43 @@ components:
           description: EntityId
           type: string
         EntityType:
-          description: "\"The type of entity associated with the exception entry.\
-            \ \n\nValid values are:\n• PROD - The type of the entityId for which exception\
-            \ is encountered is Product.\n• PIST - The type of the entityId for which\
-            \ exception is encountered is Card (Payment Instrument).\n• AGGR - The\
-            \ type of the entityId for which exception is encountered is Account (Agreement).\n\
-            • PRTY - The type of the entityId for which exception is encountered is\
-            \ Party (Person and Org)."
+          description: "The type of entity associated with the exception entry. \n\
+            \n<p>Valid values are:</p><ul><li><em>PROD - The type of the entityId\
+            \ for which exception is encountered is Product.</em></li><li><em>PYIN\
+            \ - The type of the entityId for which exception is encountered is Card\
+            \ (Payment Instrument).</em></li><li><em>AGGR - The type of the entityId\
+            \ for which exception is encountered is Account (Agreement).</em></li><li><em>PRTY\
+            \ - The type of the entityId for which exception is encountered is Party\
+            \ (Person and Org).</em></li></ul>"
           type: string
         BusinessFunction:
-          description: "\"Business process to which exception log entry is related.\n\
-            \nValid values are:\n• ENBL - The Business Function, known as Card Enablement,\
-            \ encompasses the preparation of a card with attributes such as the Expiry\
-            \ Date, Pin Offset, PAN.\n• RENE - The Business Function involves periodic\
-            \ renewal of cards based on card expiry dates.\n• EMBS - The Business\
-            \ Function involves creation of the embossing data which can be sent to\
-            \ Embossing Bureau for card personalisation.\n• CFEE - The Business Function\
-            \ entails the generation of card fees based on card boarding, card activation,\
-            \ and instances of card loss or theft.\n• PANC - The Business Function\
-            \ encompasses the creation of a PAN (Primary Account Number) list that\
-            \ can be allocated for future card boarding requests.\n• ADRV - The Business\
-            \ Function involves the processing of advice and reversal requests received\
-            \ from the authorisation switch.\n• LMRS - The Business Function encompasses\
-            \ the creation of limits and restrictions facilities, either triggered\
-            \ by lost-stolen, replacement, and reissue requests or initiated when\
-            \ boarding a new card with a bundle override.\n• VABU - The Business Function\
-            \ entails sending VAU updates to VISA and ABU updates to MasterCard, in\
-            \ response to card issuance, card activation, loss or theft, and opt-out\
-            \ events."
+          description: "Business process to which exception log entry is related.\n\
+            \n<p>Valid values are:</p><ul><li><em>ENBL - The Business Function, known\
+            \ as Card Enablement, encompasses the preparation of a card with attributes\
+            \ such as the Expiry Date, Pin Offset, PAN.</em></li><li><em>RENE - The\
+            \ Business Function involves periodic renewal of cards based on card expiry\
+            \ dates.</em></li><li><em>EMBS - The Business Function involves creation\
+            \ of the embossing data which can be sent to Embossing Bureau for card\
+            \ personalisation.</em></li><li><em>CFEE - The Business Function entails\
+            \ the generation of card fees based on card boarding, card activation,\
+            \ and instances of card loss or theft.</em></li><li><em>PANC - The Business\
+            \ Function encompasses the creation of a PAN (Primary Account Number)\
+            \ list that can be allocated for future card boarding requests.</em></li><li><em>ADRV\
+            \ - The Business Function involves the processing of advice and reversal\
+            \ requests received from the authorisation switch.</em></li><li><em>LMRS\
+            \ - The Business Function encompasses the creation of limits and restrictions\
+            \ facilities, either triggered by lost-stolen, replacement, and reissue\
+            \ requests or initiated when boarding a new card with a bundle override.</em></li><li><em>VABU\
+            \ - The Business Function entails sending VAU updates to VISA and ABU\
+            \ updates to MasterCard, in response to card issuance, card activation,\
+            \ loss or theft, and opt-out events.</em></li></ul>"
           type: string
         ExceptionCategory:
-          description: "\"Category of the exception.\n\nValid values are:\n• BUSS\
-            \ - The exception is due to a business validation error.\n• DATA - The\
-            \ exception is due to issues with input data.\n• SYST - The exception\
-            \ is due to system or technical issues.\n• CONF - The exception is due\
-            \ to a configuration error."
+          description: "Category of the exception.\n\n<p>Valid values are:</p><ul><li><em>BUSS\
+            \ - The exception is due to a business validation error.</em></li><li><em>DATA\
+            \ - The exception is due to issues with input data.</em></li><li><em>SYST\
+            \ - The exception is due to system or technical issues.</em></li><li><em>CONF\
+            \ - The exception is due to a configuration error.</em></li></ul>"
           type: string
         FromDateTime:
           description: Start Date and Time of the exception.
@@ -823,32 +911,33 @@ components:
             entry.
           type: string
         BusinessFunction:
-          description: "\"Business process to which exception log entry is related.\n\
-            \nValid values are:\n• ENBL - The Business Function, known as Card Enablement,\
-            \ encompasses the preparation of a card with attributes such as the Expiry\
-            \ Date, Pin Offset, PAN.\n• RENE - The Business Function involves periodic\
-            \ renewal of cards based on card expiry dates.\n• EMBS - The Business\
-            \ Function involves creation of the embossing data which can be sent to\
-            \ Embossing Bureau for card personalisation.\n• CFEE - The Business Function\
-            \ entails the generation of card fees based on card boarding, card activation,\
-            \ and instances of card loss or theft.\n• PANC - The Business Function\
-            \ encompasses the creation of a PAN (Primary Account Number) list that\
-            \ can be allocated for future card boarding requests.\n• ADRV - The Business\
-            \ Function involves the processing of advice and reversal requests received\
-            \ from the authorisation switch.\n• LMRS - The Business Function encompasses\
-            \ the creation of limits and restrictions facilities, either triggered\
-            \ by lost-stolen, replacement, and reissue requests or initiated when\
-            \ boarding a new card with a bundle override.\n• VABU - The Business Function\
-            \ entails sending VAU updates to VISA and ABU updates to MasterCard, in\
-            \ response to card issuance, card activation, loss or theft, and opt-out\
-            \ events.\n"
+          description: "Business process to which exception log entry is related.\n\
+            \n<p>Valid values are:</p><ul><li><em>ENBL - The Business Function, known\
+            \ as Card Enablement, encompasses the preparation of a card with attributes\
+            \ such as the Expiry Date, Pin Offset, PAN.</em></li><li><em>RENE - The\
+            \ Business Function involves periodic renewal of cards based on card expiry\
+            \ dates.</em></li><li><em>EMBS - The Business Function involves creation\
+            \ of the embossing data which can be sent to Embossing Bureau for card\
+            \ personalisation.</em></li><li><em>CFEE - The Business Function entails\
+            \ the generation of card fees based on card boarding, card activation,\
+            \ and instances of card loss or theft.</em></li><li><em>PANC - The Business\
+            \ Function encompasses the creation of a PAN (Primary Account Number)\
+            \ list that can be allocated for future card boarding requests.</em></li><li><em>ADRV\
+            \ - The Business Function involves the processing of advice and reversal\
+            \ requests received from the authorisation switch.</em></li><li><em>LMRS\
+            \ - The Business Function encompasses the creation of limits and restrictions\
+            \ facilities, either triggered by lost-stolen, replacement, and reissue\
+            \ requests or initiated when boarding a new card with a bundle override.</em></li><li><em>VABU\
+            \ - The Business Function entails sending VAU updates to VISA and ABU\
+            \ updates to MasterCard, in response to card issuance, card activation,\
+            \ loss or theft, and opt-out events.</em></li></ul>"
           type: string
         ExceptionCategory:
-          description: "\"Category of the exception.\n\nValid values are:\n• BUSS\
-            \ - The exception is due to a business validation error.\n• DATA - The\
-            \ exception is due to issues with input data.\n• SYST - The exception\
-            \ is due to system or technical issues.\n• CONF - The exception is due\
-            \ to a configuration error."
+          description: "Category of the exception.\n\n<p>Valid values are:</p><ul><li><em>BUSS\
+            \ - The exception is due to a business validation error.</em></li><li><em>DATA\
+            \ - The exception is due to issues with input data.</em></li><li><em>SYST\
+            \ - The exception is due to system or technical issues.</em></li><li><em>CONF\
+            \ - The exception is due to a configuration error.</em></li></ul>"
           type: string
         Datetime:
           description: Indicates the date and time when the exception occurred.
@@ -868,13 +957,14 @@ components:
             \ Account (Agreement) or Party (Person and Org)."
           type: string
         EntityType:
-          description: "\"The type of entity associated with the exception entry.\
-            \ \n\nValid values are:\n• PROD - The type of the entityId for which exception\
-            \ is encountered is Product.\n• PIST - The type of the entityId for which\
-            \ exception is encountered is Card (Payment Instrument).\n• AGGR - The\
-            \ type of the entityId for which exception is encountered is Account (Agreement).\n\
-            • PRTY - The type of the entityId for which exception is encountered is\
-            \ Party (Person and Org)."
+          description: "The type of entity associated with the exception entry. \n\
+            \n<p>Valid values are:</p><ul><li><em>PROD - The type of the entityId\
+            \ for which exception is encountered is Product.</em></li><li><em>PYIN\
+            \ - The type of the entityId for which exception is encountered is Card\
+            \ (Payment Instrument).</em></li><li><em>AGGR - The type of the entityId\
+            \ for which exception is encountered is Account (Agreement).</em></li><li><em>PRTY\
+            \ - The type of the entityId for which exception is encountered is Party\
+            \ (Person and Org).</em></li></ul>"
           type: string
         FunctionStage:
           description: Substage of a business function where applicable.
@@ -1409,6 +1499,96 @@ components:
           type: string
         CapabilityVersion:
           description: Capability version
+          type: string
+    FiRegisterRequest:
+      required:
+      - Name
+      - Identification
+      - InvoiceCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
+        Identification:
+          description: Identification of the financial institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          pattern: \S
+          type: string
+    FiRegisterResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of Financial Institution
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+        Name:
+          description: Name of Financial Institution
+          type: string
+    FiUpdateRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \A(?!\s*$).+
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
           type: string
     HelixErrorDetails:
       type: object
@@ -2266,7 +2446,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -2281,7 +2461,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -2311,6 +2491,119 @@ components:
       type: object
       properties:
         Identification:
+          type: string
+    RegistrationAddress:
+      description: Registered Address
+      required:
+      - Country
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
           type: string
     ReissueCardRequest:
       type: object
@@ -2579,6 +2872,51 @@ components:
         Description:
           description: Description of the association Key
           type: string
+    RetrieveBrandResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          type: string
+        enabled:
+          type: boolean
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -2814,6 +3152,50 @@ components:
           type: string
         CreateFacility:
           type: string
+    RetrieveFiResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
+        enabled:
+          type: boolean
     RetrieveInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -3429,6 +3811,28 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
+      type: object
+      properties:
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
@@ -3449,28 +3853,6 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -3777,7 +4159,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       type: object
       properties:
@@ -3862,17 +4244,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
