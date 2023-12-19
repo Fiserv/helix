@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: exception-management-application API
-  version: 1.1.0-17
+  version: 1.1.0-18
 tags:
 - name: Retrieve Exception Log API
 paths:
@@ -946,8 +946,8 @@ components:
           type: string
         Application:
           description: "Indicates VisionNext Application within which the exception\
-            \ was encountered.\n<p>Valid values are:</p><ul><li>VPIP - The application\
-            \ involved is VisionNextPIP.</li></ul>"
+            \ was encountered.\n<p>Valid values are:</p><ul><li><em>VPIP - The application\
+            \ involved is VisionNextPIP.</em></li></ul>"
           type: string
         FI:
           description: Identification of the Financial Institution associated with
@@ -1046,25 +1046,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -1086,6 +1067,25 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
