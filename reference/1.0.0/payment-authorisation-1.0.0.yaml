@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-169
+  version: 1.1.0-175
 tags:
 - name: Helix Core
 paths:
@@ -901,13 +901,13 @@ paths:
       x-proxy-name: Change PIN
       x-group-name: Authorisation
       x-api-scope: External
-  /PaymentAuthorisation/V1/CardManagement/PINTryCounterReset/Execute:
+  /PaymentAuthorisation/V1/CardManagement/PINUnblock/Execute:
     post:
       tags:
       - Helix Core
       summary: This method is used to validate and reset the PIN try counter.
       description: This API allows the user to reset the PIN try counter via ATM.
-      operationId: executePinTryCounterReset
+      operationId: executePinUnblock
       parameters:
       - name: fi-id
         in: header
@@ -1004,7 +1004,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: PIN Try Counter Reset
+      x-proxy-name: PIN Unblock
       x-group-name: Authorisation
       x-api-scope: External
 components:
@@ -1853,12 +1853,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1873,6 +1867,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2183,8 +2183,14 @@ components:
         NcrptdPINBlck:
           description: Encrypted Pin Block
           type: string
+        CurrentPinBlockFormat:
+          description: Current Pin Block Format
+          type: string
         NewEncryptedPinBlock:
           description: New Encrypted Pin Block
+          type: string
+        NewPinBlockFormat:
+          description: New Pin Block Format
           type: string
         Association:
           description: Association
@@ -2470,6 +2476,9 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+        PINBlockFormat:
+          description: PIN Block Format.
           type: string
     ExecuteChangePINRequest1:
       required:
@@ -3074,6 +3083,9 @@ components:
           description: Association for the payment instrument.
           pattern: \S
           type: string
+        PINBlockFormat:
+          description: PIN Block Format.
+          type: string
     ExecuteValidatePINResponse:
       type: object
       properties:
@@ -3142,14 +3154,11 @@ components:
           type: string
         AccountIdentification:
           description: Account number associated with External Clearing System
-          maxLength: 37
           pattern: \S
           type: string
         ClearingSystemMemberIdentification:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
-          maxLength: 13
-          pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
     ExternalIdentification:
       required:
@@ -3328,7 +3337,7 @@ components:
         Name:
           description: Name of Financial Institution
           maxLength: 70
-          pattern: \A(!\s*$).+
+          pattern: \A(?!\s*$).+
           type: string
         RegistrationAddress:
           description: Registered address of Financial Institution
@@ -3352,6 +3361,61 @@ components:
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
+          type: string
+    GenerateSecureMessageRequest:
+      required:
+      - PAN
+      - CardSequence
+      - ARQC
+      - MAC
+      - ENC
+      - ApplicationTxnCntr
+      - PINBlockUnderIWK
+      - IWK
+      - CryptogramVersion
+      - ScriptHeaderTag
+      type: object
+      properties:
+        PAN:
+          pattern: \S
+          type: string
+        CardSequence:
+          pattern: \S
+          type: string
+        ARQC:
+          pattern: \S
+          type: string
+        MAC:
+          pattern: \S
+          type: string
+        ENC:
+          pattern: \S
+          type: string
+        ApplicationTxnCntr:
+          pattern: \S
+          type: string
+        PINBlockUnderIWK:
+          pattern: \S
+          type: string
+        IWK:
+          pattern: \S
+          type: string
+        ACK:
+          type: string
+        CryptogramVersion:
+          pattern: \S
+          type: string
+        ScriptHeaderTag:
+          pattern: \S
+          type: string
+    GenerateSecureMessageResponse:
+      type: object
+      properties:
+        CiphertextLength:
+          description: CiphertextLength
+          type: string
+        CiphertextMessageData:
+          description: CiphertextMessageData
           type: string
     Header:
       type: object
@@ -3802,6 +3866,9 @@ components:
     NewPINData:
       type: object
       properties:
+        PINBlockFormat:
+          description: PIN Block Format
+          type: string
         EncryptedPINBlock:
           description: Encrypted new pin block
           type: string
@@ -3854,7 +3921,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     PINData:
       type: object
       properties:
@@ -4295,7 +4362,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4791,17 +4858,15 @@ components:
           type: string
     RequestViewPINRequest:
       required:
-      - RSAKey
       - Association
       type: object
       properties:
         RSAKey:
           description: RSA public key to encrypt customer PIN
-          pattern: \S
           type: string
         Association:
           description: Identifies the association Key
-          pattern: \S
+          pattern: (^$|PINNOW)
           type: string
     RequestViewPinRequest:
       required:
@@ -4876,6 +4941,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+        Status:
+          description: Status of the Agreement in the system
+          type: string
+        agreementClosed:
+          description: Indicates if the agreement is closed.
+          type: boolean
+        agreementEnabled:
+          type: boolean
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -5397,7 +5470,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6050,6 +6123,27 @@ components:
           type: string
         Status:
           type: string
+    RetrieveSecuredDataResponse:
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number in an encrypted form.
+          type: string
+        PINOffset:
+          description: PIN Offset
+          type: string
+        PINLength:
+          description: PIN Length
+          type: string
+        PINKeyIndex:
+          description: PIN Key Index
+          type: integer
+        CVVKeyIndex:
+          description: CVV Key Index
+          type: integer
+        ServiceCode:
+          description: Service Code
+          type: integer
     RetrieveSystemDetailsRequest:
       required:
       - PAN
@@ -6077,28 +6171,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-    SystemUpdateRequest1:
-      type: object
-      properties:
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
@@ -6119,6 +6191,28 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -6430,12 +6524,12 @@ components:
         Name:
           description: Name of a bundle
           maxLength: 35
-          pattern: \A(!\s*$).+
+          pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
           maxLength: 140
-          pattern: \A(!\s*$).+|^$
+          pattern: \A(?!\s*$).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -6478,7 +6572,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6508,7 +6602,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6777,7 +6871,7 @@ components:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \A(!\s*$).+
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
