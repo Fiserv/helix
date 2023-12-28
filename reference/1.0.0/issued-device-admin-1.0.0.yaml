@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-286
+  version: 1.1.0-291
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -552,14 +552,16 @@ paths:
             \ allocation.</em></li><li><em>HLXIDASAC001 : Account is closed.</em></li><li><em>HLXIDASPA005\
             \ : Person <person-id> not found under Financial Institution <fi-id>.\
             \ </em></li><li><em>HLXIDASPA006 : Person <person-id> not linked to Brand\
-            \ <brand-id>. </em></li></ul>"
+            \ <brand-id>. </em></li><li><em>HLXIDASDS001 : Account is blocked with\
+            \ <Blocked reason code(s)>.</ul>"
           content: {}
         "429":
           description: Too Many Request
           content: {}
         "500":
           description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASAC001\
-            \ : Attempt to add card has failed due to persistence error.</em></li></ul>"
+            \ : Attempt to add card has failed due to persistence error.</em></li><li><em>HLXIDASSE001\
+            \ : Attempt to issue new card has failed.</em></li></ul>"
           content: {}
         "502":
           description: Bad Gateway
@@ -2519,7 +2521,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest1"
+              $ref: "#/components/schemas/SystemUpdateRequest"
       responses:
         "201":
           description: Created
@@ -3390,6 +3392,33 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+    AgreementFeatureResponse:
+      type: object
+      properties:
+        AgreementFeature:
+          description: Feature related to Agreement
+          type: string
+        FacilityIdentification:
+          description: Identification of Facility
+          type: string
+        FacilityStatus:
+          description: Status of Facility
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Agreement:
+          description: Agreement
+          type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -3448,6 +3477,34 @@ components:
           description: Description of the association Key
           maxLength: 140
           type: string
+    BlockedReasonUpdateRequest:
+      required:
+      - Action
+      - BlockedReasonCode
+      type: object
+      properties:
+        Action:
+          description: "Action to be taken on the update of the agreement. Valid Values\
+            \ are Add,Replace,Delete."
+          pattern: \S
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason code to be updated on the agreement.
+          minItems: 1
+          type: array
+          items:
+            type: string
+    BlockedReasonUpdateResponse:
+      type: object
+      properties:
+        Identification:
+          description: Agreement identification.
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
     BrandEntryAddRequest:
       required:
       - Name
@@ -5486,7 +5543,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -5501,7 +5558,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -5771,6 +5828,27 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/LocalDate"
+    RetrieveAgreementFacilityAndFeatureResponse:
+      type: object
+      properties:
+        Agreement:
+          $ref: "#/components/schemas/RetrieveAgreementResponse"
+        AgreementFeature:
+          $ref: "#/components/schemas/AgreementFeatureResponse"
+    RetrieveAgreementFeatureAndFacilityRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          minLength: 1
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          minLength: 1
+          type: string
     RetrieveAgreementFeatureParameterResponse:
       type: object
       properties:
@@ -5892,6 +5970,11 @@ components:
             opted-in for the Network Account Updater. The opt out option affects all
             cards under the account. The valid values are OptOut and OptIn.
           type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
         enabled:
           type: boolean
     RetrieveAssociationKeyRequest:
@@ -6919,28 +7002,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-    SystemUpdateRequest1:
-      type: object
-      properties:
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
@@ -6961,6 +7022,30 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+        BlockedReasonCodes:
+          $ref: "#/components/schemas/BlockedReasonUpdateRequest"
     SystemUpdateResponse:
       type: object
       properties:
@@ -7267,7 +7352,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       type: object
       properties:
@@ -7352,17 +7437,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
