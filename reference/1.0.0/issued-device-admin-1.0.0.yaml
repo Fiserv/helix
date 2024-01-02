@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-291
+  version: 1.1.0-293
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -553,7 +553,7 @@ paths:
             \ : Person <person-id> not found under Financial Institution <fi-id>.\
             \ </em></li><li><em>HLXIDASPA006 : Person <person-id> not linked to Brand\
             \ <brand-id>. </em></li><li><em>HLXIDASDS001 : Account is blocked with\
-            \ <Blocked reason code(s)>.</ul>"
+            \ [Blocked reason code(s)].</ul>"
           content: {}
         "429":
           description: Too Many Request
@@ -987,7 +987,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExecuteChangePINRequest"
+              $ref: "#/components/schemas/ExecuteChangePINRequest1"
       responses:
         "200":
           description: OK
@@ -2521,7 +2521,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "201":
           description: Created
@@ -3770,6 +3770,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3784,12 +3790,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4139,27 +4139,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: "Current PIN block is composed of the old PIN details, which\
-            \ customer want to change."
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: "Required PIN block is composed of the new PIN details, which\
-            \ customer provides as input to change the existing PIN."
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Used to identify PIN block encryption keys.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -4181,6 +4160,27 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: "Current PIN block is composed of the old PIN details, which\
+            \ customer want to change."
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: "Required PIN block is composed of the new PIN details, which\
+            \ customer provides as input to change the existing PIN."
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Used to identify PIN block encryption keys.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -4996,7 +4996,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -5345,7 +5345,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -6317,7 +6317,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -7002,29 +7002,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -7046,6 +7023,29 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -7154,7 +7154,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -7184,7 +7184,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
