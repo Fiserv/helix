@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-295
+  version: 1.1.0-296
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -987,7 +987,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExecuteChangePINRequest1"
+              $ref: "#/components/schemas/ExecuteChangePINRequest"
       responses:
         "200":
           description: OK
@@ -1901,6 +1901,178 @@ paths:
         "200":
           description: OK
       x-proxy-name: Report a Card as Lost or Stolen
+      x-group-name: Card Management
+  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ManageFraud/Update:
+    patch:
+      tags:
+      - Helix Core
+      summary: This method is used to update payment instrument attributes as part
+        of a system action/event.
+      description: "The Manage Fraud API is a service that enables the management\
+        \ of fraud statuses on a card. <p>The API allows a user to update three types\
+        \ of fraud statuses, namely:</p><ul><li><em>• Fraud Status</em></li><li><em>\
+        \ Fraud Refer Status</em></li><li><em> Fraud Monitor Status</em></li></ul>These\
+        \ fraud statuses can be used by a Fraud Management system in its rules during\
+        \ decision making. With this API, users can easily manage fraud statuses associated\
+        \ with a card, providing them with the necessary tools to mitigate potential\
+        \ fraud risks.Note: In scenarios where it is necessary to replace a card while\
+        \ simultaneously setting its status as Confirmed Fraud, it is recommended\
+        \ utilising the Update Fraud Status on a Card API for a streamlined process."
+      operationId: systemUpdate
+      parameters:
+      - name: paymentInstrumentId
+        in: path
+        description: Unique identifier of a card.
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFraudStatusRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  FraudStatus:
+                    description: This field indicates if a card is fraudulent or not.
+                      Valid values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM>
+                      SFRD (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud)
+                      </EM></LI> </UL>
+                    type: string
+                  FraudReferStatus:
+                    description: This field indicates whether a card is flagged to
+                      have all authorisationsreferred or not referred (anti-referred)
+                      to a fraud analyst for potential fraudulent activity. Valid
+                      Values are <UL><LI><EM> NONE ( No referral or anti-referral
+                      is assigned.) </EM></LI> <LI><EM> REFE (All authorizations are
+                      referred) </EM></LI> <LI><EM> ANTI (No authorizations are referred
+                      (anti-refer) </EM></LI> </UL>
+                    type: string
+                  FraudReferStatusExpiryDate:
+                    description: This field indicates the date on which the Fraud
+                      Refer Status expires.
+                    type: string
+                  FraudMonitorStatus:
+                    description: The Fraud Monitor Status flag is a two-character
+                      alphanumeric field utilized to indicate whether a card is flagged
+                      for fraud monitoring.
+                    type: string
+                  FraudMonitorStatusExpiryDate:
+                    description: This field indicates the date on which the Fraud
+                      Monitor Status expires.
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
+            \ : FraudStatus Fraud status invalid, valid values are NONE or SFRD or\
+            \ CFRD.</em></li><li><em>HLXIDASBR001 : FraudReferStatus Fraud Refer status\
+            \ invalid, valid values are NONE or REFE or ANTI.</em></li><li><em>HLXIDASBR001\
+            \ : FraudReferStatus is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
+            \ : FraudReferStatusExpiryDate must be present or future date.</em></li><li><em>HLXIDASBR001\
+            \ : FraudReferStatusExpiryDate  has to be a valid date format.</em></li><li><em>HLXIDASBR001\
+            \ : FraudMonitorStatus is not valid, please provide valid value.</em></li><li><em>HLXIDASBR001\
+            \ : FraudMonitorStatus  must be a combination of A-Z, a-z, 0-9 with spaces\
+            \ or '-'.</em></li><li><em>HLXIDASBR001 : FraudMonitorStatusExpiryDate\
+            \ must be present or future date.</em></li><li><em>HLXIDASBR001 : FraudMonitorStatusExpiryDate\
+            \  has to be a valid date format.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASFS001\
+            \ : FraudStatus cannot be set to the same value.</em></li><li><em>HLXIDASFS002\
+            \ : FraudReferStatus cannot be set to the same value.</em></li><li><em>HLXIDASFS003\
+            \ : FraudMonitorStatus cannot be set to the same value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASPC004\
+            \ : Attempt to update the payment instrument information has failed due\
+            \ to persistence error.</em></li><li><em>HLXIDASUP001 : Card Update failed\
+            \ due to persistence error.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Manage Fraud
       x-group-name: Card Management
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/PINTryCounterReset/Execute:
     post:
@@ -4138,6 +4310,27 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: "Current PIN block is composed of the old PIN details, which\
+            \ customer want to change."
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: "Required PIN block is composed of the new PIN details, which\
+            \ customer provides as input to change the existing PIN."
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Used to identify PIN block encryption keys.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -4159,27 +4352,6 @@ components:
           type: string
         KeyType:
           description: Type of a key.
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: "Current PIN block is composed of the old PIN details, which\
-            \ customer want to change."
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: "Required PIN block is composed of the new PIN details, which\
-            \ customer provides as input to change the existing PIN."
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Used to identify PIN block encryption keys.
-          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -5542,7 +5714,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -5557,7 +5729,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -7184,6 +7356,68 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption1"
+    UpdateFraudStatusRequest:
+      type: object
+      properties:
+        FraudStatus:
+          description: This field identifies the type of fraud status on the selected
+            card. Valid Values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD
+            (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI>
+            </UL>
+          type: string
+        FraudReferStatus:
+          description: This field indicates whether a card is flagged to have all
+            authorisations referred or not referred (anti-referred) to a fraud analyst
+            for potential fraudulent activity. This flag is sent to the Falcon Fraud
+            Manager system during authorisation processing where it can be used in
+            the rules to make informed authorisation decisions. Valid Values are <UL><LI><EM>
+            NONE ( No referral or anti-referral is assigned.) </EM></LI> <LI><EM>
+            REFE (All authorizations are referred) </EM></LI> <LI><EM> ANTI (No authorizations
+            are referred (anti-refer) </EM></LI> </UL>
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+        FraudMonitorStatus:
+          description: The Fraud Monitor Status flag is a two-character alphanumeric
+            field utilized to indicate whether a card is flagged for fraud monitoring.
+            This flag is used in order to implement specific fraud minimization strategies
+            within Falcon Fraud Manager system.
+          pattern: "[a-fA-Z0-9]{2}"
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.
+          type: string
+    UpdateFraudStatusResponse:
+      type: object
+      properties:
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        FraudReferStatus:
+          description: This field indicates whether a card is flagged to have all
+            authorisationsreferred or not referred (anti-referred) to a fraud analyst
+            for potential fraudulent activity. Valid Values are <UL><LI><EM> NONE
+            ( No referral or anti-referral is assigned.) </EM></LI> <LI><EM> REFE
+            (All authorizations are referred) </EM></LI> <LI><EM> ANTI (No authorizations
+            are referred (anti-refer) </EM></LI> </UL>
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+        FraudMonitorStatus:
+          description: The Fraud Monitor Status flag is a two-character alphanumeric
+            field utilized to indicate whether a card is flagged for fraud monitoring.
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.
+          type: string
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -7351,7 +7585,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -7436,17 +7670,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
