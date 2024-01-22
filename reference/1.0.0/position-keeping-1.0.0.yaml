@@ -104,7 +104,7 @@ paths:
           description: Gateway Timeout
           content: {}
       x-proxy-name: Retrieve Positions
-      x-group-name: Accounting
+      x-group-name: Position Management
 components:
   schemas:
     BalanceAmountDto:
