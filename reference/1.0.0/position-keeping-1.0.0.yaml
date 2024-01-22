@@ -1,0 +1,233 @@
+---
+openapi: 3.0.3
+info:
+  title: position-keeping
+  version: 1.1.0-SNAPSHOT
+tags:
+- name: Position Management
+paths:
+  /PositionKeeping/V1/Agreement/{agreementId}/Positions/Request:
+    get:
+      tags:
+      - Position Management
+      summary: get Position Details
+      description: "The API is used to retrieve the positions for an account. Position\
+        \ Type and Position Component work as optional filters. When the filters are\
+        \ provided in the input, the results are filtered matching the criteria."
+      operationId: retrievePositions
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: The Agreement ID for which the positions has to be retrieved.
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: positionType
+        in: query
+        description: "Identifies the position types like Retail, Cash, Current. This\
+          \ field works as a filter. The results will be filtered on the matching\
+          \ Position Type."
+        schema:
+          type: string
+      - name: positionComponent
+        in: query
+        description: "Identifies the position components like Principal, Interest,\
+          \ Fee, Balance, Pending Balance. This field works as a filter. The results\
+          \ will be filtered on the matching Position Component."
+        schema:
+          type: string
+      - name: period
+        in: query
+        description: "Identifies the period like Current, Past. This field works as\
+          \ a filter. The results will be filtered on the matching Period."
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestPositionsResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
+            \ : Account Number is required.</em></li><li><em>HLXPNKPBR001 : Account\
+            \ Number is invalid, please provide valid value.</em></li><li><em>HLXPNKPBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "413":
+          description: Payload Too large
+          content: {}
+        "415":
+          description: Unsupported Media Type
+          content: {}
+        "429":
+          description: Too Many Request
+          content: {}
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT002\
+            \ : Error Retrieving the Position List.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content: {}
+        "503":
+          description: Service Unavailable
+          content: {}
+        "504":
+          description: Gateway Timeout
+          content: {}
+      x-proxy-name: Retrieve Positions
+      x-group-name: Accounting
+components:
+  schemas:
+    BalanceAmountDto:
+      type: object
+      properties:
+        Amount:
+          description: Amount.
+          type: string
+        Currency:
+          description: Currency.
+          type: string
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/HelixMessage"
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    PositionDto:
+      type: object
+      properties:
+        PositionID:
+          description: Unique Id to identify the Position.
+          type: string
+        Status:
+          description: Status of the Position Record.
+          type: string
+        PositionType:
+          description: "Valid values are \"Retail\", \"Cash\", \"Current\"."
+          type: string
+        PositionComponent:
+          description: "Valid values are \"Principal\", \"Interest\", \"Fee\", \"\
+            Balance\", \"Pending Balance\"."
+          type: string
+        BalanceAmount:
+          description: Balance Amount of the Position.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/BalanceAmountDto"
+    PositionEntryEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PositionID:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PartyID:
+          type: string
+        CreationDateTime:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+    RequestPositionsResponse:
+      type: object
+      properties:
+        AgreementID:
+          description: Agreement ID to which this Position belongs.
+          type: string
+        CurrentPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
+        PriorPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
+    TransactionBookingEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        Status:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        EffectiveDateTime:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        AuthorisationReferenceID:
+          type: string
+        TransactionReferenceID:
+          type: string
+        ClearingMatchStatusCode:
+          type: string
