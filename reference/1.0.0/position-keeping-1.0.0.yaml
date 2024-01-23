@@ -38,24 +38,24 @@ paths:
           type: string
       - name: positionType
         in: query
-        description: This field works as a filter. The results will be filtered on
-          the matching Position Type. The supported values for positionType are <UL><LI>
-          RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI> CRRT (Current) </LI></UL>
+        description: "This field works as a filter. The results will be filtered on
+          the matching Position Type. The supported values for positionType are: <UL><LI>
+          RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI> CRRT (Current) </LI></UL>"
         schema:
           type: string
       - name: positionComponent
         in: query
-        description: This field works as a filter. The results will be filtered on
+        description: "This field works as a filter. The results will be filtered on
           the matching Position Component. The supported values for positionComponent
-          are <UL><LI> PRPL (Principal) </LI><LI> INTR (Interest) </LI><LI> FEES (Fees)
-          </LI> <LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>
+          are: <UL><LI> PRPL (Principal) </LI><LI> INTR (Interest) </LI><LI> FEES (Fees)
+          </LI> <LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
         schema:
           type: string
       - name: period
         in: query
-        description: This field works as a filter. The results will be filtered on
-          the matching Period.The supported values for period are <UL><LI> CURR (Current)
-          </LI> <LI> PAST (Past) </LI></UL>
+        description: "This field works as a filter. The results will be filtered on
+          the matching Period.The supported values for period are: <UL><LI> CURR (Current)
+          </LI> <LI> PAST (Past) </LI></UL>"
         schema:
           type: string
       responses:
