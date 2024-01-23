@@ -38,27 +38,29 @@ paths:
           type: string
       - name: positionType
         in: query
-        description: "Identifies the position types like Retail, Cash, Current. This\
-          \ field works as a filter. The results will be filtered on the matching\
-          \ Position Type."
+        description: "This field works as a filter. The results will be filtered on
+          the matching Position Type. The supported values for positionType are: <UL><LI>
+          RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI> CRRT (Current) </LI></UL>"
         schema:
           type: string
       - name: positionComponent
         in: query
-        description: "Identifies the position components like Principal, Interest,\
-          \ Fee, Balance, Pending Balance. This field works as a filter. The results\
-          \ will be filtered on the matching Position Component."
+        description: "This field works as a filter. The results will be filtered on
+          the matching Position Component. The supported values for positionComponent
+          are: <UL><LI> PRPL (Principal) </LI><LI> INTR (Interest) </LI><LI> FEES (Fees)
+          </LI> <LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
         schema:
           type: string
       - name: period
         in: query
-        description: "Identifies the period like Current, Past. This field works as\
-          \ a filter. The results will be filtered on the matching Period."
+        description: "This field works as a filter. The results will be filtered on
+          the matching Period.The supported values for period are: <UL><LI> CURR (Current)
+          </LI> <LI> PAST (Past) </LI></UL>"
         schema:
           type: string
       responses:
         "200":
-          description: OK
+          description: Ok
           content:
             application/json:
               schema:
