@@ -8,26 +8,6 @@ tags:
   x-proxy-name: Delete Card
   x-group-name: Card Management
 paths:
-  /IssuedDeviceAdmin/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      responses:
-        "200":
-          description: OK
-  /IssuedDeviceAdmin/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
   /IssuedDeviceAdmin/V1/PaymentInstrument/Delete/Execute:
     post:
       tags:
@@ -4890,7 +4870,7 @@ components:
         Name:
           description: Name of Financial Institution
           maxLength: 70
-          pattern: \A(?!\s*\Z).+
+          pattern: \A(?!\s*$).+
           type: string
         RegistrationAddress:
           description: Registered address of Financial Institution
@@ -7363,12 +7343,12 @@ components:
         Name:
           description: Name of a bundle
           maxLength: 35
-          pattern: \A(?!\s*\Z).+
+          pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
           maxLength: 140
-          pattern: \A(?!\s*\Z).+|^$
+          pattern: \A(?!\s*$).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -7678,7 +7658,7 @@ components:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \A(?!\s*\Z).+
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
