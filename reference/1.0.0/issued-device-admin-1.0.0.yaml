@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-301
+  version: 1.1.0-303
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -2585,12 +2585,16 @@ paths:
                     description: Number of active tokens for a card.
                     type: integer
                   FraudReferStatus:
-                    description: This field indicates whether a card is flagged to
-                      have all authorisations referred or not referred (anti-referred)
-                      to a fraud analyst for potential fraudulent activity. This flag
-                      is sent to the Falcon Fraud Manager system during authorisation
-                      processing where it can be used in the rules to make informed
-                      authorisation decisions.
+                    description: "This field indicates whether a card is flagged to\
+                      \ have all authorisations referred or not referred (anti-referred)\
+                      \ to a fraud analyst for potential fraudulent activity. This\
+                      \ flag is sent to the Falcon Fraud Manager system during authorisation\
+                      \ processing where it can be used in the rules to make informed\
+                      \ authorisation decisions.\n\n Valid values are: <UL><LI><EM>\
+                      \ NONE - No referral or anti-referral is assigned </EM></LI>\
+                      \ <LI><EM> REFE - All authorizations are referred </EM></LI>\
+                      \ <LI><EM> ANTI - No authorizations are referred (anti-refer)\
+                      \ </EM></LI> </UL>"
                     type: string
                   FraudReferStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
@@ -6846,11 +6850,14 @@ components:
           description: Number of active tokens for a card.
           type: integer
         FraudReferStatus:
-          description: This field indicates whether a card is flagged to have all
-            authorisations referred or not referred (anti-referred) to a fraud analyst
-            for potential fraudulent activity. This flag is sent to the Falcon Fraud
-            Manager system during authorisation processing where it can be used in
-            the rules to make informed authorisation decisions.
+          description: "This field indicates whether a card is flagged to have all\
+            \ authorisations referred or not referred (anti-referred) to a fraud analyst\
+            \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
+            \ Manager system during authorisation processing where it can be used\
+            \ in the rules to make informed authorisation decisions.\n\n Valid values\
+            \ are: <UL><LI><EM> NONE - No referral or anti-referral is assigned </EM></LI>\
+            \ <LI><EM> REFE - All authorizations are referred </EM></LI> <LI><EM>\
+            \ ANTI - No authorizations are referred (anti-refer) </EM></LI> </UL>"
           type: string
         FraudReferStatusExpiryDate:
           description: This field indicates the date on which the Fraud Refer Status
@@ -7450,7 +7457,7 @@ components:
             field utilized to indicate whether a card is flagged for fraud monitoring.
             This flag is used in order to implement specific fraud minimization strategies
             within Falcon Fraud Manager system.
-          pattern: "(^[a-zA-Z0-9]+|^$)"
+          pattern: "(([a-zA-Z0-9]{2})?)"
           type: string
         FraudMonitorStatusExpiryDate:
           description: This field indicates the date on which the Fraud Monitor Status
