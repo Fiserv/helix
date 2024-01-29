@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-303
+  version: 1.1.0-305
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -1076,150 +1076,6 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Change PIN
       x-group-name: Card Sensitive Data
-  /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/Chipdata/Retrieve:
-    get:
-      tags:
-      - Helix Core
-      summary: This method is used to fetch chipData the given FEPID
-      description: "This API allows the user to to fetch chipData given FEPID <br/><br/><i>\
-        \ <b>Note</b>:This API is for Internal purpose only.</i>"
-      operationId: retrieveChipData
-      parameters:
-      - name: paymentInstrumentId
-        in: path
-        description: Unique identifier of the payment instrument (FEPID)
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Version:
-                    type: string
-                  CryptogramVersion:
-                    type: string
-                  CryptogramKeyIndex:
-                    type: string
-                  MacKeyIndex:
-                    type: string
-                  EncryptionKeyIndex:
-                    type: string
-                  PreferredCvm:
-                    type: string
-                  Lcol:
-                    type: string
-                  Ucol:
-                    type: string
-                  CurrencyConversionFactor:
-                    type: string
-                  SecondaryAppCurrencyCode:
-                    type: string
-                  CotCurrency:
-                    type: string
-                  CotCountry:
-                    type: string
-                  Tac:
-                    type: string
-                  Tadc:
-                    type: string
-                  Atc:
-                    type: string
-                  ContactlessLcol:
-                    type: string
-                  ContactlessUcol:
-                    type: string
-                  VlpResetThreshold:
-                    type: string
-                  VlpFundsLimit:
-                    type: string
-                  VlpTransactionAmountLimit:
-                    type: string
-                  OfflinePin:
-                    type: string
-                  StagedScript:
-                    type: string
-                  SentScript:
-                    type: string
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
-            \ : Card not found.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASID003\
-            \ : Card not found.</em></li><li><em>HLXIDASID007 : Chip data not found\
-            \ for given FEPID.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Too Many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-      deprecated: true
-      x-proxy-name: Retrieve chip data details
-      x-group-name: Card Management
-      x-api-scope: Internal
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ContactLessOptChange/Execute:
     post:
       tags:
@@ -3982,6 +3838,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3996,12 +3858,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -5208,7 +5064,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -5557,7 +5413,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -6529,7 +6385,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -7398,7 +7254,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -7428,7 +7284,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFraudStatusRequest:
       type: object
       properties:
