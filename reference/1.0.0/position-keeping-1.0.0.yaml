@@ -1,8 +1,8 @@
 ---
 openapi: 3.0.3
 info:
-  title: position-keeping
-  version: 1.1.0-SNAPSHOT
+  title: position-keeping-application API
+  version: 1.1.0-13
 tags:
 - name: Position Management
 paths:
@@ -16,65 +16,30 @@ paths:
         \ provided in the input, the results are filtered matching the criteria."
       operationId: retrievePositions
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
       - name: agreementId
         in: path
-        description: The Agreement ID for which the positions has to be retrieved.
         required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: positionType
-        in: query
-        description: "This field works as a filter. The results will be filtered on\
-          \ the matching Position Type. The supported values for positionType are:\
-          \ <UL><LI> RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI> CRRT (Current)\
-          \ </LI></UL>"
-        schema:
-          type: string
-      - name: positionComponent
-        in: query
-        description: "This field works as a filter. The results will be filtered on\
-          \ the matching Position Component. The supported values for positionComponent\
-          \ are: <UL><LI> PRPL (Principal) </LI><LI> INTR (Interest) </LI><LI> FEES\
-          \ (Fees) </LI> <LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
         schema:
           type: string
       - name: period
         in: query
-        description: "This field works as a filter. The results will be filtered on\
-          \ the matching Period.The supported values for period are: <UL><LI> CURR\
-          \ (Current) </LI> <LI> PAST (Past) </LI></UL>"
+        schema:
+          type: string
+      - name: positionComponent
+        in: query
+        schema:
+          type: string
+      - name: positionType
+        in: query
         schema:
           type: string
       responses:
         "200":
-          description: Ok
+          description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RequestPositionsResponse"
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
-            \ : Account Number is required.</em></li><li><em>HLXPNKPBR001 : Account\
-            \ Number is invalid, please provide valid value.</em></li><li><em>HLXPNKPBR001\
-            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
         "401":
           description: Not Authorized
           content: {}
@@ -91,12 +56,8 @@ paths:
           description: Too Many Request
           content: {}
         "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT002\
-            \ : Error Retrieving the Position List.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/>"
+          content: {}
         "502":
           description: Bad Gateway
           content: {}
@@ -107,10 +68,10 @@ paths:
           description: Gateway Timeout
           content: {}
       x-proxy-name: Retrieve Positions
-      x-group-name: Position Management
+      x-group-name: Accounting
 components:
   schemas:
-    BalanceAmountDto:
+    BalanceAmount:
       type: object
       properties:
         Amount:
@@ -149,44 +110,17 @@ components:
           description: Status of the Position Record.
           type: string
         PositionType:
-          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CASH (Cash)\
-            \ </LI><LI> CRRT (Current) </LI></UL> "
+          description: "Valida values are \"Retail\", \"Cash\", \"Current\"."
           type: string
         PositionComponent:
-          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> INTR\
-            \ (Interest) </LI><LI> FEES (Fees) </LI> <LI> PEND (Pending Balance) </LI><LI>\
-            \ BAL (Balance) </LI></UL>"
+          description: "Valid values are \"Principal\", \"Interest\", \"Fee\", \"\
+            Balance\", \"Pending Balance\"."
           type: string
         BalanceAmount:
           description: Balance Amount of the Position.
           type: object
           allOf:
-          - $ref: "#/components/schemas/BalanceAmountDto"
-    PositionEntryEvent:
-      type: object
-      properties:
-        EventId:
-          type: string
-        EventName:
-          type: string
-        PositionID:
-          type: string
-        Product:
-          type: string
-        AgreementID:
-          type: string
-        PartyID:
-          type: string
-        CreationDateTime:
-          type: string
-        Amount:
-          type: string
-        Currency:
-          type: string
-        PositionType:
-          type: string
-        PositionComponent:
-          type: string
+          - $ref: "#/components/schemas/BalanceAmount"
     RequestPositionsResponse:
       type: object
       properties:
@@ -203,36 +137,3 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PositionDto"
-    TransactionBookingEvent:
-      type: object
-      properties:
-        EventId:
-          type: string
-        EventName:
-          type: string
-        Product:
-          type: string
-        AgreementID:
-          type: string
-        PaymentInstrumentID:
-          type: string
-        PartyID:
-          type: string
-        Status:
-          type: string
-        Amount:
-          type: string
-        Currency:
-          type: string
-        EffectiveDateTime:
-          type: string
-        PositionType:
-          type: string
-        PositionComponent:
-          type: string
-        AuthorisationReferenceID:
-          type: string
-        TransactionReferenceID:
-          type: string
-        ClearingMatchStatusCode:
-          type: string
