@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: position-keeping
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-13
 tags:
 - name: Position Management
 paths:
@@ -39,29 +39,27 @@ paths:
       - name: positionType
         in: query
         description: "This field works as a filter. The results will be filtered on\
-          \ the matching Position Type. The supported values for positionType are:\
-          \ <UL><LI> RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI> CRRT (Current)\
-          \ </LI></UL>"
+          \ the matching Position Type. The valid values are: <UL><LI> RETL (Retail)\
+          \ </LI> <LI> CRRT (Current) </LI></UL>"
         schema:
           type: string
       - name: positionComponent
         in: query
         description: "This field works as a filter. The results will be filtered on\
-          \ the matching Position Component. The supported values for positionComponent\
-          \ are: <UL><LI> PRPL (Principal) </LI><LI> INTR (Interest) </LI><LI> FEES\
-          \ (Fees) </LI> <LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
+          \ the matching Position Component. The valid values  are: <UL><LI> PRPL\
+          \ (Principal) </LI><LI> PEND (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
         schema:
           type: string
       - name: period
         in: query
         description: "This field works as a filter. The results will be filtered on\
-          \ the matching Period.The supported values for period are: <UL><LI> CURR\
-          \ (Current) </LI> <LI> PAST (Past) </LI></UL>"
+          \ the matching Period.The valid values  are: <UL><LI> CURR (Current) </LI>\
+          \ <LI> PAST (Past) </LI></UL>"
         schema:
           type: string
       responses:
         "200":
-          description: Ok
+          description: OK
           content:
             application/json:
               schema:
@@ -149,13 +147,12 @@ components:
           description: Status of the Position Record.
           type: string
         PositionType:
-          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CASH (Cash)\
-            \ </LI><LI> CRRT (Current) </LI></UL> "
+          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
+            \ </LI></UL> "
           type: string
         PositionComponent:
-          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> INTR\
-            \ (Interest) </LI><LI> FEES (Fees) </LI> <LI> PEND (Pending Balance) </LI><LI>\
-            \ BAL (Balance) </LI></UL>"
+          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> PEND\
+            \ (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
           type: string
         BalanceAmount:
           description: Balance Amount of the Position.
