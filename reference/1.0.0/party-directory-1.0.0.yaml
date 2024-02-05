@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-144
+  version: 1.1.0-172
 tags:
 - name: Customer Management
 paths:
@@ -368,8 +368,13 @@ paths:
     post:
       tags:
       - Customer Management
-      summary: This method is used to return the list of person details with the help
-        of either FEPID or CRMID.
+      summary: "This method retrieves a list of persons matching all the attributes\
+        \ provided in the request. These attributes can be used alone or in combination.\
+        \ Response results are ordered by closest match first, returning all record\
+        \ that matches the request.The API returns an error when the criteria entered\
+        \ does not match any existing data in the system.\nNOTE: Some attributes will\
+        \ result in a search for an exact match, whereas others are wild card searches.\
+        \ This information is specified in the individual attribute description."
       operationId: requestGetPersonListById
       parameters:
       - name: fi-id
@@ -412,7 +417,13 @@ paths:
             \ : TypeOfIdentificationCode is not valid, please provide valid value.</em></li><li><em>HLXPTDTBR001\
             \ : Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
             \ : Please provide one search criteria only.</em></li><li><em>HLXPTDTBR001\
-            \ : At least one search criteria required.</em></li></ul>"
+            \ : At least one search criteria required.</em></li><li><em>HLXPTDTBR001\
+            \ : GivenName exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : MiddleName exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : Phone/Mobile/Work number exceeds maximum 15 character length allowed\
+            \ (excluding special characters).</em></li></ul>"
           content:
             application/json:
               schema:
@@ -458,7 +469,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "500":
-          description: Internal Server Error
+          description: "Internal Server Error <br/><br/> <b>Error codeslist:</b><br/><ul><li><em>HLXPTDTGT017\
+            \ : There is persistence error while getting Person list, please try again.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -481,7 +493,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Retrieve a Person List using FEPID or CRMID
+      x-proxy-name: Retrieve a Person List using FEPID or CRMID or Customer Details
       x-group-name: Customer Management
   /PartyDirectory/V1/Person/Register:
     post:
@@ -1457,11 +1469,14 @@ components:
     AddCardRequestEvent:
       type: object
       properties:
-        FEPID:
-          description: Unique identifier of the payment card (FEPID)
+        EventId:
+          type: string
+        EventName:
           type: string
         ProductId:
-          description: Identification of the product
+          type: string
+        FEPID:
+          description: Unique identifier of the payment card (FEPID)
           type: string
         FEAID:
           description: Identification of the account
@@ -1469,16 +1484,7 @@ components:
         FECID:
           description: Identification of the cardholder
           type: string
-        EventDescription:
-          description: Specifies event message.
-          type: string
-        EventName:
-          description: Specifies event name for the message.
-          type: string
-        EventId:
-          description: Specifies event id generated for the card creation.
-          type: string
-        Timestamp:
+        CreatedDateTime:
           description: "Time when the Add card request raised (YYYY-MM-DDThh:mm:ss.sssZ)."
           type: string
           allOf:
@@ -1488,12 +1494,6 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
-        BrandId:
-          description: Identification of the Brand
-          type: string
-        FiId:
-          description: Identification of the financial institution
-          type: string
         CardTechnologyType:
           description: Indicates the technology type supported by the physical card
           type: string
@@ -1642,12 +1642,34 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
+    AssociationKeyBaseRequest:
+      required:
+      - Association
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
     BrandEntryAddRequest:
       required:
       - Name
       - FinancialInstitutionIdentification
       - Identification
       - ReportingCurrency
+      - SchemeOperatingRegion
       type: object
       properties:
         Name:
@@ -1690,6 +1712,10 @@ components:
         CountryOfOperation:
           description: Country of Operation
           maxLength: 2
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
           type: string
     BrandRegisterResponse:
       type: object
@@ -1785,33 +1811,19 @@ components:
           type: string
         EventName:
           type: string
-        EventDescription:
+        PrimaryAccountNumber:
           type: string
-        ServiceDomain:
+        CardholderType:
           type: string
-        Timestamp:
+        CardTechnologyType:
           type: string
-        ProductId:
+        FEAID:
           type: string
-        primaryAccountNumber:
+        FECID:
           type: string
-        cardholderType:
+        FEPID:
           type: string
-        cardTechnologyType:
-          type: string
-        feaId:
-          type: string
-        fecid:
-          type: string
-        cardHolderName:
-          type: string
-        entityId:
-          type: string
-        subEntityId:
-          type: string
-        fiId:
-          type: string
-        brandId:
+        CardHolderName:
           type: string
     ChipData:
       type: object
@@ -1822,6 +1834,32 @@ components:
         Chip:
           description: Chip Sequence Number
           type: string
+        SentScript:
+          description: "Issuer script that has already been sent to the card, during\
+            \ a previous online contact authorisation.<br> Valid values are: <UL><LI>\
+            \ CARD BLOCK - This script when sent to the card, will shut down all proprietary\
+            \ and non-proprietary applications that reside on the card, to prevent\
+            \ further use of the card.</LI> <LI> PIN CHANGE -  This script when sent\
+            \ to the card, can be used to change the offline PIN as well as reset\
+            \ the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent\
+            \ to the card, can be used to reset the PIN Try Counter, to enable usage\
+            \ of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
+        StagedScript:
+          description: "Issuer script that is pending delivery to the card, upon the\
+            \ receipt of the next online contact authorisation.<br> Valid values are:\
+            \ <UL><LI> CARD BLOCK - This script when sent to the card, will shut down\
+            \ all proprietary and non-proprietary applications that reside on the\
+            \ card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This\
+            \ script when sent to the card, can be used to change the offline PIN\
+            \ as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This\
+            \ script when sent to the card, can be used to reset the PIN Try Counter,\
+            \ to enable usage of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
     CommonChipDataResponse:
       type: object
       properties:
@@ -1859,6 +1897,10 @@ components:
           type: string
         Ucol:
           type: string
+        StagedScript:
+          type: string
+        SentScript:
+          type: string
     ConfigurationOption:
       required:
       - Name
@@ -1887,6 +1929,9 @@ components:
         Specification:
           description: Description of a configuration option
           type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1908,6 +1953,102 @@ components:
           description: Value of a configuration parameter
           maxLength: 40000
           pattern: \S
+          type: string
+    CreateAssociationKeyRequest:
+      required:
+      - Association
+      - Key
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
+        Key:
+          description: Key
+          pattern: \S
+          type: string
+    CreateAssociationKeyResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          description: ID defining the number of record created
+          type: integer
+        Association:
+          description: Identifies the association Key
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Description:
+          description: Description of the association Key
+          type: string
+    CreateInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      - Key
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          pattern: \S
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+    CreateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        Identification:
+          format: int64
+          description: ID defining the number of record created
+          type: integer
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Description:
+          description: Description of key
           type: string
     DeactivatePostalAddressRequest:
       required:
@@ -2035,6 +2176,52 @@ components:
       properties:
         PAN:
           description: Primary Account Number
+          type: string
+    ExecuteChangePINRequest:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      - ExpiryDate
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+        ExpiryDate:
+          description: Date on which the payment instrument expires (YYMM).
+          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
+          type: string
+        KeyType:
+          description: Type of a key.
           type: string
     ExecuteClosureRequest:
       type: object
@@ -2333,14 +2520,11 @@ components:
           type: string
         AccountIdentification:
           description: Account number associated with External Clearing System
-          maxLength: 37
           pattern: \S
           type: string
         ClearingSystemMemberIdentification:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
-          maxLength: 13
-          pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
     ExternalIdentification:
       required:
@@ -2726,6 +2910,26 @@ components:
             \ same Brand."
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+    KeyBaseRequest:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+    KeyBaseResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
     LinkBundleFeatureRequest:
       required:
       - Feature
@@ -2780,6 +2984,10 @@ components:
         Lcol:
           type: string
         Ucol:
+          type: string
+        StagedScript:
+          type: string
+        SentScript:
           type: string
         Ndcf:
           type: string
@@ -2931,7 +3139,6 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
     Phone:
       required:
@@ -3269,7 +3476,6 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
         Brand:
           description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
@@ -3341,7 +3547,6 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
         Brand:
           description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
@@ -3661,6 +3866,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+        Status:
+          description: Status of the Agreement in the system
+          type: string
+        agreementClosed:
+          description: Indicates if the agreement is closed.
+          type: boolean
+        agreementEnabled:
+          type: boolean
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -3752,6 +3965,48 @@ components:
           type: string
         enabled:
           type: boolean
+    RetrieveAssociationKeyRequest:
+      required:
+      - Association
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
+    RetrieveAssociationKeyResponse:
+      type: object
+      properties:
+        Association:
+          description: Identifies the association Key
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Key:
+          description: Key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+        Description:
+          description: Description of the association Key
+          type: string
     RetrieveBrandResponse:
       required:
       - Name
@@ -3792,6 +4047,11 @@ components:
         CountryOfOperation:
           description: Country of Operation
           type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          type: string
+        enabled:
+          type: boolean
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -4069,6 +4329,48 @@ components:
           description: Identification of Client Financial Institution
           maxLength: 5
           type: string
+        enabled:
+          type: boolean
+    RetrieveInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+    RetrieveInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Key index value
+          type: string
+        Key:
+          description: Encrypted key value
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of the key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
     RetrieveOrganisationResponse:
       required:
       - TradingName
@@ -4118,6 +4420,35 @@ components:
           type: string
         Status:
           description: Status of the organisation record in the system
+          type: string
+    RetrievePanContactDetailsRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+    RetrievePanContactDetailsResponse:
+      type: object
+      properties:
+        Mobile:
+          description: Mobile number of the cardholder
+          type: string
+        DateMobileModified:
+          description: "Date and time when mobile number was last updated, This will\
+            \ be present only when mobile number is present in response (YYYY-MM-DD\
+            \ hh:mm:ss [. fraction ])."
+          type: string
+        Email:
+          description: Email address that is marked as preferred for contact by the
+            cardholder
+          type: string
+        DateEmailModified:
+          description: "Date and time when email address was last updated, This will\
+            \ be present only when email address is present in response (YYYY-MM-DD\
+            \ hh:mm:ss [. fraction ])."
           type: string
     RetrievePaymentInstrumentResponse:
       type: object
@@ -4267,6 +4598,10 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -4313,6 +4648,52 @@ components:
             with the external account.'
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
+          type: string
+        BirthDate:
+          description: The date of birth of a person. Must be in the ISO Date format
+            (YYYY-MM-DD) for an exact match during the search process. Can serve as
+            a single search criterion or used alongside any other input search criteria
+            to find a matching person.
+          type: string
+        GivenName:
+          description: "The first name of a person. Can serve as a single search criterion\
+            \ or used alongside any other request input search criteria to find a\
+            \ matching person, regardless of case sensitivity. Supports wildcard searches\
+            \ where the persons Given Name begins with the GivenName search criteria\
+            \ provided and will return persons that both have an exact or partial\
+            \ match."
+          type: string
+        MiddleName:
+          description: "A person's second name(s). Can serve as a single criterion\
+            \ or used alongside any other request input criteria to find matching\
+            \ details, regardless of case sensitivity. This functionality supports\
+            \ wildcard searches where the persons Middle Name begins with the Middle\
+            \ Name search criteria provided and will return persons that both have\
+            \ an exact or partial match."
+          type: string
+        Surname:
+          description: "The surname or family name of a person can serve as a single\
+            \ criterion or be combined with any other request input criteria to find\
+            \ matching details, irrespective of case sensitivity. This feature supports\
+            \ wildcard search where the persons Surname begins with the Surname search\
+            \ criteria entered and will return persons that both have an exact or\
+            \ partial match."
+          type: string
+        PostalCode:
+          description: "The active postal address(es) for a person. Can serve as a\
+            \ single criterion or used alongside any other request input search criteria\
+            \ to find a matching person, regardless of case sensitivity. Returns all\
+            \ the persons where one of the active postal address postcodes contain\
+            \ a full or partial match to the post code search criteria."
+          type: string
+        PhoneNumber:
+          description: "The Phone identifies all, or part of a phone number can serve\
+            \ as a single criterion or used alongside any other request input search\
+            \ criteria. The system will search through all customers Phone, Mobile\
+            \ or Work Numbers that contain the number entered in the search and returns\
+            \ all the customers where it finds a match. E.g., Phone/Mobile/Work Number\
+            \ search: '7950'\nReturns customers for phone/mobile/work numbers:\n+447950292122\n\
+            +667950765432\n+330777079501"
           type: string
     RetrievePersonResponse:
       type: object
@@ -4584,7 +4965,54 @@ components:
           type: string
         Status:
           type: string
+    RetrieveSystemDetailsRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+    RetrieveSystemDetailsResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
+          type: string
+        FinancialInstitution:
+          description: Financial Institution Identification
+          type: string
+        Brand:
+          description: Brand Identification
+          type: string
+        Product:
+          description: Product Identification
+          type: string
     SystemUpdateRequest:
+      type: object
+      properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
+    SystemUpdateRequest1:
       type: object
       properties:
         OpeningDate:
@@ -4606,25 +5034,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
     SystemUpdateResponse:
       type: object
       properties:
@@ -4650,20 +5059,47 @@ components:
             \ assigned to a Brand, can only be used when adding cards under the same\
             \ Brand."
           type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    UpdateAssociationKeyResponse:
+      type: object
+      properties:
+        Association:
+          description: Identifies the association Key
+          type: string
+        Product:
+          description: Operating region associated with the payment card
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Key:
+          description: Key
+          type: string
+        Description:
+          description: Description
+          type: string
+        KeyStatus:
+          description: KeyStatus
+          type: string
     UpdateBundleRequest:
       type: object
       properties:
         Name:
           description: Name of a bundle
+          maxLength: 35
           pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          maxLength: 140
+          pattern: \A(?!\s*$).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -4737,6 +5173,64 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption1"
+    UpdateInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -4848,20 +5342,12 @@ components:
         Warning:
           $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
-      required:
-      - Name
-      - Brand
       type: object
       properties:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \S
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          maxLength: 37
-          minLength: 1
+          pattern: \A(?!\s*$).+
           type: string
         Type:
           description: Specifies the type of product category
@@ -4902,6 +5388,10 @@ components:
         Lcol:
           type: string
         Ucol:
+          type: string
+        StagedScript:
+          type: string
+        SentScript:
           type: string
         CurrencyConversionFactor:
           type: string
