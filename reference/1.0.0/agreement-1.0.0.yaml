@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-204
+  version: 1.1.0-225
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1147,7 +1147,7 @@ paths:
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXAGDTUN002 : Brand\
-            \ not found.</em></li><li><em>HLXAGDTGT004 : Account not found.</em></li></ul>"
+            \ not found.</em></li><li><em>HLXAGDTGT004 : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2025,7 +2025,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account not found.</em></li></ul>"
+            \ : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2209,7 +2209,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "200":
           description: OK
@@ -2252,7 +2252,7 @@ paths:
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTUN001\
             \ : Financial Institution not found.</em></li><li><em>HLXAGDTUN002 : Brand\
-            \ not found.</em></li><li><em>HLXAGDTGT004 : Account not found.</em></li></ul>"
+            \ not found.</em></li><li><em>HLXAGDTGT004 : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2369,7 +2369,7 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account not found.</em></li></ul>"
+            \ : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2734,7 +2734,6 @@ components:
     BlockedReasonUpdateRequest:
       required:
       - Action
-      - BlockedReasonCode
       type: object
       properties:
         Action:
@@ -2744,7 +2743,6 @@ components:
           type: string
         BlockedReasonCode:
           description: Blocked reason code to be updated on the agreement.
-          minItems: 1
           type: array
           items:
             type: string
@@ -3035,8 +3033,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationParameter"
-        identification:
-          type: string
     ConfigurationOption1:
       required:
       - Name
@@ -3164,6 +3160,17 @@ components:
           type: integer
         Description:
           description: Description of key
+          type: string
+    CreditLimit:
+      type: object
+      properties:
+        Value:
+          description: The maximum amount value of credit to be assigned to the customer's
+            account.
+          default: 0
+          type: number
+        Currency:
+          description: Currency code associated with the credit limit amount
           type: string
     DeactivatePostalAddressRequest:
       required:
@@ -3918,6 +3925,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+        CreditLimit:
+          description: The maximum amount of credit to be assigned to the customer's
+            account.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/CreditLimit"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -5107,6 +5120,12 @@ components:
           type: array
           items:
             type: string
+        CreditLimit:
+          description: The maximum amount of credit to be assigned to the customer's
+            account.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/CreditLimit"
         enabled:
           type: boolean
     RetrieveAssociationKeyRequest:
@@ -6106,6 +6125,29 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6127,29 +6169,6 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*Z
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -6245,6 +6264,12 @@ components:
           type: array
           items:
             type: string
+        CreditLimit:
+          description: The maximum amount of credit to be assigned to the customer's
+            account.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/CreditLimit"
         enabled:
           type: boolean
     UUID:
