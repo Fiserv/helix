@@ -8,9 +8,9 @@ tags:
 - name: Statement Information
 paths:
   /AccountProcessing/V1/AccountRepayment/Register:
-    x-proxy-name: Register Account Repayment
-    x-group-name: Statement Information
     post:
+      x-proxy-name: Register Account Repayment
+      x-group-name: Statement Information
       tags:
       - AccountRepayment Rest API
       summary: This method is used to register accountRepayment details.
@@ -102,9 +102,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/RegisterAccountRepaymentResponse"
   /AccountProcessing/V1/AccountRepayment/{accountRepaymentIdentification}/Delete:
-    x-proxy-name: Delete Account Repayment
-    x-group-name: Statement Information
     delete:
+      x-proxy-name: Delete Account Repayment
+      x-group-name: Statement Information
       tags:
       - AccountRepayment Rest API
       summary: This method is used to delete accountRepayment
@@ -197,9 +197,9 @@ paths:
         "200":
           description: OK
   /AccountProcessing/V1/AccountRepayment/{accountRepaymentIdentification}/Update:
-    x-proxy-name: Update Account Repayment
-    x-group-name: Statement Information
     put:
+      x-proxy-name: Update Account Repayment
+      x-group-name: Statement Information
       tags:
       - AccountRepayment Rest API
       summary: This method is used to update accountRepayment
@@ -305,9 +305,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
   /AccountProcessing/V1/AccountRepayment/{accountRepaymentId}/Retrieve:
-    x-proxy-name: Retreive Account Repayment
-    x-group-name: Statement Information
     get:
+      x-proxy-name: Retreive Account Repayment
+      x-group-name: Statement Information
       tags:
       - AccountRepayment Rest API
       summary: This method is used to return a list of all accountRepayment details
@@ -393,9 +393,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
   /AccountProcessing/V1/AccountRepayment/{accountRepaymentId}/Update:
-    x-proxy-name: Update Account Repayment
-    x-group-name: Statement Information
     put:
+      x-proxy-name: Update Account Repayment
+      x-group-name: Statement Information
       tags:
       - Account Repayment Resource
       parameters:
