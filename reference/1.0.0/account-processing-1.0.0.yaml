@@ -2,16 +2,136 @@
 openapi: 3.0.3
 info:
   title: account-processing
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-5
 tags:
 - name: Statement Information
 paths:
+  /AccountProcessing/V1/Agreement/{agreementId}/CalculateRepaymentAmount/Execute:
+    post:
+      tags:
+      - Statement Information
+      summary: The API is used to calculate minimum due amount and payment due date.
+      description: The API is used to calculate minimum due amount and payment due
+        date.
+      operationId: calculateRepaymentAmount
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExecuteRepaymentAmountRequest"
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecuteRepaymentAmountResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT002\
+            \ : Error While Calculating the Repayment Amount.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecuteRepaymentAmountResponse"
+      x-proxy-name: Calculate payment due amount and payment due date
+      x-group-name: Statement Information
   /AccountProcessing/V1/Agreement/{agreementId}/OutstandingRepaymentAmount/Retrieve:
     get:
       tags:
       - Statement Information
       summary: The API is used to inquire minimum due amount and payment due date.
-      description: The API is used to inquire minimum due amount and payment due date.
+      description: "This API allows a user to inquire about the outstanding payment\
+        \ due amounts and payment due date for a given account, using the AgreementID."
       operationId: retrieveOutstandingRepaymentAmount
       parameters:
       - name: fi-id
@@ -110,17 +230,451 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Inquire payment due amount and payment due date
+      x-proxy-name: Retrieve outstanding payment due information
       x-group-name: Statement Information
 components:
   schemas:
+    AgreementFeature:
+      type: object
+      properties:
+        Id:
+          description: Agreement Feature Identification
+          type: string
+        Agreement:
+          description: Agreement Identification
+          type: string
+        Feature:
+          description: Feature Identification
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    AgreementFeatureParameter:
+      type: object
+      properties:
+        Name:
+          description: Name of Agreement Feature Parameter
+          type: string
+        Value:
+          description: Value of Agreement Feature Parameter
+          type: string
+    AgreementFeatureRequestDto:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          description: Identification of Agreement Feature
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        AgreementFeatureParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    AgreementFeatureResponse:
+      type: object
+      properties:
+        AgreementFeature:
+          description: Feature related to Agreement
+          type: string
+        FacilityIdentification:
+          description: Identification of Facility
+          type: string
+        FacilityStatus:
+          description: Status of Facility
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Agreement:
+          description: Agreement
+          type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    AgreementInvolvement:
+      description: Role played by a party in the context of Agreement operations.
+      required:
+      - PartyIdentification
+      - PartyRole
+      type: object
+      properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          pattern: "[0-9]+"
+          type: string
+        PartyIdentification:
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          type: string
+        PartyRole:
+          description: "Specifies the role of the party in the transaction <br> Valid\
+            \ values are : <br> AccountHolder"
+          pattern: \S
+          type: string
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
+    AgreementListRequest:
+      type: object
+      properties:
+        Person:
+          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
+            \ plays the role of contact (FECID)"
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)"
+          type: string
+        ExternalAccount:
+          $ref: "#/components/schemas/ExternalAccount"
+        validRequest:
+          type: boolean
     AmountDto:
       type: object
       properties:
         Value:
+          description: Represents the monetary value associated.
           type: string
         Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
           type: string
+    BalanceAmountDto:
+      type: object
+      properties:
+        Amount:
+          description: Amount.
+          type: string
+        Currency:
+          description: Currency.
+          type: string
+    BlockedReasonUpdateRequest:
+      required:
+      - Action
+      type: object
+      properties:
+        Action:
+          description: "Action to be taken on the update of the agreement. Valid Values\
+            \ are Add,Replace,Delete."
+          pattern: \S
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason code to be updated on the agreement.
+          type: array
+          items:
+            type: string
+    BlockedReasonUpdateResponse:
+      type: object
+      properties:
+        Identification:
+          description: Agreement identification.
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+    Bundle:
+      type: object
+      properties:
+        Identification:
+          type: string
+    BundleCommonDto:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    ConfigurationOption:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationOption1:
+      required:
+      - Name
+      - ConfigurationParameter
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          pattern: \S
+          type: string
+        ConfigurationParameter:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    ConfigurationParameter:
+      description: Parameter used for configuring options
+      required:
+      - Name
+      - Value
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration parameter
+          maxLength: 35
+          pattern: \S
+          type: string
+        Value:
+          description: Value of a configuration parameter
+          maxLength: 40000
+          pattern: \S
+          type: string
+    DueOnPositionDto:
+      type: object
+      properties:
+        PositionType:
+          type: string
+        CurrentDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        Components:
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionComponentDueDto"
+    ExecuteClosureRequest:
+      type: object
+      properties:
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+    ExecuteClosureResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of an Account, as assigned by the account\
+            \ servicer (FEAID)."
+          type: string
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
+        ClosingDate:
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Instant"
+    ExecuteDeleteAgreementRequest:
+      required:
+      - FEAID
+      type: object
+      properties:
+        FEAID:
+          description: "Unique identifier of an Account, as assigned by the account\
+            \ servicer (FEAID)."
+          type: string
+    ExecuteDeleteFacilityAllocationRequest:
+      required:
+      - FacilityIdentification
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+    ExecuteRepaymentAmountRequest:
+      required:
+      - BillingDate
+      type: object
+      properties:
+        BillRepaymentAmount:
+          description: True if Calculated Amount should be Stored.
+          type: boolean
+        BillingDate:
+          description: Date on which bill has to be generated. <br/> Format must be
+            ISO Date format (YYYY-MM-DD)
+          type: string
+    ExecuteRepaymentAmountResponse:
+      type: object
+      properties:
+        AgreementId:
+          type: string
+        BillingDate:
+          type: string
+        PaymentDueDate:
+          type: string
+        CurrentDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        TotalDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        Positions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DueOnPositionDto"
+    ExecuteUnlinkBundleFeatureRequest:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    ExecuteUnlinkProductFeatureRequest:
+      required:
+      - RequestType
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          minLength: 1
+          type: string
+    ExecuteUnlinkProductFeatureResponse:
+      type: object
+      properties:
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+        RequestType:
+          description: Request Type of Unlink Feature
+          type: string
+    ExternalAccount:
+      description: Provide Link to External Accounts
+      required:
+      - ClearingSystemIdentificationCode
+      - AccountIdentification
+      type: object
+      properties:
+        ClearingSystemIdentificationCode:
+          description: Specifies the clearing system identification code. E.g. GBDSC
+            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
+            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
+          minLength: 1
+          type: string
+        AccountIdentification:
+          description: Account number associated with External Clearing System
+          pattern: \S
+          type: string
+        ClearingSystemMemberIdentification:
+          description: ' Specifies the clearing system member identification associated
+            with the external account.'
+          type: string
+    Feature:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          type: string
+    Feature1:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of the feature
+          type: string
+        Specification:
+          description: Specification of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        CapabilityVersion:
+          description: Version of the system capability linked to a feature
+          type: string
+    Feature2:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        DefaultIndicator:
+          description: Default feature indicator
+          type: string
+    Feature3:
+      type: object
+      properties:
+        Identification:
+          description: Identification of the feature
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Flag to indicate default feature
+          type: boolean
     HelixErrorDetails:
       type: object
       properties:
@@ -141,27 +695,976 @@ components:
           type: string
         instance:
           type: string
+    InitiateAgreementFeatureRequest:
+      required:
+      - AgreementFeature
+      type: object
+      properties:
+        AgreementFeature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureRequestDto"
+    InitiateAgreementFeatureResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          description: Id of Agreement Feature
+          type: integer
+        Feature:
+          description: Identification of Feature
+          type: string
+    InitiateAgreementRequest:
+      required:
+      - Brand
+      - Product
+      - AgreementInvolvement
+      - OpeningDate
+      type: object
+      properties:
+        Brand:
+          description: Brand to which the Agreement belongs
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Product:
+          description: Product to which the Agreement belongs
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        AgreementInvolvement:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner <br/> Format must be ISO
+            Date format (YYYY-MM-DD)
+          pattern: \S
+          type: string
+        ExternalAccount:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalAccount"
+    InitiateAgreementResponse:
+      type: object
+      properties:
+        Identification:
+          description: Unique identifier for an Account.
+          maxLength: 37
+          type: string
+    InitiateFacilityAllocationRequest:
+      required:
+      - AgreementFeature
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        AgreementFeature:
+          description: Feature ID of Agreement Feature
+          minLength: 1
+          pattern: "(^[0-9]+$)|(^$)"
+          type: string
+        FacilityStatus:
+          description: Status of Facility Allocation
+          type: string
+    InitiateFacilityAllocationResponse:
+      type: object
+      properties:
+        Identification:
+          description: Unique identifier of a Facility Allocation
+          type: string
+    Instant:
+      format: date-time
+      type: string
+      example: "2022-03-10T16:15:50Z"
+    LinkBundleFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    LocalDate:
+      format: date
+      type: string
+      example: 2022-03-10
+    OverrideParameter:
+      required:
+      - CapabilityName
+      type: object
+      properties:
+        CapabilityName:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption1"
+    PositionComponentDueDto:
+      type: object
+      properties:
+        PositionComponent:
+          type: string
+        CurrentDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+    PositionDto:
+      type: object
+      properties:
+        PositionID:
+          description: Unique Id to identify the Position.
+          type: string
+        Status:
+          description: Status of the Position Record.
+          type: string
+        PositionType:
+          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
+            \ </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> PEND\
+            \ (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
+          type: string
+        BalanceAmount:
+          description: Balance Amount of the Position.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/BalanceAmountDto"
+    PositionEntryEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PositionID:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PartyID:
+          type: string
+        CreationDateTime:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+    RegisterBundleRequest:
+      required:
+      - Identification
+      - Name
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        Name:
+          description: Name of a bundle
+          maxLength: 35
+          pattern: \S
+          type: string
+        Description:
+          description: Description of a bundle
+          maxLength: 140
+          type: string
+        Feature:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    RegisterBundleResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a bundle
+          type: string
+    RegisterConfigurationOptionRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a configuration option
+          maxLength: 35
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          maxLength: 140
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
+        ConfigurationParameter:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationParameter"
+    RegisterConfigurationOptionResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+    RegisterFeatureRequest:
+      required:
+      - Identification
+      - Name
+      - Capability
+      - ConfigurationOption
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          maxLength: 35
+          pattern: \S
+          type: string
+        ConfigurationOption:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption"
+    RegisterFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          type: string
+    RegisterProductFeatureRequest:
+      required:
+      - Feature
+      type: object
+      properties:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature2"
+    RegisterProductFeatureResponse:
+      type: object
+      properties:
+        Warning:
+          $ref: "#/components/schemas/Warning"
+    RegisterProductRequest:
+      required:
+      - Name
+      - Brand
+      - Identification
+      type: object
+      properties:
+        Name:
+          description: Name of a product
+          maxLength: 70
+          pattern: \S
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          maxLength: 37
+          minLength: 1
+          type: string
+        Type:
+          description: Specifies the type of product category
+          type: string
+        Identification:
+          description: Unique identifier for the product
+          maxLength: 37
+          minLength: 1
+          type: string
+    RegisterProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
     RepaymentAmountResponse:
       type: object
       properties:
         AgreementId:
-          description: Agreement ID to which this repayment belongs.
+          description: AgreementID associated with the account for which the outstanding
+            payment due details are retrieved.
           type: string
         BillingDate:
-          description: "<ul><li>Account billing date.</li><li>DueAmount: Calculated\
-            \ due amount on a particular billing date on which this position type\
-            \ belongs.</li></ul>"
+          description: Date on which the account was last processed for generating
+            billing information.
           type: string
         PaymentDueDate:
-          description: Calculated payment due date.
+          description: Date by when the total payment due must be made towards the
+            outstanding account balance for a given billing date.
           type: string
         CurrentDueAmount:
-          description: Calculated due amount.
+          description: The minimum payment to be made for an account for specific
+            billing date.
           type: object
           allOf:
           - $ref: "#/components/schemas/AmountDto"
         TotalDueAmount:
-          description: Current due plus past due amount.
+          description: "The contractual minimum payment due to be made for an account,\
+            \ including any balance in arrears from prior billing cycles.<br>Note:\
+            \ When the account does not have any arrears for a given billing date,\
+            \ the total due amount will be same as the current due amount."
           type: object
           allOf:
           - $ref: "#/components/schemas/AmountDto"
+    RequestPositionsResponse:
+      type: object
+      properties:
+        AgreementID:
+          description: Agreement ID to which this Position belongs.
+          type: string
+        CurrentPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
+        PriorPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
+    RetrieveAgreementFacilityAndFeatureResponse:
+      type: object
+      properties:
+        Agreement:
+          $ref: "#/components/schemas/RetrieveAgreementResponse"
+        AgreementFeature:
+          $ref: "#/components/schemas/AgreementFeatureResponse"
+    RetrieveAgreementFeatureAndFacilityRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          minLength: 1
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          minLength: 1
+          type: string
+    RetrieveAgreementFeatureParameterResponse:
+      type: object
+      properties:
+        Id:
+          description: Agreement Feature Identification
+          type: string
+        Agreement:
+          description: Agreement Identification
+          type: string
+        Feature:
+          description: Feature Identification
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+        Status:
+          description: Status of the Agreement in the system
+          type: string
+        agreementClosed:
+          description: Indicates if the agreement is closed.
+          type: boolean
+        agreementEnabled:
+          type: boolean
+    RetrieveAgreementFeatureRequest:
+      type: object
+      properties:
+        capabilityName:
+          description: Name of the capability
+          type: string
+    RetrieveAgreementFeatureResponse:
+      type: object
+      properties:
+        Identification:
+          description: Agreement Identification
+          type: string
+        FinancialInstitution:
+          description: FI to which the Agreement belongs
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs
+          type: string
+        Product:
+          description: Product to which the Agreement belongs
+          type: string
+        Status:
+          description: Status of the Agreement in the system
+          type: string
+        AgreementFeature:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeature"
+    RetrieveAgreementResponse:
+      required:
+      - AgreementInvolvement
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of a Agreement, as assigned by the account\
+            \ servicer (FEAID)"
+          maxLength: 37
+          type: string
+        FinancialInstitution:
+          description: FI to which the Agreement belongs
+          maxLength: 37
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs
+          maxLength: 37
+          type: string
+        Product:
+          description: Product to which the Agreement belongs
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the Agreement entity in the system <br> Valid values\
+            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
+          type: string
+        AgreementInvolvement:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner <br/> Format must be ISO
+            Date format (YYYY-MM-DD)
+          type: string
+        ExternalAccount:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalAccount"
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        ClosureRequestDate:
+          description: The date that was sent through on the account closure API to
+            indicate when the account was closed on the host system. Format must be
+            ISO Date format (YYYY-MM-DD).
+          type: string
+        ClosingDate:
+          description: "Date and Time on which the Account was closed by the system.\
+            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Instant"
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is currently opted-out or
+            opted-in for the Network Account Updater. The opt out option affects all
+            cards under the account. The valid values are OptOut and OptIn.
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+        enabled:
+          type: boolean
+    RetrieveBundleListRequest:
+      type: object
+      properties:
+        Bundle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bundle"
+    RetrieveBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    RetrieveCardFeeDetailsResponse:
+      type: object
+      properties:
+        PaymentInstrument:
+          description: Unique identifier of a card
+          type: string
+        LastCardMaintenanceFeeDate:
+          description: "Date when Card maintenance fee was last assessed on the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+        LastCardMaintenanceFeeAmount:
+          description: "Card maintenance fee amount that was last assessed on the\
+            \ card. This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: Amount"
+          type: string
+        NextCardMaintenanceFeeDate:
+          description: "Date when card maintenance fee (initial or recurring) would\
+            \ be next assessed on the card. This date may also be applicable for initial\
+            \ Card aintenance Fee, when the initial fee is configured to be assessed\
+            \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+        LastLostOrStolenReplacementCardFeeDate:
+          description: "Date when Lost or Stolen card replacement fee was last assessed\
+            \ on the card. \nType: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+        LastLostOrStolenReplacementCardFeeAmount:
+          description: "Lost or Stolen card replacement fee amount that was last assessed\
+            \ on the card. \nType: Amount"
+          type: string
+        TotalCardFeeAmountLifeToDate:
+          description: "The total amount of card fees (Card maintenance feeand Lost\
+            \ or Stolen card replacement fee) that has been assessed on the card till\
+            \ date. This field will also include any card fees that was assessed on\
+            \ the old card, if the current one was created from Lost or Stolen replacement\
+            \ process.\nType: Amount"
+          type: string
+        CardMaintenanceFeeWaiveFlag:
+          description: "Identifies the type of waive option, if applicable for the\
+            \ Card maintenance fee.\nValid values are:\n\nPERM - Permanently waive\
+            \ card maintenance fee\nONCE - Waive the next card maintenance fee once"
+          type: string
+        CardMaintenanceFeeWaiveFlagUpdateDate:
+          description: "Date when Card Maintenance Fee Waive Flag was updated last\
+            \ time.\nType: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+        LastCardMaintenanceFeeWaiveAmount:
+          description: "Card maintenance fee amount that was last waived for the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: Amount"
+          type: string
+        LastCardMaintenanceFeeWaiveDate:
+          description: "Date when Card maintenance fee was last waived on the card.\
+            \ This value is also carried forward from an older Payment instrument,\
+            \ if the card was created as part of Lost or Stolen replacement process).\n\
+            Type: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+        LastLostOrStolenReplacementCardFeeWaiveAmount:
+          description: "Lost or Stolen fee amount that was last waived for the card.\n\
+            Type: Amount"
+          type: string
+        LastLostOrStolenReplacementCardFeeWaiveDate:
+          description: "Date when Lost or Stolen fee was last waived on the card.\n\
+            Type: ISO Date (YYYY-MM-DD)"
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/LocalDate"
+    RetrieveFacilityAllocationFeatureParameterRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
+    RetrieveFacilityAllocationFeatureParameterRequest1:
+      type: object
+      properties:
+        Id:
+          format: int64
+          description: Id of Facility
+          type: integer
+        AgreementFeature:
+          format: int64
+          description: Identification of Agreement Feature
+          type: integer
+        FacilityIdentification:
+          description: Identification of Facility
+          type: string
+        FacilityStatus:
+          description: Status of Facility
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Agreement:
+          description: Identification of Agreement
+          type: string
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
+    RetrieveFacilityAllocationResponse:
+      type: object
+      properties:
+        Id:
+          format: int64
+          type: integer
+        Agreement:
+          type: string
+        AgreementFeature:
+          format: int64
+          type: integer
+        Capability:
+          type: string
+        Facility:
+          type: string
+        CreationDateTime:
+          type: string
+        Status:
+          type: string
+    RetrieveFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption"
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
+    RetrieveProductFeatureListRequest:
+      type: object
+      properties:
+        CapabilityName:
+          maxLength: 35
+          type: string
+        CreateAgreementFeature:
+          type: string
+        CreateFacility:
+          type: string
+    RetrieveProductFeatureResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Brand:
+          description: Identification of the brand associated with the product
+          type: string
+        Product:
+          description: Identification of the product
+          type: string
+        Type:
+          description: Type of the product
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature3"
+    RetrieveProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        BrandName:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+    SystemUpdateRequest:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+        BlockedReasonCodes:
+          $ref: "#/components/schemas/BlockedReasonUpdateRequest"
+    TransactionBookingEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        Status:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        EffectiveDateTime:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        AuthorisationReferenceID:
+          type: string
+        TransactionReferenceID:
+          type: string
+        ClearingMatchStatusCode:
+          type: string
+    UpdateBundleRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a bundle
+          maxLength: 35
+          pattern: \A(?!\s*$).+
+          type: string
+        Description:
+          description: Description of a bundle
+          maxLength: 140
+          pattern: \A(?!\s*$).+|^$
+          type: string
+    UpdateBundleResponse:
+      type: object
+      properties:
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Identification:
+          description: Identification of a bundle
+          type: string
+        Name:
+          description: Name of the bundle
+          type: string
+        Description:
+          description: Description of a bundle
+          type: string
+        Status:
+          description: Status of a bundle
+          type: string
+        Feature:
+          description: List of linked features
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature1"
+    UpdateFeatureRequest:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of a feature
+          maxLength: 140
+          pattern: \S
+          type: string
+        Specification:
+          description: Description of a feature
+          maxLength: 140
+          type: string
+        ConfigurationOption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption"
+    UpdateFeatureResponse:
+      type: object
+      properties:
+        Id:
+          description: Id of the feature
+          type: string
+        Identification:
+          description: Identification of the feature
+          type: string
+        FinancialInstitution:
+          description: Identification of the financial institution associated with
+            the product
+          type: string
+        Name:
+          description: Name of a feature
+          type: string
+        Specification:
+          description: Description of a feature
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Status:
+          description: Status of the feature record in the system
+          type: string
+        ConfigurationOption:
+          description: Configuration Option of the feature record in the system
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigurationOption"
+    UpdateNetworkAccountOptionRequest:
+      required:
+      - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
+    UpdateProductRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of a product
+          maxLength: 70
+          pattern: \A(?!\s*$).+
+          type: string
+        Type:
+          description: Specifies the type of product category
+          type: string
+    UpdateProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        BrandName:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+    Warning:
+      type: object
+      properties:
+        responseCode:
+          format: int32
+          type: integer
+        message:
+          type: array
+          items:
+            $ref: "#/components/schemas/WarningMessage"
+    WarningMessage:
+      type: object
+      properties:
+        message:
+          type: string
