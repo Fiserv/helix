@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-175
+  version: 1.1.0-197
 tags:
 - name: Helix Core
 paths:
@@ -1388,34 +1388,10 @@ components:
           type: string
         FEPID:
           type: string
-        MessageTypeId:
-          type: string
-        MsgFctn:
-          type: string
-        PAN:
-          type: string
-        CardSeqNb:
-          type: string
-        Association:
-          type: string
-        TxnAttr:
-          type: string
-        TxTp:
-          type: string
-        Context:
-          $ref: "#/components/schemas/Context"
-        Environment:
-          $ref: "#/components/schemas/Environment1"
-        Transaction:
-          $ref: "#/components/schemas/Transaction"
-        SwitchTxnId:
-          type: string
-        OriginalSwitchTxnId:
-          type: string
-        ReversalSource:
-          type: string
         ProductId:
           type: string
+        AuthorisationRequest:
+          $ref: "#/components/schemas/AuthorisationRequest"
     AuthorisationRequest:
       type: object
       properties:
@@ -1802,29 +1778,19 @@ components:
       properties:
         UniqueIdType:
           description: "Type of Unique ID e.g. FEPID, FEAID or FECID"
-          minLength: 1
           type: string
         UniqueId:
           description: Unique identifier of the Restriction Level e.g. payment instrument
             (FEPID)
-          maxLength: 37
-          minLength: 1
           type: string
         Brand:
           description: Brand to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
         Product:
           description: Banking product associated with the payment card
-          maxLength: 37
-          pattern: \S
           type: string
         FEAID:
           description: Identification of the agreeement
-          maxLength: 37
-          pattern: \S
           type: string
         TCV:
           description: Transaction Criteria Value representing the bit value for different
@@ -1832,7 +1798,6 @@ components:
           type: string
         TxnAmt:
           description: Actual amount of the transaction.
-          minLength: 1
           type: string
         TxnDate:
           description: "Original Transaction Date. For authorisation requests, this\
@@ -1841,7 +1806,6 @@ components:
             \ is received. When no value is passed, then the value is considered as\
             \ today's date during processing. <br/> Format must be ISO Date format\
             \ (YYYY-MM-DD)."
-          pattern: "(^$|\\d{4}\\-(0[1-9]|1[012])\\-\\d{2}$)"
           type: string
     ConfigurationOption:
       required:
@@ -3368,9 +3332,7 @@ components:
       - CardSequence
       - ARQC
       - MAC
-      - ENC
       - ApplicationTxnCntr
-      - PINBlockUnderIWK
       - IWK
       - CryptogramVersion
       - ScriptHeaderTag
@@ -3389,13 +3351,11 @@ components:
           pattern: \S
           type: string
         ENC:
-          pattern: \S
           type: string
         ApplicationTxnCntr:
           pattern: \S
           type: string
         PINBlockUnderIWK:
-          pattern: \S
           type: string
         IWK:
           pattern: \S
@@ -3417,6 +3377,9 @@ components:
         CiphertextMessageData:
           description: CiphertextMessageData
           type: string
+        MAC:
+          description: MAC
+          type: string
     Header:
       type: object
       properties:
@@ -3430,6 +3393,12 @@ components:
         SwitchTransactionId:
           description: Unique identifier assigned by the switch to the authorisation
             txn
+          type: string
+        OriginalSwitchTxnId:
+          description: OriginalSwitchTransactionId
+          type: string
+        ReversalSource:
+          description: ReversalSource
           type: string
         Association:
           description: Association
@@ -3459,11 +3428,15 @@ components:
       properties:
         IssuerScriptCommand:
           type: string
+        IssuerScript:
+          type: string
     ICCRelatedData:
       type: object
       properties:
         AuthorisationResponseCryptogram:
           description: Authorisation Response Cryptogram
+          type: string
+        IssuerScript:
           type: string
     ICCRelatedData1:
       type: object
@@ -3740,6 +3713,18 @@ components:
         Product:
           description: Banking product associated with the payment card
           type: string
+    LifeCycleTraceIdentificationData:
+      type: object
+      properties:
+        Identification:
+          description: Life cycle trace identifier value
+          type: string
+    LifeCycleTraceIdentificationData1:
+      type: object
+      properties:
+        Identification:
+          description: Life cycle trace identifier value
+          type: string
     LimitResponseDto:
       type: object
       properties:
@@ -3972,6 +3957,37 @@ components:
             authentication.
           type: string
     PaymentAuthAssessmentEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
+          type: string
+        FEAID:
+          description: Fiserv Enterprise Account Identification
+          type: string
+        ReversalStatus:
+          description: Indicates reversal status.
+          type: string
+        AssessmentCreationDateTime:
+          description: Indicates assessment creation datetime.
+          type: string
+        AuthorisationRslt:
+          description: Indicates authorisation result.
+          type: string
+        RsltReasonCode:
+          description: Indicates result reason code.
+          type: string
+        RsltReasonDesc:
+          description: Indicates result reason description.
+          type: string
+        MessageTypeId:
+          description: Indicates result reason description.
+          type: string
+    PaymentAuthAssessmentEvent1:
       type: object
       properties:
         EventId:
@@ -4245,6 +4261,9 @@ components:
           type: object
           allOf:
           - $ref: "#/components/schemas/ResultData"
+        ApprovalCode:
+          description: Approval code
+          type: string
     ProductReissueEvent:
       type: object
       properties:
@@ -6168,7 +6187,57 @@ components:
         Product:
           description: Product Identification
           type: string
+    SettlementService:
+      type: object
+      properties:
+        SettlementServiceDates:
+          description: Describes the details about the settlement service dates
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/SettlementServiceDates"
+    SettlementService1:
+      type: object
+      properties:
+        SettlementServiceDates:
+          description: Describes the details about the settlement service dates
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/SettlementServiceDates1"
+    SettlementServiceDates:
+      type: object
+      properties:
+        SettlementDate:
+          description: Describes the details about the settlement date
+          type: string
+    SettlementServiceDates1:
+      type: object
+      properties:
+        SettlementDate:
+          description: Describes the details about the settlement service date
+          type: string
     SystemUpdateRequest:
+      type: object
+      properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
       type: object
       properties:
         ChipData:
@@ -6191,28 +6260,6 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
@@ -6316,6 +6363,11 @@ components:
           type: object
           allOf:
           - $ref: "#/components/schemas/TransactionAmounts"
+        TransactionIdentification:
+          description: Identification details of the transaction.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/TransactionIdentification"
     TransactionAmount:
       type: object
       properties:
@@ -6358,6 +6410,27 @@ components:
             \ checked against the list of merchant categories coded with four digit\
             \ characters, defined in the standard."
           type: string
+        SettlementService:
+          description: Describes the details about the settlement service
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/SettlementService"
+    TransactionIdentification:
+      type: object
+      properties:
+        LifeCycleTraceIdentificationData:
+          description: Life cycle trace identification data
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/LifeCycleTraceIdentificationData"
+    TransactionIdentification1:
+      type: object
+      properties:
+        LifeCycleTraceIdentificationData:
+          description: Life cycle trace identification data
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/LifeCycleTraceIdentificationData1"
     Tx:
       type: object
       properties:
@@ -6366,6 +6439,11 @@ components:
           type: object
           allOf:
           - $ref: "#/components/schemas/TxAmts"
+        TransactionIdentification:
+          description: Identification details of the transaction.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/TransactionIdentification1"
     TxAmt:
       type: object
       properties:
@@ -6408,6 +6486,11 @@ components:
             \ checked against the list of merchant categories coded with four digit\
             \ characters, defined in the standard."
           type: string
+        SettlementService:
+          description: Describes the details about the settlement service
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/SettlementService1"
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
