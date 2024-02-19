@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-servicing
-  version: 1.1.0-96
+  version: 1.1.0-118
 tags:
 - name: Helix Core
   x-proxy-name: Account Open
@@ -181,18 +181,10 @@ paths:
                     type: object
                     allOf:
                     - $ref: "#/components/schemas/RegisterPersonResponse"
-                    - $ref: "#/components/schemas/RegisterPersonResponse"
-                    - $ref: "#/components/schemas/RegisterPersonResponse"
-                    - $ref: "#/components/schemas/RegisterPersonResponse"
-                    - $ref: "#/components/schemas/RegisterPersonResponse"
                   Agreement:
                     description: Details of the created Agreement.
                     type: object
                     allOf:
-                    - $ref: "#/components/schemas/InitiateAgreementResponse"
-                    - $ref: "#/components/schemas/InitiateAgreementResponse"
-                    - $ref: "#/components/schemas/InitiateAgreementResponse"
-                    - $ref: "#/components/schemas/InitiateAgreementResponse"
                     - $ref: "#/components/schemas/InitiateAgreementResponse"
                   PaymentInstrument:
                     description: "Details of the created PaymentInstrument.<p>Note:<br>\
@@ -201,10 +193,6 @@ paths:
                       \ the Financial Institution is processing in Hybrid Mode.</li></ul>"
                     type: object
                     allOf:
-                    - $ref: "#/components/schemas/AddCardResponse"
-                    - $ref: "#/components/schemas/AddCardResponse"
-                    - $ref: "#/components/schemas/AddCardResponse"
-                    - $ref: "#/components/schemas/AddCardResponse"
                     - $ref: "#/components/schemas/AddCardResponse"
           x-proxy-name: Account Open
           x-group-name: Account Maintenance
@@ -431,6 +419,27 @@ components:
         CardAccountType:
           description: Type of cardholder account used for the transaction
           type: string
+    AccountEntitiesDeleteEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        FECID:
+          type: string
+        FEAID:
+          type: string
+        FEPID:
+          type: string
+        DeletePerson:
+          type: boolean
+        DeleteAccount:
+          type: boolean
+        DeletePaymentInstrument:
+          type: boolean
+        RollbackId:
+          type: string
     AddCardRequest:
       required:
       - Brand
@@ -505,12 +514,6 @@ components:
         EventId:
           type: string
         EventName:
-          type: string
-        EventDescription:
-          type: string
-        ServiceDomain:
-          type: string
-        Timestamp:
           type: string
         ProductId:
           type: string
@@ -644,6 +647,33 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+    AgreementFeatureResponse:
+      type: object
+      properties:
+        AgreementFeature:
+          description: Feature related to Agreement
+          type: string
+        FacilityIdentification:
+          description: Identification of Facility
+          type: string
+        FacilityStatus:
+          description: Status of Facility
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          type: string
+        Agreement:
+          description: Agreement
+          type: string
+        DefaultIndicator:
+          description: Default indicator indicates this is default feature on Agreement.
+            i.e. default on Product while initiating Agreement
+          type: boolean
+        AgreementFeatureParameter:
+          description: List of Feature Parameter
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementFeatureParameter"
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
       required:
@@ -681,6 +711,64 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
+    Amount:
+      type: object
+      properties:
+        Value:
+          description: Represents the monetary value associated.
+          default: 0
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
+    AssociationKeyBaseRequest:
+      required:
+      - Association
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
+    BlockedReasonUpdateRequest:
+      required:
+      - Action
+      type: object
+      properties:
+        Action:
+          description: "Action to be taken on the update of the agreement. Valid Values\
+            \ are Add,Replace,Delete."
+          pattern: \S
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason code to be updated on the agreement.
+          type: array
+          items:
+            type: string
+    BlockedReasonUpdateResponse:
+      type: object
+      properties:
+        Identification:
+          description: Agreement identification.
+          type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
     Bundle:
       type: object
       properties:
@@ -741,33 +829,19 @@ components:
           type: string
         EventName:
           type: string
-        EventDescription:
+        PrimaryAccountNumber:
           type: string
-        ServiceDomain:
+        CardholderType:
           type: string
-        Timestamp:
+        CardTechnologyType:
           type: string
-        ProductId:
+        FEAID:
           type: string
-        primaryAccountNumber:
+        FECID:
           type: string
-        cardholderType:
+        FEPID:
           type: string
-        cardTechnologyType:
-          type: string
-        feaId:
-          type: string
-        fecid:
-          type: string
-        cardHolderName:
-          type: string
-        entityId:
-          type: string
-        subEntityId:
-          type: string
-        fiId:
-          type: string
-        brandId:
+        CardHolderName:
           type: string
     ChipData:
       type: object
@@ -778,6 +852,32 @@ components:
         Chip:
           description: Chip Sequence Number
           type: string
+        SentScript:
+          description: "Issuer script that has already been sent to the card, during\
+            \ a previous online contact authorisation.<br> Valid values are: <UL><LI>\
+            \ CARD BLOCK - This script when sent to the card, will shut down all proprietary\
+            \ and non-proprietary applications that reside on the card, to prevent\
+            \ further use of the card.</LI> <LI> PIN CHANGE -  This script when sent\
+            \ to the card, can be used to change the offline PIN as well as reset\
+            \ the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent\
+            \ to the card, can be used to reset the PIN Try Counter, to enable usage\
+            \ of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
+        StagedScript:
+          description: "Issuer script that is pending delivery to the card, upon the\
+            \ receipt of the next online contact authorisation.<br> Valid values are:\
+            \ <UL><LI> CARD BLOCK - This script when sent to the card, will shut down\
+            \ all proprietary and non-proprietary applications that reside on the\
+            \ card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This\
+            \ script when sent to the card, can be used to change the offline PIN\
+            \ as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This\
+            \ script when sent to the card, can be used to reset the PIN Try Counter,\
+            \ to enable usage of the card on offline terminals.\n</LI> </UL>"
+          pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
+          type: string
+          example: CARD BLOCK
     CommonChipDataResponse:
       type: object
       properties:
@@ -814,6 +914,10 @@ components:
         Lcol:
           type: string
         Ucol:
+          type: string
+        StagedScript:
+          type: string
+        SentScript:
           type: string
     ConfigurationOption:
       required:
@@ -864,6 +968,102 @@ components:
           description: Value of a configuration parameter
           maxLength: 40000
           pattern: \S
+          type: string
+    CreateAssociationKeyRequest:
+      required:
+      - Association
+      - Key
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
+        Key:
+          description: Key
+          pattern: \S
+          type: string
+    CreateAssociationKeyResponse:
+      type: object
+      properties:
+        Identification:
+          format: int64
+          description: ID defining the number of record created
+          type: integer
+        Association:
+          description: Identifies the association Key
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Description:
+          description: Description of the association Key
+          type: string
+    CreateInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      - Key
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          pattern: \S
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+    CreateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        Identification:
+          format: int64
+          description: ID defining the number of record created
+          type: integer
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Description:
+          description: Description of key
           type: string
     DeactivatePostalAddressRequest:
       required:
@@ -1077,6 +1277,9 @@ components:
         ExpiryDate:
           description: Date on which the payment instrument expires (YYMM).
           pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
+          type: string
+        KeyType:
+          description: Type of a key.
           type: string
     ExecuteClosureRequest:
       type: object
@@ -1375,14 +1578,11 @@ components:
           type: string
         AccountIdentification:
           description: Account number associated with External Clearing System
-          maxLength: 37
           pattern: \S
           type: string
         ClearingSystemMemberIdentification:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
-          maxLength: 13
-          pattern: "(^[a-zA-Z0-9]+|^$)"
           type: string
     ExternalIdentification:
       required:
@@ -1571,6 +1771,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+        CreditLimit:
+          description: "Credit limit to be assigned to the account. This field is\
+            \ mandatory for all credit type products, and optional for other product\
+            \ types. It must be a valid ISO 4217 currency code and match the reporting\
+            \ currency at the brand level."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -1585,22 +1793,9 @@ components:
       - CreateCard
       type: object
       properties:
-        CreatePerson:
-          description: Identifies whether addition of a Person record is required
-            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
-            </EM></LI></UL>
-          pattern: ^(true|false)$
-          type: string
-        CreateAccount:
-          description: Identifies whether addition of an Account record is required
-            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
-            </EM></LI></UL>
-          pattern: ^(true|false)$
-          type: string
-        CreateCard:
-          description: Identifies whether addition of a Card record is required or
-            not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false </EM></LI></UL>
-          pattern: ^(true|false)$
+        LOG:
+          $ref: "#/components/schemas/Logger"
+        message:
           type: string
         Person:
           description: "This object is used to add a new Person into the system, along\
@@ -1622,6 +1817,75 @@ components:
           type: object
           allOf:
           - $ref: "#/components/schemas/AddCardRequest"
+        CreatePerson:
+          description: Identifies whether addition of a Person record is required
+            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
+            </EM></LI></UL>
+          pattern: ^(true|false)$
+          type: string
+        CreateAccount:
+          description: Identifies whether addition of an Account record is required
+            or not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false
+            </EM></LI></UL>
+          pattern: ^(true|false)$
+          type: string
+        CreateCard:
+          description: Identifies whether addition of a Card record is required or
+            not. Accepted Values are <UL><LI><EM> true </EM></LI> <LI><EM> false </EM></LI></UL>
+          pattern: ^(true|false)$
+          type: string
+        personCreationRequired:
+          type: boolean
+        personCreationNotRequired:
+          type: boolean
+        accountCreationRequired:
+          type: boolean
+        accountCreationNotRequired:
+          type: boolean
+        cardCreationRequired:
+          type: boolean
+        fecIdToAgreement:
+          type: string
+          nullable: true
+        fecIdToCard:
+          type: string
+          nullable: true
+        feaIdToCard:
+          type: string
+          nullable: true
+        fecIdFromAgreementInvolvement:
+          type: string
+        cardHolderAndAccountHolderNotSame:
+          type: boolean
+        accountAndCardProductSame:
+          type: boolean
+        accountAndCardProductNotSame:
+          type: boolean
+        accountHolderRoleProvided:
+          type: boolean
+        accountHolderRoleNotProvided:
+          type: boolean
+        cardHolderProvided:
+          type: boolean
+        cardHolderNotProvided:
+          type: boolean
+        relatedAccountProvided:
+          type: boolean
+        relatedAccountNotProvided:
+          type: boolean
+        accountCreationExceptPerson:
+          type: boolean
+        accountAndCardCreationExceptPerson:
+          type: boolean
+        cardCreationExceptPerson:
+          type: boolean
+        cardCreationExceptAccount:
+          type: boolean
+        feaIdFromCard:
+          type: string
+          nullable: true
+        lOG:
+          $ref: "#/components/schemas/Logger"
     InitiateBoardingResponse:
       type: object
       properties:
@@ -1743,6 +2007,26 @@ components:
             \ same Brand."
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
+    KeyBaseRequest:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+    KeyBaseResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
     LinkBundleFeatureRequest:
       required:
       - Feature
@@ -1761,6 +2045,17 @@ components:
       format: date-time
       type: string
       example: "2022-03-10T12:15:50"
+    Logger:
+      type: object
+      properties:
+        name:
+          type: string
+        traceEnabled:
+          type: boolean
+        debugEnabled:
+          type: boolean
+        infoEnabled:
+          type: boolean
     MasterCardChipDataResponse:
       type: object
       properties:
@@ -1797,6 +2092,10 @@ components:
         Lcol:
           type: string
         Ucol:
+          type: string
+        StagedScript:
+          type: string
+        SentScript:
           type: string
         Ndcf:
           type: string
@@ -2541,6 +2840,94 @@ components:
         EncryptedPIN:
           description: Encrypted PIN
           type: string
+    RetrieveAccountBalanceResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of a Agreement, as assigned by the account\
+            \ servicer (FEAID)."
+          maxLength: 36
+          type: string
+        FinancialInstitution:
+          description: Financial Institution to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Product:
+          description: Product to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the Agreement entity in the system <br> Valid values\
+            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
+          type: string
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+        CreditLimit:
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        CurrentBalance:
+          description: "The total Amount of cleared transaction balance on the customer's\
+            \ account. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        PendingBalance:
+          description: "The total amount of pending transactions for which clearing\
+            \ transactions are expected on the account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        BalanceAvailability:
+          description: "The total amount available credit balance on the account for\
+            \ spending. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+    RetrieveAgreementFacilityAndFeatureResponse:
+      type: object
+      properties:
+        Agreement:
+          $ref: "#/components/schemas/RetrieveAgreementResponse"
+        AgreementFeature:
+          $ref: "#/components/schemas/AgreementFeatureResponse"
+    RetrieveAgreementFeatureAndFacilityRequest:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          minLength: 1
+          type: string
+        Capability:
+          description: Name of the system capability linked to a feature
+          minLength: 1
+          type: string
     RetrieveAgreementFeatureParameterResponse:
       type: object
       properties:
@@ -2565,6 +2952,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+        Status:
+          description: Status of the Agreement in the system
+          type: string
+        agreementClosed:
+          description: Indicates if the agreement is closed.
+          type: boolean
+        agreementEnabled:
+          type: boolean
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
@@ -2654,8 +3049,63 @@ components:
             opted-in for the Network Account Updater. The opt out option affects all
             cards under the account. The valid values are OptOut and OptIn.
           type: string
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+        CreditLimit:
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
         enabled:
           type: boolean
+    RetrieveAssociationKeyRequest:
+      required:
+      - Association
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+        Association:
+          description: Identifies the association Key
+          pattern: \S
+          type: string
+        Description:
+          description: Description of the association Key
+          maxLength: 140
+          type: string
+    RetrieveAssociationKeyResponse:
+      type: object
+      properties:
+        Association:
+          description: Identifies the association Key
+          type: string
+        OperatingRegion:
+          description: Operating Region
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Key:
+          description: Key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+        Description:
+          description: Description of the association Key
+          type: string
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -2891,6 +3341,46 @@ components:
           type: string
         CreateFacility:
           type: string
+    RetrieveInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+    RetrieveInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Key index value
+          type: string
+        Key:
+          description: Encrypted key value
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of the key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
     RetrieveOrganisationResponse:
       required:
       - TradingName
@@ -3118,6 +3608,10 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -3435,25 +3929,53 @@ components:
           type: string
         Status:
           type: string
+    RetrieveSystemDetailsRequest:
+      required:
+      - PAN
+      type: object
+      properties:
+        PAN:
+          description: Primary Account Number
+          pattern: \S
+          type: string
+    RetrieveSystemDetailsResponse:
+      type: object
+      properties:
+        FEPID:
+          description: Fiserv Enterprise Payment Identification
+          type: string
+        FinancialInstitution:
+          description: Financial Institution Identification
+          type: string
+        Brand:
+          description: Brand Identification
+          type: string
+        Product:
+          description: Product Identification
+          type: string
     SystemUpdateRequest:
       type: object
       properties:
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
           type: object
           allOf:
           - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
         Cardholder:
           description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
             \ assigned to a Brand, can only be used when adding cards under the same\
             \ Brand."
           type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     SystemUpdateRequest1:
       type: object
       properties:
@@ -3476,6 +3998,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementInvolvement"
+        BlockedReasonCodes:
+          $ref: "#/components/schemas/BlockedReasonUpdateRequest"
     SystemUpdateResponse:
       type: object
       properties:
@@ -3501,20 +4025,47 @@ components:
             \ assigned to a Brand, can only be used when adding cards under the same\
             \ Brand."
           type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+    UpdateAssociationKeyResponse:
+      type: object
+      properties:
+        Association:
+          description: Identifies the association Key
+          type: string
+        Product:
+          description: Operating region associated with the payment card
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Key:
+          description: Key
+          type: string
+        Description:
+          description: Description
+          type: string
+        KeyStatus:
+          description: KeyStatus
+          type: string
     UpdateBundleRequest:
       type: object
       properties:
         Name:
           description: Name of a bundle
+          maxLength: 35
           pattern: \A(?!\s*$).+
           type: string
         Description:
           description: Description of a bundle
-          pattern: \A(?!\s*$).+
+          maxLength: 140
+          pattern: \A(?!\s*$).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -3588,6 +4139,64 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption1"
+    UpdateInstrumentKeyRequest:
+      required:
+      - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+            \ key type"
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -3745,6 +4354,10 @@ components:
         Lcol:
           type: string
         Ucol:
+          type: string
+        StagedScript:
+          type: string
+        SentScript:
           type: string
         CurrencyConversionFactor:
           type: string
