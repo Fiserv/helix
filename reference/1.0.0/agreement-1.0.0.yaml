@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-225
+  version: 1.1.0-230
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1069,6 +1069,98 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Account Involvement Update
+      x-group-name: Account Management
+  /CustomerAgreement/V1/Agreement/{agreementId}/AgreementSummary/Retrieve:
+    get:
+      tags:
+      - Account Management
+      summary: Retrieve account balance details
+      description: This API is used to retrieve the credit limit and balance information
+        associated with a given account using agreementId.
+      operationId: retrieveAccountBalance
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetrieveAccountBalanceResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Account number is not valid.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT002\
+            \ : Account number not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTNE001\
+            \ : Financial Institution not enabled.</em></li><li><em>HLXAGDTNE002 :\
+            \ Brand not enabled.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT001\
+            \ : There is an error while retrieving Agreement, please try again.</em></li><li><em>HLXAGDTBN001\
+            \ : Balance information unavailable, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Agreement Summary Inquiry
       x-group-name: Account Management
   /CustomerAgreement/V1/Agreement/{agreementId}/BlockedReasonUpdate/Execute:
     patch:
@@ -2209,7 +2301,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest1"
+              $ref: "#/components/schemas/SystemUpdateRequest"
       responses:
         "200":
           description: OK
@@ -2710,6 +2802,17 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
+    Amount:
+      type: object
+      properties:
+        Value:
+          description: Represents the monetary value associated.
+          default: 0
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
     AssociationKeyBaseRequest:
       required:
       - Association
@@ -2730,6 +2833,15 @@ components:
         Description:
           description: Description of the association Key
           maxLength: 140
+          type: string
+    BalanceAmountDto:
+      type: object
+      properties:
+        Amount:
+          description: Amount.
+          type: string
+        Currency:
+          description: Currency.
           type: string
     BlockedReasonUpdateRequest:
       required:
@@ -3161,17 +3273,6 @@ components:
         Description:
           description: Description of key
           type: string
-    CreditLimit:
-      type: object
-      properties:
-        Value:
-          description: The maximum amount value of credit to be assigned to the customer's
-            account.
-          default: 0
-          type: number
-        Currency:
-          description: Currency code associated with the credit limit amount
-          type: string
     DeactivatePostalAddressRequest:
       required:
       - AddressType
@@ -3304,6 +3405,25 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3325,25 +3445,6 @@ components:
           type: string
         KeyType:
           description: Type of a key.
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -3926,11 +4027,13 @@ components:
           items:
             $ref: "#/components/schemas/ExternalAccount"
         CreditLimit:
-          description: The maximum amount of credit to be assigned to the customer's
-            account.
+          description: "Credit limit to be assigned to the account. This field is\
+            \ mandatory for all credit type products, and optional for other product\
+            \ types. It must be a valid ISO 4217 currency code and match the reporting\
+            \ currency at the brand level."
           type: object
           allOf:
-          - $ref: "#/components/schemas/CreditLimit"
+          - $ref: "#/components/schemas/Amount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -4331,6 +4434,53 @@ components:
             \ mobile number <br/> Valid values are : <br/> PREF - Preferred for contact\
             \ <br/> NOTP - Not preferred for contact <br/> MAYB - May be used for\
             \ contact"
+          type: string
+    PositionDto:
+      type: object
+      properties:
+        PositionID:
+          description: Unique Id to identify the Position.
+          type: string
+        Status:
+          description: Status of the Position Record.
+          type: string
+        PositionType:
+          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
+            \ </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> PEND\
+            \ (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
+          type: string
+        BalanceAmount:
+          description: Balance Amount of the Position.
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/BalanceAmountDto"
+    PositionEntryEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PositionID:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PartyID:
+          type: string
+        CreationDateTime:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
           type: string
     PostalAddress:
       required:
@@ -4923,6 +5073,22 @@ components:
         ICVV:
           description: ICVV
           type: string
+    RequestPositionsResponse:
+      type: object
+      properties:
+        AgreementID:
+          description: Agreement ID to which this Position belongs.
+          type: string
+        CurrentPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
+        PriorPositions:
+          description: List of Positions
+          type: array
+          items:
+            $ref: "#/components/schemas/PositionDto"
     RequestViewInstrumentIdRequest:
       required:
       - PAN
@@ -4973,6 +5139,73 @@ components:
         EncryptedPIN:
           description: Encrypted PIN
           type: string
+    RetrieveAccountBalanceResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of a Agreement, as assigned by the account\
+            \ servicer (FEAID)."
+          maxLength: 36
+          type: string
+        FinancialInstitution:
+          description: Financial Institution to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Product:
+          description: Product to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the Agreement entity in the system <br> Valid values\
+            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
+          type: string
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+        CreditLimit:
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        CurrentBalance:
+          description: "The total Amount of cleared transaction balance on the customer's\
+            \ account. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        PendingBalance:
+          description: "The total amount of pending transactions for which clearing\
+            \ transactions are expected on the account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        BalanceAvailability:
+          description: "The total amount available credit balance on the account for\
+            \ spending. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
     RetrieveAgreementFacilityAndFeatureResponse:
       type: object
       properties:
@@ -5121,11 +5354,13 @@ components:
           items:
             type: string
         CreditLimit:
-          description: The maximum amount of credit to be assigned to the customer's
-            account.
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
           type: object
           allOf:
-          - $ref: "#/components/schemas/CreditLimit"
+          - $ref: "#/components/schemas/Amount"
         enabled:
           type: boolean
     RetrieveAssociationKeyRequest:
@@ -6125,29 +6360,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6169,6 +6381,29 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -6265,13 +6500,48 @@ components:
           items:
             type: string
         CreditLimit:
-          description: The maximum amount of credit to be assigned to the customer's
-            account.
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
           type: object
           allOf:
-          - $ref: "#/components/schemas/CreditLimit"
+          - $ref: "#/components/schemas/Amount"
         enabled:
           type: boolean
+    TransactionBookingEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        Status:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        EffectiveDateTime:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        AuthorisationReferenceID:
+          type: string
+        TransactionReferenceID:
+          type: string
+        ClearingMatchStatusCode:
+          type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
