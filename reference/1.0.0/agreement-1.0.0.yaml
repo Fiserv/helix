@@ -2301,7 +2301,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "200":
           description: OK
@@ -5160,8 +5160,9 @@ components:
           maxLength: 37
           type: string
         Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
-            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
+          description: "Status of the Agreement entity in the system. <br> Valid values\
+            \ are: <UL><LI><EM> Enabled </EM></LI> <LI><EM> Disabled </EM></LI> <LI><EM>\
+            \ Deleted </EM></LI> <LI><EM> ProForma </EM></LI> <LI><EM> Pending </EM></LI></UL>"
           type: string
         IsClosed:
           description: This field identifies if an account is closed or not. Valid
@@ -6360,6 +6361,29 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6381,29 +6405,6 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
     SystemUpdateResponse:
       type: object
       properties:
