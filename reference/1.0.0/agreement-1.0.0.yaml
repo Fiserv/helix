@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-230
+  version: 1.1.0-232
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -3405,25 +3405,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3445,6 +3426,25 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -5160,8 +5160,9 @@ components:
           maxLength: 37
           type: string
         Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
-            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
+          description: "Status of the Agreement entity in the system. <br> Valid values\
+            \ are: <UL><LI><EM> Enabled </EM></LI> <LI><EM> Disabled </EM></LI> <LI><EM>\
+            \ Deleted </EM></LI> <LI><EM> ProForma </EM></LI> <LI><EM> Pending </EM></LI></UL>"
           type: string
         IsClosed:
           description: This field identifies if an account is closed or not. Valid
