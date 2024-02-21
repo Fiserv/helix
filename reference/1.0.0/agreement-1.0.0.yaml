@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-230
+  version: 1.1.0-232
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -3134,6 +3134,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3148,12 +3154,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3405,25 +3405,6 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3445,6 +3426,25 @@ components:
           type: string
         KeyType:
           description: Type of a key.
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -4268,7 +4268,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -4664,7 +4664,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4862,7 +4862,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4877,7 +4877,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -5697,7 +5697,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6622,7 +6622,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6652,7 +6652,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6820,7 +6820,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -6905,17 +6905,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
