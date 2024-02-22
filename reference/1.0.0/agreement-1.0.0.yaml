@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-232
+  version: 1.1.0-233
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1166,27 +1166,42 @@ paths:
     patch:
       tags:
       - Account Management
-      summary: Blocked Reason Update
-      description: This API would be used to update the BlockedReasonCode on the Agreement.
+      summary: Update Blocked Reason Code on an account.
+      description: "<ul> The update blocked reason code API would be used to update\
+        \ the negative status on the particular account. Negative status refers to\
+        \ a blocked reason code or restriction placed on an account by a financial\
+        \ institution or service provider. It is used as a security measure or to\
+        \ enforce specific limitations or controls on the account. The negative status\
+        \ may be implemented for various reasons, such as potential fraud detection,\
+        \ suspected unauthorized activity, legal or regulatory compliance, or account\
+        \ maintenance issues.<br><br>When an account level negative status is applied,\
+        \ certain actions may be restricted or blocked on the account. For example,\
+        \ it could prevent withdrawals, deposits, transfers, online transactions,\
+        \ or changes to account information until the underlying reason for the negative\
+        \ status is addressed or resolved.<br><br>Account level negative status are\
+        \ typically put in place to protect the account holder and ensure the security\
+        \ and integrity of the account. The account holder should contact their financial\
+        \ institution or service provider to understand the specific restrictions\
+        \ and steps required to remove the negative status from the account.</ul>"
       operationId: BlockedReasonUpdate
       parameters:
       - name: fi-id
         in: header
-        description: ' Unique identifier for a Financial Institution associated with
-          the Account.'
+        description: Unique identifier for a financial institution associated with
+          the account.
         required: true
         schema:
           maxLength: 37
           type: string
       - name: brand-id
         in: header
-        description: Unique identifier for a Brand associated with the Account.
+        description: Unique identifier for a brand associated with the account.
         schema:
           maxLength: 37
           type: string
       - name: agreementId
         in: path
-        description: Unique identifier of an Account.
+        description: Unique identifier of an account.
         required: true
         schema:
           maxLength: 37
@@ -2301,7 +2316,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "200":
           description: OK
@@ -2849,23 +2864,33 @@ components:
       type: object
       properties:
         Action:
-          description: "Action to be taken on the update of the agreement. Valid Values\
-            \ are Add,Replace,Delete."
+          description: "<ul>Action to be taken to update block reason codes on an\
+            \ account. Valid Values are<li><em>Add : To add new blocked reason codes,\
+            \ it is important to ensure that none of the supplied block reason codes\
+            \ already exist on the account.</em></li><li><em>Replace : To replace\
+            \ all the existing blocked reason codes with with the new list of blocked\
+            \ reason codes.</em></li><li><em>Delete :  To remove the supplied blocked\
+            \ reason codes from an account. All the supplied codes should currently\
+            \ exist on the account.</em></li><li><em>DeleteAll : To remove all blocked\
+            \ reason codes from an account. It is important to ensure that no values\
+            \ are supplied in the BlockedReasonCode field, as this will indicate that\
+            \ all existing blocked reason codes should be removed.</em></li></ul>"
           pattern: \S
           type: string
         BlockedReasonCode:
-          description: Blocked reason code to be updated on the agreement.
+          description: List of block reason codes to be added/updated/deleted on an
+            account.
           type: array
           items:
             type: string
     BlockedReasonUpdateResponse:
       type: object
       properties:
-        Identification:
-          description: Agreement identification.
+        Agreement ID:
+          description: Unique identifier of an Account.
           type: string
         BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
+          description: List of block reason codes got updated on an account.
           type: array
           items:
             type: string
@@ -3134,12 +3159,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3154,6 +3173,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3405,6 +3430,25 @@ components:
       - CurrentPINBlock
       - RequiredPINBlock
       - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: Current PIN Block.
+          pattern: \S
+          type: string
+        RequiredPINBlock:
+          description: Required PIN Block.
+          pattern: \S
+          type: string
+        KeyAssociation:
+          description: Association for the payment instrument.
+          pattern: \S
+          type: string
+    ExecuteChangePINRequest1:
+      required:
+      - CurrentPINBlock
+      - RequiredPINBlock
+      - KeyAssociation
       - ExpiryDate
       type: object
       properties:
@@ -3426,25 +3470,6 @@ components:
           type: string
         KeyType:
           description: Type of a key.
-          type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
           type: string
     ExecuteClosureRequest:
       type: object
@@ -4268,7 +4293,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -4664,7 +4689,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -4862,7 +4887,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4877,7 +4902,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -5697,7 +5722,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -6361,6 +6386,29 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
+    SystemUpdateRequest1:
+      type: object
+      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -6382,29 +6430,6 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -6622,7 +6647,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -6652,7 +6677,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -6820,7 +6845,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       type: object
       properties:
@@ -6905,17 +6930,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
