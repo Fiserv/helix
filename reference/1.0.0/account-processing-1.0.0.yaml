@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-processing
-  version: 1.1.0-5
+  version: 1.1.0-8
 tags:
 - name: Statement Information
 paths:
@@ -131,7 +131,8 @@ paths:
       - Statement Information
       summary: The API is used to inquire minimum due amount and payment due date.
       description: "This API allows a user to inquire about the outstanding payment\
-        \ due amounts and payment due date for a given account, using the AgreementID."
+        \ due amounts and payment due date for a given account, using AgreementID.\
+        \ This API is relevant for credit product accounts only."
       operationId: retrieveOutstandingRepaymentAmount
       parameters:
       - name: fi-id
@@ -391,6 +392,94 @@ components:
           type: array
           items:
             type: string
+    BrandEntryAddRequest:
+      required:
+      - Name
+      - FinancialInstitutionIdentification
+      - Identification
+      - ReportingCurrency
+      - SchemeOperatingRegion
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        Identification:
+          description: Identification of the Brand
+          maxLength: 37
+          minLength: 1
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          pattern: \S
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          maxLength: 2
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
+          type: string
+    BrandRegisterResponse:
+      type: object
+      properties:
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        Name:
+          description: Name of Brand
+          type: string
+    BrandUpdateRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress1"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
     Bundle:
       type: object
       properties:
@@ -430,12 +519,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -450,6 +533,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -675,6 +764,96 @@ components:
         DefaultIndicator:
           description: Flag to indicate default feature
           type: boolean
+    FiRegisterRequest:
+      required:
+      - Name
+      - Identification
+      - InvoiceCurrency
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
+        Identification:
+          description: Identification of the financial institution
+          maxLength: 37
+          minLength: 1
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          pattern: \S
+          type: string
+    FiRegisterResponse:
+      type: object
+      properties:
+        Identification:
+          description: Identification of Financial Institution
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          type: string
+        Name:
+          description: Name of Financial Institution
+          type: string
+    FiUpdateRequest:
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \A(?!\s*$).+
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
     HelixErrorDetails:
       type: object
       properties:
@@ -812,7 +991,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     PositionComponentDueDto:
       type: object
       properties:
@@ -957,7 +1136,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -1009,12 +1188,125 @@ components:
       properties:
         Identification:
           type: string
+    RegistrationAddress:
+      description: Registered Address
+      required:
+      - Country
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          pattern: \S
+          type: string
+    RegistrationAddress1:
+      description: Registered Address
+      type: object
+      properties:
+        AddressType:
+          description: Type of Address
+          pattern: (^$|Postal Business)
+          type: string
+        StreetName:
+          description: Name of Street
+          maxLength: 70
+          type: string
+        BuildingNumber:
+          description: Building Number
+          maxLength: 35
+          type: string
+        BuildingName:
+          description: Name of Building
+          maxLength: 70
+          type: string
+        PostOfficeBox:
+          description: Post Box Number
+          maxLength: 16
+          type: string
+        PostalCode:
+          description: Postal Code
+          maxLength: 16
+          type: string
+        AddressLine1:
+          description: Address Line 1
+          maxLength: 70
+          type: string
+        AddressLine2:
+          description: Address Line 2
+          maxLength: 70
+          type: string
+        AddressLine3:
+          description: Address Line 3
+          maxLength: 70
+          type: string
+        AddressLine4:
+          description: Address Line 4
+          maxLength: 70
+          type: string
+        TownName:
+          description: Name of Town / City
+          maxLength: 35
+          type: string
+        CountrySubDivision:
+          description: Subdivision of Country
+          maxLength: 35
+          type: string
+        Country:
+          description: Country
+          type: string
     RepaymentAmountResponse:
       type: object
       properties:
         AgreementId:
           description: AgreementID associated with the account for which the outstanding
-            payment due details are retrieved.
+            payment due details are to be retrieved.
           type: string
         BillingDate:
           description: Date on which the account was last processed for generating
@@ -1201,6 +1493,51 @@ components:
           type: array
           items:
             type: string
+        enabled:
+          type: boolean
+    RetrieveBrandResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of the Brand
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of the Brand
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email of the Brand
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone number of the Brand
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of the Brand in the System
+          type: string
+        Identification:
+          description: Identification of Brand
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        ReportingCurrency:
+          description: Reporting Currency
+          type: string
+        CountryOfOperation:
+          description: Country of Operation
+          type: string
+        SchemeOperatingRegion:
+          description: Scheme Operating Region
+          type: string
         enabled:
           type: boolean
     RetrieveBundleListRequest:
@@ -1406,11 +1743,55 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
           type: string
+    RetrieveFiResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          description: Name of Financial Institution
+          maxLength: 70
+          pattern: \S
+          type: string
+        RegistrationAddress:
+          description: Registered address of Financial Institution
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/RegistrationAddress"
+        Email:
+          description: Email address of Financial Institution
+          maxLength: 256
+          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
+            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
+          type: string
+        PhoneNumber:
+          description: Phone Number of Financial Institution
+          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
+          type: string
+        Status:
+          description: Status of Financial Institution in the System
+          type: string
+        HybridMode:
+          description: Indicates whether FI is on Hybrid model and is integrated with
+            an Account Management system like FirstVision
+          type: string
+        FinancialInstitutionIdentification:
+          description: Identification of Financial Institution
+          type: string
+        InvoiceCurrency:
+          description: Invoice Currency
+          type: string
+        ClientIdentification:
+          description: Identification of Client Financial Institution
+          maxLength: 5
+          type: string
+        enabled:
+          type: boolean
     RetrieveProductFeatureListRequest:
       type: object
       properties:
@@ -1572,7 +1953,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -1602,7 +1983,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
