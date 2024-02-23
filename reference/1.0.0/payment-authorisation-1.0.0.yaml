@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-197
+  version: 1.1.0-199
 tags:
 - name: Helix Core
 paths:
@@ -3717,13 +3717,17 @@ components:
       type: object
       properties:
         Identification:
-          description: Life cycle trace identifier value
+          description: A unique identification assigned for each original authorization
+            request by the payment scheme. This identifier can be used to match authorisation
+            records with corresponding clearing records.
           type: string
     LifeCycleTraceIdentificationData1:
       type: object
       properties:
         Identification:
-          description: Life cycle trace identifier value
+          description: A unique identification assigned for each original authorization
+            request by the payment scheme. This identifier can be used to match authorisation
+            records with corresponding clearing records.
           type: string
     LimitResponseDto:
       type: object
@@ -4262,7 +4266,8 @@ components:
           allOf:
           - $ref: "#/components/schemas/ResultData"
         ApprovalCode:
-          description: Approval code
+          description: System generated unique code assigned to an authorisation request
+            that has been approved.
           type: string
     ProductReissueEvent:
       type: object
@@ -4579,7 +4584,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4594,7 +4599,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -6191,7 +6196,7 @@ components:
       type: object
       properties:
         SettlementServiceDates:
-          description: Describes the details about the settlement service dates
+          description: Dates related to the settlement service for the transaction.
           type: object
           allOf:
           - $ref: "#/components/schemas/SettlementServiceDates"
@@ -6199,7 +6204,7 @@ components:
       type: object
       properties:
         SettlementServiceDates:
-          description: Describes the details about the settlement service dates
+          description: Dates related to the settlement service for the transaction.
           type: object
           allOf:
           - $ref: "#/components/schemas/SettlementServiceDates1"
@@ -6207,13 +6212,15 @@ components:
       type: object
       properties:
         SettlementDate:
-          description: Describes the details about the settlement date
+          description: Date of settlement for a given authorisation request. The date
+            format is MMDD.
           type: string
     SettlementServiceDates1:
       type: object
       properties:
         SettlementDate:
-          description: Describes the details about the settlement service date
+          description: Date of settlement for a given authorisation request. The date
+            format is MMDD.
           type: string
     SystemUpdateRequest:
       type: object
@@ -6364,7 +6371,8 @@ components:
           allOf:
           - $ref: "#/components/schemas/TransactionAmounts"
         TransactionIdentification:
-          description: Identification details of the transaction.
+          description: ' A collection of objects and attributes that can be used to
+            uniquely identify a transaction.'
           type: object
           allOf:
           - $ref: "#/components/schemas/TransactionIdentification"
@@ -6411,7 +6419,8 @@ components:
             \ characters, defined in the standard."
           type: string
         SettlementService:
-          description: Describes the details about the settlement service
+          description: A collection of objects and attributes providing the settlement
+            service details.
           type: object
           allOf:
           - $ref: "#/components/schemas/SettlementService"
@@ -6419,7 +6428,8 @@ components:
       type: object
       properties:
         LifeCycleTraceIdentificationData:
-          description: Life cycle trace identification data
+          description: A set of unique values that can be used to match transactions
+            throughout their lifecycle.
           type: object
           allOf:
           - $ref: "#/components/schemas/LifeCycleTraceIdentificationData"
@@ -6427,7 +6437,8 @@ components:
       type: object
       properties:
         LifeCycleTraceIdentificationData:
-          description: Life cycle trace identification data
+          description: A set of unique values that can be used to match transactions
+            throughout their lifecycle.
           type: object
           allOf:
           - $ref: "#/components/schemas/LifeCycleTraceIdentificationData1"
@@ -6440,7 +6451,8 @@ components:
           allOf:
           - $ref: "#/components/schemas/TxAmts"
         TransactionIdentification:
-          description: Identification details of the transaction.
+          description: ' A collection of objects and attributes that can be used to
+            uniquely identify a transaction.'
           type: object
           allOf:
           - $ref: "#/components/schemas/TransactionIdentification1"
@@ -6487,7 +6499,8 @@ components:
             \ characters, defined in the standard."
           type: string
         SettlementService:
-          description: Describes the details about the settlement service
+          description: A collection of objects and attributes providing the settlement
+            service details.
           type: object
           allOf:
           - $ref: "#/components/schemas/SettlementService1"
@@ -6947,7 +6960,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     UpdateProductRequest:
       type: object
       properties:
@@ -7086,17 +7099,17 @@ components:
     Warning:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
