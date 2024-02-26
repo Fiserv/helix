@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-233
+  version: 1.1.0-234
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1312,7 +1312,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelixErrorDetails"
-      x-proxy-name: Blocked Reason Update
+      x-proxy-name: Update Blocked Reason Code on an account
       x-group-name: Account Management
   /CustomerAgreement/V1/Agreement/{agreementId}/Closure/Execute:
     post:
