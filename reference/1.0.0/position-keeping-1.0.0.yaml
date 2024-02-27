@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: position-keeping
-  version: 1.1.0-15
+  version: 1.1.0-16
 tags:
 - name: Position Management
 paths:
@@ -11,7 +11,7 @@ paths:
       tags:
       - Position Management
       summary: get Position Details
-      description: "TThis API is used to retrieve the positions associated with an\
+      description: "This API is used to retrieve the positions associated with an\
         \ account. This API provides information about the balances of from financial\
         \ activities associated with the account. By utilizing optional filters for\
         \ positionType and positionComponent, users can filter the API response based\
@@ -19,7 +19,12 @@ paths:
         \ to a specific type of position, such as Retail (RETL) or Current (CRRT)\
         \ etc., while positionComponent enables filtering based on positionComponents\
         \ associated with a particular position, such as Principal (PRPL), Pending\
-        \ (PEND) etc."
+        \ (PEND) etc. The valid combinations of Positions and Position Components\
+        \ are:<UL><LI> RETL and PRPL </LI> <LI> RETL and PEND </LI><LI> CRRT and BAL\
+        \ </LI></UL>The filter values and filter combinations listed above are not\
+        \ validated by the system, it is the responsibility of the caller to ensure\
+        \ that valid filters and combinations of filters are supplied in the request\
+        \ parameters."
       operationId: retrievePositions
       parameters:
       - name: fi-id
@@ -46,8 +51,8 @@ paths:
       - name: positionType
         in: query
         description: " A filter to retrieve positions of a specific type. Only positions\
-          \ matching the specified position type will be returned in the response.Valid\
-          \ values are: <UL><LI> RETL (Retail) </LI> <LI> CRRT (Current) </LI></UL>"
+          \ matching the specified position type will be returned in the response.\
+          \ Valid values are: <UL><LI> RETL (Retail) </LI> <LI> CRRT (Current) </LI></UL>"
         schema:
           type: string
       - name: positionComponent
@@ -57,10 +62,6 @@ paths:
           \ be returned in the response. The valid values are:<UL><LI> PRPL (Principal)\
           \ </LI><LI> PEND (Pending Balance) </LI><LI> BAL (Total Cleared Balance\
           \ for the account) </LI></UL>"
-        schema:
-          type: string
-      - name: period
-        in: query
         schema:
           type: string
       responses:
@@ -117,7 +118,7 @@ components:
     BalanceAmountDto:
       type: object
       properties:
-        Amount:
+        Value:
           description: "Represents the monetary value associated. Precision 15, scale\
             \ 5."
           type: string
@@ -161,28 +162,30 @@ components:
             \ are:<UL> <LI> ENAB (Enabled) </LI></UL>"
           type: string
         CreationDateTime:
-          description: "(For example, September 27, 2022 at 6 p.m. is represented\
-            \ as 2022-09-27T18:00:00.000Z)<br>System Date and time when the position\
-            \ was first created. Format is ISO Date and Time format (YYYY-MM-DDThh:mm:ss.sssZ)."
+          description: "System Date and time when the position was first created.\
+            \ Format is ISO Date and Time format (YYYY-MM-DDThh:mm:ss.sssZ). For example,\
+            \ September 27, 2022 at 6 p.m is represented as 2022-09-27T18:00:00.000Z."
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
         PositionType:
-          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
-            \ </LI></UL> "
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
           type: string
         PositionComponent:
-          description: "dentifies the type of position component, representing a sub-category\
-            \ of balances associated with the position. The position component provides\
-            \ further classification for distinguishing different types of balances\
-            \ within a position, such as Principal.Valid values are: <UL><LI> PRPL\
-            \ (Principal)</LI><LI> PEND (Pending Balance) </LI><LI> BAL  (Total Cleared\
-            \ Balance for the account)</LI> <LI> Note: The Current (CRRT) position's,\
-            \ BAL (Balance) component holds the account level cleared balance across\
-            \ all the positions.</LI></UL>"
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
+            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: string
         BalanceAmount:
-          description: ' The balance amount associated with a position component.'
+          description: The balance amount associated with a position component.
           type: object
           allOf:
           - $ref: "#/components/schemas/BalanceAmountDto"
@@ -220,10 +223,10 @@ components:
         CurrentPositions:
           description: " An array that contains a list of positions that represent\
             \ the current (cycle-to-date) balances for an account. The valid combinations\
-            \ of Positions and Position Components are:<UL><LI> Position   Position\
-            \ Component </LI><LI>RETL PRPL </LI><LI> RETL PEND </LI><LI> CRRT  BAL\
-            \ </LI><LI>Note: The Current (CRRT) position's, BAL (Balance) component\
-            \ holds the account level cleared balance across all the positions. </LI></UL>"
+            \ of Positions and Position Components are:<UL><LI>RETL and PRPL </LI><LI>\
+            \ RETL and PEND </LI><LI> CRRT and BAL </LI></UL>Note: The Current (CRRT)\
+            \ position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: array
           items:
             $ref: "#/components/schemas/PositionDto"
