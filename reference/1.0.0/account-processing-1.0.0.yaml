@@ -2,129 +2,10 @@
 openapi: 3.0.3
 info:
   title: account-processing
-  version: 1.1.0-8
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Statement Information
 paths:
-  /AccountProcessing/V1/Agreement/{agreementId}/CalculateRepaymentAmount/Execute:
-    post:
-      tags:
-      - Statement Information
-      summary: The API is used to calculate minimum due amount and payment due date.
-      description: The API is used to calculate minimum due amount and payment due
-        date.
-      operationId: calculateRepaymentAmount
-      parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExecuteRepaymentAmountRequest"
-      responses:
-        "201":
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExecuteRepaymentAmountResponse"
-        "400":
-          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
-            \ : Account Number is invalid, please provide valid value.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "401":
-          description: Not Authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "415":
-          description: Unsupported Media Type
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "429":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "500":
-          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT002\
-            \ : Error While Calculating the Repayment Amount.</em></li></ul>"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "502":
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "503":
-          description: Service Unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "504":
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExecuteRepaymentAmountResponse"
-      x-proxy-name: Calculate payment due amount and payment due date
-      x-group-name: Statement Information
   /AccountProcessing/V1/Agreement/{agreementId}/OutstandingRepaymentAmount/Retrieve:
     get:
       tags:
@@ -360,11 +241,13 @@ components:
     BalanceAmountDto:
       type: object
       properties:
-        Amount:
-          description: Amount.
+        Value:
+          description: "Represents the monetary value associated. Precision 15, scale\
+            \ 5."
           type: string
         Currency:
-          description: Currency.
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
           type: string
     BlockedReasonUpdateRequest:
       required:
@@ -519,6 +402,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -533,12 +422,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -991,7 +874,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     PositionComponentDueDto:
       type: object
       properties:
@@ -1003,21 +886,38 @@ components:
       type: object
       properties:
         PositionID:
-          description: Unique Id to identify the Position.
+          description: ' A unique identifier assigned to each position for identification
+            and reference purposes.'
           type: string
         Status:
-          description: Status of the Position Record.
+          description: "Status of the Position entity in the system. Valid values\
+            \ are:<UL> <LI> ENAB (Enabled) </LI></UL>"
           type: string
+        CreationDateTime:
+          description: "System Date and time when the position was first created.\
+            \ Format is ISO Date and Time format (YYYY-MM-DDThh:mm:ss.sssZ). For example,\
+            \ September 27, 2022 at 6 p.m is represented as 2022-09-27T18:00:00.000Z."
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Instant"
         PositionType:
-          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
-            \ </LI></UL> "
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
           type: string
         PositionComponent:
-          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> PEND\
-            \ (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
+            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: string
         BalanceAmount:
-          description: Balance Amount of the Position.
+          description: The balance amount associated with a position component.
           type: object
           allOf:
           - $ref: "#/components/schemas/BalanceAmountDto"
@@ -1136,7 +1036,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -1337,12 +1237,12 @@ components:
           description: Agreement ID to which this Position belongs.
           type: string
         CurrentPositions:
-          description: List of Positions
-          type: array
-          items:
-            $ref: "#/components/schemas/PositionDto"
-        PriorPositions:
-          description: List of Positions
+          description: " An array that contains a list of positions that represent\
+            \ the current (cycle-to-date) balances for an account. The valid combinations\
+            \ of Positions and Position Components are:<UL><LI>RETL and PRPL </LI><LI>\
+            \ RETL and PEND </LI><LI> CRRT and BAL </LI></UL>Note: The Current (CRRT)\
+            \ position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: array
           items:
             $ref: "#/components/schemas/PositionDto"
@@ -1743,7 +1643,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -1953,7 +1853,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -1983,7 +1883,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
