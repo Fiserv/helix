@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-172
+  version: 1.1.0-175
 tags:
 - name: Customer Management
 paths:
@@ -421,9 +421,17 @@ paths:
             \ : GivenName exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : MiddleName exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
-            \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
+            \ : PostalCode exceeds maximum 37 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile/Work number exceeds maximum 15 character length allowed\
-            \ (excluding special characters).</em></li></ul>"
+            \ (excluding special characters).</em></li><li><em>HLXPTDTBR001 : PageStartIndex\
+            \ has an invalid value. It must be an integer.</em></li><li><em>HLXPTDTBR001\
+            \ : PageLimit has an invalid value. It must be an integer.</em></li><li><em>HLXPTDTBR001\
+            \ : PageStartIndex cannot be less than 0. Please provide a valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : PageLimit cannot be less than 1. Please provide a valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Invalid API request. The request contains a pageLimit value, but the\
+            \ pageStartIndex value is missing.</em></li><li><em>HLXPTDTBR001 : Invalid\
+            \ API request. The request contains a pageStartIndex value, but the pageLimit\
+            \ value is missing.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -4695,6 +4703,23 @@ components:
             \ search: '7950'\nReturns customers for phone/mobile/work numbers:\n+447950292122\n\
             +667950765432\n+330777079501"
           type: string
+        PageStartIndex:
+          description: "The page start index is an optional field which specifies\
+            \ the starting index for the page of results. It is an integer that represents\
+            \ the index of the page. The first page corresponds to the PageStartIndex\
+            \ value of 0. If PageStartIndex is provided in the request, PageLimit\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
+          type: string
+        PageLimit:
+          description: "The page limit is an optional parameter which specifies the\
+            \ maximum number of records to return in the page of results. It is an\
+            \ integer that represents the total number of records on a single page.\
+            \ The PageLimit must have a minimum value of 1, indicating at least one\
+            \ record per page. If PageLimit is provided in the request, PageStartIndex\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
+          type: string
     RetrievePersonResponse:
       type: object
       properties:
@@ -4992,6 +5017,28 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
+        OpeningDate:
+          description: Date on which the Agreement and related basic services are
+            effectively operational for the Account owner.Format must be ISO Date
+            format (YYYY-MM-DD).
+          type: string
+        IsClosed:
+          description: Flag to be used to set an account to closed status. This API
+            only accepts value "true".
+          pattern: (^$|true)
+          type: string
+        ClosureRequestDate:
+          description: The date that the account was closed on the host system. This
+            optional date may be a present or past date. Closure Request Date Format
+            must be ISO Date format (YYYY-MM-DD).
+          type: string
+        AgreementInvolvement:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgreementInvolvement"
+    SystemUpdateRequest1:
+      type: object
+      properties:
         ChipData:
           description: It's an object with chip sequence number and application transaction
             counter value
@@ -5012,28 +5059,6 @@ components:
           format: int32
           description: Number of active tokens for a card.
           type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
     SystemUpdateResponse:
       type: object
       properties:
