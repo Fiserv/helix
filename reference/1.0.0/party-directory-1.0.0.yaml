@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: party-directory
-  version: 1.1.0-172
+  version: 1.1.0-176
 tags:
 - name: Customer Management
 paths:
@@ -423,7 +423,15 @@ paths:
             \ : Surname exceeds maximum 35 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : PostalCode exceeds maximum 16 length allowed.</em></li><li><em>HLXPTDTBR001\
             \ : Phone/Mobile/Work number exceeds maximum 15 character length allowed\
-            \ (excluding special characters).</em></li></ul>"
+            \ (excluding special characters).</em></li><li><em>HLXPTDTBR001 : PageStartIndex\
+            \ has an invalid value. It must be an integer.</em></li><li><em>HLXPTDTBR001\
+            \ : PageLimit has an invalid value. It must be an integer.</em></li><li><em>HLXPTDTBR001\
+            \ : PageStartIndex cannot be less than 0. Please provide a valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : PageLimit cannot be less than 1. Please provide a valid value.</em></li><li><em>HLXPTDTBR001\
+            \ : Invalid API request. The request contains a pageLimit value, but the\
+            \ pageStartIndex value is missing.</em></li><li><em>HLXPTDTBR001 : Invalid\
+            \ API request. The request contains a pageStartIndex value, but the pageLimit\
+            \ value is missing.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -540,7 +548,7 @@ paths:
                     description: Unique identifier for a Person.
                     type: string
                   Warning:
-                    $ref: "#/components/schemas/Warning"
+                    $ref: "#/components/schemas/Warning1"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPTDTBR001\
             \ : Financial Institution Identification required, please provide value.</em></li><li><em>HLXPTDTBR001\
@@ -1911,6 +1919,12 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -1925,12 +1939,6 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -3037,7 +3045,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     Party:
       required:
       - Identification
@@ -3385,7 +3393,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -3581,7 +3589,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -3596,7 +3604,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -4282,7 +4290,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -4694,6 +4702,23 @@ components:
             \ all the customers where it finds a match. E.g., Phone/Mobile/Work Number\
             \ search: '7950'\nReturns customers for phone/mobile/work numbers:\n+447950292122\n\
             +667950765432\n+330777079501"
+          type: string
+        PageStartIndex:
+          description: "The page start index is an optional field which specifies\
+            \ the starting index for the page of results. It is an integer that represents\
+            \ the index of the page. The first page corresponds to the PageStartIndex\
+            \ value of 0. If PageStartIndex is provided in the request, PageLimit\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
+          type: string
+        PageLimit:
+          description: "The page limit is an optional parameter which specifies the\
+            \ maximum number of records to return in the page of results. It is an\
+            \ integer that represents the total number of records on a single page.\
+            \ The PageLimit must have a minimum value of 1, indicating at least one\
+            \ record per page. If PageLimit is provided in the request, PageStartIndex\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
           type: string
     RetrievePersonResponse:
       type: object
@@ -5142,7 +5167,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -5172,7 +5197,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     UpdateInstrumentKeyRequest:
       required:
       - KeyIndex
@@ -5340,7 +5365,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -5425,17 +5450,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
