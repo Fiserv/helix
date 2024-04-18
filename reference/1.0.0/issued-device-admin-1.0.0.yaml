@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-305
+  version: 1.1.0-321
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -1771,8 +1771,8 @@ paths:
         \ fraud statuses can be used by a Fraud Management system in its rules during\
         \ decision making. With this API, users can easily manage fraud statuses associated\
         \ with a card, providing them with the necessary tools to mitigate potential\
-        \ fraud risks.Note: In scenarios where it is necessary to replace a card while\
-        \ simultaneously setting its status as Confirmed Fraud, it is recommended\
+        \ fraud risks.</br>Note: In scenarios where it is necessary to replace a card\
+        \ while simultaneously setting its status as Confirmed Fraud, it is recommended\
         \ utilising the Update Fraud Status on a Card API for a streamlined process."
       operationId: manageFraud
       parameters:
@@ -1811,32 +1811,45 @@ paths:
                 type: object
                 properties:
                   FraudStatus:
-                    description: This field indicates if a card is fraudulent or not.
-                      Valid values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM>
-                      SFRD (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud)
-                      </EM></LI> </UL>
+                    description: "This field identifies the specific type of fraud\
+                      \ status assigned to a card. Possible responses:<UL><LI><EM>\
+                      \ NONE-Indicates that no fraud status has been assigned to the\
+                      \ card. </EM></LI> <LI><EM> SFRD-Denotes that the card has been\
+                      \ flagged as suspected fraud, necessitating further investigation\
+                      \ and verification to confirm any fraudulent activity. </EM></LI>\
+                      \ <LI><EM> CFRD-Indicates that the card has been verified and\
+                      \ confirmed as involved in fraudulent activities. </EM></LI>\
+                      \ </UL>"
                     type: string
                   FraudReferStatus:
-                    description: This field indicates whether a card is flagged to
-                      have all authorisationsreferred or not referred (anti-referred)
-                      to a fraud analyst for potential fraudulent activity. Valid
-                      Values are <UL><LI><EM> NONE ( No referral or anti-referral
-                      is assigned.) </EM></LI> <LI><EM> REFE (All authorizations are
-                      referred) </EM></LI> <LI><EM> ANTI (No authorizations are referred
-                      (anti-refer) </EM></LI> </UL>
+                    description: "<p>This field indicates whether a card is flagged\
+                      \ to have all authorisations referred or not referred (anti-referred)\
+                      \ to a fraud analyst for potential fraudulent activity. This\
+                      \ flag is sent to the Falcon Fraud Manager system during authorisation\
+                      \ processing where it can be used in the rules to make informed\
+                      \ authorisation decisions.</p>Possible responses:<UL><LI><EM>\
+                      \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM>\
+                      \ REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
+                      \ authorizations are referred (anti-refer) </EM></LI> </UL>"
                     type: string
                   FraudReferStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
                       Refer Status expires.
                     type: string
                   FraudMonitorStatus:
-                    description: The Fraud Monitor Status flag is a two-character
-                      alphanumeric field utilized to indicate whether a card is flagged
-                      for fraud monitoring.
+                    description: "The Fraud Monitor Status flag is a two-character\
+                      \ alphanumeric field utilized to indicate whether a card is\
+                      \ flagged for fraud monitoring.This flag is used in order to\
+                      \ implement specific fraud minimization strategies within Falcon\
+                      \ Fraud Manager system.<br/>The Fraud Monitor Status flag is\
+                      \ sent to Falcon Fraud Manager system during authorisation processing,\
+                      \ allowing the system to leverage the flag in its rules and\
+                      \ decision-making processes."
                     type: string
                   FraudMonitorStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
-                      Monitor Status expires.
+                      Monitor Status expires.The value in this field will automatically
+                      be removed when Fraud Monitor Status is removed from a card.
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -2096,8 +2109,8 @@ paths:
         schema:
           type: string
       responses:
-        "201":
-          description: Created
+        "202":
+          description: Accepted
           content:
             application/json:
               schema:
@@ -2590,7 +2603,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest"
+              $ref: "#/components/schemas/SystemUpdateRequest1"
       responses:
         "201":
           description: Created
@@ -3838,12 +3851,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -3858,6 +3865,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -4250,6 +4263,9 @@ components:
         KeyType:
           description: Type of a key.
           type: string
+        PINBlockFormat:
+          description: PIN Block Format.
+          type: string
     ExecuteClosureRequest:
       type: object
       properties:
@@ -4526,6 +4542,9 @@ components:
           description: Association for the payment instrument.
           pattern: \S
           type: string
+        PINBlockFormat:
+          description: PIN Block Format.
+          type: string
     ExecuteValidatePINResponse:
       type: object
       properties:
@@ -4754,6 +4773,26 @@ components:
         ClientIdentification:
           description: Identification of Client Financial Institution
           maxLength: 5
+          type: string
+    FraudStatusUpdateEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        FraudStatus:
+          type: string
+        FraudReferStatus:
+          type: string
+        FraudReferStatusExpiryDate:
+          type: string
+        FraudMonitorStatus:
+          pattern: "(([a-zA-Z0-9]{2})?)"
+          type: string
+        FraudMonitorStatusExpiryDate:
           type: string
     HelixErrorDetails:
       type: object
@@ -5064,7 +5103,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     Party:
       required:
       - Identification
@@ -5413,7 +5452,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -6385,7 +6424,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -7102,29 +7141,6 @@ components:
     SystemUpdateRequest:
       type: object
       properties:
-        ChipData:
-          description: It's an object with chip sequence number and application transaction
-            counter value
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/ChipData"
-        InvalidPinTryCounter:
-          description: Number of times an authorisation with an invalid PIN was attempted
-            on the card.
-          pattern: ^\d*$
-          type: string
-        Cardholder:
-          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
-            \ assigned to a Brand, can only be used when adding cards under the same\
-            \ Brand."
-          type: string
-        NbrActiveTokens:
-          format: int32
-          description: Number of active tokens for a card.
-          type: integer
-    SystemUpdateRequest1:
-      type: object
-      properties:
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner.Format must be ISO Date
@@ -7146,6 +7162,29 @@ components:
             $ref: "#/components/schemas/AgreementInvolvement"
         BlockedReasonCodes:
           $ref: "#/components/schemas/BlockedReasonUpdateRequest"
+    SystemUpdateRequest1:
+      type: object
+      properties:
+        ChipData:
+          description: It's an object with chip sequence number and application transaction
+            counter value
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ChipData"
+        InvalidPinTryCounter:
+          description: Number of times an authorisation with an invalid PIN was attempted
+            on the card.
+          pattern: ^\d*$
+          type: string
+        Cardholder:
+          description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
+            \ assigned to a Brand, can only be used when adding cards under the same\
+            \ Brand."
+          type: string
+        NbrActiveTokens:
+          format: int32
+          description: Number of active tokens for a card.
+          type: integer
     SystemUpdateResponse:
       type: object
       properties:
@@ -7254,7 +7293,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -7284,68 +7323,94 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFraudStatusRequest:
       type: object
       properties:
         FraudStatus:
-          description: This field identifies the type of fraud status on the selected
-            card. Valid Values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD
-            (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI>
-            </UL>
+          description: "This field identifies the type of fraud status on the selected\
+            \ card.<p>Valid Values are :</p><UL><LI><EM> NONE-Indicates that no fraud\
+            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+            \ that the card has been flagged as suspected fraud, necessitating further\
+            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+            \ as involved in fraudulent activities. </EM></LI> </UL>Note: Suspected\
+            \ Fraud (SFRD) status cannot override Confirmed Fraud (CFRD) status. Confirmed\
+            \ Fraud status cannot be removed from the card once set. When Confirmed\
+            \ Fraud status is applied, the system will automatically set Block Reason\
+            \ on the card to Stolen."
           type: string
         FraudReferStatus:
-          description: This field indicates whether a card is flagged to have all
-            authorisations referred or not referred (anti-referred) to a fraud analyst
-            for potential fraudulent activity. This flag is sent to the Falcon Fraud
-            Manager system during authorisation processing where it can be used in
-            the rules to make informed authorisation decisions. Valid Values are <UL><LI><EM>
-            NONE ( No referral or anti-referral is assigned.) </EM></LI> <LI><EM>
-            REFE (All authorizations are referred) </EM></LI> <LI><EM> ANTI (No authorizations
-            are referred (anti-refer) </EM></LI> </UL>
+          description: "This field indicates whether a card is flagged to have all\
+            \ authorisations referred or not referred (anti-referred) to a fraud analyst\
+            \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
+            \ Manager system during authorisation processing where it can be used\
+            \ in the rules to make informed authorisation decisions.<p>Valid Values\
+            \ are:</p><UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
+            \ <LI><EM> REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
+            \ authorizations are referred (anti-refer) </EM></LI> </UL>"
           type: string
         FraudReferStatusExpiryDate:
-          description: This field indicates the date on which the Fraud Refer Status
-            expires.
+          description: "This field indicates the date on which the Fraud Refer Status\
+            \ expires.This field is required and must be set to a present or future\
+            \ date when Fraud Refer Status is set to REFE or ANTI. \nThe value in\
+            \ this field will automatically be removed when Fraud Refer Status is\
+            \ updated to NONE"
           type: string
         FraudMonitorStatus:
-          description: The Fraud Monitor Status flag is a two-character alphanumeric
-            field utilized to indicate whether a card is flagged for fraud monitoring.
-            This flag is used in order to implement specific fraud minimization strategies
-            within Falcon Fraud Manager system.
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+            \ field utilized to indicate whether a card is flagged for fraud monitoring.\
+            \ This flag is used in order to implement specific fraud minimization\
+            \ strategies within Falcon Fraud Manager system.The Fraud Monitor Status\
+            \ flag is sent to Falcon Fraud Manager system during authorisation processing,\
+            \ allowing the system to leverage the flag in its rules and decision-making\
+            \ processes."
           pattern: "(([a-zA-Z0-9]{2})?)"
           type: string
         FraudMonitorStatusExpiryDate:
-          description: This field indicates the date on which the Fraud Monitor Status
-            expires.
+          description: |-
+            This field indicates the date on which the Fraud Monitor Status expires.This field is required and must be set to a present or future date when Fraud Monitor Status is set to any valid value other than null.
+            The value in this field will automatically be removed when Fraud Monitor Status is removed from a card.
           type: string
     UpdateFraudStatusResponse:
       type: object
       properties:
         FraudStatus:
-          description: This field indicates if a card is fraudulent or not. Valid
-            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
-            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          description: "This field identifies the specific type of fraud status assigned\
+            \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
+            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+            \ that the card has been flagged as suspected fraud, necessitating further\
+            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+            \ as involved in fraudulent activities. </EM></LI> </UL>"
           type: string
         FraudReferStatus:
-          description: This field indicates whether a card is flagged to have all
-            authorisationsreferred or not referred (anti-referred) to a fraud analyst
-            for potential fraudulent activity. Valid Values are <UL><LI><EM> NONE
-            ( No referral or anti-referral is assigned.) </EM></LI> <LI><EM> REFE
-            (All authorizations are referred) </EM></LI> <LI><EM> ANTI (No authorizations
-            are referred (anti-refer) </EM></LI> </UL>
+          description: "<p>This field indicates whether a card is flagged to have\
+            \ all authorisations referred or not referred (anti-referred) to a fraud\
+            \ analyst for potential fraudulent activity. This flag is sent to the\
+            \ Falcon Fraud Manager system during authorisation processing where it\
+            \ can be used in the rules to make informed authorisation decisions.</p>Possible\
+            \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
+            \ <LI><EM> REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
+            \ authorizations are referred (anti-refer) </EM></LI> </UL>"
           type: string
         FraudReferStatusExpiryDate:
           description: This field indicates the date on which the Fraud Refer Status
             expires.
           type: string
         FraudMonitorStatus:
-          description: The Fraud Monitor Status flag is a two-character alphanumeric
-            field utilized to indicate whether a card is flagged for fraud monitoring.
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+            \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
+            \ flag is used in order to implement specific fraud minimization strategies\
+            \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
+            \ is sent to Falcon Fraud Manager system during authorisation processing,\
+            \ allowing the system to leverage the flag in its rules and decision-making\
+            \ processes."
           type: string
         FraudMonitorStatusExpiryDate:
           description: This field indicates the date on which the Fraud Monitor Status
-            expires.
+            expires.The value in this field will automatically be removed when Fraud
+            Monitor Status is removed from a card.
           type: string
     UpdateInstrumentKeyRequest:
       required:
