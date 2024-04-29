@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-321
+  version: 1.1.0-323
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -1829,8 +1829,9 @@ paths:
                       \ processing where it can be used in the rules to make informed\
                       \ authorisation decisions.</p>Possible responses:<UL><LI><EM>\
                       \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM>\
-                      \ REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
-                      \ authorizations are referred (anti-refer) </EM></LI> </UL>"
+                      \ REFE-All authorizations are referred. </EM></LI> <LI><EM>\
+                      \ ANTI-No authorizations are referred (anti-refer). </EM></LI>\
+                      \ </UL>"
                     type: string
                   FraudReferStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
@@ -7328,8 +7329,8 @@ components:
       type: object
       properties:
         FraudStatus:
-          description: "This field identifies the type of fraud status on the selected\
-            \ card.<p>Valid Values are :</p><UL><LI><EM> NONE-Indicates that no fraud\
+          description: "This field identifies the specific type of fraud status assigned\
+            \ to a card. <p>Valid Values:</p><UL><LI><EM> NONE-Indicates that no fraud\
             \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
             \ that the card has been flagged as suspected fraud, necessitating further\
             \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
@@ -7345,17 +7346,17 @@ components:
             \ authorisations referred or not referred (anti-referred) to a fraud analyst\
             \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
             \ Manager system during authorisation processing where it can be used\
-            \ in the rules to make informed authorisation decisions.<p>Valid Values\
-            \ are:</p><UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
-            \ <LI><EM> REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
-            \ authorizations are referred (anti-refer) </EM></LI> </UL>"
+            \ in the rules to make informed authorisation decisions.<p>Valid Values:</p><UL><LI><EM>\
+            \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM> REFE-All\
+            \ authorizations are referred. </EM></LI> <LI><EM> ANTI-No authorizations\
+            \ are referred(anti-refer). </EM></LI> </UL>"
           type: string
         FraudReferStatusExpiryDate:
           description: "This field indicates the date on which the Fraud Refer Status\
             \ expires.This field is required and must be set to a present or future\
             \ date when Fraud Refer Status is set to REFE or ANTI. \nThe value in\
             \ this field will automatically be removed when Fraud Refer Status is\
-            \ updated to NONE"
+            \ updated to NONE."
           type: string
         FraudMonitorStatus:
           description: "The Fraud Monitor Status flag is a two-character alphanumeric\
@@ -7391,8 +7392,8 @@ components:
             \ Falcon Fraud Manager system during authorisation processing where it\
             \ can be used in the rules to make informed authorisation decisions.</p>Possible\
             \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
-            \ <LI><EM> REFE-All authorizations are referred </EM></LI> <LI><EM> ANTI-No\
-            \ authorizations are referred (anti-refer) </EM></LI> </UL>"
+            \ <LI><EM> REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No\
+            \ authorizations are referred (anti-refer). </EM></LI> </UL>"
           type: string
         FraudReferStatusExpiryDate:
           description: This field indicates the date on which the Fraud Refer Status
