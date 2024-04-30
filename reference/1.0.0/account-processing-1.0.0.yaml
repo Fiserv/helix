@@ -4,8 +4,366 @@ info:
   title: account-processing
   version: 1.1.0-SNAPSHOT
 tags:
+- name: Account Pricing
+- name: Agreement Repayment Information
+- name: Billing Information
 - name: Statement Information
 paths:
+  /AccountProcessing/V1/Agreement/{agreementId}/AgreementRepayment/Retrieve:
+    get:
+      tags:
+      - Agreement Repayment Information
+      summary: The API is used to retrieve agreement repayment details for an account.
+      description: The API is used to retrieve agreement repayment details for an
+        account.
+      operationId: retrieveAgreementRepayment
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Agreement Id
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetrieveAgreementRepaymentResponse"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXACPRBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRNF001\
+            \ : Account Number not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT001\
+            \ : Error Retrieving the Account Repayment Details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve agreement repayment details for an account
+      x-group-name: Agreement Repayment Information
+  /AccountProcessing/V1/Agreement/{agreementId}/BilledDatesWithSummary/Retrieve:
+    get:
+      tags:
+      - Billing Information
+      summary: 'The API is used to provide the billings information for all the billings
+        performed along with billing date and other details.  '
+      description: This API allows a user to view billings information for all the
+        billings performed along with billing date and other details.
+      operationId: retrieveBillingSummary
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Agreement Id
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BillingSummaryResponse"
+                properties:
+                  BilledDate:
+                    type: string
+                  PaymentDueDate:
+                    type: string
+                  PeriodStartDate:
+                    type: string
+                  PeriodEndDate:
+                    type: string
+                  NextBillingDate:
+                    type: string
+                  StatementedDate:
+                    type: string
+                  CurrentDueAmount:
+                    $ref: "#/components/schemas/AmountDto"
+                  TotalDueAmount:
+                    $ref: "#/components/schemas/AmountDto"
+                  OpeningBalanceAmount:
+                    $ref: "#/components/schemas/AmountDto"
+                  ClosingBalanceAmount:
+                    $ref: "#/components/schemas/AmountDto"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXACPRBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT001\
+            \ : Error Retrieving the Account Repayment Details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Agreement Billing information
+      x-group-name: Billing Information
+  /AccountProcessing/V1/Agreement/{agreementId}/InterestFacilities/Request:
+    get:
+      tags:
+      - Account Pricing
+      summary: The API is used to retrieve interest details for an account
+      description: "The purpose of this API is to retrieve the interest details for\
+        \ an account. If the accrued interest details are available, the response\
+        \ will include those specific details. If the accrued interest details are\
+        \ not available, the response will include the details from the feature."
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Agreement Id
+        required: true
+        schema:
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  AgreementID:
+                    type: string
+                  InterestFacilities:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/InterestFacilityDto"
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT003\
+            \ : Error Retrieving the Interest Facilities.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelixErrorDetails"
+      x-proxy-name: Retrieve Interest Details
+      x-group-name: Account Pricing
   /AccountProcessing/V1/Agreement/{agreementId}/OutstandingRepaymentAmount/Retrieve:
     get:
       tags:
@@ -228,6 +586,17 @@ components:
           $ref: "#/components/schemas/ExternalAccount"
         validRequest:
           type: boolean
+    Amount:
+      type: object
+      properties:
+        Value:
+          description: Represents the monetary value associated.
+          default: 0
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
     AmountDto:
       type: object
       properties:
@@ -249,29 +618,69 @@ components:
           description: "Represents the currency associated, expressed in ISO 4217\
             \ currency code."
           type: string
+    BalanceAndAccruedAmounts:
+      type: object
+      properties:
+        BalanceAmount:
+          $ref: "#/components/schemas/AmountDto"
+        AccruedAmount:
+          $ref: "#/components/schemas/AmountDto"
+    BillingSummaryResponse:
+      type: object
+      properties:
+        BilledDate:
+          type: string
+        PaymentDueDate:
+          type: string
+        PeriodStartDate:
+          type: string
+        PeriodEndDate:
+          type: string
+        NextBillingDate:
+          type: string
+        StatementedDate:
+          type: string
+        CurrentDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        TotalDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        OpeningBalanceAmount:
+          $ref: "#/components/schemas/AmountDto"
+        ClosingBalanceAmount:
+          $ref: "#/components/schemas/AmountDto"
     BlockedReasonUpdateRequest:
       required:
       - Action
       type: object
       properties:
         Action:
-          description: "Action to be taken on the update of the agreement. Valid Values\
-            \ are Add,Replace,Delete."
+          description: "<ul>Action to be taken to update block reason codes on an\
+            \ account. Valid Values are<li><em>Add : To add new blocked reason codes,\
+            \ it is important to ensure that none of the supplied block reason codes\
+            \ already exist on the account.</em></li><li><em>Replace : To replace\
+            \ all the existing blocked reason codes with with the new list of blocked\
+            \ reason codes.</em></li><li><em>Delete :  To remove the supplied blocked\
+            \ reason codes from an account. All the supplied codes should currently\
+            \ exist on the account.</em></li><li><em>DeleteAll : To remove all blocked\
+            \ reason codes from an account. It is important to ensure that no values\
+            \ are supplied in the BlockedReasonCode field, as this will indicate that\
+            \ all existing blocked reason codes should be removed.</em></li></ul>"
           pattern: \S
           type: string
         BlockedReasonCode:
-          description: Blocked reason code to be updated on the agreement.
+          description: List of block reason codes to be added/updated/deleted on an
+            account.
           type: array
           items:
             type: string
     BlockedReasonUpdateResponse:
       type: object
       properties:
-        Identification:
-          description: Agreement identification.
+        Agreement ID:
+          description: Unique identifier of an Account.
           type: string
         BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
+          description: List of block reason codes got updated on an account.
           type: array
           items:
             type: string
@@ -402,12 +811,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -422,6 +825,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -712,7 +1121,7 @@ components:
         Name:
           description: Name of Financial Institution
           maxLength: 70
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         RegistrationAddress:
           description: Registered address of Financial Institution
@@ -812,6 +1221,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalAccount"
+        CreditLimit:
+          description: "Credit limit to be assigned to the account. This field is\
+            \ mandatory for all credit type products, and optional for other product\
+            \ types. It must be a valid ISO 4217 currency code and match the reporting\
+            \ currency at the brand level."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
     InitiateAgreementResponse:
       type: object
       properties:
@@ -847,6 +1264,34 @@ components:
       format: date-time
       type: string
       example: "2022-03-10T16:15:50Z"
+    InterestFacilitiesResponse:
+      type: object
+      properties:
+        AgreementID:
+          type: string
+        InterestFacilities:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterestFacilityDto"
+    InterestFacilityDto:
+      type: object
+      properties:
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        InterestRate:
+          type: string
+        AccruedThruDate:
+          type: string
+        CurrentPeriod:
+          $ref: "#/components/schemas/BalanceAndAccruedAmounts"
+        PriorPeriod:
+          $ref: "#/components/schemas/BalanceAndAccruedAmounts"
+        ResidualPeriod:
+          $ref: "#/components/schemas/BalanceAndAccruedAmounts"
+        DeferredAmount:
+          $ref: "#/components/schemas/AmountDto"
     LinkBundleFeatureRequest:
       required:
       - Feature
@@ -874,7 +1319,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption1"
+            $ref: "#/components/schemas/ConfigurationOption"
     PositionComponentDueDto:
       type: object
       properties:
@@ -945,6 +1390,33 @@ components:
         PositionType:
           type: string
         PositionComponent:
+          type: string
+    PositionLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PositionId:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PartyID:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        EffectiveDate:
+          type: string
+        ClearingDate:
           type: string
     RegisterBundleRequest:
       required:
@@ -1036,7 +1508,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     RegisterFeatureResponse:
       type: object
       properties:
@@ -1246,6 +1718,74 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PositionDto"
+    RetrieveAccountBalanceResponse:
+      type: object
+      properties:
+        Identification:
+          description: "Unique identifier of a Agreement, as assigned by the account\
+            \ servicer (FEAID)."
+          maxLength: 36
+          type: string
+        FinancialInstitution:
+          description: Financial Institution to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Brand:
+          description: Brand to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Product:
+          description: Product to which the Agreement belongs.
+          maxLength: 37
+          type: string
+        Status:
+          description: "Status of the Agreement entity in the system. <br> Valid values\
+            \ are: <UL><LI><EM> Enabled </EM></LI> <LI><EM> Disabled </EM></LI> <LI><EM>\
+            \ Deleted </EM></LI> <LI><EM> ProForma </EM></LI> <LI><EM> Pending </EM></LI></UL>"
+          type: string
+        IsClosed:
+          description: This field identifies if an account is closed or not. Valid
+            values are True and False. This field will be set to True if an account
+            is closed and it will be set to False if an account is open.
+          type: boolean
+        BlockedReasonCode:
+          description: Blocked reason codes updated on the agreement.
+          type: array
+          items:
+            type: string
+        CreditLimit:
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        CurrentBalance:
+          description: "The total Amount of cleared transaction balance on the customer's\
+            \ account. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        PendingBalance:
+          description: "The total amount of pending transactions for which clearing\
+            \ transactions are expected on the account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
+        BalanceAvailability:
+          description: "The total amount available credit balance on the account for\
+            \ spending. This object will be always available when querying a credit\
+            \ type product, and is optional for other product types. The currency\
+            \ code value will match the brand level reporting currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
     RetrieveAgreementFacilityAndFeatureResponse:
       type: object
       properties:
@@ -1327,6 +1867,27 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeature"
+    RetrieveAgreementRepaymentResponse:
+      type: object
+      properties:
+        AgreementId:
+          type: string
+        PaymentDueDate:
+          $ref: "#/components/schemas/LocalDate"
+        CurrentDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        TotalDueAmount:
+          $ref: "#/components/schemas/AmountDto"
+        LastBilledDate:
+          $ref: "#/components/schemas/LocalDate"
+        NextBillingDate:
+          $ref: "#/components/schemas/LocalDate"
+        LastStatementDate:
+          $ref: "#/components/schemas/LocalDate"
+        NextStatementDate:
+          $ref: "#/components/schemas/LocalDate"
+        BillingStatus:
+          type: string
     RetrieveAgreementResponse:
       required:
       - AgreementInvolvement
@@ -1393,6 +1954,14 @@ components:
           type: array
           items:
             type: string
+        CreditLimit:
+          description: "Credit limit assigned to an account. This object will be always\
+            \ available when querying a credit type product, and is optional for other\
+            \ product types. The currency code value will match the brand level reporting\
+            \ currency."
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/Amount"
         enabled:
           type: boolean
     RetrieveBrandResponse:
@@ -1643,7 +2212,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
         CreateAgreementFeature:
           type: string
         CreateFacility:
@@ -1805,12 +2374,12 @@ components:
         Name:
           description: Name of a bundle
           maxLength: 35
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Description:
           description: Description of a bundle
           maxLength: 140
-          pattern: \A(?!\s*$).+|^$
+          pattern: \A(?!\s*\Z).+|^$
           type: string
     UpdateBundleResponse:
       type: object
@@ -1853,7 +2422,7 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateFeatureResponse:
       type: object
       properties:
@@ -1883,7 +2452,7 @@ components:
           description: Configuration Option of the feature record in the system
           type: array
           items:
-            $ref: "#/components/schemas/ConfigurationOption"
+            $ref: "#/components/schemas/ConfigurationOption1"
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -1910,7 +2479,7 @@ components:
         Name:
           description: Name of a product
           maxLength: 70
-          pattern: \A(?!\s*$).+
+          pattern: \A(?!\s*\Z).+
           type: string
         Type:
           description: Specifies the type of product category
