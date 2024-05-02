@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: position-keeping
-  version: 1.1.0-16
+  version: 1.1.0-24
 tags:
 - name: Position Management
 paths:
@@ -12,19 +12,19 @@ paths:
       - Position Management
       summary: get Position Details
       description: "This API is used to retrieve the positions associated with an\
-        \ account. This API provides information about the balances of from financial\
-        \ activities associated with the account. By utilizing optional filters for\
-        \ positionType and positionComponent, users can filter the API response based\
-        \ on a specific criteria. positionType allows users to narrow down the results\
-        \ to a specific type of position, such as Retail (RETL) or Current (CRRT)\
-        \ etc., while positionComponent enables filtering based on positionComponents\
-        \ associated with a particular position, such as Principal (PRPL), Pending\
-        \ (PEND) etc. The valid combinations of Positions and Position Components\
-        \ are:<UL><LI> RETL and PRPL </LI> <LI> RETL and PEND </LI><LI> CRRT and BAL\
-        \ </LI></UL>The filter values and filter combinations listed above are not\
-        \ validated by the system, it is the responsibility of the caller to ensure\
-        \ that valid filters and combinations of filters are supplied in the request\
-        \ parameters."
+        \ account. This API provides information about the balances of financial activities\
+        \ associated with the account. By utilizing optional filters for positionType\
+        \ and positionComponent, users can filter the API response based on a specific\
+        \ criteria. positionType allows users to narrow down the results to a specific\
+        \ type of position, such as Retail (RETL) or Current (CRRT) etc., while positionComponent\
+        \ enables filtering based on positionComponents associated with a particular\
+        \ position, such as Principal (PRPL), Pending (PEND) etc. The valid combinations\
+        \ of Positions and Position Components are:<UL><LI> RETL and PRPL </LI><LI>\
+        \ RETL and PEND </LI><LI> RETL and INTR </LI><LI> CASH and PRPL </LI><LI>\
+        \ CASH and PEND </LI><LI> CASH and INTR </LI><LI> CRRT and BAL </LI></UL>The\
+        \ filter values and filter combinations listed above are not validated by\
+        \ the system, it is the responsibility of the caller to ensure that valid\
+        \ filters and combinations of filters are supplied in the request parameters."
       operationId: retrievePositions
       parameters:
       - name: fi-id
@@ -50,27 +50,28 @@ paths:
           type: string
       - name: positionType
         in: query
-        description: " A filter to retrieve positions of a specific type. Only positions\
+        description: "A filter to retrieve positions of a specific type. Only positions\
           \ matching the specified position type will be returned in the response.\
-          \ Valid values are: <UL><LI> RETL (Retail) </LI> <LI> CRRT (Current) </LI></UL>"
+          \ Valid values are: <UL><LI> RETL (Retail) </LI> <LI> CASH (Cash) </LI><LI>\
+          \ CRRT (Current) </LI></UL>"
         schema:
           type: string
       - name: positionComponent
         in: query
-        description: "A filter to retrieve positions associated with a specific position\
-          \ component. Only positions matching the specified position component will\
-          \ be returned in the response. The valid values are:<UL><LI> PRPL (Principal)\
-          \ </LI><LI> PEND (Pending Balance) </LI><LI> BAL (Total Cleared Balance\
-          \ for the account) </LI></UL>"
+        description: A filter to retrieve positions associated with a specific position
+          component. Only positions matching the specified position component will
+          be returned in the response. The valid values are:<UL><LI> PRPL (Principal)
+          </LI><LI> PEND (Pending Balance) </LI><LI> INTR (Interest) </LI><LI> BAL
+          (Total Cleared Balance for the account) </LI></UL>
         schema:
           type: string
       responses:
         "200":
-          description: OK
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RequestPositionsResponse"
+                $ref: '#/components/schemas/RequestPositionsResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
             \ : Account Number is required.</em></li><li><em>HLXPNKPBR001 : Account\
@@ -79,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "401":
           description: Not Authorized
           content: {}
@@ -101,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "502":
           description: Bad Gateway
           content: {}
@@ -132,7 +133,7 @@ components:
         messages:
           type: array
           items:
-            $ref: "#/components/schemas/HelixMessage"
+            $ref: '#/components/schemas/HelixMessage'
     HelixMessage:
       type: object
       properties:
@@ -149,7 +150,7 @@ components:
     Instant:
       format: date-time
       type: string
-      example: "2022-03-10T16:15:50Z"
+      example: 2022-03-10T16:15:50Z
     PositionDto:
       type: object
       properties:
@@ -158,8 +159,8 @@ components:
             and reference purposes.'
           type: string
         Status:
-          description: "Status of the Position entity in the system. Valid values\
-            \ are:<UL> <LI> ENAB (Enabled) </LI></UL>"
+          description: Status of the Position entity in the system. Valid values are:<UL>
+            <LI> ENAB (Enabled) </LI></UL>
           type: string
         CreationDateTime:
           description: "System Date and time when the position was first created.\
@@ -167,12 +168,13 @@ components:
             \ September 27, 2022 at 6 p.m is represented as 2022-09-27T18:00:00.000Z."
           type: string
           allOf:
-          - $ref: "#/components/schemas/Instant"
+          - $ref: '#/components/schemas/Instant'
         PositionType:
           description: "Identifies the type of position, representing a specific category\
             \ of balances associated with the account. The position type provides\
             \ a classification for grouping similar types of positions, such as Retail.\
-            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CASH (Cash) </LI><LI>\
+            \ CRRT (Current) </LI></UL> "
           type: string
         PositionComponent:
           description: "Identifies the type of position component, representing a\
@@ -180,15 +182,15 @@ components:
             \ component provides further classification for distinguishing different\
             \ types of balances within a position, such as Principal. Valid values\
             \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
-            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
-            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
-            \ balance across all the positions."
+            \ INTR (Interest) </LI><LI> BAL  (Total Cleared Balance for the account)</LI></UL>\
+            \ Note: The Current (CRRT) position's, BAL (Balance) component holds the\
+            \ account level cleared balance across all the positions."
           type: string
         BalanceAmount:
           description: The balance amount associated with a position component.
           type: object
           allOf:
-          - $ref: "#/components/schemas/BalanceAmountDto"
+          - $ref: '#/components/schemas/BalanceAmountDto'
     PositionEntryEvent:
       type: object
       properties:
@@ -214,6 +216,37 @@ components:
           type: string
         PositionComponent:
           type: string
+        EffectiveDate:
+          type: string
+        ClearingDate:
+          type: string
+    PositionLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        PositionId:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PartyID:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        EffectiveDate:
+          type: string
+        ClearingDate:
+          type: string
     RequestPositionsResponse:
       type: object
       properties:
@@ -221,15 +254,16 @@ components:
           description: Agreement ID to which this Position belongs.
           type: string
         CurrentPositions:
-          description: " An array that contains a list of positions that represent\
+          description: "An array that contains a list of positions that represent\
             \ the current (cycle-to-date) balances for an account. The valid combinations\
             \ of Positions and Position Components are:<UL><LI>RETL and PRPL </LI><LI>\
-            \ RETL and PEND </LI><LI> CRRT and BAL </LI></UL>Note: The Current (CRRT)\
-            \ position's, BAL (Balance) component holds the account level cleared\
-            \ balance across all the positions."
+            \ RETL and PEND </LI><LI> RETL and INTR </LI><LI> CASH and PRPL </LI><LI>\
+            \ CASH and PEND </LI><LI> CASH and INTR </LI><LI> CRRT and BAL </LI></UL>Note:\
+            \ The Current (CRRT) position's, BAL (Balance) component holds the account\
+            \ level cleared balance across all the positions."
           type: array
           items:
-            $ref: "#/components/schemas/PositionDto"
+            $ref: '#/components/schemas/PositionDto'
     TransactionBookingEvent:
       type: object
       properties:
@@ -253,6 +287,8 @@ components:
           type: string
         EffectiveDateTime:
           type: string
+        ClearingDateTime:
+          type: string
         PositionType:
           type: string
         PositionComponent:
@@ -263,3 +299,8 @@ components:
           type: string
         ClearingMatchStatusCode:
           type: string
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
