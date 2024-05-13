@@ -972,8 +972,7 @@ components:
             \ sub-category of balances associated with the position. The position\
             \ component provides further classification for distinguishing different\
             \ types of balances within a position, such as Principal. Valid values\
-            \ are: <ul><li>PRPL (Principal)</li><li>PEND (Pending Balance)</li><li>INTR\
-            \ (Interest)</li></ul>"
+            \ are: <ul><li>PRPL (Principal)</li><li>INTR (Interest)</li></ul>"
           type: string
         InterestRate:
           description: "The effective interest rate, expressed as an annual percentage\
