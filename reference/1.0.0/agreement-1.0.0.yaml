@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-234
+  version: 1.1.0-243
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -1708,14 +1708,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest"
+              $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest1"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest1"
+                $ref: "#/components/schemas/RetrieveFacilityAllocationFeatureParameterRequest"
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
@@ -2852,11 +2852,13 @@ components:
     BalanceAmountDto:
       type: object
       properties:
-        Amount:
-          description: Amount.
+        Value:
+          description: "Represents the monetary value associated. Precision 15, scale\
+            \ 5."
           type: string
         Currency:
-          description: Currency.
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
           type: string
     BlockedReasonUpdateRequest:
       required:
@@ -4047,6 +4049,9 @@ components:
             Date format (YYYY-MM-DD)
           pattern: \S
           type: string
+        BillingCycleDay:
+          description: Day of the month on which the agreement will be billed.
+          type: integer
         ExternalAccount:
           type: array
           items:
@@ -4464,21 +4469,38 @@ components:
       type: object
       properties:
         PositionID:
-          description: Unique Id to identify the Position.
+          description: ' A unique identifier assigned to each position for identification
+            and reference purposes.'
           type: string
         Status:
-          description: Status of the Position Record.
+          description: "Status of the Position entity in the system. Valid values\
+            \ are:<UL> <LI> ENAB (Enabled) </LI></UL>"
           type: string
+        CreationDateTime:
+          description: "System Date and time when the position was first created.\
+            \ Format is ISO Date and Time format (YYYY-MM-DDThh:mm:ss.sssZ). For example,\
+            \ September 27, 2022 at 6 p.m is represented as 2022-09-27T18:00:00.000Z."
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Instant"
         PositionType:
-          description: "Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current)\
-            \ </LI></UL> "
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
           type: string
         PositionComponent:
-          description: "Valid values are: <UL><LI> PRPL (Principal) </LI><LI> PEND\
-            \ (Pending Balance) </LI><LI> BAL (Balance) </LI></UL>"
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
+            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: string
         BalanceAmount:
-          description: Balance Amount of the Position.
+          description: The balance amount associated with a position component.
           type: object
           allOf:
           - $ref: "#/components/schemas/BalanceAmountDto"
@@ -4887,7 +4909,7 @@ components:
           description: Unique identifier for a Person.
           type: string
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     RegisterProductFeatureRequest:
       required:
       - Feature
@@ -4902,7 +4924,7 @@ components:
       type: object
       properties:
         Warning:
-          $ref: "#/components/schemas/Warning1"
+          $ref: "#/components/schemas/Warning"
     RegisterProductRequest:
       required:
       - Name
@@ -5105,12 +5127,12 @@ components:
           description: Agreement ID to which this Position belongs.
           type: string
         CurrentPositions:
-          description: List of Positions
-          type: array
-          items:
-            $ref: "#/components/schemas/PositionDto"
-        PriorPositions:
-          description: List of Positions
+          description: " An array that contains a list of positions that represent\
+            \ the current (cycle-to-date) balances for an account. The valid combinations\
+            \ of Positions and Position Components are:<UL><LI>RETL and PRPL </LI><LI>\
+            \ RETL and PEND </LI><LI> CRRT and BAL </LI></UL>Note: The Current (CRRT)\
+            \ position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
           type: array
           items:
             $ref: "#/components/schemas/PositionDto"
@@ -5631,22 +5653,6 @@ components:
             address
           type: string
     RetrieveFacilityAllocationFeatureParameterRequest:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
-    RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
         Id:
@@ -5674,6 +5680,22 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AgreementFeatureParameter"
+    RetrieveFacilityAllocationFeatureParameterRequest1:
+      required:
+      - FacilityIdentification
+      - Capability
+      type: object
+      properties:
+        FacilityIdentification:
+          description: Identification of Facility
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        Capability:
+          description: Name of the system capability linked to a Facility
+          minLength: 1
+          type: string
     RetrieveFacilityAllocationResponse:
       type: object
       properties:
@@ -6845,7 +6867,7 @@ components:
         enabled:
           type: boolean
         Warning:
-          $ref: "#/components/schemas/Warning"
+          $ref: "#/components/schemas/Warning1"
     UpdateProductRequest:
       type: object
       properties:
@@ -6930,17 +6952,17 @@ components:
     Warning:
       type: object
       properties:
-        messages:
+        responseCode:
+          format: int32
+          type: integer
+        message:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage"
     Warning1:
       type: object
       properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
+        messages:
           type: array
           items:
             $ref: "#/components/schemas/WarningMessage1"
