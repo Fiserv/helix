@@ -250,7 +250,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve Agreement Billing information
       x-group-name: Billing Information
-  /AccountProcessing/V1/Agreement/{agreementId}/InterestFacilities/Request:
+  /AccountProcessing/V1/Agreement/{agreementId}/InterestDetails/Request:
     get:
       tags:
       - Account Pricing
@@ -475,6 +475,117 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve outstanding payment due information
+      x-group-name: Statement Information
+  /AccountProcessing/V1/Agreement/{agreementId}/StatementedDatesWithSummary/Retrieve:
+    get:
+      tags:
+      - Statement Information
+      summary: 'The API is used to retrieve all the StatementedDates with Statement
+        Summary information '
+      description: 'The API is used to retrieve all the StatementedDates with Statement
+        Summary information '
+      operationId: retrieveStatementDatesWithStatementSummary
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Agreement Id
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrieveStatementSummaryResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXACPRBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT001\
+            \ : Error Retrieving the Account Repayment Details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve StatementedDates with Statement Summary information
       x-group-name: Statement Information
 components:
   schemas:
@@ -1466,6 +1577,27 @@ components:
           type: string
         Status:
           type: string
+    RetrieveStatementSummaryResponse:
+      type: object
+      properties:
+        StatementDate:
+          type: string
+        PaymentDueDate:
+          type: string
+        PeriodStartDate:
+          type: string
+        PeriodEndDate:
+          type: string
+        NextStatementDate:
+          type: string
+        CurrentDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        OpeningBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        ClosingBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
     SystemUpdateRequest:
       type: object
       properties:
