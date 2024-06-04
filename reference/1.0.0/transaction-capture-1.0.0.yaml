@@ -1,0 +1,1101 @@
+---
+openapi: 3.0.3
+info:
+  title: transaction-capture
+  version: 1.1.0-64
+tags:
+- name: Transaction capture Rest API
+- name: Transaction matching Rest API
+paths:
+  /TransactionCapture/V1/Transaction/GetList/Request:
+    post:
+      tags:
+      - Transaction capture Rest API
+      summary: This method is used to retrieve the transaction data based on the given
+        filter criteria.
+      operationId: retrieveTransaction
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrieveTransactionRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveTransactionResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_TXCP_002\
+            \ : Error occurred while retrieving the transaction data, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_TXCP_002\
+            \ : Error occurred while retrieving the transaction data, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve a list of Transactions
+      x-group-name: Transaction Management
+components:
+  schemas:
+    Acceptor:
+      type: object
+      properties:
+        identification:
+          description: acceptor identification
+          type: string
+        nameAndLocation:
+          description: acceptor name and Location
+          type: string
+        country:
+          description: acceptor country
+          type: string
+        sponsoredMerchant:
+          description: acceptor sponsored Merchant
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SponsoredMerchant'
+    Acquirer:
+      type: object
+      properties:
+        identification:
+          description: Acquirer identification
+          type: string
+    AdditionalData:
+      type: object
+      properties:
+        transactionCode:
+          description: Additional Data transaction Code
+          type: string
+    AdditionalInformation:
+      type: object
+      properties:
+        type:
+          description: Additional Information type
+          type: string
+    AdditionalService:
+      type: object
+      properties:
+        type:
+          description: Additional Service Type
+          type: string
+    Amount:
+      type: object
+      properties:
+        Value:
+          description: "Represents the monetary value associated. Precision 15, scale\
+            \ 5."
+          type: string
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
+    Amount1:
+      type: object
+      properties:
+        value:
+          type: number
+        currency:
+          type: string
+    Amount2:
+      type: object
+      properties:
+        value:
+          description: value
+          type: number
+        currency:
+          description: currency
+          type: string
+    ApprovalData:
+      type: object
+      properties:
+        approvalCode:
+          description: Approval Data approval Code
+          type: string
+    Capabilities:
+      type: object
+      properties:
+        cardReadingCapability:
+          description: Capabilities card Reading Capability
+          type: string
+    CardProgramme:
+      type: object
+      properties:
+        cardProgrammeId:
+          description: Card Programme card Programme Id
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CardProgrammeIdentification'
+    CardProgrammeIdentification:
+      type: object
+      properties:
+        identification:
+          description: Card Programme Identification identification
+          type: string
+    CustomerDevice:
+      type: object
+      properties:
+        device:
+          description: Customer Device
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Device'
+    Device:
+      type: object
+      properties:
+        type:
+          description: Device type
+          type: string
+        otherType:
+          description: Other Device Type
+          type: string
+    Fee:
+      type: object
+      properties:
+        Id:
+          type: string
+    FeeActivityEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        FeeLevel:
+          type: string
+        FeeType:
+          type: string
+        EffectiveDateTime:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        FeeTransactionCode:
+          type: string
+        OriginalTransactionCaptureId:
+          type: string
+        FeeWaived:
+          type: boolean
+    GeneratedTransactionsBookingRequest:
+      type: object
+      properties:
+        AgreementId:
+          description: Agreement ID to which these Transactions belongs.
+          type: string
+        Transactions:
+          description: List of generated transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    GeneratedTransactionsBookingResponse:
+      type: object
+      properties:
+        AgreementId:
+          description: Agreement ID to which these Transactions belongs.
+          type: string
+        Transactions:
+          description: List of generated transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelixMessage'
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    Identification:
+      type: object
+      properties:
+        identification:
+          description: identification
+          type: string
+    LifeCycleTraceIdentificationData:
+      type: object
+      properties:
+        lifeCycleTraceId:
+          description: life Cycle Trace Id
+          type: string
+    LocalDate:
+      format: date
+      type: string
+      example: 2022-03-10
+    LocalDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50
+    MOTOCode:
+      enum:
+      - MailOrder
+      - MailOrderOrTelephoneOrder
+      - TelephoneOrder
+      type: string
+    MessageFunction:
+      type: object
+      properties:
+        messageFunctionCode:
+          description: message Function Code
+          type: string
+    PaymentInstrument:
+      type: object
+      properties:
+        paymentInstrument:
+          description: payment Instrument
+          type: string
+        pan:
+          description: pan
+          type: string
+        account:
+          description: account
+          type: string
+        cardholder:
+          description: card holder
+          type: string
+        product:
+          description: product
+          type: string
+    PointOfServiceContext:
+      type: object
+      properties:
+        cardPresent:
+          description: card Present
+          type: boolean
+        cardHolderPresent:
+          description: card Holder Present
+          type: boolean
+        ecommerceIndicator:
+          description: ecommerce Indicator
+          type: boolean
+        attendedIndicator:
+          description: attended Indicator
+          type: boolean
+        unAttendedIndicator:
+          description: unAttended Indicator
+          type: string
+        motoCode:
+          description: moto Code
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/MOTOCode'
+        cardDataEntryMode:
+          description: card Data Entry Mode
+          type: string
+    ProcessingResult:
+      type: object
+      properties:
+        approvalData:
+          description: approval Data
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ApprovalData'
+        additionalInformation:
+          description: additional Information
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalInformation'
+    Receiver:
+      type: object
+      properties:
+        receiverId:
+          description: receiver Id
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    ResultDetails:
+      type: object
+      properties:
+        type:
+          description: Result Details Type
+          type: string
+        value:
+          description: value
+          type: string
+    RetrieveTransactionRequest:
+      type: object
+      properties:
+        agreementId:
+          description: agreement Id
+          maxLength: 37
+          type: string
+        paymentInstrumentId:
+          description: payment Instrument Id
+          maxLength: 37
+          type: string
+        minAmount:
+          description: minimum Amount
+          minLength: 1
+          type: string
+        maxAmount:
+          description: maximum amount
+          minLength: 1
+          type: string
+        stEffectiveDate:
+          description: Start Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+        endEffectiveDate:
+          description: End Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+        transactionStatus:
+          description: transaction Status
+          type: string
+        pageStartIndex:
+          format: int32
+          description: page Start Index
+          type: integer
+        pageLimit:
+          format: int32
+          description: page Limit
+          type: integer
+    RetrieveTransactionResponse:
+      type: object
+      properties:
+        data:
+          description: transaction details
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionRetrievalResponse'
+    Sender:
+      type: object
+      properties:
+        senderId:
+          description: sender Id
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    SettlementService:
+      type: object
+      properties:
+        settlementServiceApplied:
+          description: settlement Service Applied
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementServiceApplied'
+        settlementServiceDates:
+          description: settlement Service Dates
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementServiceDates'
+    SettlementServiceApplied:
+      type: object
+      properties:
+        settlementId:
+          description: settlement Id
+          type: string
+        type:
+          description: settlement Service type
+          type: string
+    SettlementServiceDates:
+      type: object
+      properties:
+        settlementDate:
+          description: settlement Date
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        settlementPeriod:
+          description: settlement Period
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+    SponsoredMerchant:
+      type: object
+      properties:
+        sponsoredMerchantId:
+          description: sponsored Merchant Id
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    Terminal:
+      type: object
+      properties:
+        terminalId:
+          description: terminal Id
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+        type:
+          description: type
+          type: string
+        capabilities:
+          description: capabilities
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Capabilities'
+    Transaction:
+      type: object
+      properties:
+        TransactionCode:
+          description: Transaction code
+          type: string
+        PositionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CASH (Cash) </LI><LI>\
+            \ CRRT (Current) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ INTR (Interest) </LI><LI> BAL  (Total Cleared Balance for the account)</LI></UL>\
+            \ Note: The Current (CRRT) position's, BAL (Balance) component holds the\
+            \ account level cleared balance across all the positions."
+          type: string
+        TransactionReferenceId:
+          description: Identification of Transaction Reference provided by transaction
+            capture service.
+          type: string
+        EffectiveDateTime:
+          description: Date and Time when Transaction was Created
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        Amount:
+          description: Transaction Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+    TransactionAmounts:
+      type: object
+      properties:
+        transactionAmount:
+          description: transaction Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount2'
+        reconciliationAmount:
+          description: reconciliation Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount2'
+        cardholderBillingAmount:
+          description: cardholder Billing Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount2'
+    TransactionBookingExecuteEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        Status:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        AuthorisationReferenceID:
+          type: string
+        TransactionReferenceID:
+          type: string
+        ClearingMatchStatusCode:
+          type: string
+        EffectiveDateTime:
+          type: string
+    TransactionContext:
+      type: object
+      properties:
+        merchantCategoryCode:
+          description: merchant Category Code
+          type: string
+        cardProgramme:
+          description: card Programme
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CardProgramme'
+        transactionInitiatorType:
+          description: transaction Initiator Type
+          type: string
+        settlementService:
+          description: settlement Service
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementService'
+    TransactionIdentification:
+      type: object
+      properties:
+        lifeCycleSupport:
+          description: life Cycle Support
+          type: string
+        lifeCycleTraceIdentificationData:
+          description: life Cycle Trace Identification Data
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/LifeCycleTraceIdentificationData'
+        systemTraceAuditNumber:
+          description: system Trace Audit Number
+          type: string
+        acquirerReferenceNumber:
+          description: acquirer Reference Number
+          type: string
+        retrievalReferenceNumber:
+          description: retrieval Reference Number
+          type: string
+        transactionDateTime:
+          description: transaction Date Time
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        transmissionDateTime:
+          description: transmission Date Time
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+    TransactionInitiation:
+      type: object
+      properties:
+        messageFunction:
+          description: message Function
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/MessageFunction'
+        association:
+          description: association
+          type: string
+        acquirer:
+          description: acquirer
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acquirer'
+        acceptor:
+          description: acceptor
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acceptor'
+        terminal:
+          description: terminal
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Terminal'
+        sender:
+          description: sender
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Sender'
+        receiver:
+          description: receiver
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Receiver'
+        paymentInstrument:
+          description: payment Instrument
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PaymentInstrument'
+        customerDevice:
+          description: customer Device
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CustomerDevice'
+        pointOfServiceContext:
+          description: point Of Service Context
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PointOfServiceContext'
+        transactionContext:
+          description: transaction Context
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionContext'
+        verification:
+          description: verification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Verification'
+        transactionType:
+          description: transaction Type
+          type: string
+        transactionSubType:
+          description: transaction SubType
+          type: string
+        transactionAttribute:
+          description: transaction Attribute
+          type: string
+        otherTransactionAttribute:
+          description: other Transaction Attribute
+          type: string
+        messageReason:
+          description: message Reason
+          type: string
+        transactionAmount:
+          description: transaction Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionAmounts'
+        transactionIdentification:
+          description: transaction Identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionIdentification'
+        additionalService:
+          description: additional Service
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalService'
+        additionalData:
+          description: additional Data
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalData'
+        processingResult:
+          description: processing Result
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ProcessingResult'
+    TransactionInitiationResponse:
+      type: object
+      properties:
+        TransactionCaptureId:
+          description: TransactionCaptureId of the Transaction Capture Request.
+          type: string
+    TransactionLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        TransactionDate:
+          type: string
+        PostingDate:
+          type: string
+        BillingAmount:
+          $ref: '#/components/schemas/Amount1'
+        TransactionDescription:
+          type: string
+        MerchantName:
+          type: string
+        MerchantCountry:
+          type: string
+        MerchantCategoryCode:
+          type: string
+        TransactionCode:
+          type: string
+        TransactionCaptureID:
+          type: string
+        LinkedTransactionCaptureID:
+          type: string
+    TransactionMatchingRequest:
+      type: object
+      properties:
+        messageFunction:
+          description: message Function
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/MessageFunction'
+        association:
+          description: association
+          type: string
+        acquirer:
+          description: acquirer
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acquirer'
+        acceptor:
+          description: acceptor
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acceptor'
+        terminal:
+          description: terminal
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Terminal'
+        sender:
+          description: sender
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Sender'
+        receiver:
+          description: receiver
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Receiver'
+        paymentInstrument:
+          description: payment Instrument
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PaymentInstrument'
+        customerDevice:
+          description: customer Device
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CustomerDevice'
+        pointOfServiceContext:
+          description: point Of Service Context
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PointOfServiceContext'
+        transactionContext:
+          description: transaction Context
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionContext'
+        verification:
+          description: verification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Verification'
+        transactionType:
+          description: transaction Type
+          type: string
+        transactionSubType:
+          description: transaction SubType
+          type: string
+        transactionAttribute:
+          description: transaction Attribute
+          type: string
+        otherTransactionAttribute:
+          description: other Transaction Attribute
+          type: string
+        messageReason:
+          description: message Reason
+          type: string
+        transactionAmount:
+          description: transaction Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionAmounts'
+        transactionIdentification:
+          description: transaction Identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionIdentification'
+        additionalService:
+          description: additional Service
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalService'
+        additionalData:
+          description: additional Data
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalData'
+        processingResult:
+          description: processing Result
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ProcessingResult'
+    TransactionRetrievalResponse:
+      type: object
+      properties:
+        transactionId:
+          description: Unique Id to identify transaction in TransactionCapture
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        financialInstitution:
+          description: FI to which the Transaction belongs
+          type: string
+        brand:
+          description: Brand to which the Transaction belongs
+          type: string
+        product:
+          description: Product to which the Transaction belongs
+          type: string
+        agreementId:
+          description: Agreement ID to which this Transaction belongs
+          type: string
+        paymentInstrumentId:
+          description: Payment Instrument ID used to perform the transaction
+          type: string
+        partyId:
+          description: Associated Party ID to which this Transaction Belongs
+          type: string
+        status:
+          description: Status of the Transaction Record
+          type: string
+        creationDateTime:
+          description: Date when Transaction was Created
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        effectiveDateTime:
+          description: Transmission Date Time
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        transactionCode:
+          description: Transaction Code assigned/provided for the transaction
+          type: string
+        positionType:
+          description: Position Type impacted by this Transaction
+          type: string
+        positionComponent:
+          description: Position Component impacted by this Transaction
+          type: string
+        networkReferenceId:
+          description: Network Reference ID - Network Reference ID captured in Authorisation
+            Domain during Authorisation Process which is passed by Scheme. Mandatory
+            for all pending transactions ( transactions approved but not settled)
+            Bank network Reference Number - DE 63.2 for MC Transaction Identifier
+            - DE 62.2 for Visa
+          type: string
+        authorisationReferenceId:
+          description: Authorisation Reference ID - Reference ID captured in Authorisation
+            Domain during Authorisation Process. Mandatory for all pending transactions
+            ( transactions approved but not settled) System Trace Audit Number (STAN)
+            DE 11
+          type: string
+        cardClearingReferenceId:
+          description: CardClearing ID - Reference ID captured in Card Clearing Domain
+            during Card Clearing process Retrieval Reference Number - DE 37.
+          type: string
+        settlementStatusCode:
+          description: Provides the status of settlement of an instruction.
+          type: string
+        clearingMatchStatusCode:
+          description: Provides the status of Clearing Match.
+          type: string
+        billingStatusCode:
+          description: Provides the status of Billing of an instruction.
+          type: string
+        transactionTypeCode:
+          description: "Specifies the type, or nature, of the payment."
+          type: string
+        paymentFunctionCode:
+          description: Identifies the message function
+          type: string
+        merchantId:
+          description: AcceptorID DE 42
+          type: string
+        merchantName:
+          description: Acceptor Name - DE 43.1
+          type: string
+        merchantLocation:
+          description: "Address of the merchant location Acceptor Street Address,\
+            \ Acceptor Postal Code, Acceptor City Name, Acceptor Country Subdivision,\
+            \ Acceptor Address - separated by a delimiter"
+          type: string
+        merchantCountry:
+          description: Acceptor Country DE 43.6
+          type: string
+        merchantCategoryCode:
+          description: classifies the type of business applicable to the card acceptor.
+          type: string
+        terminalId:
+          description: Terminal ID DE 41
+          type: string
+        terminalTypeCode:
+          description: Terminal Type Code PDS 0023
+          type: string
+        terminalCapabilityCode:
+          description: Terminal Card Data Input
+          type: string
+        approvalCode:
+          description: authorization code assigned by institutions indicating that
+            the auth is approved
+          type: string
+        cardPresentIndicator:
+          description: "Point of Service Context, Card Present"
+          type: boolean
+        cardholderPresentIndicator:
+          description: "Point of Service Context, Cardholder Present"
+          type: boolean
+        ecommerceIndicator:
+          description: Ecommerce Indicator
+          type: boolean
+        motoInd:
+          description: Mail or Telephone Order
+          type: boolean
+        cardDataInput:
+          description: Terminal Card Data Input Method Code
+          type: string
+        transactionInitiatorType:
+          description: Transaction Initiator Type
+          type: string
+        description:
+          description: Transaction Description
+          type: string
+        original_amount:
+          description: originalAmount details
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount2'
+        actual_amount:
+          description: actualAmount details
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount2'
+        postingDateTime:
+          description: Date when Transaction is Settled
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        billingDate:
+          description: Date when Transaction is Billed
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        transaction_entry:
+          description: Transaction Entry
+          type: string
+        transactionStatus:
+          description: Transaction Status
+          type: string
+    UUID:
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      type: string
+    Value:
+      type: object
+      properties:
+        verificationDataValue:
+          description: verification Data Value
+          type: string
+    Verification:
+      type: object
+      properties:
+        verificationInformation:
+          description: verification Information
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/VerificationInformation'
+        verificationResult:
+          description: verification Result
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/VerificationResult'
+    VerificationInformation:
+      type: object
+      properties:
+        type:
+          description: Verification Data Type
+          type: string
+        value:
+          description: Verification Data value
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Value'
+    VerificationResult:
+      type: object
+      properties:
+        entityType:
+          description: Verification entity Type
+          type: string
+        otherEntityType:
+          description: Verification other Entity Type
+          type: string
+        resultDetails:
+          description: Verification result Details
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ResultDetails'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
