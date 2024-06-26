@@ -2509,26 +2509,6 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Validate account status
       x-group-name: Account Management
-  /CustomerAgreement/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      responses:
-        "200":
-          description: OK
-  /CustomerAgreement/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
 components:
   schemas:
     AgreementFeature:
