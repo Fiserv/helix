@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: transaction-capture
-  version: 1.1.0-64
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Transaction capture Rest API
 - name: Transaction matching Rest API
@@ -404,6 +404,19 @@ components:
         paymentInstrumentId:
           description: payment Instrument Id
           maxLength: 37
+          type: string
+        PositionType:
+          description: " A filter to retrieve transactions associated with positions\
+            \ of a specific type. Only transactions matching the specified position\
+            \ type will be returned in the response. Valid values are: <UL><LI> RETL\
+            \ (Retail) </LI><LI> CASH (Cash) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "A filter to retrieve transactions associated with a specific\
+            \ position component. Only transactions matching the specified position\
+            \ component will be returned in the response. The valid values are: <UL><LI>\
+            \ PEND (Pending) </LI><LI> PRPL (Principal)</LI><LI> INTR (Interest) </LI>\
+            \ </UL> "
           type: string
         minAmount:
           description: minimum Amount
