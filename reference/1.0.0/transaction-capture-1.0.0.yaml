@@ -2,11 +2,118 @@
 openapi: 3.0.3
 info:
   title: transaction-capture
-  version: 1.1.0-64
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Transaction capture Rest API
 - name: Transaction matching Rest API
 paths:
+  /TransactionCapture/V1/BookBillingTransactions/Initiate:
+    post:
+      tags:
+      - Transaction capture Rest API
+      summary: This method persists the list of generated internal transactions data
+      operationId: persistInternalTransactions
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratedTransactionsBookingRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeneratedTransactionsBookingResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_BR001\
+            \ : AgreementId required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : AgreementId is not valid, please provide valid value.<em><li><li><em>HLXTXCP_BR001\
+            \ : Transactions required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : TransactionCode required, please provide value in the list at entry\
+            \ <index-number>.<em><li><li><em>HLXTXCP_BR001 : PositionType required,\
+            \ please provide value in the list at entry <index-number>.<em><li><li><em>HLXTXCP_BR001\
+            \ : PositionComponent required, please provide value in the list at entry\
+            \ <index-number>.<em><li><li><em>HLXTXCP_BR001 : EffectiveDateTime required,\
+            \ please provide value in the list at entry <index-number>.<em><li><li><em>HLXTXCP_BR001\
+            \ : Amount required, please provide value in the list at entry <index-number>.<em><li><li><em>HLXTXCP_BR001\
+            \ : Currency required, please provide value in the list at entry <index-number>.<em><li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
   /TransactionCapture/V1/Transaction/GetList/Request:
     post:
       tags:
@@ -97,6 +204,228 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve a list of Transactions
       x-group-name: Transaction Management
+  /TransactionCapture/V1/Transaction/Initiate:
+    post:
+      tags:
+      - Transaction capture Rest API
+      summary: This method persists the transaction data received from transaction
+        clearing request
+      operationId: persistTransaction
+      parameters:
+      - name: fi-id
+        in: header
+        description: Identification of Financial Institution
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInitiation'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionInitiationResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_TXCP_002\
+            \ : Error occurred while retrieving the transaction data, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_TXCP_002\
+            \ : Error occurred while retrieving the transaction data, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
+  /TransactionCapture/V1/Transaction/MatchPendingTransaction/Execute:
+    post:
+      tags:
+      - Transaction matching Rest API
+      summary: 'This method is used to match the pending transaction '
+      operationId: authMatching
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionMatchingRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionCaptureId:
+                    type: string
+                  lifeCycleId:
+                    type: string
+                  clearingMatchStatusCode:
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_BR001\
+            \ : Payment Instrument ID required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : Transaction Type required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : Creation Date Time required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : Terminal Id required, please provide value.<em><li><li><em>HLXTXCP_BR001\
+            \ : Life Cycle Id required, please provide value.<em><li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTXCP_TXCP_001\
+            \ : Error occurred while performing matching on pending transaction.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
+  /TransactionCapture/V1/Transaction/{TransactionCaptureId}/retrieve:
+    get:
+      parameters:
+      - name: TransactionCaptureId
+        in: path
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionRetrievalResponse'
 components:
   schemas:
     Acceptor:
@@ -237,9 +566,7 @@ components:
         EffectiveDateTime:
           type: string
         Amount:
-          type: string
-        Currency:
-          type: string
+          $ref: '#/components/schemas/Amount1'
         FeeTransactionCode:
           type: string
         OriginalTransactionCaptureId:
@@ -404,6 +731,19 @@ components:
         paymentInstrumentId:
           description: payment Instrument Id
           maxLength: 37
+          type: string
+        PositionType:
+          description: " A filter to retrieve transactions associated with positions\
+            \ of a specific type. Only transactions matching the specified position\
+            \ type will be returned in the response. Valid values are: <UL><LI> RETL\
+            \ (Retail) </LI><LI> CASH (Cash) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "A filter to retrieve transactions associated with a specific\
+            \ position component. Only transactions matching the specified position\
+            \ component will be returned in the response. The valid values are: <UL><LI>\
+            \ PEND (Pending) </LI><LI> PRPL (Principal)</LI><LI> INTR (Interest) </LI>\
+            \ </UL> "
           type: string
         minAmount:
           description: minimum Amount
