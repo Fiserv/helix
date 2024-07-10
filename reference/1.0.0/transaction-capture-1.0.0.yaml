@@ -945,10 +945,22 @@ components:
           description: Transaction Code assigned/provided for the transaction
           type: string
         positionType:
-          description: Position Type impacted by this Transaction
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the transaction. The position type provides\
+            \ a classification for grouping similar types of transactions, such as\
+            \ Retail. Valid values are: Valid values are: <UL><LI> RETL (Retail) </LI><LI>\
+            \ CASH (Cash) </LI></UL> The valid combinations of Positions and Position\
+            \ Components are: <UL> <LI> RETL and PRPL </LI><LI> RETL and INTR </LI>\
+            \ <LI> RETL and PEND </LI> <LI> CASH and PRPL </LI> <LI> CASH and INTR\
+            \ </LI> <LI> CASH and PEND </LI> </UL>"
           type: string
         positionComponent:
-          description: Position Component impacted by this Transaction
+          description: "The position component field within a transaction is used\
+            \ to identify the specific type of balance associated with the transaction.\
+            \ This field provides a further classification to distinguish the position\
+            \ component affected by a transaction, such as Principal. Valid values\
+            \ are:<UL> <LI> PRPL (Principal)</LI><LI> INTR (Interest) </LI> <LI> PEND\
+            \ (Pending) </LI> </UL>"
           type: string
         networkReferenceId:
           description: Network Reference ID - Network Reference ID captured in Authorisation
