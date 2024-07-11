@@ -948,7 +948,7 @@ components:
           description: "Identifies the type of position, representing a specific category\
             \ of balances associated with the transaction. The position type provides\
             \ a classification for grouping similar types of transactions, such as\
-            \ Retail. Valid values are: Valid values are: <UL><LI> RETL (Retail) </LI><LI>\
+            \ Retail. Valid values are: <UL><LI> RETL (Retail) </LI><LI>\
             \ CASH (Cash) </LI></UL> The valid combinations of Positions and Position\
             \ Components are: <UL> <LI> RETL and PRPL </LI><LI> RETL and INTR </LI>\
             \ <LI> RETL and PEND </LI> <LI> CASH and PRPL </LI> <LI> CASH and INTR\
