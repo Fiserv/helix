@@ -405,13 +405,13 @@ components:
           description: payment Instrument Id
           maxLength: 37
           type: string
-        PositionType:
+        positionType:
           description: " A filter to retrieve transactions associated with positions\
             \ of a specific type. Only transactions matching the specified position\
             \ type will be returned in the response. Valid values are: <UL><LI> RETL\
             \ (Retail) </LI><LI> CASH (Cash) </LI></UL> "
           type: string
-        PositionComponent:
+        positionComponent:
           description: "A filter to retrieve transactions associated with a specific\
             \ position component. Only transactions matching the specified position\
             \ component will be returned in the response. The valid values are: <UL><LI>\
