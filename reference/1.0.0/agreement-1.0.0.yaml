@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-265
+  version: 1.1.0-306
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetrieveCardFeeDetailsResponse'
+                type: object
         "204":
           description: No Content
           content:
@@ -653,15 +653,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Id:
-                    format: int64
-                    description: Id of Agreement Feature
-                    type: integer
-                  Feature:
-                    description: Identification of Feature
-                    type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/InitiateAgreementFeatureResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Agreement ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
@@ -1205,7 +1199,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -1353,7 +1346,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExecuteClosureResponse'
+                type: object
+                properties:
+                  Identification:
+                    description: "Unique identifier of an Account, as assigned by\
+                      \ the account servicer (FEAID)."
+                    type: string
+                  IsClosed:
+                    description: This field identifies if an account is closed or
+                      not. Valid values are True and False. This field will be set
+                      to True if an account is closed and it will be set to False
+                      if an account is open.
+                    type: boolean
+                  ClosureRequestDate:
+                    description: The date that was sent through on the account closure
+                      API to indicate when the account was closed on the host system.
+                      Format must be ISO Date format (YYYY-MM-DD).
+                    type: string
+                  ClosingDate:
+                    description: Date and Time on which the Account was closed by
+                      the system. Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
+                    type: string
+                    allOf:
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
+                    - $ref: '#/components/schemas/Instant'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : Account number is not valid.</em></li><li><em>HLXAGDTBR001 : Closure\
@@ -1461,7 +1480,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -1585,7 +1603,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -1702,7 +1719,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -1830,7 +1846,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -1972,7 +1987,6 @@ paths:
                   $ref: '#/components/schemas/RetrieveFacilityAllocationResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
-            \ : Account number required, please provide value.</em></li><li><em>HLXAGDTBR001\
             \ : Account number exceeds maximum 37 length allowed.</em></li></ul>"
           content:
             application/json:
@@ -1992,8 +2006,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "404":
           description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT004\
-            \ : Account number not found.</em></li><li><em>HLXAGDTGT006 : Facility\
-            \ Allocation not linked to the account.</em></li></ul>"
+            \ : Account number not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -2087,7 +2100,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -2310,7 +2322,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^[ ]*$)"
           type: string
       requestBody:
         content:
@@ -2323,7 +2334,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SystemUpdateResponse'
+                $ref: '#/components/schemas/RetrieveAgreementResponse'
         "204":
           description: No Content
           content:
@@ -2545,15 +2556,10 @@ components:
           description: Value of Agreement Feature Parameter
           type: string
     AgreementFeatureRequestDto:
-      required:
-      - Feature
       type: object
       properties:
         Feature:
           description: Identification of Agreement Feature
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
         AgreementFeatureParameter:
           type: array
@@ -2587,6 +2593,25 @@ components:
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
     AgreementInvolvement:
+      description: Role played by a party in the context of Agreement operations.
+      type: object
+      properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          type: string
+        PartyIdentification:
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
+          type: string
+        PartyRole:
+          description: "Specifies the role of the party in the transaction <br> Valid\
+            \ values are : <br> AccountHolder"
+          type: string
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
+    AgreementInvolvement1:
       description: Role played by a party in the context of Agreement operations.
       required:
       - PartyIdentification
@@ -2634,11 +2659,29 @@ components:
           description: "Represents the currency associated, expressed in ISO 4217\
             \ currency code."
           type: string
+    Amount1:
+      type: object
+      properties:
+        Value:
+          description: Represents the monetary value associated.
+          default: 0
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
     Balance:
       type: object
       properties:
         balanceType:
-          $ref: '#/components/schemas/BalanceType'
+          description: "This refers to the category for which various types of balances\
+            \ are retrieved. If the balance type is Total, all position types will\
+            \ be considered during balance calculation. If the balance type is Cash\
+            \ then position type Cash will be considered during balance calculation.\
+            \ Possible Values are Total, Cash"
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/BalanceType'
         currentBalance:
           $ref: '#/components/schemas/Amount'
         pendingBalance:
@@ -2652,7 +2695,7 @@ components:
       - TOTAL
       - CASH
       type: string
-    BlockedReasonUpdateRequest:
+    BlockedReasonUpdateForSystemUpdateRequest:
       required:
       - Action
       type: object
@@ -2670,6 +2713,28 @@ components:
             \ are supplied in the BlockedReasonCode field, as this will indicate that\
             \ all existing blocked reason codes should be removed.</em></li></ul>"
           pattern: \S
+          type: string
+        BlockedReasonCode:
+          description: List of block reason codes to be added/updated/deleted on an
+            account.
+          type: array
+          items:
+            type: string
+    BlockedReasonUpdateRequest:
+      type: object
+      properties:
+        Action:
+          description: "<ul>Action to be taken to update block reason codes on an\
+            \ account. Valid Values are<li><em>Add : To add new blocked reason codes,\
+            \ it is important to ensure that none of the supplied block reason codes\
+            \ already exist on the account.</em></li><li><em>Replace : To replace\
+            \ all the existing blocked reason codes with with the new list of blocked\
+            \ reason codes.</em></li><li><em>Delete :  To remove the supplied blocked\
+            \ reason codes from an account. All the supplied codes should currently\
+            \ exist on the account.</em></li><li><em>DeleteAll : To remove all blocked\
+            \ reason codes from an account. It is important to ensure that no values\
+            \ are supplied in the BlockedReasonCode field, as this will indicate that\
+            \ all existing blocked reason codes should be removed.</em></li></ul>"
           type: string
         BlockedReasonCode:
           description: List of block reason codes to be added/updated/deleted on an
@@ -2717,6 +2782,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Feature1'
+    CardFeeGeneratedEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
+          type: string
+        ProductId:
+          type: string
+        EntityId:
+          type: string
+        SubEntityId:
+          type: string
+        TraceId:
+          type: string
+        FiId:
+          type: string
+        BrandId:
+          type: string
+        FepId:
+          type: string
+        FeaId:
+          type: string
+        FecId:
+          type: string
+        CardholderType:
+          type: string
+        CardFeeAmount:
+          type: number
+        CardFeeDate:
+          $ref: '#/components/schemas/LocalDate'
+        CardFeeType:
+          type: string
+        DebitOrCredit:
+          type: string
+        FirstVisionAccountNumber:
+          type: string
+        Pan:
+          type: string
     ConfigurationOption:
       required:
       - Name
@@ -2837,9 +2947,6 @@ components:
       properties:
         FacilityIdentification:
           description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
     ExecuteUnlinkBundleFeatureRequest:
       type: object
@@ -2891,6 +2998,46 @@ components:
         ClearingSystemMemberIdentification:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
+          type: string
+    FacilityLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
+          type: string
+        ProductId:
+          type: string
+        EntityId:
+          type: string
+        SubEntityId:
+          type: string
+        TraceId:
+          type: string
+        FiId:
+          type: string
+        BrandId:
+          type: string
+        AgreementId:
+          type: string
+        AgreementFeatureId:
+          format: int64
+          type: integer
+        Capability:
+          type: string
+        FeatureId:
+          type: string
+        FacilityIdentification:
+          type: string
+        FacilityStatus:
+          type: string
+        OldFacilityId:
           type: string
     Feature:
       required:
@@ -2994,12 +3141,9 @@ components:
         instance:
           type: string
     InitiateAgreementFeatureRequest:
-      required:
-      - AgreementFeature
       type: object
       properties:
         AgreementFeature:
-          minItems: 1
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureRequestDto'
@@ -3037,7 +3181,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: '#/components/schemas/AgreementInvolvement1'
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -3067,19 +3211,13 @@ components:
           maxLength: 37
           type: string
     InitiateFacilityAllocationRequest:
-      required:
-      - AgreementFeature
       type: object
       properties:
         FacilityIdentification:
           description: Identification of Facility
-          maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
         AgreementFeature:
           description: Feature ID of Agreement Feature
-          minLength: 1
-          pattern: "(^[0-9]+$)|(^$)"
           type: string
         FacilityStatus:
           description: Status of Facility Allocation
@@ -3604,13 +3742,9 @@ components:
       properties:
         FacilityIdentification:
           description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
         Capability:
           description: Name of the system capability linked to a Facility
-          minLength: 1
           type: string
     RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
@@ -3759,7 +3893,6 @@ components:
         IsClosed:
           description: Flag to be used to set an account to closed status. This API
             only accepts value "true".
-          pattern: (^$|true)
           type: string
         ClosureRequestDate:
           description: The date that the account was closed on the host system. This
@@ -3771,91 +3904,7 @@ components:
           items:
             $ref: '#/components/schemas/AgreementInvolvement'
         BlockedReasonCodes:
-          $ref: '#/components/schemas/BlockedReasonUpdateRequest'
-    SystemUpdateResponse:
-      required:
-      - AgreementInvolvement
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
-          maxLength: 37
-          type: string
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
-            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
-          type: string
-        AgreementInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementInvolvement'
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner <br/> Format must be ISO
-            Date format (YYYY-MM-DD)
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalAccount'
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that was sent through on the account closure API to
-            indicate when the account was closed on the host system. Format must be
-            ISO Date format (YYYY-MM-DD).
-          type: string
-        ClosingDate:
-          description: Date and Time on which the Account was closed by the system.
-            Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/Instant'
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder is currently opted-out or
-            opted-in for the Network Account Updater. The opt out option affects all
-            cards under the account. The valid values are OptOut and OptIn.
-          type: string
-        BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
-          type: array
-          items:
-            type: string
-        CreditLimit:
-          description: "Credit limit assigned to an account. This object will be always\
-            \ available when querying a credit type product, and is optional for other\
-            \ product types. The currency code value will match the brand level reporting\
-            \ currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        CashLimit:
-          description: "Cash limit assigned to an account. This object always be available\
-            \ when querying a credit type product, and is optional for other product\
-            \ types. The currency code value will match the brand level reporting\
-            \ currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        enabled:
-          type: boolean
+          $ref: '#/components/schemas/BlockedReasonUpdateForSystemUpdateRequest'
     UpdateBundleRequest:
       type: object
       properties:
