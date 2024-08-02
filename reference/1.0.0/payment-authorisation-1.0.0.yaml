@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: payment-authorisation
-  version: 1.1.0-306
+  version: 1.1.0-308
 tags:
 - name: Helix Core
 paths:
@@ -770,7 +770,7 @@ paths:
       x-proxy-name: Authorise Request
       x-group-name: Authorisation
       x-api-scope: Internal
-  /PaymentAuthorisation/V1/CardManagement/ChangePIN/Execute:
+  /PaymentAuthorisation/V1/CardManagement/ChangePINAtTerminal/Execute:
     post:
       tags:
       - Helix Core
