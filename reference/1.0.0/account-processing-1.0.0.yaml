@@ -173,11 +173,34 @@ paths:
                     type: string
                   CurrentDueAmount:
                     $ref: '#/components/schemas/AmountDto'
+                  pastDueAmount:
+                    description: The sum of all the past due amounts at the agreement
+                      level (excludes the current due amount).
+                    type: object
+                    allOf:
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
                   TotalDueAmount:
-                    $ref: '#/components/schemas/AmountDto'
+                    description: "The contractual minimum payment due to be made for\
+                      \ an account, including any balance in arrears from prior billing\
+                      \ cycles.Note: When the account does not have any arrears for\
+                      \ a given billing date, the total due amount will be same as\
+                      \ the current due amount."
+                    type: object
+                    allOf:
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
                   OpeningBalanceAmount:
                     $ref: '#/components/schemas/AmountDto'
                   ClosingBalanceAmount:
+                    $ref: '#/components/schemas/AmountDto'
+                  TotalInterestAmount:
                     $ref: '#/components/schemas/AmountDto'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
@@ -1592,8 +1615,20 @@ components:
           type: string
         CurrentDueAmount:
           $ref: '#/components/schemas/AmountDto'
+        pastDueAmount:
+          description: The sum of all the past due amounts at the agreement level
+            (excludes the current due amount).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
         TotalDueAmount:
-          $ref: '#/components/schemas/AmountDto'
+            description: "The contractual minimum payment due to be made for an account,\
+                    \ including any balance in arrears from prior billing cycles.Note: When\
+                    \ the account does not have any arrears for a given billing date, the\
+                    \ total due amount will be same as the current due amount."
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/AmountDto'
         OpeningBalanceAmount:
           $ref: '#/components/schemas/AmountDto'
         ClosingBalanceAmount:
