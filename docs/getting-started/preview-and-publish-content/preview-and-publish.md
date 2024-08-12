@@ -63,9 +63,9 @@ Need Help ?
 
 [Stoplight Select Project Page]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Select_Project.png>
 
-[Stoplight Switch Git Branch]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Switch_Git_Branches.png>
+[Stoplight Switch Git Branch]: [Stoplight_Switch_Git_Branches]
 
-[Stoplight Switch Git Branch]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Switch_Git_Branches.png>
+[Stoplight Switch Git Branch]: [Stoplight_Switch_Git_Branches]
 
 [Stoplight Preview Branch]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Preview_Branch.png>
 
@@ -78,3 +78,4 @@ Need Help ?
 [developer studio Preview]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Developer_Portal_Preview.png>
 
 [FAQ]: <?path=docs/faq/faq.md>
+[Stoplight_Switch_Git_Branches]: https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Switch_Git_Branches.png
