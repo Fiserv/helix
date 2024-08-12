@@ -15,9 +15,9 @@ Now, developer is ready to deploy your tenant application. Developer can delpoy 
 
 ## Deployment checklist
 
-   * Installed and Running OpenShift cluster on cloud Server
-   * SSH Setup completed to access application code from repository
-   * SSH Private Key generated
+* Installed and Running OpenShift cluster on cloud Server
+* SSH Setup completed to access application code from repository
+* SSH Private Key generated
     
 ## Recommended guidelines for deployment with Fiserv Dev Studio
 
@@ -63,9 +63,9 @@ Select your project from the 'Project dropdown' and add your private SSH key und
 
 * Select **Create** dropdown present in Top Right Corner and select **Source Secret**. Developer have to set following details such as
 
-    * **Secret Name** :  `<your-name>-SSH-Private-Key`
-    * **Authentication type** : SSH
-    * **SSH Private Key** : Develpor can browse the SSH private key from local machine or developer can paste it directly into Text Box.
+* **Secret Name** :  `<your-name>-SSH-Private-Key`
+* **Authentication type** : SSH
+* **SSH Private Key** : Develpor can browse the SSH private key from local machine or developer can paste it directly into Text Box.
 
 ## Step 7: Select +Add option
 
@@ -91,7 +91,7 @@ Now add the Git URL in **Git Repo URL** option on Import from Dockerfile page. C
 
 ![Bitbucket Repo import] 
 
-## Step 9: Developer needs to fill following information for the setup:
+## Step 9: Developer needs to fill following information for the setup
 
 *   **Git Reference** : 'develop'
 
@@ -138,7 +138,8 @@ Final step is to launch your application by clicking on Open URL.
  
 ___
 
-## Next steps 
+## Next steps
+
 [Register Tenant]
 
 

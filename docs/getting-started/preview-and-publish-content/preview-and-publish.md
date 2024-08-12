@@ -36,13 +36,13 @@ Switch the Git Branches to preview/publish the project content.
 
 ![Stoplight Publish Branch]
 
-## 5. Select the file to modify, edit the content & push the changes to Git.
+## 5. Select the file to modify, edit the content & push the changes to Git
 
 Select the file to edit, make changes, preview it & then push the changes to Git.
 
 ![Stoplight Content Edit]
 
-## 6. Finally, Navigate to the developer studio preview/publish environments to view the content updates.
+## 6. Finally, Navigate to the developer studio preview/publish environments to view the content updates
 
 > For Preview [click here]
 
