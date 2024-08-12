@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: position-keeping
-  version: 1.1.0-24
+  version: 1.1.0-SNAPSHOT
 tags:
 - name: Position Management
 paths:
@@ -46,7 +46,7 @@ paths:
           to be retrieved. '
         required: true
         schema:
-          maxLength: 37
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
       - name: positionType
         in: query
@@ -63,6 +63,14 @@ paths:
           be returned in the response. The valid values are:<UL><LI> PRPL (Principal)
           </LI><LI> PEND (Pending Balance) </LI><LI> INTR (Interest) </LI><LI> BAL
           (Total Cleared Balance for the account) </LI></UL>
+        schema:
+          type: string
+      - name: period
+        in: query
+        description: A filter to retrieve position information for a specific period.
+          Only positions matching the specified period will be returned in the response.
+          The valid values are:<UL><LI> CURR (Current Period) </LI><LI> PRIO (Prior
+          Period) </LI><LI> RESI (Residual Period) </LI></UL>
         schema:
           type: string
       responses:
@@ -114,6 +122,102 @@ paths:
           content: {}
       x-proxy-name: Retrieve Positions
       x-group-name: Position Management
+  /PositionKeeping/V1/PositionEntries/Initiate:
+    post:
+      tags:
+      - Position Management
+      summary: initiate position Entries
+      description: This API is used to initiate position entries associated with an
+        account.
+      operationId: initiatePositionEntries
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionEntriesInitiationRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPIN001\
+            \ : Error occurred while initiating the transaction, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPIN001\
+            \ : Error occurred while initiating the transaction, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
+      x-proxy-name: Initiate Positions
+      x-group-name: Position Entry Management
 components:
   schemas:
     BalanceAmountDto:
@@ -126,6 +230,25 @@ components:
         Currency:
           description: "Represents the currency associated, expressed in ISO 4217\
             \ currency code."
+          type: string
+    BillingEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementId:
+          type: string
+        BillingDate:
+          type: string
+        PeriodStartDate:
+          type: string
+        PeriodEndDate:
+          type: string
+        Status:
+          type: string
+        NextBillingDate:
           type: string
     HelixErrorDetails:
       type: object
@@ -151,6 +274,10 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T16:15:50Z
+    LocalDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50
     PositionDto:
       type: object
       properties:
@@ -191,6 +318,64 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/BalanceAmountDto'
+    PositionEntriesInitiationRequest:
+      type: object
+      properties:
+        AgreementId:
+          description: Agreement ID to which these Transactions belongs.
+          type: string
+        PartyId:
+          description: Associated Party ID to which this Transaction Belongs
+          type: string
+        PaymentInstrumentId:
+          description: Payment Instrument ID used to perform the transaction
+          type: string
+        BookingType:
+          description: Identification of transaction Type among Internal or External
+          type: string
+        PositionEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionEntry'
+    PositionEntry:
+      type: object
+      properties:
+        PositionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
+            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
+          type: string
+        AuthorisationReferenceId:
+          description: Authorisation Reference ID - Reference ID captured in Authorisation
+            Domain during Authorisation Process. Mandatory for all pending transactions
+            ( transactions approved but not settled) System Trace Audit Number (STAN)
+            DE 11
+          type: string
+        TransactionReferenceId:
+          description: Identification of Transaction Reference provided by transaction
+            capture service.
+          type: string
+        EffectiveDateTime:
+          description: Date when Transaction was Created
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        Amount:
+          description: Transaction Amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/BalanceAmountDto'
     PositionEntryEvent:
       type: object
       properties:
@@ -216,9 +401,9 @@ components:
           type: string
         PositionComponent:
           type: string
-        EffectiveDate:
+        EffectiveDateTime:
           type: string
-        ClearingDate:
+        ClearingDateTime:
           type: string
     PositionLifeCycleEvent:
       type: object
@@ -243,9 +428,24 @@ components:
           type: string
         PositionComponent:
           type: string
-        EffectiveDate:
+        EffectiveDateTime:
           type: string
-        ClearingDate:
+        ClearingDateTime:
+          type: string
+    PositionRolledEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementID:
+          type: string
+        BillingDate:
+          type: string
+        BillingPeriodStartDate:
+          type: string
+        BillingPeriodEndDate:
           type: string
     RequestPositionsResponse:
       type: object
@@ -261,6 +461,25 @@ components:
             \ CASH and PEND </LI><LI> CASH and INTR </LI><LI> CRRT and BAL </LI></UL>Note:\
             \ The Current (CRRT) position's, BAL (Balance) component holds the account\
             \ level cleared balance across all the positions."
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionDto'
+        PriorPositions:
+          description: An array that contains a list of positions that represent the
+            balances from the last cycle for an account. The valid combinations of
+            Positions and Position Components are:<UL><LI>RETL and PRPL </LI><LI>
+            RETL and PEND </LI><LI> RETL and INTR </LI><LI> CASH and PRPL </LI><LI>
+            CASH and PEND </LI><LI> CASH and INTR </LI></UL>
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionDto'
+        ResidualPositions:
+          description: "An array that contains a list of positions that represent\
+            \ the cumulative balances, that are from a period older than the last\
+            \ cycle for an account. The valid combinations of Positions and Position\
+            \ Components are:<UL><LI>RETL and PRPL </LI><LI> RETL and PEND </LI><LI>\
+            \ RETL and INTR </LI><LI> CASH and PRPL </LI><LI> CASH and PEND </LI><LI>\
+            \ CASH and INTR </LI></UL>"
           type: array
           items:
             $ref: '#/components/schemas/PositionDto'
