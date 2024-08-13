@@ -36,13 +36,13 @@ Switch the Git Branches to preview/publish the project content.
 
 ![Stoplight Publish Branch]
 
-## 5. Select the file to modify, edit the content & push the changes to Git.
+## 5. Select the file to modify, edit the content & push the changes to Git
 
 Select the file to edit, make changes, preview it & then push the changes to Git.
 
 ![Stoplight Content Edit]
 
-## 6. Finally, Navigate to the developer studio preview/publish environments to view the content updates.
+## 6. Finally, Navigate to the developer studio preview/publish environments to view the content updates
 
 > For Preview [click here]
 
@@ -62,8 +62,6 @@ Need Help ?
 [Stoplight Home Page]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Home_Page.png>
 
 [Stoplight Select Project Page]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Select_Project.png>
-
-[Stoplight Switch Git Branch]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Switch_Git_Branches.png>
 
 [Stoplight Switch Git Branch]: <https://gist.githubusercontent.com/f2zdirk/0d6e1e22180086f6169a2686a3ae1ec9/raw/22c36a3fbd595844296c2d25dc0e14b27d51e1ab/Stoplight_Switch_Git_Branches.png>
 

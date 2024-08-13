@@ -1,6 +1,6 @@
 # How we can help you
 
-## Here are few common questions that may help you.
+## Here are few common questions that may help you
 
  Q: How can I set up new Tenant ?
     
