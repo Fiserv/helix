@@ -119,6 +119,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionRetrievalResponse'
+      x-proxy-name: Retrieve a Transaction
+      x-group-name: Transaction Management
 components:
   schemas:
     RetrieveTransactionRequest:
