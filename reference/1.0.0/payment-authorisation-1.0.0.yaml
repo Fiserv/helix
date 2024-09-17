@@ -992,6 +992,235 @@ paths:
       x-proxy-name: PIN Unblock
       x-group-name: Authorisation
       x-api-scope: External
+  /PaymentAuthorisation/V1/CardManagement/{paymentInstrumentId}/ChangePIN/Execute:
+    post:
+      tags:
+        - Helix Core
+      summary: This method is used to Change PIN for the given FEPID
+      description: This method is used to Change PIN for the given FEPID
+      operationId: changePin
+      parameters:
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: paymentInstrumentId
+          in: path
+          description: Unique identifier of the payment instrument (FEPID)
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteChangePINRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBR001\
+            \ : Card not found.</em></li><li><em>HLXAUTHBR001 : Current PIN block\
+            \ required, please provide value.</em></li><li><em>HLXAUTHBR001 : Required\
+            \ PIN block required, please provide value.</em></li><li><em>HLXAUTHBR001\
+            \ : KeyAssociation required, please provide value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBU01\
+            \ : Card not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHBV01\
+            \ : Card is not enabled.</em></li><li><em>HLXAUTHBV02 : Card already blocked\
+            \ as Lost.</em></li><li><em>HLXAUTHBV02 : Card already blocked as Stolen.</em></li><li><em>HLXAUTHAC01\
+            \ : Account is closed.</em></li><li><em>HLXAUTHID01 : Card is cancelled.</em></li><li><em>HLXAUTHPC15\
+            \ : CHANGE_PIN is not allowed for confirmed fraud cards.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error<br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAUTHPC16\
+            \ : Attempt to change PIN has failed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Change PIN
+      x-group-name: Card Sensitive Data
+  /PaymentAuthorisation/V1/JobExecution/runBatch:
+    post:
+      tags:
+        - Helix Core
+      summary: This method is used to run the Payment Authorisation Purge process.
+      description: "This API allows the user to run Payment Authorisation Purge process,\
+        \ for marking Payment Authorisation (PA) entries for deletion."
+      operationId: runBatchJob
+      parameters:
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchJobRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Authorise Request
+      x-group-name: Authorisation
+      x-api-scope: Internal
 components:
   schemas:
     Acquirer:
@@ -1003,6 +1232,20 @@ components:
         Country:
           description: 3 byte numeric country code of the acquirer
           type: string
+    AdditionalAmount:
+      type: object
+      properties:
+        Type:
+          description: "Amount Type: ORIG etc."
+          type: string
+        OtherType:
+          description: Other Type
+          type: string
+        ResponseAmount:
+          description: Response Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ResponseAmount'
     AdditionalCardData:
       type: object
       properties:
@@ -1024,9 +1267,13 @@ components:
     Amount:
       type: object
       properties:
-        value:
+        Value:
+          description: Represents the monetary value associated.
+          default: 0
           type: number
-        currency:
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
           type: string
     AuthReasonCodesRequest:
       type: object
@@ -1092,7 +1339,57 @@ components:
           description: Body
           type: object
           allOf:
-          - $ref: '#/components/schemas/ResponseBody'
+            - $ref: '#/components/schemas/ResponseBody'
+    Balance:
+      type: object
+      properties:
+        BalanceType:
+          description: "This refers to the category for which various types of balances\
+            \ are retrieved. If the balance type is TOTAL, all position types will\
+            \ be considered during balance calculation. If the balance type is CASH,\
+            \ then only the position type CASH will be considered during balance calculation.\
+            \ Possible values are: <ul> <li>TOTAL </li> <li> CASH. </li> </ul>"
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/BalanceType'
+        CurrentBalance:
+          description: This field represents the total outstanding balance for an
+            account.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount'
+        PendingBalance:
+          description: This field represents the pending (uncleared) balance for an
+            account.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount'
+        AvailableBalance:
+          description: This field represents the available to spend balance for an
+            account.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount'
+        Limit:
+          description: This field represents the maximum limit for a given balance
+            type associated with an account.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount'
+    BalanceType:
+      enum:
+        - TOTAL
+        - CASH
+      type: string
+    BatchJobRequest:
+      type: object
+      properties:
+        JobName:
+          description: Specifies the name of the job to be executed.
+          type: string
+        RunDate:
+          description: Represents the date when the job is scheduled to run.
+          type: string
     Body:
       type: object
       properties:
@@ -1394,6 +1691,24 @@ components:
           description: Limit Criteria Value representing the bit value for different
             criteria of a transaction.
           type: string
+    ExecuteChangePINRequest:
+      required:
+        - CurrentPINBlock
+        - RequiredPINBlock
+        - KeyAssociation
+      type: object
+      properties:
+        CurrentPINBlock:
+          description: "Current PIN block is composed of the old PIN details, which\
+            \ customer want to change."
+          type: string
+        RequiredPINBlock:
+          description: "Required PIN block is composed of the new PIN details, which\
+            \ customer provides as input to change the existing PIN."
+          type: string
+        KeyAssociation:
+          description: Used to identify PIN block encryption keys.
+          type: string
     Header:
       type: object
       properties:
@@ -1643,6 +1958,10 @@ components:
             be updated for only Limit Type FLEX. For other limits it is automatically
             calculated to end at 23:59:59. The value must be greater than the FromDateTime.
           type: string
+    LocalDate:
+      format: date
+      type: string
+      example: 2022-03-10
     LocalDateTime:
       format: date-time
       type: string
@@ -1774,6 +2093,9 @@ components:
         PAN:
           description: Primary Account Number linked to transaction.
           type: string
+        RetentionDateTime:
+          description: Retention Date Time.
+          type: string
     PaymentAuthAssessmentEvent1:
       type: object
       properties:
@@ -1805,6 +2127,92 @@ components:
         MessageTypeId:
           description: Indicates result reason description.
           type: string
+    PaymentInstrumentRelatedData:
+      type: object
+      properties:
+        FepId:
+          description: Unique identifier of the payment instrument (FEPID).
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/UUID'
+        Product:
+          description: Banking product associated with the payment instrument.
+          type: string
+        Product Type:
+          description: Banking Product Type associated with the payment instrument.
+          type: string
+        RelatedAccount:
+          description: Account linked to the payment instrument (FEAID).
+          type: string
+        Cardholder:
+          description: Party entitled to use the payment instrument (FECID).
+          type: string
+        CardholderType:
+          description: Party type entitled to use the payment instrument (FECID).
+          type: string
+        ChipSequence:
+          description: Chip sequence of the chip related to the payment instrument.
+          type: string
+        ActivationStatus:
+          description: Indicates whether card activation needs to occur for the most
+            recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
+            </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
+          type: string
+        Brand:
+          description: Identification of the brand associated with the payment instrument.
+          type: string
+        CardTechnology:
+          description: Indicates the technology type supported by the physical card.
+          type: string
+        DigitalCardType:
+          description: Identifies the type of digital card. Possible Response Values
+            are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
+            </EM></LI> <LI><EM> TRAN (Transient) </EM></LI> <LI><EM> NDIG (NonDigital)
+            </EM></LI></UL>
+          type: string
+        OfflinePin:
+          description: Offline PIN related to the payment instrument.
+          type: string
+        FraudStatus:
+          description: This field indicates if a card is fraudulent or not. Valid
+            values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
+            </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI> </UL>
+          type: string
+        FraudStatusDate:
+          description: Indicates date/time when fraud status was last updated.
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDate'
+        FraudReferStatus:
+          description: |-
+            This field indicates whether a card is flagged to have all authorisations referred or not referred (anti-referred) to a fraud analyst for potential fraudulent activity. This flag is sent to the Falcon Fraud Manager system during authorisation processing where it can be used in the rules to make informed authorisation decisions.
+
+             Valid values are: <UL><LI><EM> NONE - No referral or anti-referral is assigned </EM></LI> <LI><EM> REFE - All authorizations are referred </EM></LI> <LI><EM> ANTI - No authorizations are referred (anti-refer) </EM></LI> </UL>
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDate'
+        FraudMonitorStatus:
+          description: |-
+            The Fraud Monitor Status flag is a two-character alphanumeric field utilized to indicate whether a card is flagged for fraud monitoring. The values assigned to this field must be predefined within CMS module of FirstVision system. This flag is used in segmenting cards and implementing specific fraud minimization strategies within Falcon Fraud Manager system.
+
+            The Fraud Monitor Status flag is sent to the Falcon Fraud Manager system during authorisation processing, allowing the system to leverage the flag in its rules and decision-making processes.
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDate'
+        Balances:
+          description: The list contains detailed information about different types
+            of balance associated with the account.
+          type: array
+          items:
+            $ref: '#/components/schemas/Balance'
     PointOfServiceContext:
       type: object
       properties:
@@ -1830,6 +2238,12 @@ components:
           description: "Code which identifies transaction entry mode, whether transaction\
             \ is contactless or magnetic stripe, etc"
           type: string
+        PartialApprovalSupported:
+          description: "This field identifies whether an acquirer supports partial\
+            \ authorisations, where the issuer responds with an approved authorisation\
+            \ for a lesser amount when the account does not have the funds available\
+            \ to be able to approve the full authorisation amount."
+          type: boolean
     ProcessingResult:
       type: object
       properties:
@@ -1841,6 +2255,20 @@ components:
         ApprovalCode:
           description: System generated unique code assigned to an authorisation request
             that has been approved.
+          type: string
+    ResponseAmount:
+      type: object
+      properties:
+        Amount:
+          description: Amount of the transaction expressed in the currency of the
+            terminal or as a reversed amount of a previous authorisation
+          type: number
+        Currency:
+          description: Currency code associated with the transaction amount. ISO 4217
+            Codes for the representation of currencies and funds
+          type: string
+        Sign:
+          description: Sign
           type: string
     ResponseBody:
       type: object
@@ -1865,6 +2293,26 @@ components:
           type: object
           allOf:
           - $ref: '#/components/schemas/ICCRelatedData1'
+        Transaction:
+          description: Contains the original requested amounts in the case of a partial
+            authorisation response
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ResponseTransaction'
+        PaymentInstrumentRelatedData:
+          description: Payment Instrument Related Data
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PaymentInstrumentRelatedData'
+    ResponseTransaction:
+      type: object
+      properties:
+        AdditionalAmounts:
+          description: This field contains the original requested amount and currency
+            in the case of a partial authorisation response
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAmount'
     ResultData:
       type: object
       properties:
