@@ -5807,7 +5807,6 @@ components:
         InvalidPinTryCounter:
           description: Number of times an authorisation with an invalid PIN was attempted
             on the card.
-          pattern: ^?\d*$
           type: string
         Cardholder:
           description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
