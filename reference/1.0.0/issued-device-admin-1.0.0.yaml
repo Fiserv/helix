@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: issued-device-admin
-  version: 1.1.0-323
+  version: 1.1.0-437
 tags:
 - name: Helix Core
   x-proxy-name: Delete Card
@@ -292,12 +292,10 @@ paths:
       tags:
       - Helix Core
       summary: This method is used to return the Contact details of a given PAN
-      description: "3D Secure authentication is a security protocol designed to reduce\
-        \ the risk of fraud, identity theft and other suspicious activities during\
-        \ CNP (Card Not Present) transactions. It requires customer to complete an\
-        \ additional verification step with the card issuer when paying.\nThis API\
-        \ allows issuer to retrieve contact details of the cardholder from system\
-        \ and send it to ACS (Access Control Server)\nto conduct 3D Secure authentication."
+      description: |-
+        3D Secure authentication is a security protocol designed to reduce the risk of fraud, identity theft and other suspicious activities during CNP (Card Not Present) transactions. It requires customer to complete an additional verification step with the card issuer when paying.
+        This API allows issuer to retrieve contact details of the cardholder from system and send it to ACS (Access Control Server)
+        to conduct 3D Secure authentication.
       operationId: getPanContactDetails
       parameters:
       - name: fi-id
@@ -600,86 +598,86 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReissueCardRequest"
+              $ref: '#/components/schemas/ReissueCardRequest'
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "401":
           description: Not Authorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "413":
           description: Payload Too large
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "415":
           description: Unsupported Media Type
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "422":
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "429":
           description: Too Many Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "502":
           description: Bad Gateway
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
         "504":
           description: Gateway Timeout
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelixErrorDetails"
+                $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Reissue a Card
       x-group-name: Card Management
       x-api-scope: Internal
@@ -1510,7 +1508,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RequestGetCVV2Request"
+              $ref: '#/components/schemas/RequestGetCVV2Request'
       responses:
         "200":
           description: OK
@@ -1520,13 +1518,10 @@ paths:
                 type: object
                 properties:
                   CVV:
-                    description: CVV
                     type: string
                   CVV2:
-                    description: CVV2
                     type: string
                   ICVV:
-                    description: ICVV
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -1822,16 +1817,15 @@ paths:
                       \ </UL>"
                     type: string
                   FraudReferStatus:
-                    description: "<p>This field indicates whether a card is flagged\
-                      \ to have all authorisations referred or not referred (anti-referred)\
-                      \ to a fraud analyst for potential fraudulent activity. This\
-                      \ flag is sent to the Falcon Fraud Manager system during authorisation\
-                      \ processing where it can be used in the rules to make informed\
-                      \ authorisation decisions.</p>Possible responses:<UL><LI><EM>\
-                      \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM>\
-                      \ REFE-All authorizations are referred. </EM></LI> <LI><EM>\
-                      \ ANTI-No authorizations are referred (anti-refer). </EM></LI>\
-                      \ </UL>"
+                    description: <p>This field indicates whether a card is flagged
+                      to have all authorisations referred or not referred (anti-referred)
+                      to a fraud analyst for potential fraudulent activity. This flag
+                      is sent to the Falcon Fraud Manager system during authorisation
+                      processing where it can be used in the rules to make informed
+                      authorisation decisions.</p>Possible responses:<UL><LI><EM>
+                      NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM>
+                      REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No
+                      authorizations are referred (anti-refer). </EM></LI> </UL>
                     type: string
                   FraudReferStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
@@ -2344,8 +2338,8 @@ paths:
                       <LI><EM> Stolen </EM></LI></UL>
                     type: string
                   BlockedDateTime:
-                    description: "Date and time at which the payment instrument was\
-                      \ blocked (YYYY-MM-DDThh:mm:ss.sssZ)."
+                    description: Date and time at which the payment instrument was
+                      blocked (YYYY-MM-DDThh:mm:ss.sssZ).
                     type: string
                     allOf:
                     - $ref: "#/components/schemas/Instant"
@@ -2367,8 +2361,8 @@ paths:
                       4 digits
                     type: string
                   PlasticCreationDateTime:
-                    description: "Date and time at which plastic created for the payment\
-                      \ instrument (YYYY-MM-DDThh:mm:ss.sssZ)."
+                    description: Date and time at which plastic created for the payment
+                      instrument (YYYY-MM-DDThh:mm:ss.sssZ).
                     type: string
                     allOf:
                     - $ref: "#/components/schemas/Instant"
@@ -2396,8 +2390,8 @@ paths:
                     description: Number of Invalid PIN Tries before reset.
                     type: integer
                   LastInvalidPinTryDateTime:
-                    description: "Date and time when the Last Invalid PIN was attempted.\
-                      \ (YYYY-MM-DDThh:mm:ss.sssZ)."
+                    description: Date and time when the Last Invalid PIN was attempted.
+                      (YYYY-MM-DDThh:mm:ss.sssZ).
                     type: string
                     allOf:
                     - $ref: "#/components/schemas/Instant"
@@ -2455,16 +2449,10 @@ paths:
                     description: Number of active tokens for a card.
                     type: integer
                   FraudReferStatus:
-                    description: "This field indicates whether a card is flagged to\
-                      \ have all authorisations referred or not referred (anti-referred)\
-                      \ to a fraud analyst for potential fraudulent activity. This\
-                      \ flag is sent to the Falcon Fraud Manager system during authorisation\
-                      \ processing where it can be used in the rules to make informed\
-                      \ authorisation decisions.\n\n Valid values are: <UL><LI><EM>\
-                      \ NONE - No referral or anti-referral is assigned </EM></LI>\
-                      \ <LI><EM> REFE - All authorizations are referred </EM></LI>\
-                      \ <LI><EM> ANTI - No authorizations are referred (anti-refer)\
-                      \ </EM></LI> </UL>"
+                    description: |-
+                      This field indicates whether a card is flagged to have all authorisations referred or not referred (anti-referred) to a fraud analyst for potential fraudulent activity. This flag is sent to the Falcon Fraud Manager system during authorisation processing where it can be used in the rules to make informed authorisation decisions.
+
+                       Valid values are: <UL><LI><EM> NONE - No referral or anti-referral is assigned </EM></LI> <LI><EM> REFE - All authorizations are referred </EM></LI> <LI><EM> ANTI - No authorizations are referred (anti-refer) </EM></LI> </UL>
                     type: string
                   FraudReferStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
@@ -2477,27 +2465,31 @@ paths:
                     - $ref: "#/components/schemas/LocalDate"
                     - $ref: "#/components/schemas/LocalDate"
                   FraudMonitorStatus:
-                    description: "The Fraud Monitor Status flag is a two-character\
-                      \ alphanumeric field utilized to indicate whether a card is\
-                      \ flagged for fraud monitoring. The values assigned to this\
-                      \ field must be predefined within CMS module of FirstVision\
-                      \ system. This flag is used in segmenting cards and implementing\
-                      \ specific fraud minimization strategies within Falcon Fraud\
-                      \ Manager system.\n\nThe Fraud Monitor Status flag is sent to\
-                      \ the Falcon Fraud Manager system during authorisation processing,\
-                      \ allowing the system to leverage the flag in its rules and\
-                      \ decision-making processes"
+                    description: |-
+                      The Fraud Monitor Status flag is a two-character alphanumeric field utilized to indicate whether a card is flagged for fraud monitoring. The values assigned to this field must be predefined within CMS module of FirstVision system. This flag is used in segmenting cards and implementing specific fraud minimization strategies within Falcon Fraud Manager system.
+
+                      The Fraud Monitor Status flag is sent to the Falcon Fraud Manager system during authorisation processing, allowing the system to leverage the flag in its rules and decision-making processes
                     type: string
                   FraudMonitorStatusExpiryDate:
                     description: This field indicates the date on which the Fraud
                       Monitor Status expires.
                     type: string
                     allOf:
-                    - $ref: "#/components/schemas/LocalDate"
-                    - $ref: "#/components/schemas/LocalDate"
-                    - $ref: "#/components/schemas/LocalDate"
-                    - $ref: "#/components/schemas/LocalDate"
-                    - $ref: "#/components/schemas/LocalDate"
+                    - $ref: '#/components/schemas/LocalDate'
+                    - $ref: '#/components/schemas/LocalDate'
+                    - $ref: '#/components/schemas/LocalDate'
+                    - $ref: '#/components/schemas/LocalDate'
+                    - $ref: '#/components/schemas/LocalDate'
+                  Product Type:
+                    description: Banking Product Type associated with the payment
+                      instrument.
+                    type: string
+                  Balances:
+                    description: The list contains detailed information about different
+                      types of balance associated with the account.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Balance'
                   enabled:
                     type: boolean
         "400":
@@ -2604,7 +2596,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemUpdateRequest1"
+              $ref: "#/components/schemas/SystemUpdateRequest"
       responses:
         "201":
           description: Created
@@ -2744,7 +2736,6 @@ paths:
         required: true
         schema:
           maxLength: 37
-          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
       - name: fi-id
         in: header
@@ -2776,20 +2767,12 @@ paths:
                     description: Unique identifier of the payment instrument (FEPID)
                     type: string
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
+                    - $ref: '#/components/schemas/UUID'
                   NewFepId:
                     description: Unique identifier of the new payment instrument (FEPID)
                     type: string
                     allOf:
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
-                    - $ref: "#/components/schemas/UUID"
+                    - $ref: '#/components/schemas/UUID'
                   ActivationStatus:
                     description: Indicates whether card activation needs to occur
                       for the most recently issued card. Possible Response Values
@@ -2895,9 +2878,9 @@ paths:
       - Helix Core
       summary: This method is used to validate the payment instrument for the given
         FEPID
-      description: "This API allows the user to validate the payment instrument for\
-        \ the given FEPID <br/><br/><i> <b>Note</b>:This API is for Internal purpose\
-        \ only.</i>"
+      description: This API allows the user to validate the payment instrument for
+        the given FEPID <br/><br/><i> <b>Note</b>:This API is for Internal purpose
+        only.</i>
       operationId: validatePaymentInstrument
       parameters:
       - name: paymentInstrumentId
@@ -3154,7 +3137,6 @@ paths:
                 type: object
                 properties:
                   EncryptedPIN:
-                    description: Encrypted PIN
                     type: string
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXIDASBR001\
@@ -3271,36 +3253,28 @@ components:
       required:
       - Brand
       - Product
-      - RelatedAccount
       - Cardholder
       - CardholderType
       type: object
       properties:
         Brand:
           description: Identification of the brand associated with the payment card
-          maxLength: 37
-          pattern: \S
           type: string
         Product:
           description: Banking product associated with the payment card
-          maxLength: 37
-          pattern: \S
           type: string
         RelatedAccount:
           description: Account linked to the card. (FEAID)
-          pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         Cardholder:
           description: "Party entitled to use the card (FECID).<br/><b>Note:</b> Person\
             \ assigned to a Brand, can only be used when adding cards under the same\
             \ Brand."
-          pattern: "^[A-Za-z0-9\\s-]+$"
           type: string
         CardholderType:
           description: Indicates if the card being added is of type Primary or Additional.
             Accepted Values are <UL><LI><EM> PRIM (Primary) </EM></LI> <LI><EM> ADNL
             (Additional) </EM></LI></UL>
-          pattern: (^$|PRIM|ADNL)
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card
@@ -3312,7 +3286,6 @@ components:
           description: Flag to describe if the Card Maintenance Fee to be waived once
             or permanent. Accepted Values are <UL><LI><EM> ONCE </EM></LI> <LI><EM>
             PERM (Permanent) </EM></LI></UL>
-          pattern: (^$|ONCE|PERM)
           type: string
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
@@ -3401,17 +3374,17 @@ components:
             \ Account Number).</br> Notes: </br> <ul><li>PAN is returned in clear.</li></ul>"
           type: string
         CardholderType:
-          description: "Indicates if the card holder of the account is a Primary account\
-            \ Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM\
-            \ (Primary)</li><li>ADNL (Additional)</li></ul>"
+          description: Indicates if the card holder of the account is a Primary account
+            Holder or an Additional Account Holder. Possible Response Values are:</br><ul><li>PRIM
+            (Primary)</li><li>ADNL (Additional)</li></ul>
           type: string
         CardTechnology:
           description: Indicates the technology type supported by the physical card.
           type: string
         DigitalCardType:
-          description: "Identifies the type of digital card. Possible values are:</br><ul><li>FTRM\
-            \ (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG\
-            \ (NonDigital)</li></ul>"
+          description: Identifies the type of digital card. Possible values are:</br><ul><li>FTRM
+            (FullTerm)</li><li>STRM (ShortTerm)</li><li>TRAN (Transient)</li><li>NDIG
+            (NonDigital)</li></ul>
           type: string
         NameLine1:
           description: Cardholder name as it appears on the card.
@@ -3426,255 +3399,58 @@ components:
           description: Fiserv Enterprise Organisation ID - Unique identifier for the
             organisation
           type: string
-    AgreementFeature:
+    Amount:
       type: object
       properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    AgreementFeatureParameter:
-      type: object
-      properties:
-        Name:
-          description: Name of Agreement Feature Parameter
-          type: string
         Value:
-          description: Value of Agreement Feature Parameter
+          description: Represents the monetary value associated.
+          default: 0
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
           type: string
-    AgreementFeatureRequestDto:
-      required:
-      - Feature
+    Balance:
       type: object
       properties:
-        Feature:
-          description: Identification of Agreement Feature
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+        BalanceType:
+          description: "This refers to the category for which various types of balances\
+            \ are retrieved. If the balance type is TOTAL, all position types will\
+            \ be considered during balance calculation. If the balance type is CASH,\
+            \ then only the position type CASH will be considered during balance calculation.\
+            \ Possible values are: <ul> <li>TOTAL </li> <li> CASH. </li> </ul>"
           type: string
-        AgreementFeatureParameter:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    AgreementFeatureResponse:
-      type: object
-      properties:
-        AgreementFeature:
-          description: Feature related to Agreement
-          type: string
-        FacilityIdentification:
-          description: Identification of Facility
-          type: string
-        FacilityStatus:
-          description: Status of Facility
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement:
-          description: Agreement
-          type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    AgreementInvolvement:
-      description: Role played by a party in the context of Agreement operations.
-      required:
-      - PartyIdentification
-      - PartyRole
-      type: object
-      properties:
-        AgreementInvolvementId:
-          description: Identifies the agreement involvement.
-          pattern: "[0-9]+"
-          type: string
-        PartyIdentification:
-          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
-            \ Person assigned to a Brand, can only be used when adding accounts under\
-            \ the same Brand."
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          type: string
-        PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
-            \ values are : <br> AccountHolder"
-          pattern: \S
-          type: string
-        IsActive:
-          description: Specifies the agreement involvement is active or inactive.
-          type: boolean
-    AgreementListRequest:
-      type: object
-      properties:
-        Person:
-          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
-            \ plays the role of contact (FECID)"
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)"
-          type: string
-        ExternalAccount:
-          $ref: "#/components/schemas/ExternalAccount"
-        validRequest:
-          type: boolean
-    AssociationKeyBaseRequest:
-      required:
-      - Association
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        OperatingRegion:
-          description: Operating Region
-          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
-          type: string
-        Association:
-          description: Identifies the association Key
-          pattern: \S
-          type: string
-        Description:
-          description: Description of the association Key
-          maxLength: 140
-          type: string
-    BlockedReasonUpdateRequest:
-      required:
-      - Action
-      - BlockedReasonCode
-      type: object
-      properties:
-        Action:
-          description: "Action to be taken on the update of the agreement. Valid Values\
-            \ are Add,Replace,Delete."
-          pattern: \S
-          type: string
-        BlockedReasonCode:
-          description: Blocked reason code to be updated on the agreement.
-          minItems: 1
-          type: array
-          items:
-            type: string
-    BlockedReasonUpdateResponse:
-      type: object
-      properties:
-        Identification:
-          description: Agreement identification.
-          type: string
-        BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
-          type: array
-          items:
-            type: string
-    BrandEntryAddRequest:
-      required:
-      - Name
-      - FinancialInstitutionIdentification
-      - Identification
-      - ReportingCurrency
-      - SchemeOperatingRegion
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-        RegistrationAddress:
-          description: Registered address of the Brand
+          allOf:
+          - $ref: '#/components/schemas/BalanceType'
+        CurrentBalance:
+          description: This field represents the total outstanding balance for an
+            account.
           type: object
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          maxLength: 37
-          minLength: 1
-          type: string
-        Identification:
-          description: Identification of the Brand
-          maxLength: 37
-          minLength: 1
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          pattern: \S
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          maxLength: 2
-          type: string
-        SchemeOperatingRegion:
-          description: Scheme Operating Region
-          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
-          type: string
-    BrandRegisterResponse:
-      type: object
-      properties:
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        Name:
-          description: Name of Brand
-          type: string
-    BrandUpdateRequest:
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          type: string
-        RegistrationAddress:
-          description: Registered address of the Brand
+          - $ref: '#/components/schemas/Amount'
+        PendingBalance:
+          description: This field represents the pending (uncleared) balance for an
+            account.
           type: object
           allOf:
-          - $ref: "#/components/schemas/RegistrationAddress1"
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
+          - $ref: '#/components/schemas/Amount'
+        AvailableBalance:
+          description: This field represents the available to spend balance for an
+            account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+        Limit:
+          description: This field represents the maximum limit for a given balance
+            type associated with an account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+    BalanceType:
+      enum:
+      - TOTAL
+      - CASH
+      type: string
     Bundle:
       type: object
       properties:
@@ -3712,7 +3488,6 @@ components:
         Identification:
           description: "<em> maxLength: 37 </em> <br> Identification of bundles to\
             \ be processed for the card"
-          pattern: \S
           type: string
     CapabilityCatalog:
       required:
@@ -3776,28 +3551,16 @@ components:
           description: Chip Sequence Number
           type: string
         SentScript:
-          description: "Issuer script that has already been sent to the card, during\
-            \ a previous online contact authorisation.<br> Valid values are: <UL><LI>\
-            \ CARD BLOCK - This script when sent to the card, will shut down all proprietary\
-            \ and non-proprietary applications that reside on the card, to prevent\
-            \ further use of the card.</LI> <LI> PIN CHANGE -  This script when sent\
-            \ to the card, can be used to change the offline PIN as well as reset\
-            \ the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent\
-            \ to the card, can be used to reset the PIN Try Counter, to enable usage\
-            \ of the card on offline terminals.\n</LI> </UL>"
+          description: |-
+            Issuer script that has already been sent to the card, during a previous online contact authorisation.<br> Valid values are: <UL><LI> CARD BLOCK - This script when sent to the card, will shut down all proprietary and non-proprietary applications that reside on the card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This script when sent to the card, can be used to change the offline PIN as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent to the card, can be used to reset the PIN Try Counter, to enable usage of the card on offline terminals.
+            </LI> </UL>
           pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
           type: string
           example: CARD BLOCK
         StagedScript:
-          description: "Issuer script that is pending delivery to the card, upon the\
-            \ receipt of the next online contact authorisation.<br> Valid values are:\
-            \ <UL><LI> CARD BLOCK - This script when sent to the card, will shut down\
-            \ all proprietary and non-proprietary applications that reside on the\
-            \ card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This\
-            \ script when sent to the card, can be used to change the offline PIN\
-            \ as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This\
-            \ script when sent to the card, can be used to reset the PIN Try Counter,\
-            \ to enable usage of the card on offline terminals.\n</LI> </UL>"
+          description: |-
+            Issuer script that is pending delivery to the card, upon the receipt of the next online contact authorisation.<br> Valid values are: <UL><LI> CARD BLOCK - This script when sent to the card, will shut down all proprietary and non-proprietary applications that reside on the card, to prevent further use of the card.</LI> <LI> PIN CHANGE -  This script when sent to the card, can be used to change the offline PIN as well as reset the PIN Try Counter.</LI> <LI> PIN UNBLOCK -  This script when sent to the card, can be used to reset the PIN Try Counter, to enable usage of the card on offline terminals.
+            </LI> </UL>
           pattern: (^$|CARD BLOCK|PIN CHANGE|PIN UNBLOCK)
           type: string
           example: CARD BLOCK
@@ -3895,102 +3658,6 @@ components:
           maxLength: 40000
           pattern: \S
           type: string
-    CreateAssociationKeyRequest:
-      required:
-      - Association
-      - Key
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        OperatingRegion:
-          description: Operating Region
-          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
-          type: string
-        Association:
-          description: Identifies the association Key
-          pattern: \S
-          type: string
-        Description:
-          description: Description of the association Key
-          maxLength: 140
-          type: string
-        Key:
-          description: Key
-          pattern: \S
-          type: string
-    CreateAssociationKeyResponse:
-      type: object
-      properties:
-        Identification:
-          format: int64
-          description: ID defining the number of record created
-          type: integer
-        Association:
-          description: Identifies the association Key
-          type: string
-        OperatingRegion:
-          description: Operating Region
-          type: string
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Description:
-          description: Description of the association Key
-          type: string
-    CreateInstrumentKeyRequest:
-      required:
-      - KeyIndex
-      - Key
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          maxLength: 37
-          type: string
-        KeyIndex:
-          description: Identifies the Index of keys
-          type: integer
-        Key:
-          description: "This key can be populated with PVK, CVK or ACK based on the\
-            \ key type"
-          pattern: \S
-          type: string
-        Description:
-          description: Description of key
-          maxLength: 140
-          type: string
-        DecimalizationTable:
-          description: Decimalization Table
-          maxLength: 32
-          minLength: 32
-          pattern: "^[0-9A-Fa-f]+$"
-          type: string
-    CreateInstrumentKeyResponse:
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          type: string
-        Identification:
-          format: int64
-          description: ID defining the number of record created
-          type: integer
-        KeyIndex:
-          description: Identifies the Index of keys
-          type: integer
-        Description:
-          description: Description of key
-          type: string
     DeactivatePostalAddressRequest:
       required:
       - AddressType
@@ -4001,104 +3668,26 @@ components:
             \ Residential <br/> BIZZ - Business <br/> REGR - Registered Residential"
           pattern: \S
           type: string
-    DecisionContext:
+    DefaultFeatureChangedEvent:
       type: object
       properties:
-        decisionTemplateName:
+        EventId:
           type: string
-        fiId:
+        EventName:
           type: string
-        modelName:
+        RequestId:
           type: string
-        brand:
+        FIID:
+          description: Financial Institution Identification
           type: string
-        product:
+        Product:
+          description: Product Identification
           type: string
-    DecisionModelContext:
-      type: object
-      properties:
-        fiId:
-          type: string
-        decisionTemplateName:
-          type: string
-        modelName:
-          type: string
-    DecisionModelDto:
-      type: object
-      properties:
-        definitions:
-          format: binary
-          type: string
-    DecisionModelTenantMappingDto:
-      type: object
-      properties:
-        brand:
-          type: string
-        product:
-          type: string
-        modelName:
-          type: string
-    DecisionModelTestCase:
-      type: object
-      properties:
-        testCaseId:
-          type: string
-        input:
-          type: object
-          additionalProperties:
-            type: object
-        expectedOutput:
-          type: object
-          additionalProperties:
-            type: object
-    DecisionModelTestResult:
-      type: object
-      properties:
-        testCaseId:
-          type: string
-        input:
-          type: object
-          additionalProperties:
-            type: object
-        expectedOutput:
-          type: object
-          additionalProperties:
-            type: object
-        pass:
-          type: boolean
-        actualOutput:
-          type: object
-          additionalProperties:
-            type: object
-        actualDecisionResults:
+        ProductFeatures:
+          description: List of Product Features
           type: array
           items:
-            $ref: "#/components/schemas/DecisionResult"
-    DecisionResult:
-      type: object
-      properties:
-        decisionId:
-          type: string
-        decisionName:
-          type: string
-        evaluationStatus:
-          type: string
-        result:
-          type: object
-        messages:
-          type: array
-          items:
-            type: string
-        hasErrors:
-          type: boolean
-    DecisionTemplateDto:
-      type: object
-      properties:
-        name:
-          type: string
-        definitions:
-          format: binary
-          type: string
+            $ref: '#/components/schemas/ProductFeatureDefaults'
     ElectronicAddress:
       required:
       - Type
@@ -4166,7 +3755,7 @@ components:
           description: Specifies the error reason
           type: string
         FailedDateTime:
-          description: "Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ)."
+          description: Time when error occured (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
           - $ref: "#/components/schemas/LocalDateTime"
@@ -4178,44 +3767,6 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/UUID"
-    ExecuteAssignPANRequest:
-      required:
-      - FeatureId
-      - FeatureIdentification
-      - ProductId
-      - AgreementFeatureId
-      - Agreement
-      type: object
-      properties:
-        FeatureId:
-          description: Feature Id
-          pattern: \S
-          type: string
-        FeatureIdentification:
-          description: Feature Identification
-          maxLength: 37
-          pattern: \S
-          type: string
-        ProductId:
-          description: Product Id
-          maxLength: 37
-          pattern: \S
-          type: string
-        AgreementFeatureId:
-          description: Agreement Feature Id
-          pattern: \S
-          type: string
-        Agreement:
-          description: Agreement Id
-          maxLength: 37
-          pattern: \S
-          type: string
-    ExecuteAssignPANResponse:
-      type: object
-      properties:
-        PAN:
-          description: Primary Account Number
-          type: string
     ExecuteChangePINRequest:
       required:
       - CurrentPINBlock
@@ -4226,78 +3777,14 @@ components:
         CurrentPINBlock:
           description: "Current PIN block is composed of the old PIN details, which\
             \ customer want to change."
-          pattern: \S
           type: string
         RequiredPINBlock:
           description: "Required PIN block is composed of the new PIN details, which\
             \ customer provides as input to change the existing PIN."
-          pattern: \S
           type: string
         KeyAssociation:
           description: Used to identify PIN block encryption keys.
-          pattern: \S
           type: string
-    ExecuteChangePINRequest1:
-      required:
-      - CurrentPINBlock
-      - RequiredPINBlock
-      - KeyAssociation
-      - ExpiryDate
-      type: object
-      properties:
-        CurrentPINBlock:
-          description: Current PIN Block.
-          pattern: \S
-          type: string
-        RequiredPINBlock:
-          description: Required PIN Block.
-          pattern: \S
-          type: string
-        KeyAssociation:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYMM).
-          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
-          type: string
-        KeyType:
-          description: Type of a key.
-          type: string
-        PINBlockFormat:
-          description: PIN Block Format.
-          type: string
-    ExecuteClosureRequest:
-      type: object
-      properties:
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-    ExecuteClosureResponse:
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of an Account, as assigned by the account\
-            \ servicer (FEAID)."
-          type: string
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that was sent through on the account closure API to
-            indicate when the account was closed on the host system. Format must be
-            ISO Date format (YYYY-MM-DD).
-          type: string
-        ClosingDate:
-          description: "Date and Time on which the Account was closed by the system.\
-            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/Instant"
     ExecuteContactLessOptRequest:
       required:
       - ContactlessOptOutSwitch
@@ -4311,14 +3798,12 @@ components:
             a customer wishes to opt out of contactless card (i.e. they prefer to
             have contact only card). The field should be set to No if a customer wishes
             to opt in to contactless card.
-          minLength: 1
           pattern: (^$|Yes|No)
           type: string
         ReplaceCard:
           description: Identifies whether a replacement card needs to be created and
             sent to cardholder. Accepted Values are <UL><LI><EM> Yes </EM></LI> <LI><EM>
             No </EM></LI></UL>
-          minLength: 1
           pattern: (^$|Yes|No)
           type: string
     ExecuteContactLessOptResponse:
@@ -4328,7 +3813,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
+          - $ref: '#/components/schemas/UUID'
         ContactlessOptOutSwitch:
           description: Indicates customer preference for contact versus contactless
             card.
@@ -4343,27 +3828,7 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
-    ExecuteDeleteAgreementRequest:
-      required:
-      - FEAID
-      type: object
-      properties:
-        FEAID:
-          description: "Unique identifier of an Account, as assigned by the account\
-            \ servicer (FEAID)."
-          type: string
-    ExecuteDeleteFacilityAllocationRequest:
-      required:
-      - FacilityIdentification
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
+          - $ref: '#/components/schemas/UUID'
     ExecuteDeletePersonRequest:
       required:
       - FECID
@@ -4383,15 +3848,11 @@ components:
             card. Valid Values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD
             (SuspectedFraud) </EM></LI> <LI><EM> CFRD (ConfirmedFraud) </EM></LI>
             </UL>
-          minLength: 1
-          pattern: (^$|NONE|SFRD|CFRD)
           type: string
         ReplaceCard:
           description: To identify whether a replacement card needs to be created
             and sent to cardholder. New PIN will be issued with a replacement card.
             Valid values are <UL><LI><EM> Yes </EM></LI> <LI><EM> No </EM></LI></UL>
-          minLength: 1
-          pattern: (^$|Yes|No)
           type: string
     ExecuteFraudResponse:
       type: object
@@ -4400,7 +3861,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
+          - $ref: '#/components/schemas/UUID'
         FraudStatus:
           description: This field indicates if a card is fraudulent or not. Valid
             values are <UL><LI><EM> NONE (None) </EM></LI> <LI><EM> SFRD (SuspectedFraud)
@@ -4410,21 +3871,11 @@ components:
           description: Unique identifier of the new payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
+          - $ref: '#/components/schemas/UUID'
         ActivationStatus:
           description: Indicates whether card activation needs to occur for the most
             recently issued card. Possible Response Values are <UL><LI><EM> ANED (ActivationNeeded)
             </EM></LI> <LI><EM> ACMP (ActivationComplete) </EM></LI></UL>
-          type: string
-    ExecuteGeneratePINRequest:
-      required:
-      - FeatureId
-      type: object
-      properties:
-        FeatureId:
-          description: Feature Id
-          maxLength: 37
-          pattern: \S
           type: string
     ExecutePINTryCounterResetResponse:
       type: object
@@ -4433,7 +3884,7 @@ components:
           description: Unique identifier of the payment instrument (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
+          - $ref: '#/components/schemas/UUID'
     ExecuteReplaceCardResponse:
       type: object
       properties:
@@ -4441,23 +3892,14 @@ components:
           description: Unique identifier of the payment card (FEPID)
           type: string
           allOf:
-          - $ref: "#/components/schemas/UUID"
-    ExecuteTransferPINRequest:
-      required:
-      - NewPaymentInstrumentId
-      type: object
-      properties:
-        NewPaymentInstrumentId:
-          description: Unique identifier of the payment card (FEPID)
-          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
-          type: string
+          - $ref: '#/components/schemas/UUID'
     ExecuteUnlinkBundleFeatureRequest:
       type: object
       properties:
         Feature:
           type: array
           items:
-            $ref: "#/components/schemas/Feature"
+            $ref: '#/components/schemas/Feature'
     ExecuteUnlinkProductFeatureRequest:
       required:
       - RequestType
@@ -4466,7 +3908,7 @@ components:
         Feature:
           type: array
           items:
-            $ref: "#/components/schemas/Feature"
+            $ref: '#/components/schemas/Feature'
         RequestType:
           description: Request Type of Unlink Feature
           minLength: 1
@@ -4477,101 +3919,9 @@ components:
         Feature:
           type: array
           items:
-            $ref: "#/components/schemas/Feature"
+            $ref: '#/components/schemas/Feature'
         RequestType:
           description: Request Type of Unlink Feature
-          type: string
-    ExecuteValidateCVV2Request:
-      required:
-      - ExpiryDate
-      - CVV2
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYMM).
-          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
-          type: string
-        CVV2:
-          description: CVV2
-          pattern: "(^[0-9]{3}$)"
-          type: string
-    ExecuteValidateCVVRequest:
-      required:
-      - ExpiryDate
-      - CVV
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYMM).
-          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
-          type: string
-        CVV:
-          description: CVV
-          pattern: "(^[0-9]{3}$)"
-          type: string
-    ExecuteValidateCVVResponse:
-      type: object
-      properties:
-        IsValid:
-          description: Flag to indicate if the CVV / CVV2 / ICVV is Valid
-          type: boolean
-    ExecuteValidateICVVRequest:
-      required:
-      - ExpiryDate
-      - iCVV
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYMM).
-          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
-          type: string
-        iCVV:
-          description: iCVV
-          pattern: "(^[0-9]{3}$)"
-          type: string
-    ExecuteValidatePINRequest:
-      required:
-      - PINBlock
-      - Association
-      type: object
-      properties:
-        PINBlock:
-          description: PIN Block.
-          pattern: \S
-          type: string
-        Association:
-          description: Association for the payment instrument.
-          pattern: \S
-          type: string
-        PINBlockFormat:
-          description: PIN Block Format.
-          type: string
-    ExecuteValidatePINResponse:
-      type: object
-      properties:
-        IsValid:
-          description: Flag to indicate if the PIN is Valid
-          type: boolean
-    ExternalAccount:
-      description: Provide Link to External Accounts
-      required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
-      type: object
-      properties:
-        ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. GBDSC
-            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
-            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
-          minLength: 1
-          type: string
-        AccountIdentification:
-          description: Account number associated with External Clearing System
-          pattern: \S
-          type: string
-        ClearingSystemMemberIdentification:
-          description: ' Specifies the clearing system member identification associated
-            with the external account.'
           type: string
     ExternalIdentification:
       required:
@@ -4639,20 +3989,6 @@ components:
           description: Version of the system capability linked to a feature
           type: string
     Feature2:
-      required:
-      - Identification
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          maxLength: 37
-          minLength: 1
-          pattern: ^\S*$
-          type: string
-        DefaultIndicator:
-          description: Default feature indicator
-          type: string
-    Feature3:
       type: object
       properties:
         Identification:
@@ -4670,6 +4006,23 @@ components:
         DefaultIndicator:
           description: Flag to indicate default feature
           type: boolean
+    Feature3:
+      required:
+      - Identification
+      type: object
+      properties:
+        Identification:
+          description: Identification of a feature
+          maxLength: 37
+          minLength: 1
+          pattern: ^\S*$
+          type: string
+        DefaultIndicator:
+          description: Default feature indicator
+          type: string
+        RatificationMethod:
+          description: Ratification Method
+          type: string
     FeatureOverride:
       type: object
       properties:
@@ -4685,96 +4038,21 @@ components:
         CapabilityVersion:
           description: Capability version
           type: string
-    FiRegisterRequest:
+    FeatureToProductLinkingRequest:
       required:
-      - Name
-      - Identification
-      - InvoiceCurrency
+      - Feature
       type: object
       properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
-          type: string
-        RegistrationAddress:
-          description: Registered address of Financial Institution
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of Financial Institution in the System
-          type: string
-        HybridMode:
-          description: Indicates whether FI is on Hybrid model and is integrated with
-            an Account Management system like FirstVision
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
-          type: string
-        Identification:
-          description: Identification of the financial institution
-          maxLength: 37
-          minLength: 1
-          type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          pattern: \S
-          type: string
-    FiRegisterResponse:
+        Feature:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature3'
+    FeatureToProductLinkingResponse:
       type: object
       properties:
-        Identification:
-          description: Identification of Financial Institution
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          type: string
-        Name:
-          description: Name of Financial Institution
-          type: string
-    FiUpdateRequest:
-      type: object
-      properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \A(?!\s*$).+
-          type: string
-        RegistrationAddress:
-          description: Registered address of Financial Institution
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        HybridMode:
-          description: Indicates whether FI is on Hybrid model and is integrated with
-            an Account Management system like FirstVision
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
-          type: string
+        Warning:
+          $ref: '#/components/schemas/Warning1'
     FraudStatusUpdateEvent:
       type: object
       properties:
@@ -4791,9 +4069,95 @@ components:
         FraudReferStatusExpiryDate:
           type: string
         FraudMonitorStatus:
-          pattern: "(([a-zA-Z0-9]{2})?)"
           type: string
         FraudMonitorStatusExpiryDate:
+          type: string
+    FraudStatusUpdateRequest:
+      type: object
+      properties:
+        FraudStatus:
+          description: "This field identifies the specific type of fraud status assigned\
+            \ to a card. <p>Valid Values:</p><UL><LI><EM> NONE-Indicates that no fraud\
+            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+            \ that the card has been flagged as suspected fraud, necessitating further\
+            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+            \ as involved in fraudulent activities. </EM></LI> </UL>Note: Suspected\
+            \ Fraud (SFRD) status cannot override Confirmed Fraud (CFRD) status. Confirmed\
+            \ Fraud status cannot be removed from the card once set. When Confirmed\
+            \ Fraud status is applied, the system will automatically set Block Reason\
+            \ on the card to Stolen."
+          type: string
+        FraudReferStatus:
+          description: This field indicates whether a card is flagged to have all
+            authorisations referred or not referred (anti-referred) to a fraud analyst
+            for potential fraudulent activity. This flag is sent to the Falcon Fraud
+            Manager system during authorisation processing where it can be used in
+            the rules to make informed authorisation decisions.<p>Valid Values:</p><UL><LI><EM>
+            NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM> REFE-All
+            authorizations are referred. </EM></LI> <LI><EM> ANTI-No authorizations
+            are referred(anti-refer). </EM></LI> </UL>
+          type: string
+        FraudReferStatusExpiryDate:
+          description: "This field indicates the date on which the Fraud Refer Status\
+            \ expires.This field is required and must be set to a present or future\
+            \ date when Fraud Refer Status is set to REFE or ANTI. \nThe value in\
+            \ this field will automatically be removed when Fraud Refer Status is\
+            \ updated to NONE."
+          type: string
+        FraudMonitorStatus:
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+            \ field utilized to indicate whether a card is flagged for fraud monitoring.\
+            \ This flag is used in order to implement specific fraud minimization\
+            \ strategies within Falcon Fraud Manager system.The Fraud Monitor Status\
+            \ flag is sent to Falcon Fraud Manager system during authorisation processing,\
+            \ allowing the system to leverage the flag in its rules and decision-making\
+            \ processes."
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: |-
+            This field indicates the date on which the Fraud Monitor Status expires.This field is required and must be set to a present or future date when Fraud Monitor Status is set to any valid value other than null.
+            The value in this field will automatically be removed when Fraud Monitor Status is removed from a card.
+          type: string
+    FraudStatusUpdateResponse:
+      type: object
+      properties:
+        FraudStatus:
+          description: "This field identifies the specific type of fraud status assigned\
+            \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
+            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+            \ that the card has been flagged as suspected fraud, necessitating further\
+            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+            \ as involved in fraudulent activities. </EM></LI> </UL>"
+          type: string
+        FraudReferStatus:
+          description: <p>This field indicates whether a card is flagged to have all
+            authorisations referred or not referred (anti-referred) to a fraud analyst
+            for potential fraudulent activity. This flag is sent to the Falcon Fraud
+            Manager system during authorisation processing where it can be used in
+            the rules to make informed authorisation decisions.</p>Possible responses:<UL><LI><EM>
+            NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM> REFE-All
+            authorizations are referred. </EM></LI> <LI><EM> ANTI-No authorizations
+            are referred (anti-refer). </EM></LI> </UL>
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+        FraudMonitorStatus:
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+            \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
+            \ flag is used in order to implement specific fraud minimization strategies\
+            \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
+            \ is sent to Falcon Fraud Manager system during authorisation processing,\
+            \ allowing the system to leverage the flag in its rules and decision-making\
+            \ processes."
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.The value in this field will automatically be removed when Fraud
+            Monitor Status is removed from a card.
           type: string
     HelixErrorDetails:
       type: object
@@ -4815,96 +4179,10 @@ components:
           type: string
         instance:
           type: string
-    InitiateAgreementFeatureRequest:
-      required:
-      - AgreementFeature
-      type: object
-      properties:
-        AgreementFeature:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureRequestDto"
-    InitiateAgreementFeatureResponse:
-      type: object
-      properties:
-        Id:
-          format: int64
-          description: Id of Agreement Feature
-          type: integer
-        Feature:
-          description: Identification of Feature
-          type: string
-    InitiateAgreementRequest:
-      required:
-      - Brand
-      - Product
-      - AgreementInvolvement
-      - OpeningDate
-      type: object
-      properties:
-        Brand:
-          description: Brand to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        AgreementInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner <br/> Format must be ISO
-            Date format (YYYY-MM-DD)
-          pattern: \S
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount"
-    InitiateAgreementResponse:
-      type: object
-      properties:
-        Identification:
-          description: Unique identifier for an Account.
-          maxLength: 37
-          type: string
-    InitiateFacilityAllocationRequest:
-      required:
-      - AgreementFeature
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        AgreementFeature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          pattern: "(^[0-9]+$)|(^$)"
-          type: string
-        FacilityStatus:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationResponse:
-      type: object
-      properties:
-        Identification:
-          description: Unique identifier of a Facility Allocation
-          type: string
     Instant:
       format: date-time
       type: string
-      example: "2022-03-10T16:15:50Z"
+      example: 2022-03-10T16:15:50Z
     IssuedDeviceActionRequest:
       required:
       - BlockReason
@@ -4977,26 +4255,6 @@ components:
             \ same Brand."
           pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           type: string
-    KeyBaseRequest:
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          maxLength: 37
-          type: string
-    KeyBaseResponse:
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          type: string
     LinkBundleFeatureRequest:
       required:
       - Feature
@@ -5014,7 +4272,7 @@ components:
     LocalDateTime:
       format: date-time
       type: string
-      example: "2022-03-10T12:15:50"
+      example: 2022-03-10T12:15:50
     MasterCardChipDataResponse:
       type: object
       properties:
@@ -5206,7 +4464,6 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
     Phone:
       required:
@@ -5358,6 +4615,19 @@ components:
             \ contact <br/> NOTP - Not preferred for contact "
           pattern: \S
           type: string
+    ProductFeatureDefaults:
+      type: object
+      properties:
+        DefaultIndicator:
+          type: boolean
+        RatificationMethod:
+          $ref: '#/components/schemas/RatificationMethod'
+        RatificationLevel:
+          $ref: '#/components/schemas/RatificationLevel'
+        Identification:
+          type: string
+        Capability:
+          type: string
     ProductReissueEvent:
       type: object
       properties:
@@ -5365,7 +4635,20 @@ components:
           description: Identification of the product
           type: object
           allOf:
-          - $ref: "#/components/schemas/RetrieveProductResponse"
+          - $ref: '#/components/schemas/RetrieveProductResponse'
+    RatificationLevel:
+      enum:
+      - NONE
+      - AGREEMENT
+      - AGREEMENT_FACILITY
+      type: string
+    RatificationMethod:
+      enum:
+      - NEW_ONLY
+      - ALL
+      - NONE
+      - ALL_EXCLUDING_OVERRIDES
+      type: string
     RegisterBundleRequest:
       required:
       - Identification
@@ -5411,6 +4694,9 @@ components:
           description: Description of a configuration option
           maxLength: 140
           type: string
+        Value:
+          description: Value of a configuration option
+          type: string
         ConfigurationParameter:
           type: array
           items:
@@ -5443,6 +4729,10 @@ components:
         Specification:
           description: Description of a feature
           maxLength: 140
+          type: string
+        FeatureCategory:
+          description: Feature category of a feature
+          maxLength: 255
           type: string
         Capability:
           description: Name of the system capability linked to a feature
@@ -5544,11 +4834,10 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
         Brand:
-          description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
-            \ Person assigned to a Brand cannot be shared across Brands."
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
         PostalAddress:
@@ -5616,11 +4905,10 @@ components:
         MemorableWordReminder:
           description: Reminder set by the person to remember the memorable word.
           maxLength: 35
-          pattern: "(^[a-zA-Z]+$)|(^$)"
           type: string
         Brand:
-          description: "Identification of the brand associated with the person.<br/><b>Note:</b>\
-            \ Person assigned to a Brand cannot be shared across Brands."
+          description: Identification of the brand associated with the person.<br/><b>Note:</b>
+            Person assigned to a Brand cannot be shared across Brands.
           maxLength: 37
           type: string
         PostalAddress:
@@ -5652,21 +4940,6 @@ components:
           type: string
         Warning:
           $ref: "#/components/schemas/Warning"
-    RegisterProductFeatureRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/Feature2"
-    RegisterProductFeatureResponse:
-      type: object
-      properties:
-        Warning:
-          $ref: "#/components/schemas/Warning1"
     RegisterProductRequest:
       required:
       - Name
@@ -5697,119 +4970,6 @@ components:
       properties:
         Identification:
           type: string
-    RegistrationAddress:
-      description: Registered Address
-      required:
-      - Country
-      type: object
-      properties:
-        AddressType:
-          description: Type of Address
-          pattern: (^$|Postal Business)
-          type: string
-        StreetName:
-          description: Name of Street
-          maxLength: 70
-          type: string
-        BuildingNumber:
-          description: Building Number
-          maxLength: 35
-          type: string
-        BuildingName:
-          description: Name of Building
-          maxLength: 70
-          type: string
-        PostOfficeBox:
-          description: Post Box Number
-          maxLength: 16
-          type: string
-        PostalCode:
-          description: Postal Code
-          maxLength: 16
-          type: string
-        AddressLine1:
-          description: Address Line 1
-          maxLength: 70
-          type: string
-        AddressLine2:
-          description: Address Line 2
-          maxLength: 70
-          type: string
-        AddressLine3:
-          description: Address Line 3
-          maxLength: 70
-          type: string
-        AddressLine4:
-          description: Address Line 4
-          maxLength: 70
-          type: string
-        TownName:
-          description: Name of Town / City
-          maxLength: 35
-          type: string
-        CountrySubDivision:
-          description: Subdivision of Country
-          maxLength: 35
-          type: string
-        Country:
-          description: Country
-          pattern: \S
-          type: string
-    RegistrationAddress1:
-      description: Registered Address
-      type: object
-      properties:
-        AddressType:
-          description: Type of Address
-          pattern: (^$|Postal Business)
-          type: string
-        StreetName:
-          description: Name of Street
-          maxLength: 70
-          type: string
-        BuildingNumber:
-          description: Building Number
-          maxLength: 35
-          type: string
-        BuildingName:
-          description: Name of Building
-          maxLength: 70
-          type: string
-        PostOfficeBox:
-          description: Post Box Number
-          maxLength: 16
-          type: string
-        PostalCode:
-          description: Postal Code
-          maxLength: 16
-          type: string
-        AddressLine1:
-          description: Address Line 1
-          maxLength: 70
-          type: string
-        AddressLine2:
-          description: Address Line 2
-          maxLength: 70
-          type: string
-        AddressLine3:
-          description: Address Line 3
-          maxLength: 70
-          type: string
-        AddressLine4:
-          description: Address Line 4
-          maxLength: 70
-          type: string
-        TownName:
-          description: Name of Town / City
-          maxLength: 35
-          type: string
-        CountrySubDivision:
-          description: Subdivision of Country
-          maxLength: 35
-          type: string
-        Country:
-          description: Country
-          type: string
     ReissueCardRequest:
       type: object
       properties:
@@ -5836,64 +4996,6 @@ components:
       properties:
         RSAPublicKey:
           description: Key used for Encrypting the data
-          pattern: \S
-          type: string
-    RequestGetCVVRequest:
-      required:
-      - ExpiryDate
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYMM).
-          pattern: "(^([0-9][0-9])(0?[1-9]|1[012])$)"
-          type: string
-        RSAPublicKey:
-          description: Key used for Encrypting the data
-          type: string
-    RequestGetCVVResponse:
-      type: object
-      properties:
-        CVV:
-          description: CVV
-          type: string
-        CVV2:
-          description: CVV2
-          type: string
-        ICVV:
-          description: ICVV
-          type: string
-    RequestViewInstrumentIdRequest:
-      required:
-      - PAN
-      type: object
-      properties:
-        PAN:
-          description: Primary Account Number
-          pattern: \S
-          type: string
-    RequestViewInstrumentIdResponse:
-      type: object
-      properties:
-        FEPID:
-          description: Fiserv Enterprise Payment Identification
-          type: string
-    RequestViewPANResponse:
-      type: object
-      properties:
-        PAN:
-          description: Primary Account Number
-          type: string
-    RequestViewPINRequest:
-      required:
-      - Association
-      type: object
-      properties:
-        RSAKey:
-          description: RSA public key to encrypt customer PIN
-          type: string
-        Association:
-          description: Identifies the association Key
-          pattern: (^$|PINNOW)
           type: string
     RequestViewPinRequest:
       required:
@@ -5904,274 +5006,6 @@ components:
           description: Key used for Encrypting the data
           pattern: \S
           type: string
-    RequestViewPinResponse:
-      type: object
-      properties:
-        EncryptedPIN:
-          description: Encrypted PIN
-          type: string
-    RestrictExpiryMonthRequest:
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYYY-MM-dd).
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-    RestrictExpiryMonthResponse:
-      type: object
-      properties:
-        ExpiryDate:
-          description: Date on which the payment instrument expires (YYYY-MM-dd).
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        AdjustedExpiryMonthYear:
-          description: Month and year adjusted for the expiry date
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        AdjustedExpiryDate:
-          description: Overall adjusted expiry date
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-    RetrieveAgreementFacilityAndFeatureResponse:
-      type: object
-      properties:
-        Agreement:
-          $ref: "#/components/schemas/RetrieveAgreementResponse"
-        AgreementFeature:
-          $ref: "#/components/schemas/AgreementFeatureResponse"
-    RetrieveAgreementFeatureAndFacilityRequest:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          minLength: 1
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          minLength: 1
-          type: string
-    RetrieveAgreementFeatureParameterResponse:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
-          description: Agreement Identification
-          type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-        Status:
-          description: Status of the Agreement in the system
-          type: string
-        agreementClosed:
-          description: Indicates if the agreement is closed.
-          type: boolean
-        agreementEnabled:
-          type: boolean
-    RetrieveAgreementFeatureRequest:
-      type: object
-      properties:
-        capabilityName:
-          description: Name of the capability
-          type: string
-    RetrieveAgreementFeatureResponse:
-      type: object
-      properties:
-        Identification:
-          description: Agreement Identification
-          type: string
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          type: string
-        Brand:
-          description: Brand to which the Agreement belongs
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          type: string
-        Status:
-          description: Status of the Agreement in the system
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeature"
-    RetrieveAgreementResponse:
-      required:
-      - AgreementInvolvement
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
-          maxLength: 37
-          type: string
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
-            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
-          type: string
-        AgreementInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner <br/> Format must be ISO
-            Date format (YYYY-MM-DD)
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalAccount"
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that was sent through on the account closure API to
-            indicate when the account was closed on the host system. Format must be
-            ISO Date format (YYYY-MM-DD).
-          type: string
-        ClosingDate:
-          description: "Date and Time on which the Account was closed by the system.\
-            \ Format must be (YYYY-MM-DDThh:mm:ss.sssZ)."
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/Instant"
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder is currently opted-out or
-            opted-in for the Network Account Updater. The opt out option affects all
-            cards under the account. The valid values are OptOut and OptIn.
-          type: string
-        BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
-          type: array
-          items:
-            type: string
-        enabled:
-          type: boolean
-    RetrieveAssociationKeyRequest:
-      required:
-      - Association
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        OperatingRegion:
-          description: Operating Region
-          pattern: (^$|EU|APAC|LATAM|CAN|US|CEMEA)
-          type: string
-        Association:
-          description: Identifies the association Key
-          pattern: \S
-          type: string
-        Description:
-          description: Description of the association Key
-          maxLength: 140
-          type: string
-    RetrieveAssociationKeyResponse:
-      type: object
-      properties:
-        Association:
-          description: Identifies the association Key
-          type: string
-        OperatingRegion:
-          description: Operating Region
-          type: string
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Key:
-          description: Key
-          type: string
-        KeyStatus:
-          description: status of the key
-          type: string
-        Description:
-          description: Description of the association Key
-          type: string
-    RetrieveBrandResponse:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of the Brand
-          maxLength: 70
-          pattern: \S
-          type: string
-        RegistrationAddress:
-          description: Registered address of the Brand
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-        Email:
-          description: Email of the Brand
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone number of the Brand
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of the Brand in the System
-          type: string
-        Identification:
-          description: Identification of Brand
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        ReportingCurrency:
-          description: Reporting Currency
-          type: string
-        CountryOfOperation:
-          description: Country of Operation
-          type: string
-        SchemeOperatingRegion:
-          description: Scheme Operating Region
-          type: string
-        enabled:
-          type: boolean
     RetrieveBundleListRequest:
       type: object
       properties:
@@ -6219,86 +5053,6 @@ components:
         CapabilityDefinition:
           description: Definition of Capability
           type: string
-    RetrieveCardFeeDetailsResponse:
-      type: object
-      properties:
-        PaymentInstrument:
-          description: Unique identifier of a card
-          type: string
-        LastCardMaintenanceFeeDate:
-          description: "Date when Card maintenance fee was last assessed on the card.\
-            \ This value is also carried forward from an older Payment instrument,\
-            \ if the card was created as part of Lost or Stolen replacement process).\n\
-            Type: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        LastCardMaintenanceFeeAmount:
-          description: "Card maintenance fee amount that was last assessed on the\
-            \ card. This value is also carried forward from an older Payment instrument,\
-            \ if the card was created as part of Lost or Stolen replacement process).\n\
-            Type: Amount"
-          type: string
-        NextCardMaintenanceFeeDate:
-          description: "Date when card maintenance fee (initial or recurring) would\
-            \ be next assessed on the card. This date may also be applicable for initial\
-            \ Card aintenance Fee, when the initial fee is configured to be assessed\
-            \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        LastLostOrStolenReplacementCardFeeDate:
-          description: "Date when Lost or Stolen card replacement fee was last assessed\
-            \ on the card. \nType: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        LastLostOrStolenReplacementCardFeeAmount:
-          description: "Lost or Stolen card replacement fee amount that was last assessed\
-            \ on the card. \nType: Amount"
-          type: string
-        TotalCardFeeAmountLifeToDate:
-          description: "The total amount of card fees (Card maintenance feeand Lost\
-            \ or Stolen card replacement fee) that has been assessed on the card till\
-            \ date. This field will also include any card fees that was assessed on\
-            \ the old card, if the current one was created from Lost or Stolen replacement\
-            \ process.\nType: Amount"
-          type: string
-        CardMaintenanceFeeWaiveFlag:
-          description: "Identifies the type of waive option, if applicable for the\
-            \ Card maintenance fee.\nValid values are:\n\nPERM - Permanently waive\
-            \ card maintenance fee\nONCE - Waive the next card maintenance fee once"
-          type: string
-        CardMaintenanceFeeWaiveFlagUpdateDate:
-          description: "Date when Card Maintenance Fee Waive Flag was updated last\
-            \ time.\nType: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        LastCardMaintenanceFeeWaiveAmount:
-          description: "Card maintenance fee amount that was last waived for the card.\
-            \ This value is also carried forward from an older Payment instrument,\
-            \ if the card was created as part of Lost or Stolen replacement process).\n\
-            Type: Amount"
-          type: string
-        LastCardMaintenanceFeeWaiveDate:
-          description: "Date when Card maintenance fee was last waived on the card.\
-            \ This value is also carried forward from an older Payment instrument,\
-            \ if the card was created as part of Lost or Stolen replacement process).\n\
-            Type: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
-        LastLostOrStolenReplacementCardFeeWaiveAmount:
-          description: "Lost or Stolen fee amount that was last waived for the card.\n\
-            Type: Amount"
-          type: string
-        LastLostOrStolenReplacementCardFeeWaiveDate:
-          description: "Date when Lost or Stolen fee was last waived on the card.\n\
-            Type: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: "#/components/schemas/LocalDate"
     RetrieveClearPanResponse:
       type: object
       properties:
@@ -6333,69 +5087,6 @@ components:
           description: Time stamp when this email is set as the current electronic
             address
           type: string
-    RetrieveFacilityAllocationFeatureParameterRequest:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      type: object
-      properties:
-        Id:
-          format: int64
-          description: Id of Facility
-          type: integer
-        AgreementFeature:
-          format: int64
-          description: Identification of Agreement Feature
-          type: integer
-        FacilityIdentification:
-          description: Identification of Facility
-          type: string
-        FacilityStatus:
-          description: Status of Facility
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement:
-          description: Identification of Agreement
-          type: string
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementFeatureParameter"
-    RetrieveFacilityAllocationResponse:
-      type: object
-      properties:
-        Id:
-          format: int64
-          type: integer
-        Agreement:
-          type: string
-        AgreementFeature:
-          format: int64
-          type: integer
-        Capability:
-          type: string
-        Facility:
-          type: string
-        CreationDateTime:
-          type: string
-        Status:
-          type: string
     RetrieveFeatureResponse:
       type: object
       properties:
@@ -6418,6 +5109,9 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        FeatureCategory:
+          description: Name of the feature category assigned to feature
+          type: string
         Status:
           description: Status of the feature record in the system
           type: string
@@ -6429,90 +5123,6 @@ components:
         CreateAgreementFeature:
           type: string
         CreateFacility:
-          type: string
-    RetrieveFiResponse:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of Financial Institution
-          maxLength: 70
-          pattern: \S
-          type: string
-        RegistrationAddress:
-          description: Registered address of Financial Institution
-          type: object
-          allOf:
-          - $ref: "#/components/schemas/RegistrationAddress"
-        Email:
-          description: Email address of Financial Institution
-          maxLength: 256
-          pattern: "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\
-            .)+[a-zA-Z]{2,7}|(^[ ]*$)"
-          type: string
-        PhoneNumber:
-          description: Phone Number of Financial Institution
-          pattern: "^\\+[0-9]\\d{7,14}$|(^$)"
-          type: string
-        Status:
-          description: Status of Financial Institution in the System
-          type: string
-        HybridMode:
-          description: Indicates whether FI is on Hybrid model and is integrated with
-            an Account Management system like FirstVision
-          type: string
-        FinancialInstitutionIdentification:
-          description: Identification of Financial Institution
-          type: string
-        InvoiceCurrency:
-          description: Invoice Currency
-          type: string
-        ClientIdentification:
-          description: Identification of Client Financial Institution
-          maxLength: 5
-          type: string
-        enabled:
-          type: boolean
-    RetrieveInstrumentKeyRequest:
-      required:
-      - KeyIndex
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          maxLength: 37
-          type: string
-        KeyIndex:
-          description: Identifies the Index of keys
-          type: integer
-    RetrieveInstrumentKeyResponse:
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          type: string
-        KeyIndex:
-          description: Key index value
-          type: string
-        Key:
-          description: Encrypted key value
-          type: string
-        DecimalizationTable:
-          description: Decimalization Table
-          type: string
-        Description:
-          description: Description of the key
-          type: string
-        KeyStatus:
-          description: status of the key
           type: string
     RetrieveOrganisationResponse:
       required:
@@ -6571,7 +5181,6 @@ components:
       properties:
         PAN:
           description: Primary Account Number
-          pattern: \S
           type: string
     RetrievePanContactDetailsResponse:
       type: object
@@ -6664,8 +5273,7 @@ components:
             Accepted Values are <UL><LI><EM> Lost </EM></LI> <LI><EM> Stolen </EM></LI></UL>
           type: string
         BlockedDateTime:
-          description: "Date and time at which the payment instrument was blocked\
-            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
+          description: Date and time at which the payment instrument was blocked (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
@@ -6681,8 +5289,8 @@ components:
             Account Number) in masked form showing only the last 4 digits
           type: string
         PlasticCreationDateTime:
-          description: "Date and time at which plastic created for the payment instrument\
-            \ (YYYY-MM-DDThh:mm:ss.sssZ)."
+          description: Date and time at which plastic created for the payment instrument
+            (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
           - $ref: "#/components/schemas/Instant"
@@ -6703,10 +5311,10 @@ components:
           description: Number of Invalid PIN Tries before reset.
           type: integer
         LastInvalidPinTryDateTime:
-          description: "Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ)."
+          description: Date and time when the Last Invalid PIN was attempted. (YYYY-MM-DDThh:mm:ss.sssZ).
           type: string
           allOf:
-          - $ref: "#/components/schemas/Instant"
+          - $ref: '#/components/schemas/Instant'
         DigitalCardType:
           description: Identifies the type of digital card. Possible Response Values
             are <UL><LI><EM> FTRM (FullTerm) </EM></LI> <LI><EM> STRM (ShortTerm)
@@ -6746,14 +5354,10 @@ components:
           description: Number of active tokens for a card.
           type: integer
         FraudReferStatus:
-          description: "This field indicates whether a card is flagged to have all\
-            \ authorisations referred or not referred (anti-referred) to a fraud analyst\
-            \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
-            \ Manager system during authorisation processing where it can be used\
-            \ in the rules to make informed authorisation decisions.\n\n Valid values\
-            \ are: <UL><LI><EM> NONE - No referral or anti-referral is assigned </EM></LI>\
-            \ <LI><EM> REFE - All authorizations are referred </EM></LI> <LI><EM>\
-            \ ANTI - No authorizations are referred (anti-refer) </EM></LI> </UL>"
+          description: |-
+            This field indicates whether a card is flagged to have all authorisations referred or not referred (anti-referred) to a fraud analyst for potential fraudulent activity. This flag is sent to the Falcon Fraud Manager system during authorisation processing where it can be used in the rules to make informed authorisation decisions.
+
+             Valid values are: <UL><LI><EM> NONE - No referral or anti-referral is assigned </EM></LI> <LI><EM> REFE - All authorizations are referred </EM></LI> <LI><EM> ANTI - No authorizations are referred (anti-refer) </EM></LI> </UL>
           type: string
         FraudReferStatusExpiryDate:
           description: This field indicates the date on which the Fraud Refer Status
@@ -6762,14 +5366,10 @@ components:
           allOf:
           - $ref: "#/components/schemas/LocalDate"
         FraudMonitorStatus:
-          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
-            \ field utilized to indicate whether a card is flagged for fraud monitoring.\
-            \ The values assigned to this field must be predefined within CMS module\
-            \ of FirstVision system. This flag is used in segmenting cards and implementing\
-            \ specific fraud minimization strategies within Falcon Fraud Manager system.\n\
-            \nThe Fraud Monitor Status flag is sent to the Falcon Fraud Manager system\
-            \ during authorisation processing, allowing the system to leverage the\
-            \ flag in its rules and decision-making processes"
+          description: |-
+            The Fraud Monitor Status flag is a two-character alphanumeric field utilized to indicate whether a card is flagged for fraud monitoring. The values assigned to this field must be predefined within CMS module of FirstVision system. This flag is used in segmenting cards and implementing specific fraud minimization strategies within Falcon Fraud Manager system.
+
+            The Fraud Monitor Status flag is sent to the Falcon Fraud Manager system during authorisation processing, allowing the system to leverage the flag in its rules and decision-making processes
           type: string
         FraudMonitorStatusExpiryDate:
           description: This field indicates the date on which the Fraud Monitor Status
@@ -6777,6 +5377,15 @@ components:
           type: string
           allOf:
           - $ref: "#/components/schemas/LocalDate"
+        Product Type:
+          description: Banking Product Type associated with the payment instrument.
+          type: string
+        Balances:
+          description: The list contains detailed information about different types
+            of balance associated with the account.
+          type: array
+          items:
+            $ref: '#/components/schemas/Balance'
         enabled:
           type: boolean
     RetrievePaymentInstrumentWithChipDataResponse:
@@ -6823,6 +5432,68 @@ components:
             with the external account.'
           maxLength: 13
           pattern: "(^[a-zA-Z0-9]+|^$)"
+          type: string
+        BirthDate:
+          description: The date of birth of a person. Must be in the ISO Date format
+            (YYYY-MM-DD) for an exact match during the search process. Can serve as
+            a single search criterion or used alongside any other input search criteria
+            to find a matching person.
+          type: string
+        GivenName:
+          description: "The first name of a person. Can serve as a single search criterion\
+            \ or used alongside any other request input search criteria to find a\
+            \ matching person, regardless of case sensitivity. Supports wildcard searches\
+            \ where the persons Given Name begins with the GivenName search criteria\
+            \ provided and will return persons that both have an exact or partial\
+            \ match."
+          type: string
+        MiddleName:
+          description: "A person's second name(s). Can serve as a single criterion\
+            \ or used alongside any other request input criteria to find matching\
+            \ details, regardless of case sensitivity. This functionality supports\
+            \ wildcard searches where the persons Middle Name begins with the Middle\
+            \ Name search criteria provided and will return persons that both have\
+            \ an exact or partial match."
+          type: string
+        Surname:
+          description: "The surname or family name of a person can serve as a single\
+            \ criterion or be combined with any other request input criteria to find\
+            \ matching details, irrespective of case sensitivity. This feature supports\
+            \ wildcard search where the persons Surname begins with the Surname search\
+            \ criteria entered and will return persons that both have an exact or\
+            \ partial match."
+          type: string
+        PostalCode:
+          description: "The active postal address(es) for a person. Can serve as a\
+            \ single criterion or used alongside any other request input search criteria\
+            \ to find a matching person, regardless of case sensitivity. Returns all\
+            \ the persons where one of the active postal address postcodes contain\
+            \ a full or partial match to the post code search criteria."
+          type: string
+        PhoneNumber:
+          description: |-
+            The Phone identifies all, or part of a phone number can serve as a single criterion or used alongside any other request input search criteria. The system will search through all customers Phone, Mobile or Work Numbers that contain the number entered in the search and returns all the customers where it finds a match. E.g., Phone/Mobile/Work Number search: '7950'
+            Returns customers for phone/mobile/work numbers:
+            +447950292122
+            +667950765432
+            +330777079501
+          type: string
+        PageStartIndex:
+          description: "The page start index is an optional field which specifies\
+            \ the starting index for the page of results. It is an integer that represents\
+            \ the index of the page. The first page corresponds to the PageStartIndex\
+            \ value of 0. If PageStartIndex is provided in the request, PageLimit\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
+          type: string
+        PageLimit:
+          description: "The page limit is an optional parameter which specifies the\
+            \ maximum number of records to return in the page of results. It is an\
+            \ integer that represents the total number of records on a single page.\
+            \ The PageLimit must have a minimum value of 1, indicating at least one\
+            \ record per page. If PageLimit is provided in the request, PageStartIndex\
+            \ must also be provided."
+          pattern: "^-?(0|[1-9][0-9]*)$"
           type: string
     RetrievePersonResponse:
       type: object
@@ -7074,7 +5745,7 @@ components:
           description: List of linked features
           type: array
           items:
-            $ref: "#/components/schemas/Feature3"
+            $ref: "#/components/schemas/Feature2"
     RetrieveProductResponse:
       type: object
       properties:
@@ -7094,76 +5765,7 @@ components:
           type: string
         Status:
           type: string
-    RetrieveSecuredDataResponse:
-      type: object
-      properties:
-        PAN:
-          description: Primary Account Number in an encrypted form.
-          type: string
-        PINOffset:
-          description: PIN Offset
-          type: string
-        PINLength:
-          description: PIN Length
-          type: string
-        PINKeyIndex:
-          description: PIN Key Index
-          type: integer
-        CVVKeyIndex:
-          description: CVV Key Index
-          type: integer
-        ServiceCode:
-          description: Service Code
-          type: integer
-    RetrieveSystemDetailsRequest:
-      required:
-      - PAN
-      type: object
-      properties:
-        PAN:
-          description: Primary Account Number
-          pattern: \S
-          type: string
-    RetrieveSystemDetailsResponse:
-      type: object
-      properties:
-        FEPID:
-          description: Fiserv Enterprise Payment Identification
-          type: string
-        FinancialInstitution:
-          description: Financial Institution Identification
-          type: string
-        Brand:
-          description: Brand Identification
-          type: string
-        Product:
-          description: Product Identification
-          type: string
     SystemUpdateRequest:
-      type: object
-      properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
-          type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
-          type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
-          type: string
-        AgreementInvolvement:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgreementInvolvement"
-        BlockedReasonCodes:
-          $ref: "#/components/schemas/BlockedReasonUpdateRequest"
-    SystemUpdateRequest1:
       type: object
       properties:
         ChipData:
@@ -7253,6 +5855,172 @@ components:
           maxLength: 140
           pattern: \A(?!\s*$).+|^$
           type: string
+    UpdateFraudStatusRequest:
+      type: object
+      properties:
+        FraudStatus:
+          description: "This field identifies the specific type of fraud status assigned\
+                \ to a card. <p>Valid Values:</p><UL><LI><EM> NONE-Indicates that no fraud\
+                \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+                \ that the card has been flagged as suspected fraud, necessitating further\
+                \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+                \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+                \ as involved in fraudulent activities. </EM></LI> </UL>Note: Suspected\
+                \ Fraud (SFRD) status cannot override Confirmed Fraud (CFRD) status. Confirmed\
+                \ Fraud status cannot be removed from the card once set. When Confirmed\
+                \ Fraud status is applied, the system will automatically set Block Reason\
+                \ on the card to Stolen."
+          type: string
+        FraudReferStatus:
+          description: "This field indicates whether a card is flagged to have all\
+                \ authorisations referred or not referred (anti-referred) to a fraud analyst\
+                \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
+                \ Manager system during authorisation processing where it can be used\
+                \ in the rules to make informed authorisation decisions.<p>Valid Values:</p><UL><LI><EM>\
+                \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM> REFE-All\
+                \ authorizations are referred. </EM></LI> <LI><EM> ANTI-No authorizations\
+                \ are referred(anti-refer). </EM></LI> </UL>"
+          type: string
+        FraudReferStatusExpiryDate:
+          description: "This field indicates the date on which the Fraud Refer Status\
+                \ expires.This field is required and must be set to a present or future\
+                \ date when Fraud Refer Status is set to REFE or ANTI. \nThe value in\
+                \ this field will automatically be removed when Fraud Refer Status is\
+                \ updated to NONE."
+          type: string
+        FraudMonitorStatus:
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+                \ field utilized to indicate whether a card is flagged for fraud monitoring.\
+                \ This flag is used in order to implement specific fraud minimization\
+                \ strategies within Falcon Fraud Manager system.The Fraud Monitor Status\
+                \ flag is sent to Falcon Fraud Manager system during authorisation processing,\
+                \ allowing the system to leverage the flag in its rules and decision-making\
+                \ processes."
+          pattern: "(([a-zA-Z0-9]{2})?)"
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: |-
+            This field indicates the date on which the Fraud Monitor Status expires.This field is required and must be set to a present or future date when Fraud Monitor Status is set to any valid value other than null.
+            The value in this field will automatically be removed when Fraud Monitor Status is removed from a card.
+          type: string
+    UpdateFraudStatusResponse:
+      type: object
+      properties:
+        FraudStatus:
+          description: "This field identifies the specific type of fraud status assigned\
+              \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
+              \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+              \ that the card has been flagged as suspected fraud, necessitating further\
+              \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+              \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+              \ as involved in fraudulent activities. </EM></LI> </UL>"
+          type: string
+        FraudReferStatus:
+          description: "<p>This field indicates whether a card is flagged to have\
+              \ all authorisations referred or not referred (anti-referred) to a fraud\
+              \ analyst for potential fraudulent activity. This flag is sent to the\
+              \ Falcon Fraud Manager system during authorisation processing where it\
+              \ can be used in the rules to make informed authorisation decisions.</p>Possible\
+              \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
+              \ <LI><EM> REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No\
+              \ authorizations are referred (anti-refer). </EM></LI> </UL>"
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+        FraudMonitorStatus:
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+              \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
+              \ flag is used in order to implement specific fraud minimization strategies\
+              \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
+              \ is sent to Falcon Fraud Manager system during authorisation processing,\
+              \ allowing the system to leverage the flag in its rules and decision-making\
+              \ processes."
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.The value in this field will automatically be removed when Fraud
+            Monitor Status is removed from a card.
+          type: string
+    UpdateInstrumentKeyRequest:
+      required:
+        - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+              \ key type"
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+              \ key type"
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateNetworkAccountOptionRequest:
+      required:
+        - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
     UpdateBundleResponse:
       type: object
       properties:
@@ -7317,6 +6085,9 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        FeatureCategory:
+          description: Name of the feature category assigned to feature
+          type: string
         Status:
           description: Status of the feature record in the system
           type: string
@@ -7325,172 +6096,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ConfigurationOption1"
-    UpdateFraudStatusRequest:
-      type: object
-      properties:
-        FraudStatus:
-          description: "This field identifies the specific type of fraud status assigned\
-            \ to a card. <p>Valid Values:</p><UL><LI><EM> NONE-Indicates that no fraud\
-            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
-            \ that the card has been flagged as suspected fraud, necessitating further\
-            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
-            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
-            \ as involved in fraudulent activities. </EM></LI> </UL>Note: Suspected\
-            \ Fraud (SFRD) status cannot override Confirmed Fraud (CFRD) status. Confirmed\
-            \ Fraud status cannot be removed from the card once set. When Confirmed\
-            \ Fraud status is applied, the system will automatically set Block Reason\
-            \ on the card to Stolen."
-          type: string
-        FraudReferStatus:
-          description: "This field indicates whether a card is flagged to have all\
-            \ authorisations referred or not referred (anti-referred) to a fraud analyst\
-            \ for potential fraudulent activity. This flag is sent to the Falcon Fraud\
-            \ Manager system during authorisation processing where it can be used\
-            \ in the rules to make informed authorisation decisions.<p>Valid Values:</p><UL><LI><EM>\
-            \ NONE-No referral or anti-referral is assigned.</EM></LI> <LI><EM> REFE-All\
-            \ authorizations are referred. </EM></LI> <LI><EM> ANTI-No authorizations\
-            \ are referred(anti-refer). </EM></LI> </UL>"
-          type: string
-        FraudReferStatusExpiryDate:
-          description: "This field indicates the date on which the Fraud Refer Status\
-            \ expires.This field is required and must be set to a present or future\
-            \ date when Fraud Refer Status is set to REFE or ANTI. \nThe value in\
-            \ this field will automatically be removed when Fraud Refer Status is\
-            \ updated to NONE."
-          type: string
-        FraudMonitorStatus:
-          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
-            \ field utilized to indicate whether a card is flagged for fraud monitoring.\
-            \ This flag is used in order to implement specific fraud minimization\
-            \ strategies within Falcon Fraud Manager system.The Fraud Monitor Status\
-            \ flag is sent to Falcon Fraud Manager system during authorisation processing,\
-            \ allowing the system to leverage the flag in its rules and decision-making\
-            \ processes."
-          pattern: "(([a-zA-Z0-9]{2})?)"
-          type: string
-        FraudMonitorStatusExpiryDate:
-          description: |-
-            This field indicates the date on which the Fraud Monitor Status expires.This field is required and must be set to a present or future date when Fraud Monitor Status is set to any valid value other than null.
-            The value in this field will automatically be removed when Fraud Monitor Status is removed from a card.
-          type: string
-    UpdateFraudStatusResponse:
-      type: object
-      properties:
-        FraudStatus:
-          description: "This field identifies the specific type of fraud status assigned\
-            \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
-            \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
-            \ that the card has been flagged as suspected fraud, necessitating further\
-            \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
-            \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
-            \ as involved in fraudulent activities. </EM></LI> </UL>"
-          type: string
-        FraudReferStatus:
-          description: "<p>This field indicates whether a card is flagged to have\
-            \ all authorisations referred or not referred (anti-referred) to a fraud\
-            \ analyst for potential fraudulent activity. This flag is sent to the\
-            \ Falcon Fraud Manager system during authorisation processing where it\
-            \ can be used in the rules to make informed authorisation decisions.</p>Possible\
-            \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
-            \ <LI><EM> REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No\
-            \ authorizations are referred (anti-refer). </EM></LI> </UL>"
-          type: string
-        FraudReferStatusExpiryDate:
-          description: This field indicates the date on which the Fraud Refer Status
-            expires.
-          type: string
-        FraudMonitorStatus:
-          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
-            \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
-            \ flag is used in order to implement specific fraud minimization strategies\
-            \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
-            \ is sent to Falcon Fraud Manager system during authorisation processing,\
-            \ allowing the system to leverage the flag in its rules and decision-making\
-            \ processes."
-          type: string
-        FraudMonitorStatusExpiryDate:
-          description: This field indicates the date on which the Fraud Monitor Status
-            expires.The value in this field will automatically be removed when Fraud
-            Monitor Status is removed from a card.
-          type: string
-    UpdateInstrumentKeyRequest:
-      required:
-      - KeyIndex
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          maxLength: 37
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          maxLength: 37
-          type: string
-        KeyIndex:
-          description: Identifies the Index of keys
-          type: integer
-        Key:
-          description: "This key can be populated with PVK, CVK or ACK based on the\
-            \ key type"
-          type: string
-        Description:
-          description: Description of key
-          maxLength: 140
-          type: string
-        DecimalizationTable:
-          description: Decimalization Table
-          maxLength: 32
-          minLength: 32
-          pattern: "^[0-9A-Fa-f]+$"
-          type: string
-        KeyStatus:
-          description: status of the key
-          type: string
-    UpdateInstrumentKeyResponse:
-      type: object
-      properties:
-        Brand:
-          description: Identification of the brand associated with the payment card
-          type: string
-        Product:
-          description: Banking product associated with the payment card
-          type: string
-        KeyIndex:
-          description: Identifies the Index of keys
-          type: integer
-        Key:
-          description: "This key can be populated with PVK, CVK or ACK based on the\
-            \ key type"
-          type: string
-        DecimalizationTable:
-          description: Decimalization Table
-          type: string
-        Description:
-          description: Description of key
-          type: string
-        KeyStatus:
-          description: status of the key
-          type: string
-    UpdateNetworkAccountOptionRequest:
-      required:
-      - NetworkAccountUpdaterOption
-      type: object
-      properties:
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder is requesting opt-out or
-            opt-in for the Network Account Updater. The valid values are OptOut or
-            OptIn.
-          minLength: 1
-          pattern: (^$|OptOut|OptIn)
-          type: string
-    UpdateNetworkAccountOptionResponse:
-      type: object
-      properties:
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder has requested opt-out or
-            opt-in for the Network Account Updater. This contains the value set in
-            the request.
-          type: string
     UpdatePersonResponse:
       type: object
       properties:
@@ -7591,6 +6196,25 @@ components:
           type: string
         Type:
           description: Specifies the type of product category
+          type: string
+    UpdateProductResponse:
+      type: object
+      properties:
+        Identification:
+          type: string
+        ExternalIdentification:
+          type: string
+        Name:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        BrandName:
+          type: string
+        Type:
+          type: string
+        Status:
           type: string
     VisaChipDataResponse:
       type: object
