@@ -3093,16 +3093,6 @@ paths:
                 $ref: "#/components/schemas/HelixErrorDetails"
       x-proxy-name: Retrieve PAN
       x-group-name: Card Management
-    parameters:
-    - name: paymentInstrumentId
-      in: path
-      required: true
-      schema:
-        type: string
-    - name: listType
-      in: query
-      schema:
-        type: string
   /IssuedDeviceAdmin/V1/PaymentInstrument/{paymentInstrumentId}/ViewPIN/Request:
     post:
       tags:
