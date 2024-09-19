@@ -8,26 +8,6 @@ tags:
   x-proxy-name: Delete Card
   x-group-name: Card Management
 paths:
-  /IssuedDeviceAdmin/V1/Capability/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      responses:
-        "200":
-          description: OK
-  /IssuedDeviceAdmin/V1/Capability/{capabilityName}/Retrieve:
-    get:
-      tags:
-      - Capability Definition Resource
-      parameters:
-      - name: capabilityName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
   /IssuedDeviceAdmin/V1/PaymentInstrument/Delete/Execute:
     post:
       tags:
