@@ -5933,124 +5933,124 @@ components:
             This field indicates the date on which the Fraud Monitor Status expires.This field is required and must be set to a present or future date when Fraud Monitor Status is set to any valid value other than null.
             The value in this field will automatically be removed when Fraud Monitor Status is removed from a card.
           type: string
-      UpdateFraudStatusResponse:
-        type: object
-        properties:
-          FraudStatus:
-            description: "This field identifies the specific type of fraud status assigned\
-                \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
-                \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
-                \ that the card has been flagged as suspected fraud, necessitating further\
-                \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
-                \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
-                \ as involved in fraudulent activities. </EM></LI> </UL>"
-            type: string
-          FraudReferStatus:
-            description: "<p>This field indicates whether a card is flagged to have\
-                \ all authorisations referred or not referred (anti-referred) to a fraud\
-                \ analyst for potential fraudulent activity. This flag is sent to the\
-                \ Falcon Fraud Manager system during authorisation processing where it\
-                \ can be used in the rules to make informed authorisation decisions.</p>Possible\
-                \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
-                \ <LI><EM> REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No\
-                \ authorizations are referred (anti-refer). </EM></LI> </UL>"
-            type: string
-          FraudReferStatusExpiryDate:
-            description: This field indicates the date on which the Fraud Refer Status
-              expires.
-            type: string
-          FraudMonitorStatus:
-            description: "The Fraud Monitor Status flag is a two-character alphanumeric\
-                \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
-                \ flag is used in order to implement specific fraud minimization strategies\
-                \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
-                \ is sent to Falcon Fraud Manager system during authorisation processing,\
-                \ allowing the system to leverage the flag in its rules and decision-making\
-                \ processes."
-            type: string
-          FraudMonitorStatusExpiryDate:
-            description: This field indicates the date on which the Fraud Monitor Status
-              expires.The value in this field will automatically be removed when Fraud
-              Monitor Status is removed from a card.
-            type: string
-      UpdateInstrumentKeyRequest:
-        required:
-          - KeyIndex
-        type: object
-        properties:
-          Brand:
-            description: Identification of the brand associated with the payment card
-            maxLength: 37
-            type: string
-          Product:
-            description: Banking product associated with the payment card
-            maxLength: 37
-            type: string
-          KeyIndex:
-            description: Identifies the Index of keys
-            type: integer
-          Key:
-            description: "This key can be populated with PVK, CVK or ACK based on the\
-                \ key type"
-            type: string
-          Description:
-            description: Description of key
-            maxLength: 140
-            type: string
-          DecimalizationTable:
-            description: Decimalization Table
-            maxLength: 32
-            minLength: 32
-            pattern: "^[0-9A-Fa-f]+$"
-            type: string
-          KeyStatus:
-            description: status of the key
-            type: string
-      UpdateInstrumentKeyResponse:
-        type: object
-        properties:
-          Brand:
-            description: Identification of the brand associated with the payment card
-            type: string
-          Product:
-            description: Banking product associated with the payment card
-            type: string
-          KeyIndex:
-            description: Identifies the Index of keys
-            type: integer
-          Key:
-            description: "This key can be populated with PVK, CVK or ACK based on the\
-                \ key type"
-            type: string
-          DecimalizationTable:
-            description: Decimalization Table
-            type: string
-          Description:
-            description: Description of key
-            type: string
-          KeyStatus:
-            description: status of the key
-            type: string
-      UpdateNetworkAccountOptionRequest:
-        required:
-          - NetworkAccountUpdaterOption
-        type: object
-        properties:
-          NetworkAccountUpdaterOption:
-            description: Identifies whether the cardholder is requesting opt-out or
-              opt-in for the Network Account Updater. The valid values are OptOut or
-              OptIn.
-            minLength: 1
-            pattern: (^$|OptOut|OptIn)
-            type: string
-      UpdateNetworkAccountOptionResponse:
-        type: object
-        properties:
-          NetworkAccountUpdaterOption:
-            description: Identifies whether the cardholder has requested opt-out or
-              opt-in for the Network Account Updater. This contains the value set in
-              the request.
-            type: string
+    UpdateFraudStatusResponse:
+      type: object
+      properties:
+        FraudStatus:
+          description: "This field identifies the specific type of fraud status assigned\
+              \ to a card. Possible responses:<UL><LI><EM> NONE-Indicates that no fraud\
+              \ status has been assigned to the card. </EM></LI> <LI><EM> SFRD-Denotes\
+              \ that the card has been flagged as suspected fraud, necessitating further\
+              \ investigation and verification to confirm any fraudulent activity. </EM></LI>\
+              \ <LI><EM> CFRD-Indicates that the card has been verified and confirmed\
+              \ as involved in fraudulent activities. </EM></LI> </UL>"
+          type: string
+        FraudReferStatus:
+          description: "<p>This field indicates whether a card is flagged to have\
+              \ all authorisations referred or not referred (anti-referred) to a fraud\
+              \ analyst for potential fraudulent activity. This flag is sent to the\
+              \ Falcon Fraud Manager system during authorisation processing where it\
+              \ can be used in the rules to make informed authorisation decisions.</p>Possible\
+              \ responses:<UL><LI><EM> NONE-No referral or anti-referral is assigned.</EM></LI>\
+              \ <LI><EM> REFE-All authorizations are referred. </EM></LI> <LI><EM> ANTI-No\
+              \ authorizations are referred (anti-refer). </EM></LI> </UL>"
+          type: string
+        FraudReferStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Refer Status
+            expires.
+          type: string
+        FraudMonitorStatus:
+          description: "The Fraud Monitor Status flag is a two-character alphanumeric\
+              \ field utilized to indicate whether a card is flagged for fraud monitoring.This\
+              \ flag is used in order to implement specific fraud minimization strategies\
+              \ within Falcon Fraud Manager system.<br/>The Fraud Monitor Status flag\
+              \ is sent to Falcon Fraud Manager system during authorisation processing,\
+              \ allowing the system to leverage the flag in its rules and decision-making\
+              \ processes."
+          type: string
+        FraudMonitorStatusExpiryDate:
+          description: This field indicates the date on which the Fraud Monitor Status
+            expires.The value in this field will automatically be removed when Fraud
+            Monitor Status is removed from a card.
+          type: string
+    UpdateInstrumentKeyRequest:
+      required:
+        - KeyIndex
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          maxLength: 37
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          maxLength: 37
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+              \ key type"
+          type: string
+        Description:
+          description: Description of key
+          maxLength: 140
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9A-Fa-f]+$"
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateInstrumentKeyResponse:
+      type: object
+      properties:
+        Brand:
+          description: Identification of the brand associated with the payment card
+          type: string
+        Product:
+          description: Banking product associated with the payment card
+          type: string
+        KeyIndex:
+          description: Identifies the Index of keys
+          type: integer
+        Key:
+          description: "This key can be populated with PVK, CVK or ACK based on the\
+              \ key type"
+          type: string
+        DecimalizationTable:
+          description: Decimalization Table
+          type: string
+        Description:
+          description: Description of key
+          type: string
+        KeyStatus:
+          description: status of the key
+          type: string
+    UpdateNetworkAccountOptionRequest:
+      required:
+        - NetworkAccountUpdaterOption
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder is requesting opt-out or
+            opt-in for the Network Account Updater. The valid values are OptOut or
+            OptIn.
+          minLength: 1
+          pattern: (^$|OptOut|OptIn)
+          type: string
+    UpdateNetworkAccountOptionResponse:
+      type: object
+      properties:
+        NetworkAccountUpdaterOption:
+          description: Identifies whether the cardholder has requested opt-out or
+            opt-in for the Network Account Updater. This contains the value set in
+            the request.
+          type: string
     UpdateBundleResponse:
       type: object
       properties:
