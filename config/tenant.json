@@ -24,14 +24,14 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["party-directory-1.0.0", "agreement-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "customer-access-entitlement-1.0.0", "account-servicing-1.0.0", "exception-management-1.0.0", "position-keeping-1.0.0", "account-processing-1.0.0", "transaction-capture-1.0.0", "servicing-event-history-1.0.0"]
+        "apiSpecFileNames": ["party-directory-1.0.0", "agreement-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "customer-access-entitlement-1.0.0", "account-servicing-1.0.0", "exception-management-1.0.0", "position-keeping-1.0.0", "account-processing-1.0.0", "transaction-capture-1.0.0", "servicing-event-history-1.0.0", "direct-debit-1.0.0"]
       }
   ],
   "product": {
     "featured": true,
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
-    "description": "To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
+    "description": "To onboard into Developer Studio, each product must support APIs to retrieve product-specific specs and docs.",
+    "longDescription":"To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
     "apiSpecification": "/v1/apis/VisionNext",
     "layout": "/v1/layouts/VisionNext",
     "documentation": "/v1/docs/VisionNext",
