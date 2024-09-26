@@ -1,0 +1,1016 @@
+---
+openapi: 3.0.3
+info:
+  title: direct-debit
+  version: 1.1.0-36
+tags:
+- name: Direct Debit Arrangement
+- name: Direct Debit Mandate
+- name: Direct Debit Mandate Arrangement
+paths:
+  /DirectDebit/V1/Agreement/{agreementId}/DirectDebitArrangement/Retrieve:
+    get:
+      tags:
+      - Direct Debit Arrangement
+      summary: |-
+        This API allows a user to retrieve all details of a Direct Debit arrangement along with all
+        the Mandate arrangements and Mandate information.
+      description: |-
+        This API allows a user to retrieve all details of a Direct Debit arrangement along with all
+        the Mandate arrangements and Mandate information.
+      operationId: retrieveDdArrangement
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique Identifier of an Account
+        required: true
+        schema:
+          maxLength: 37
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveDirectDebitMandateArrangementResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXDDBTBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTGT004\
+            \ : No Direct Debit linked to Account Number.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTGT004\
+            \ : Error while retrieving Direct Debit Mandate Arrangement.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve Direct Debit Arrangement
+      x-group-name: Direct Debit Management
+  /DirectDebit/V1/DDArrangementAndMandates/Initiate:
+    post:
+      tags:
+      - Direct Debit Mandate Arrangement
+      summary: API to create a setup a new Direct debit arrangement for an agreement
+        with existing mandates or new mandates.
+      description: API to create a setup a new Direct debit arrangement for an agreement
+        with existing mandates or new mandates.
+      operationId: initiate
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateDirectDebitSetupRequest'
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  NextCollectionAmount:
+                    description: The amount that is estimated to be requested from
+                      the clearing house next time..
+                    type: object
+                    allOf:
+                    - $ref: '#/components/schemas/AmountDto'
+                    - $ref: '#/components/schemas/AmountDto'
+                    - $ref: '#/components/schemas/AmountDto'
+                    - $ref: '#/components/schemas/AmountDto'
+                    - $ref: '#/components/schemas/AmountDto'
+                  NextCollectionDate:
+                    description: The Effective-date of the next financial request
+                      that would be made to clearing house.
+                    type: string
+                  NextRequestDate:
+                    description: The date when the next financial request would be
+                      sent to clearing house.
+                    type: string
+                  EffectiveInCurrentCycle:
+                    description: Flag is true if the DDMandateArrangement is effective
+                      in current cycle.
+                    type: string
+                  DDMandateArrangements:
+                    description: List of DirectDebit Mandate Arrangements.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DDMandateArrangements'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTAD003\
+            \ : Amount is required when Amount Type is 'fixed'.</em></li><li><em>HLXDDBTAD004\
+            \ : Amount is not allowed when AmountType is 'MinimumPayment' or 'FullBalance'.<li><em>HLXDDBTMA009\
+            \ : MandateId is duplicate.</em></li></em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTAD002\
+            \ : Error while persisting Direct Debit Arrangement.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
+      x-proxy-name: Create Direct Debit Setup (Mandates and Arrangements)
+      x-group-name: Direct Debit Management
+  /DirectDebit/V1/DirectDebitArrangement/Initiate:
+    post:
+      tags:
+      - Direct Debit Arrangement
+      summary: The API is used to add direct debit arrangement for an Agreement.
+      description: "The purpose of this API to create a new DirectDebit Arrangement\
+        \ for an Agreement. The API will accept Customer selection fields like AmountType,\
+        \ FixedAmount etc."
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateDirectDebitArrangementRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  DirectDebitArrangementId:
+                    description: Direct Debit Arrangement Identification.
+                    type: string
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTAD003\
+            \ : Amount is required when Amount Type is 'fixed'.</em></li><li><em>HLXDDBTAD004\
+            \ : Amount is not allowed when AmountType is 'MinimumPayment' or 'FullBalance'.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTAD002\
+            \ : Error while persisting Direct Debit Arrangement.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Add Direct Debit Arrangement
+      x-group-name: Direct Debit Management
+  /DirectDebit/V1/DirectDebitMandate/Initiate:
+    post:
+      tags:
+      - Direct Debit Mandate
+      summary: API to create a new Direct Debit Mandate for a Party.
+      description: "API to create a new Direct Debit Mandate for a Party. The mandate\
+        \ will store information of the Payer account and fields like Purpose, SignedDate,\
+        \ CreationDatetime."
+      operationId: initiateMandate
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateDirectDebitMandateRequest'
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mandates:
+                    description: List of Direct Debit Mandate Identification.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mandate1'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTMA009\
+            \ : MandateId is duplicate.</em></li><li><em>HLXDDBTAD005 : MandateId\
+            \ already exists.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codeslist:</b><br/><ul><li><em>HLXDDBTMA007\
+            \ : PayerAccount details missing for the provided MandateId.</em></li><li><em>HLXDDBTMA004\
+            \ : ClearingSystemIdentificationCode is required.</em></li><li><em>HLXDDBTMA005\
+            \ : AccountIdentification is required.</em></li><li><em>HLXDDBTMA006 :\
+            \ ClearingSystemMemberIdentification is required.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTAD001\
+            \ : Error while persisting Direct Debit Mandate.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Add Direct Debit Mandate
+      x-group-name: Direct Debit Management
+  /DirectDebit/V1/Party/{partyId}/DirectDebitMandate/Retrieve:
+    get:
+      tags:
+      - Direct Debit Mandate
+      summary: This API allows a user to retrieve all details of Direct Debit Mandates
+        for a given party.
+      description: This API allows a user to retrieve all details of Direct Debit
+        Mandates for a given party.
+      operationId: retrieve
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          type: string
+      - name: partyId
+        in: path
+        description: Fiserv Enterprise Customer ID (FECID)
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mandates:
+                    description: List of Direct Debit Mandates.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mandate'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTBR001\
+            \ : Party ID exceeds maximum 37 length allowed.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTGT001\
+            \ : No Direct Debit Mandate linked with provided PartyId.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXDDBTGT002\
+            \ : Error while retrieving Direct Debit Mandate.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve Direct Debit Mandate
+      x-group-name: Direct Debit Management
+components:
+  schemas:
+    AmountDto:
+      type: object
+      properties:
+        Value:
+          description: Represents the monetary value associated.
+          type: number
+        Currency:
+          description: "Represents the currency associated, expressed in ISO 4217\
+            \ currency code."
+          type: string
+    DDMandateArrangement:
+      type: object
+      properties:
+        EffectiveDate:
+          $ref: '#/components/schemas/LocalDate'
+        CancelledDate:
+          $ref: '#/components/schemas/LocalDate'
+        Action:
+          type: string
+        Status:
+          type: string
+        Mandate:
+          $ref: '#/components/schemas/Mandate2'
+    DDMandateArrangements:
+      type: object
+      properties:
+        DDMandateArrangementId:
+          description: Direct Debit Mandate Arrangement Identification.
+          type: string
+        Mandate:
+          description: This is the Mandate. This can be supplied by the Bank or would
+            be internally generated in case not supplied. The mandate ID needs to
+            be unique for an FI.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Mandate'
+    DDMandateArrangements1:
+      type: object
+      properties:
+        Mandate:
+          description: Details of the Direct Debit Mandate associated with Arrangement.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Mandate'
+    DirectDebitLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementId:
+          type: string
+        Action:
+          type: string
+        AmendmentType:
+          type: string
+        CustomerOptedAmountType:
+          type: string
+        CustomerOptedAmount:
+          $ref: '#/components/schemas/AmountDto'
+        NextCollectionAmount:
+          $ref: '#/components/schemas/AmountDto'
+        NextCollectionDate:
+          type: string
+        DDMandateArrangements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DDMandateArrangement'
+    DirectDebitLifeCycleEvent1:
+      type: object
+      properties:
+        EventName:
+          type: string
+        AgreementId:
+          type: string
+        RequestType:
+          type: string
+        PrenotificationType:
+          type: string
+        CollectionAmount:
+          type: string
+        CollectionDate:
+          $ref: '#/components/schemas/LocalDate'
+        Mandate:
+          $ref: '#/components/schemas/Mandate2'
+    GeneratedInstructionEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementId:
+          type: string
+        RequestType:
+          type: string
+        PrenotificationType:
+          type: string
+        CollectionAmount:
+          $ref: '#/components/schemas/AmountDto'
+        CollectionDate:
+          $ref: '#/components/schemas/LocalDate'
+        Mandate:
+          $ref: '#/components/schemas/Mandate2'
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelixMessage'
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    InitiateDirectDebitArrangementRequest:
+      type: object
+      properties:
+        AgreementId:
+          description: The identification of the agreement for which the DirectDebit
+            arrangement applies.
+          type: string
+        CustomerOptedAmountType:
+          description: This indicates whether end-customer wants to pay fixed amount
+            or Minimum Payment or Full Balance in every billing period using the Direct
+            Debit Arrangement.
+          type: string
+        CustomerOptedAmount:
+          description: The fixed amount that the end-customer has selected to be paid
+            to his Credit account in every Billing period. This amount is required
+            only if the AmountType is Fixed.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+    InitiateDirectDebitArrangementResponse:
+      type: object
+      properties:
+        DirectDebitArrangementId:
+          description: Direct Debit Arrangement Identification.
+          type: string
+    InitiateDirectDebitMandateRequest:
+      type: object
+      properties:
+        PartyId:
+          description: The PartyId of the end-customer who has authorised the mandate.
+          type: string
+        Mandates:
+          description: List of Direct Debit Mandates.
+          type: array
+          items:
+            $ref: '#/components/schemas/Mandate'
+    InitiateDirectDebitMandateResponse:
+      type: object
+      properties:
+        Mandates:
+          description: List of Direct Debit Mandate Identification.
+          type: array
+          items:
+            $ref: '#/components/schemas/Mandate1'
+    InitiateDirectDebitSetupRequest:
+      type: object
+      properties:
+        AgreementId:
+          description: The identification of the agreement for which the DirectDebit
+            arrangement applies.
+          type: string
+        CustomerOptedAmountType:
+          description: |-
+            This indicates whether end-customer wants to pay fixed " +
+                        "amount or Minimum Payment or Full Balance in every billing period using the Direct Debit Arrangement.
+          type: string
+        CustomerOptedAmount:
+          description: The fixed amount that the end-customer has selected to be paid
+            to his Credit account in every Billing period. This amount is required
+            only if the AmountType is Fixed.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+        DDMandates:
+          description: List of DirectDebit Mandates.
+          type: array
+          items:
+            $ref: '#/components/schemas/Mandate'
+    InitiateDirectDebitSetupResponse:
+      type: object
+      properties:
+        NextCollectionAmount:
+          description: The amount that is estimated to be requested from the clearing
+            house next time..
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+        NextCollectionDate:
+          description: The Effective-date of the next financial request that would
+            be made to clearing house.
+          type: string
+        NextRequestDate:
+          description: The date when the next financial request would be sent to clearing
+            house.
+          type: string
+        EffectiveInCurrentCycle:
+          description: Flag is true if the DDMandateArrangement is effective in current
+            cycle.
+          type: string
+        DDMandateArrangements:
+          description: List of DirectDebit Mandate Arrangements.
+          type: array
+          items:
+            $ref: '#/components/schemas/DDMandateArrangements'
+    LocalDate:
+      format: date
+      type: string
+      example: 2022-03-10
+    Mandate:
+      type: object
+      properties:
+        MandateId:
+          description: This is the identification of the Mandate. This can be supplied
+            by the Bank or would be internally generated in case not supplied. This
+            needs to be unique for an FI.
+          type: string
+        Purpose:
+          description: Purpose or description associated with the mandate.
+          type: string
+        SignedDate:
+          description: The date when the Mandate was signed by the end Customer who
+            has authorised the Mandate.
+          type: string
+        PayerAccount:
+          description: Payer account details associated with Direct Debit mandate.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PayerAccountDto'
+    Mandate1:
+      type: object
+      properties:
+        MandateId:
+          description: This is the identification of the Mandate. This can be supplied
+            by the Bank or would be internally generated in case not supplied. This
+            needs to be unique for an FI.
+          type: string
+        Purpose:
+          description: Purpose or description associated with the mandate.
+          type: string
+        PayerAccount:
+          description: Payer account details associated with Direct debit mandate.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PayerAccountDto'
+        SignedDate:
+          description: The date when the Mandate was signed by the end Customer who
+            has authorised the Mandate.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+    Mandate2:
+      type: object
+      properties:
+        MandateId:
+          type: string
+        Action:
+          type: string
+        Purpose:
+          type: string
+        SignedDate:
+          type: string
+        PayerAccount:
+          $ref: '#/components/schemas/PayerAccount'
+    Mandate3:
+      type: object
+      properties:
+        MandateId:
+          description: This is the identification of the Mandate. This can be supplied
+            by the Bank or would be internally generated in case not supplied. This
+            needs to be unique for an FI.
+          type: string
+        Purpose:
+          description: Purpose or description associated with the mandate.
+          type: string
+        SignedDate:
+          description: The date when the Mandate was signed by the end Customer who
+            has authorised the Mandate.
+          type: string
+        PayerAccount:
+          description: Payer account details associated with Direct Debit mandate.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PayerAccountDto'
+    PayerAccount:
+      type: object
+      properties:
+        ClearingSystemIdentificationCode:
+          type: string
+        AccountIdentification:
+          type: string
+        ClearingSystemMemberIdentification:
+          type: string
+    PayerAccountDto:
+      type: object
+      properties:
+        ClearingSystemIdentificationCode:
+          description: Specifies the clearing system identification code.
+          type: string
+        AccountIdentification:
+          description: Account number associated with External Clearing System.
+          type: string
+        ClearingSystemMemberIdentification:
+          description: Specifies the clearing system member identification associated
+            with the external account.
+          type: string
+    RetrieveDirectDebitArrangementResponse:
+      type: object
+      properties:
+        DDMandateArrangementId:
+          description: DDMandate Arrangement Identification.
+          type: string
+        EffectiveDate:
+          description: Date when the DDMandateArrangement becomes effective.
+          type: string
+        CancelledDate:
+          description: DateTime when the DDMandateArrangement had been cancelled.
+          type: string
+        Status:
+          description: Status of the DirectDebit Mandate Arrangement.
+          type: string
+        PrenoteSentDate:
+          description: DateTime when the prenote has been sent to the clearing house
+            on the back of the new Mandate setup.
+          type: string
+        Mandate:
+          description: Details of the Direct Debit Mandate associated with Arrangement.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Mandate'
+    RetrieveDirectDebitMandateArrangementResponse:
+      type: object
+      properties:
+        Status:
+          description: Status of the DirectDebit Arrangement
+          type: string
+        CustomerOptedAmountType:
+          description: This indicates whether end-customer wants to pay fixed amount
+            or Minimum Payment or Full Balance in every billing period using the Direct
+            Debit Arrangement.
+          type: string
+        CustomerOptedAmount:
+          description: The fixed amount that the end-customer has selected to be paid
+            to his Credit account in every Billing period. This amount is required
+            only if the AmountType is Fixed.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+        LastCollectionAmount:
+          description: The amount in the financial request that was last sent to Clearing
+            house.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+        LastCollectionDate:
+          description: The Effective-date of the last financial request that was made
+            to clearing house.
+          type: string
+        LastRequestDate:
+          description: The date when the last financial request was sent to clearing
+            house
+          type: string
+        NextCollectionAmount:
+          description: The amount that is estimated to be requested from the clearing
+            house next time.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AmountDto'
+        NextCollectionDate:
+          description: The Effective-date of the next financial request that would
+            be made to clearing house.
+          type: string
+        NextRequestDate:
+          description: The date when the next financial request would be sent to clearing
+            house.
+          type: string
+        DDMandateArrangements:
+          description: Direct Debit Mandate Arrangements
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrieveDirectDebitArrangementResponse'
+    RetrieveDirectDebitMandateResponse:
+      type: object
+      properties:
+        Mandates:
+          description: List of Direct Debit Mandates.
+          type: array
+          items:
+            $ref: '#/components/schemas/Mandate'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
