@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: servicing-event-history
-  version: 1.1.0-7
+  version: 1.1.0-8
 tags:
 - name: Customer Servicing
 paths:
@@ -53,31 +53,28 @@ paths:
             \ has to be either MNUL, AUTO or EXTR.</em></li><li><em>HLXSNEHBR001 :\
             \ Channel has to be either UINT, MBAP, INTR, EVNT or SYGN.</em></li><li><em>HLXSNEHBR001\
             \ : FromCreationDateTime must be valid and in YYYY-MM-DD'T'HH:MM:SS format.</em></li><li><em>HLXSNEHBR001\
-            \ : FromCreationDateTimeFromCreationDateTime or ToCreationDateTime cannot\
-            \ be a future date and time.</em></li><li><em>HLXSNEHBR001 : FromCreationDateTimeInvalid\
-            \ API request. The request contains a ToCreationDateTime value, but the\
-            \ FromCreationDateTime value is missing.</em></li><li><em>HLXSNEHBR001\
-            \ : ToCreationDateTime must be valid and in YYYY-MM-DD'T'HH:MM:SS format.</em></li><li><em>HLXSNEHBR001\
-            \ : ToCreationDateTimeFromCreationDateTime or ToCreationDateTime cannot\
-            \ be a future date and time.</em></li><li><em>HLXSNEHBR001 : ToCreationDateTimeInvalid\
-            \ API request. The request contains a FromCreationDateTime value, but\
-            \ the ToCreationDateTime value is missing.</em></li><li><em>HLXSNEHBR001\
-            \ : ToCreationDateTimeToCreationDateTime must be greater than FromCreationDateTime.</em></li><li><em>HLXSNEHBR001\
+            \ : FromCreationDateTime or ToCreationDateTime cannot be a future date\
+            \ and time.</em></li><li><em>HLXSNEHBR001 : Invalid API request. The request\
+            \ contains a ToCreationDateTime value, but the FromCreationDateTime value\
+            \ is missing.</em></li><li><em>HLXSNEHBR001 : ToCreationDateTime must\
+            \ be valid and in YYYY-MM-DD'T'HH:MM:SS format.</em></li><li><em>HLXSNEHBR001\
+            \ : Invalid API request. The request contains a FromCreationDateTime value,\
+            \ but the ToCreationDateTime value is missing.</em></li><li><em>HLXSNEHBR001\
+            \ : ToCreationDateTime must be greater than FromCreationDateTime.</em></li><li><em>HLXSNEHBR001\
             \ : PageStartIndex has an invalid value. It must be an integer.</em></li><li><em>HLXSNEHBR001\
-            \ : PageStartIndexPageStartIndex cannot be less than 0. Please provide\
-            \ a valid value.</em></li><li><em>HLXSNEHBR001 : PageStartIndexInvalid\
-            \ API request. The request contains a PageLimit value, but the PageStartIndex\
-            \ value is missing.</em></li><li><em>HLXSNEHBR001 : PageLimit has an invalid\
-            \ value. It must be an integer.</em></li><li><em>HLXSNEHBR001 : PageLimitPageLimit\
-            \ cannot be less than 1. Please provide a valid value.</em></li><li><em>HLXSNEHBR001\
-            \ : PageLimitInvalid API request. The request contains a PageStartIndex\
-            \ value, but the PageLimit value is missing.</em></li><li><em>HLXSNEHBR001\
-            \ : SortOrder has to be either ASCN or DESC.</em></li><li><em>HLXSNEHBR001\
-            \ : SortOrderInvalid API request. The request contains a SortField value,\
-            \ but the SortOrder value is missing.</em></li><li><em>HLXSNEHBR001 :\
-            \ SortField has to be either USID, USNM, CDTM or CHAN.</em></li><li><em>HLXSNEHBR001\
-            \ : SortFieldInvalid API request. The request contains a SortOrder value,\
-            \ but the SortField value is missing.</em></li></ul>"
+            \ : PageStartIndex cannot be less than 0. Please provide a valid value.</em></li><li><em>HLXSNEHBR001\
+            \ : Invalid API request. The request contains a PageLimit value, but the\
+            \ PageStartIndex value is missing.</em></li><li><em>HLXSNEHBR001 : PageLimit\
+            \ has an invalid value. It must be an integer.</em></li><li><em>HLXSNEHBR001\
+            \ : PageLimit cannot be less than 1. Please provide a valid value.</em></li><li><em>HLXSNEHBR001\
+            \ : Invalid API request. The request contains a PageStartIndex value,\
+            \ but the PageLimit value is missing.</em></li><li><em>HLXSNEHBR001 :\
+            \ SortOrder has to be either ASCN or DESC.</em></li><li><em>HLXSNEHBR001\
+            \ : Invalid API request. The request contains a SortField value, but the\
+            \ SortOrder value is missing.</em></li><li><em>HLXSNEHBR001 : SortField\
+            \ has to be either USID, USNM, CDTM or CHAN.</em></li><li><em>HLXSNEHBR001\
+            \ : Invalid API request. The request contains a SortOrder value, but the\
+            \ SortField value is missing.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -95,7 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "404":
-          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXSNEHBR001\
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXSNEHNF001\
             \ : There are no records present for the given criteria.</em></li></ul>"
           content:
             application/json:
@@ -311,10 +308,15 @@ components:
           description: The User Name of the Agent who creates the Servicing Event.
           type: string
         Category:
-          description: Category of the Servicing Event.
+          description: "Category of the Servicing Event. Valid values are: <UL><LI>\
+            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
+            \ </UL>"
           type: string
         Channel:
-          description: Originating channel of the Servicing Event.
+          description: "Originating channel of the Servicing Event. Valid values are:\
+            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
+            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
+            \ </LI></UL>"
           type: string
     ServicingRecordRetrievalRequest:
       type: object
@@ -339,10 +341,15 @@ components:
           description: The User Name of the Agent who creates the Servicing Event.
           type: string
         Category:
-          description: Category of the Servicing Event.
+          description: "Category of the Servicing Event. Valid values are: <UL><LI>\
+            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
+            \ </UL>"
           type: string
         Channel:
-          description: Originating channel of the Servicing Event.
+          description: "Originating channel of the Servicing Event. Valid values are:\
+            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
+            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
+            \ </LI></UL>"
           type: string
         Description:
           description: This field is used to perform a wildcard search based on the
@@ -388,7 +395,7 @@ components:
             \ servicing event list. If SortOrder is provided in the request, SortField\
             \ must also be provided. Valid values are: <UL><LI> USID (UserId) </LI><LI>\
             \ USNM (UserName) </LI><LI> CDTM (CreationDateTime) </LI><LI> CHAN (Channel)\
-            \ </LI></UL> "
+            \ </LI></UL>"
           type: string
     ServicingRecordRetrievalResponse:
       type: object
@@ -422,10 +429,15 @@ components:
           description: The User Name of the Agent who creates the Servicing Event.
           type: string
         Category:
-          description: Category of the Servicing Event.
+          description: "Category of the Servicing Event. Valid values are: <UL><LI>\
+            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
+            \ </UL>"
           type: string
         Channel:
-          description: Originating channel of the Servicing Event.
+          description: "Originating channel of the Servicing Event. Valid values are:\
+            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
+            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
+            \ </LI></UL>"
           type: string
         Description:
           description: Description of the servicing event.
