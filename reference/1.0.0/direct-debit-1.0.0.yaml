@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: direct-debit
-  version: 1.1.0-36
+  version: 1.1.0-37
 tags:
 - name: Direct Debit Arrangement
 - name: Direct Debit Mandate
@@ -291,8 +291,8 @@ paths:
             schema:
               $ref: '#/components/schemas/InitiateDirectDebitArrangementRequest'
       responses:
-        "200":
-          description: OK
+        "201":
+          description: CREATED
           content:
             application/json:
               schema:
@@ -370,6 +370,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
       x-proxy-name: Add Direct Debit Arrangement
       x-group-name: Direct Debit Management
   /DirectDebit/V1/DirectDebitMandate/Initiate:
@@ -783,9 +785,9 @@ components:
             arrangement applies.
           type: string
         CustomerOptedAmountType:
-          description: |-
-            This indicates whether end-customer wants to pay fixed " +
-                        "amount or Minimum Payment or Full Balance in every billing period using the Direct Debit Arrangement.
+          description: This indicates whether end-customer wants to pay fixed amount
+            or Minimum Payment or Full Balance in every billing period using the Direct
+            Debit Arrangement.
           type: string
         CustomerOptedAmount:
           description: The fixed amount that the end-customer has selected to be paid
@@ -860,17 +862,17 @@ components:
         Purpose:
           description: Purpose or description associated with the mandate.
           type: string
-        PayerAccount:
-          description: Payer account details associated with Direct debit mandate.
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/PayerAccountDto'
         SignedDate:
           description: The date when the Mandate was signed by the end Customer who
             has authorised the Mandate.
           type: string
           allOf:
           - $ref: '#/components/schemas/LocalDate'
+        PayerAccount:
+          description: Payer account details associated with Direct debit mandate.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PayerAccountDto'
     Mandate2:
       type: object
       properties:
