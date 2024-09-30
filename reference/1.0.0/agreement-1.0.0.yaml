@@ -3458,6 +3458,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Balance'
+        PaymentDueDate:
+          format: YYYY-MM-DD
+          description: Date by when the payment should be received for the current
+            due amount.
+          type: string
+        CurrentDueAmount:
+          description: The minimum payment amount still unpaid from the previous billing
+              cycle.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount1'
+        PastDueAmount:
+          description: The amount by which the customer has failed to pay the minimum
+              payment amount from the previous billing cycles. (Excludes any current
+              due amount)
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount1'
+        TotalDueAmount:
+          description: "The contractual minimum payment due to be made for an account,\
+                    \ including any balance in arrears from prior billing cycles.Note: When\
+                    \ the account does not have any arrears for a given billing date, the\
+                    \ total due amount will be same as the current due amount."
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount1'
     RetrieveAgreementFacilityAndFeatureResponse:
       type: object
       properties:
