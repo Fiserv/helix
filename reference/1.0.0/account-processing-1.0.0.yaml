@@ -2,43 +2,43 @@
 openapi: 3.0.3
 info:
   title: account-processing
-  version: 1.1.0-SNAPSHOT
+  version: 1.1.0-187
 tags:
-- name: Account Pricing
-- name: Agreement Repayment Information
-- name: Billing Information
-- name: Statement Information
+  - name: Account Pricing
+  - name: Agreement Repayment Information
+  - name: Billing Information
+  - name: Statement Information
 paths:
   /AccountProcessing/V1/Agreement/{agreementId}/AgreementRepayment/Retrieve:
     get:
       tags:
-      - Agreement Repayment Information
+        - Agreement Repayment Information
       summary: The API is used to retrieve agreement repayment details for an account.
       description: The API is used to retrieve agreement repayment details for an
         account.
       operationId: retrieveAgreementRepayment
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        description: Agreement Id
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
       responses:
         "200":
           description: OK
@@ -121,87 +121,43 @@ paths:
   /AccountProcessing/V1/Agreement/{agreementId}/BilledDatesWithSummary/Retrieve:
     get:
       tags:
-      - Billing Information
+        - Billing Information
       summary: 'The API is used to provide the billings information for all the billings
         performed along with billing date and other details.  '
       description: This API allows a user to view billings information for all the
         billings performed along with billing date and other details.
       operationId: retrieveBillingSummary
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        description: Agreement Id
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 items:
                   $ref: '#/components/schemas/BillingSummaryResponse'
-                properties:
-                  BilledDate:
-                    type: string
-                  PaymentDueDate:
-                    type: string
-                  PeriodStartDate:
-                    type: string
-                  PeriodEndDate:
-                    type: string
-                  NextBillingDate:
-                    type: string
-                  StatementedDate:
-                    type: string
-                  CurrentDueAmount:
-                    $ref: '#/components/schemas/AmountDto'
-                  pastDueAmount:
-                    description: The sum of all the past due amounts at the agreement
-                      level (excludes the current due amount).
-                    type: object
-                    allOf:
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                  TotalDueAmount:
-                    description: "The contractual minimum payment due to be made for\
-                      \ an account, including any balance in arrears from prior billing\
-                      \ cycles.Note: When the account does not have any arrears for\
-                      \ a given billing date, the total due amount will be same as\
-                      \ the current due amount."
-                    type: object
-                    allOf:
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                      - $ref: '#/components/schemas/AmountDto'
-                  OpeningBalanceAmount:
-                    $ref: '#/components/schemas/AmountDto'
-                  ClosingBalanceAmount:
-                    $ref: '#/components/schemas/AmountDto'
-                  TotalInterestAmount:
-                    $ref: '#/components/schemas/AmountDto'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
             \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXACPRBR001\
@@ -273,36 +229,212 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve Agreement Billing information
       x-group-name: Billing Information
+  /AccountProcessing/V1/Agreement/{agreementId}/BillingDate/{billingDate}/BilledDataWithPositions/Retrieve:
+    get:
+      tags:
+        - Statement Information
+      summary: The API is used to retrieve billing details for an account as well
+        as all positions under account.
+      description: The API is used to retrieve billing details for an account as well
+        as all positions under account.
+      operationId: retrieveBillingWithPositionDetails
+      parameters:
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
+        - name: billingDate
+          in: path
+          description: Billing Date
+          required: true
+          schema:
+            pattern: "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/BillingWithPositionsResponse'
+                properties:
+                  BillingDate:
+                    type: string
+                  PaymentDueDate:
+                    type: string
+                  PeriodStartDateTime:
+                    type: string
+                  PeriodEndDateTime:
+                    type: string
+                  NextBillingDate:
+                    type: string
+                  CurrentDueAmount:
+                    $ref: '#/components/schemas/AmountDto'
+                  PastDueAmount:
+                    description: The sum of all the past due amounts at the agreement
+                      level (excludes the current due amount).
+                    type: object
+                    allOf:
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                  TotalDueAmount:
+                    description: |-
+                      The contractual minimum payment due to be made for an account, including any balance in arrears from prior billing cycles.
+                      Note: When the account does not have any arrears for a given billing date, the total due amount will be same as the current due amount.
+                    type: object
+                    allOf:
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                      - $ref: '#/components/schemas/AmountDto'
+                  OpeningBalanceAmount:
+                    $ref: '#/components/schemas/AmountDto'
+                  TotalInterestAmount:
+                    $ref: '#/components/schemas/AmountDto'
+                  ClosingBalanceAmount:
+                    $ref: '#/components/schemas/AmountDto'
+                  StatementedDate:
+                    $ref: '#/components/schemas/LocalDate'
+                  BillingPeriods:
+                    description: |-
+                      The system will store the last x number of billing period past dues.
+
+                      (where x is the DelinquencyManagement (MaxCyclesForAging) Capability setting).
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BillingPeriodSnapshotDto'
+                  PositionDue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionDueDto'
+                  PositionBalance:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionBalanceDto'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT001\
+            \ : Error Retrieving the Account Repayment Details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve billing details for an account as well as all positions
+        under account
+      x-group-name: Statement Information
   /AccountProcessing/V1/Agreement/{agreementId}/InterestDetails/Request:
     get:
       tags:
-      - Account Pricing
+        - Account Pricing
       summary: The API is used to retrieve interest details for an account
       description: "The purpose of this API is to retrieve the interest details for\
         \ an account. If the accrued interest details are available, the response\
         \ will include those specific details. If the accrued interest details are\
         \ not available, the response will include the details from the feature."
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        description: Agreement Id
-        required: true
-        schema:
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
       responses:
         "200":
           description: OK
@@ -394,34 +526,32 @@ paths:
   /AccountProcessing/V1/Agreement/{agreementId}/OutstandingRepaymentAmount/Retrieve:
     get:
       tags:
-      - Statement Information
+        - Statement Information
       summary: The API is used to inquire minimum due amount and payment due date.
       description: "This API allows a user to inquire about the outstanding payment\
         \ due amounts and payment due date for a given account, using AgreementID.\
         \ This API is relevant for credit product accounts only."
       operationId: retrieveOutstandingRepaymentAmount
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        description: Agreement Id
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -499,37 +629,155 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Retrieve outstanding payment due information
       x-group-name: Statement Information
+  /AccountProcessing/V1/Agreement/{agreementId}/StatementDate/{statementDate}/StatementedDataWithPositions/Retrieve:
+    get:
+      tags:
+        - Statement Information
+      summary: The API is used to retrieve the statement data with position details
+        based on agreementID and statement date.
+      description: The API is used to retrieve the statement data with position details
+        based on agreementID and statement date.
+      operationId: retrieveStatementWithPositionDetails
+      parameters:
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
+        - name: statementDate
+          in: path
+          description: Statement Date
+          required: true
+          schema:
+            pattern: "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveStatementWithPositionResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXACPRBR001\
+            \ : Account Number is invalid, please provide valid value.</em></li><li><em>HLXACPRBR001\
+            \ : Account Number exceeds maximum 37 length allowed.</em></li><li><em>HLXACPRBR001\
+            \ : Invalid statement date format.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT005\
+            \ : No statement available for the provided statement date and AgreementID.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXPNKPGT005\
+            \ : Error Retrieving the Agreement Statement Details.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Retrieve Statement Data With Position Details Information
+      x-group-name: Statement Information
   /AccountProcessing/V1/Agreement/{agreementId}/StatementedDatesWithSummary/Retrieve:
     get:
       tags:
-      - Statement Information
+        - Statement Information
       summary: 'The API is used to retrieve all the StatementedDates with Statement
         Summary information '
       description: 'The API is used to retrieve all the StatementedDates with Statement
         Summary information '
       operationId: retrieveStatementDatesWithStatementSummary
       parameters:
-      - name: fi-id
-        in: header
-        description: Financial Institution Identification
-        required: true
-        schema:
-          maxLength: 37
-          type: string
-      - name: brand-id
-        in: header
-        description: Brand Identification
-        schema:
-          maxLength: 37
-          type: string
-      - name: agreementId
-        in: path
-        description: Agreement Id
-        required: true
-        schema:
-          maxLength: 37
-          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-          type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+        - name: agreementId
+          in: path
+          description: Agreement Id
+          required: true
+          schema:
+            maxLength: 37
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            type: string
       responses:
         "200":
           description: OK
@@ -612,6 +860,74 @@ paths:
       x-group-name: Statement Information
 components:
   schemas:
+    Acceptor:
+      type: object
+      properties:
+        identification:
+          description: acceptor identification
+          type: string
+        nameAndLocation:
+          description: acceptor name and Location
+          type: string
+        country:
+          description: acceptor country
+          type: string
+        sponsoredMerchant:
+          description: acceptor sponsored Merchant
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/SponsoredMerchant'
+    Acquirer:
+      type: object
+      properties:
+        identification:
+          description: Acquirer identification
+          type: string
+    AdditionalData:
+      type: object
+      properties:
+        transactionCode:
+          description: Additional Data transaction Code
+          type: string
+    AdditionalInformation:
+      type: object
+      properties:
+        type:
+          description: Additional Information type
+          type: string
+    AdditionalService:
+      type: object
+      properties:
+        type:
+          description: Additional Service Type
+          type: string
+    AgreementBilledEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
+          type: string
+        ProductId:
+          type: string
+        AgreementId:
+          type: string
+        BillingDate:
+          type: string
+        BillingPeriodStartDate:
+          type: string
+        BillingPeriodEndDate:
+          type: string
+        NextBillingDate:
+          type: string
+        Status:
+          type: string
     AgreementBillingEvent:
       type: object
       properties:
@@ -625,144 +941,71 @@ components:
           $ref: '#/components/schemas/LocalDate'
         NextBillingDate:
           $ref: '#/components/schemas/LocalDate'
-        BillingStatus:
+        Status:
           type: string
-        BillingPeriodStartDateTime:
+        PeriodStartDate:
           $ref: '#/components/schemas/LocalDateTime'
-        BillingPeriodEndDateTime:
+        PeriodEndDate:
           $ref: '#/components/schemas/LocalDateTime'
-    AgreementFeature:
+    AgreementStatementEvent:
       type: object
       properties:
-        Id:
-          description: Agreement Feature Identification
+        EventId:
           type: string
-        Agreement:
-          description: Agreement Identification
+        EventName:
           type: string
-        Feature:
-          description: Feature Identification
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-    AgreementFeatureParameter:
-      type: object
-      properties:
-        Name:
-          description: Name of Agreement Feature Parameter
-          type: string
-        Value:
-          description: Value of Agreement Feature Parameter
-          type: string
-    AgreementFeatureRequestDto:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          description: Identification of Agreement Feature
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        AgreementFeatureParameter:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-    AgreementFeatureResponse:
-      type: object
-      properties:
-        AgreementFeature:
-          description: Feature related to Agreement
-          type: string
-        FacilityIdentification:
-          description: Identification of Facility
-          type: string
-        FacilityStatus:
-          description: Status of Facility
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement:
-          description: Agreement
-          type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-    AgreementInvolvement:
-      description: Role played by a party in the context of Agreement operations.
-      required:
-      - PartyIdentification
-      - PartyRole
-      type: object
-      properties:
-        AgreementInvolvementId:
-          description: Identifies the agreement involvement.
-          pattern: "[0-9]+"
-          type: string
-        PartyIdentification:
-          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
-            \ Person assigned to a Brand, can only be used when adding accounts under\
-            \ the same Brand."
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          type: string
-        PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
-            \ values are : <br> AccountHolder"
-          pattern: \S
-          type: string
-        IsActive:
-          description: Specifies the agreement involvement is active or inactive.
-          type: boolean
-    AgreementListRequest:
-      type: object
-      properties:
-        Person:
-          description: "<em> maxLength: 37 </em> <br> Identifies the person which\
-            \ plays the role of contact (FECID)"
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)"
-          type: string
-        ExternalAccount:
-          $ref: '#/components/schemas/ExternalAccount'
-        validRequest:
-          type: boolean
+        AgreementId:
+          $ref: '#/components/schemas/UUID'
+        StatementDate:
+          $ref: '#/components/schemas/LocalDate'
+        PeriodStartDate:
+          $ref: '#/components/schemas/LocalDateTime'
+        PeriodEndDateTime:
+          $ref: '#/components/schemas/LocalDateTime'
+        NextStatementDate:
+          $ref: '#/components/schemas/LocalDate'
     Amount:
       type: object
       properties:
         Value:
-          description: Represents the monetary value associated.
-          default: 0
-          type: number
+          description: "Represents the monetary value associated. Precision 15, scale\
+            \ 5."
+          type: string
         Currency:
           description: "Represents the currency associated, expressed in ISO 4217\
             \ currency code."
+          type: string
+    Amount1:
+      type: object
+      properties:
+        value:
+          type: number
+        currency:
+          type: string
+    Amount2:
+      type: object
+      properties:
+        value:
+          description: value
+          type: number
+        currency:
+          description: currency
           type: string
     AmountDto:
       type: object
       properties:
         Value:
           description: Represents the monetary value associated.
-          type: string
+          type: number
         Currency:
           description: "Represents the currency associated, expressed in ISO 4217\
             \ currency code."
+          type: string
+    ApprovalData:
+      type: object
+      properties:
+        approvalCode:
+          description: Approval Data approval Code
           type: string
     BalanceAndAccruedAmounts:
       type: object
@@ -772,13 +1015,78 @@ components:
             for the given period.
           type: object
           allOf:
-          - $ref: '#/components/schemas/AmountDto'
+            - $ref: '#/components/schemas/AmountDto'
         AccruedAmount:
           description: The interest that is accrued over the time period based on
             the effective rate of interest.
           type: object
           allOf:
-          - $ref: '#/components/schemas/AmountDto'
+            - $ref: '#/components/schemas/AmountDto'
+    BalancePeriodsDto:
+      type: object
+      properties:
+        PeriodType:
+          type: string
+        BalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+    BillTreatment:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
+        TransactionCode:
+          type: string
+        PositionComponent:
+          type: string
+        PositionType:
+          type: string
+    BillingPeriodDto:
+      type: object
+      properties:
+        BillingDate:
+          description: Date of the billing cycle.
+          type: string
+        DueAmount:
+          description: Represents the agreement level total amount owed that has not
+            been settled by the customer for this particular billing date.<br><b>Final
+            Aggregated Total Past Due Bucket</b><br>Any past dues from billing periods
+            greater than x are added into a final aggregated total past due amount
+            bucket denoted by the x PastDueAmount entry.<br>(where x is the DelinquencyManagement
+            (MaxCyclesForAging) Capability setting).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        AggregatedPeriod:
+          description: Indicates whether this is the final aggregated total past due
+            period for totalling due amounts that have aged beyond the MaxCyclesForAging(DelinquencyManagement)
+            capability setting and therefore not stored as an individual billing period
+            due amount anymore.<br>Valid Value:<br>Yes - Aggregated Period<br><No
+            tag returned> - Standard individual billing period due amount.
+          type: string
+    BillingPeriodSnapshotDto:
+      type: object
+      properties:
+        DueRequestedDate:
+          description: Date of the billing cycle.
+          type: string
+        DueAmount:
+          description: |-
+            Represents the agreement level total amount owed that has not been settled by the customer for this particular billing date.
+
+            Final Aggregated Total Past Due Bucket:
+            Any past dues from billing periods greater than x are added into a final aggregated total past due amount bucket denoted by the x+1 Due Amount entry.
+
+            (where x is the DelinquencyManagement (MaxCyclesForAging) Capability setting).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        AggregatedPeriod:
+          description: "Indicates whether this is the final aggregated total past\
+            \ due period for totalling due amounts that have aged beyond the MaxCyclesForAging(DelinquencyManagement)\
+            \ capability setting and therefore not stored as an individual billing\
+            \ period due amount anymore.\n\nValid Value:\n\nYes - Aggregated Period\n\
+            \n<No tag returned> - Standard individual billing period due amount. "
+          type: string
     BillingSummaryResponse:
       type: object
       properties:
@@ -796,48 +1104,169 @@ components:
           type: string
         CurrentDueAmount:
           $ref: '#/components/schemas/AmountDto'
+        pastDueAmount:
+          description: The sum of all the past due amounts at the agreement level
+            (excludes the current due amount).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
         TotalDueAmount:
-          $ref: '#/components/schemas/AmountDto'
+          description: "The contractual minimum payment due to be made for an account,\
+            \ including any balance in arrears from prior billing cycles.Note: When\
+            \ the account does not have any arrears for a given billing date, the\
+            \ total due amount will be same as the current due amount."
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
         OpeningBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalInterestAmount:
           $ref: '#/components/schemas/AmountDto'
         ClosingBalanceAmount:
           $ref: '#/components/schemas/AmountDto'
-    BlockedReasonUpdateRequest:
-      required:
-      - Action
+    BillingUnfreezeResponse:
       type: object
       properties:
-        Action:
-          description: "<ul>Action to be taken to update block reason codes on an\
-            \ account. Valid Values are<li><em>Add : To add new blocked reason codes,\
-            \ it is important to ensure that none of the supplied block reason codes\
-            \ already exist on the account.</em></li><li><em>Replace : To replace\
-            \ all the existing blocked reason codes with with the new list of blocked\
-            \ reason codes.</em></li><li><em>Delete :  To remove the supplied blocked\
-            \ reason codes from an account. All the supplied codes should currently\
-            \ exist on the account.</em></li><li><em>DeleteAll : To remove all blocked\
-            \ reason codes from an account. It is important to ensure that no values\
-            \ are supplied in the BlockedReasonCode field, as this will indicate that\
-            \ all existing blocked reason codes should be removed.</em></li></ul>"
-          pattern: \S
+        LastBilledDate:
           type: string
-        BlockedReasonCode:
-          description: List of block reason codes to be added/updated/deleted on an
-            account.
-          type: array
-          items:
-            type: string
-    BlockedReasonUpdateResponse:
+        NextBillingDate:
+          type: string
+        BillingStatus:
+          type: string
+    BillingWithPositionsResponse:
       type: object
       properties:
-        Agreement ID:
-          description: Unique identifier of an Account.
+        BillingDate:
           type: string
-        BlockedReasonCode:
-          description: List of block reason codes got updated on an account.
+        PaymentDueDate:
+          type: string
+        PeriodStartDateTime:
+          type: string
+        PeriodEndDateTime:
+          type: string
+        NextBillingDate:
+          type: string
+        CurrentDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        PastDueAmount:
+          description: The sum of all the past due amounts at the agreement level
+            (excludes the current due amount).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        TotalDueAmount:
+          description: |-
+            The contractual minimum payment due to be made for an account, including any balance in arrears from prior billing cycles.
+            Note: When the account does not have any arrears for a given billing date, the total due amount will be same as the current due amount.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        OpeningBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalInterestAmount:
+          $ref: '#/components/schemas/AmountDto'
+        ClosingBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        StatementedDate:
+          $ref: '#/components/schemas/LocalDate'
+        BillingPeriods:
+          description: |-
+            The system will store the last x number of billing period past dues.
+
+            (where x is the DelinquencyManagement (MaxCyclesForAging) Capability setting).
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/BillingPeriodSnapshotDto'
+        PositionDue:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionDueDto'
+        PositionBalance:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionBalanceDto'
+    BookingType:
+      enum:
+        - BILLING
+        - REPAYMENT
+        - EXTERNAL
+        - AUTHORISATION
+      type: string
+    Capabilities:
+      type: object
+      properties:
+        cardReadingCapability:
+          description: Capabilities card Reading Capability
+          type: string
+    CardProgramme:
+      type: object
+      properties:
+        cardProgrammeId:
+          description: Card Programme card Programme Id
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/CardProgrammeIdentification'
+    CardProgrammeIdentification:
+      type: object
+      properties:
+        identification:
+          description: Card Programme Identification identification
+          type: string
+    CurrentAccruedDto:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
+    CustomerDevice:
+      type: object
+      properties:
+        device:
+          description: Customer Device
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Device'
+    DeferTreatment:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
+    DelinquencyAgingAtDueDateEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementId:
+          type: string
+        RepaymentDueDate:
+          type: string
+    Device:
+      type: object
+      properties:
+        type:
+          description: Device type
+          type: string
+        otherType:
+          description: Other Device Type
+          type: string
+    DueOnPositionByBillingPeriods:
+      type: object
+      properties:
+        PositionType:
+          description: "This denotes the Position Type (i.e. Cash, Retail) for which\
+            \ the Billing Periods information relates to."
+          type: string
+        DueAmount:
+          description: Represents the current due plus the sum of all the past dues
+            at a position type level.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        BillingPeriods:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPeriodDto'
     DueOnPositionDto:
       type: object
       properties:
@@ -849,60 +1278,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PositionComponentDueDto'
-    ExecuteClosureRequest:
+    EvaluateInterestTreatmentRequest:
+      required:
+        - BillingDate
       type: object
       properties:
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
+        BillingDate:
+          description: Date on which bill has to be generated. <br/> Format must be
+            ISO Date format (YYYY-MM-DD)
           type: string
-    ExecuteClosureResponse:
+    EvaluateInterestTreatmentResponse:
       type: object
       properties:
-        Identification:
-          description: "Unique identifier of an Account, as assigned by the account\
+        AgreementID:
+          description: "Unique identifier of a Agreement, as assigned by the account\
             \ servicer (FEAID)."
           type: string
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that was sent through on the account closure API to
-            indicate when the account was closed on the host system. Format must be
-            ISO Date format (YYYY-MM-DD).
-          type: string
-        ClosingDate:
-          description: Date and Time on which the Account was closed by the system.
-            Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/Instant'
-    ExecuteDeleteAgreementRequest:
-      required:
-      - FEAID
-      type: object
-      properties:
-        FEAID:
-          description: "Unique identifier of an Account, as assigned by the account\
-            \ servicer (FEAID)."
-          type: string
-    ExecuteDeleteFacilityAllocationRequest:
-      required:
-      - FacilityIdentification
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
+        Facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTreatmentResponse'
     ExecuteRepaymentAmountRequest:
       required:
-      - BillingDate
+        - BillingDate
       type: object
       properties:
         BillRepaymentAmount:
@@ -929,28 +1327,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DueOnPositionDto'
-    ExternalAccount:
-      description: Provide Link to External Accounts
-      required:
-      - ClearingSystemIdentificationCode
-      - AccountIdentification
-      type: object
-      properties:
-        ClearingSystemIdentificationCode:
-          description: Specifies the clearing system identification code. E.g. GBDSC
-            (UK Domestic Sort Code). Accepted Values are <UL><LI><EM> GBDSC(UK Domestic
-            Sort Code) </EM></LI> <LI><EM> FVACC (FirstVision Account Number) </EM></LI></UL>
-          minLength: 1
-          type: string
-        AccountIdentification:
-          description: Account number associated with External Clearing System
-          pattern: \S
-          type: string
-        ClearingSystemMemberIdentification:
-          description: ' Specifies the clearing system member identification associated
-            with the external account.'
-          type: string
-    GanerateStatementEvent:
+    GenerateStatementEvent:
       type: object
       properties:
         EventId:
@@ -961,6 +1338,28 @@ components:
           $ref: '#/components/schemas/LocalDate'
         AgreementId:
           $ref: '#/components/schemas/UUID'
+    GeneratedTransactionsBookingRequest:
+      type: object
+      properties:
+        AgreementId:
+          description: Agreement ID to which these Transactions belongs.
+          type: string
+        Transactions:
+          description: List of generated transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction1'
+    GeneratedTransactionsBookingResponse:
+      type: object
+      properties:
+        AgreementId:
+          description: Agreement ID to which these Transactions belongs.
+          type: string
+        Transactions:
+          description: List of generated transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction1'
     HelixErrorDetails:
       type: object
       properties:
@@ -981,104 +1380,12 @@ components:
           type: string
         instance:
           type: string
-    InitiateAgreementFeatureRequest:
-      required:
-      - AgreementFeature
+    Identification:
       type: object
       properties:
-        AgreementFeature:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureRequestDto'
-    InitiateAgreementFeatureResponse:
-      type: object
-      properties:
-        Id:
-          format: int64
-          description: Id of Agreement Feature
-          type: integer
-        Feature:
-          description: Identification of Feature
+        identification:
+          description: identification
           type: string
-    InitiateAgreementRequest:
-      required:
-      - Brand
-      - Product
-      - AgreementInvolvement
-      - OpeningDate
-      type: object
-      properties:
-        Brand:
-          description: Brand to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        AgreementInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementInvolvement'
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner <br/> Format must be ISO
-            Date format (YYYY-MM-DD)
-          pattern: \S
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalAccount'
-        CreditLimit:
-          description: "Credit limit to be assigned to the account. This field is\
-            \ mandatory for all credit type products, and optional for other product\
-            \ types. It must be a valid ISO 4217 currency code and match the reporting\
-            \ currency at the brand level."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-    InitiateAgreementResponse:
-      type: object
-      properties:
-        Identification:
-          description: Unique identifier for an Account.
-          maxLength: 37
-          type: string
-    InitiateFacilityAllocationRequest:
-      required:
-      - AgreementFeature
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        AgreementFeature:
-          description: Feature ID of Agreement Feature
-          minLength: 1
-          pattern: "(^[0-9]+$)|(^$)"
-          type: string
-        FacilityStatus:
-          description: Status of Facility Allocation
-          type: string
-    InitiateFacilityAllocationResponse:
-      type: object
-      properties:
-        Identification:
-          description: Unique identifier of a Facility Allocation
-          type: string
-    Instant:
-      format: date-time
-      type: string
-      example: 2022-03-10T16:15:50Z
     InterestFacilitiesResponse:
       type: object
       properties:
@@ -1092,6 +1399,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InterestFacilityDto'
+    InterestFacilitiesRolledOver:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        EventDescription:
+          type: string
+        ServiceDomain:
+          type: string
+        Timestamp:
+          type: string
+        ProductId:
+          type: string
+        FinancialInstitution:
+          type: string
+        Brand:
+          type: string
+        AgreementId:
+          $ref: '#/components/schemas/UUID'
+        TreatmentCompletionDateTime:
+          $ref: '#/components/schemas/LocalDateTime'
+        BillingDate:
+          $ref: '#/components/schemas/LocalDate'
     InterestFacilityDto:
       type: object
       properties:
@@ -1121,25 +1453,65 @@ components:
             for which the interest is being calculated.
           type: object
           allOf:
-          - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
+            - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
         PriorPeriod:
           description: Provides interest details related to the time period immediately
             preceding the current period.
           type: object
           allOf:
-          - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
+            - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
         ResidualPeriod:
           description: Provides cumulative interest details for the time period before
             the current and prior periods.
           type: object
           allOf:
-          - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
+            - $ref: '#/components/schemas/BalanceAndAccruedAmounts'
         DeferredAmount:
           description: "Deferred amount refers to the interest amount that has been\
             \ deferred or delayed for a future period, rather than being charged immediately."
           type: object
           allOf:
-          - $ref: '#/components/schemas/AmountDto'
+            - $ref: '#/components/schemas/AmountDto'
+    InterestTreatmentOutcomesDto:
+      type: object
+      properties:
+        Bill:
+          $ref: '#/components/schemas/BillTreatment'
+        Waive:
+          $ref: '#/components/schemas/WaiveTreatment'
+        Defer:
+          $ref: '#/components/schemas/DeferTreatment'
+    InterestTreatmentResponse:
+      type: object
+      properties:
+        FacilityId:
+          type: string
+        InterestTreatmentOutcomes:
+          $ref: '#/components/schemas/InterestTreatmentOutcomesDto'
+        CurrentAccrued:
+          description: Provides interest details related to the most recent time period
+            for which the interest is being calculated.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/CurrentAccruedDto'
+        PriorAccrued:
+          description: Provides interest details related to the time period immediately
+            preceding the current period.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PriorAccruedDto'
+        ResidualAccrued:
+          description: Provides cumulative interest details for the time period before
+            the current and prior periods.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ResidualAccruedDto'
+    LifeCycleTraceIdentificationData:
+      type: object
+      properties:
+        lifeCycleTraceId:
+          description: life Cycle Trace Id
+          type: string
     LocalDate:
       format: date
       type: string
@@ -1148,6 +1520,128 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T12:15:50
+    MOTOCode:
+      enum:
+        - MailOrder
+        - MailOrderOrTelephoneOrder
+        - TelephoneOrder
+      type: string
+    MessageFunction:
+      type: object
+      properties:
+        messageFunctionCode:
+          description: message Function Code
+          type: string
+    OutstandingDueAmountsWithPositionsResponse:
+      type: object
+      properties:
+        AgreementId:
+          description: AgreementID associated with the account for which the outstanding
+            payment due details are to be retrieved.
+          type: string
+        BillingDate:
+          description: Date on which the account was last processed for generating
+            billing information.
+          type: string
+        PaymentDueDate:
+          description: Date by when the total payment due must be made towards the
+            outstanding account balance for a given billing date.
+          type: string
+        CurrentDueAmount:
+          description: The minimum payment to be made for an account for specific
+            billing date.
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        PastDueAmount:
+          description: The sum of all the past due amounts at the agreement level
+            (excludes the current due amount).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        TotalDueAmount:
+          description: "The contractual minimum payment due to be made for an account,\
+            \ including any balance in arrears from prior billing cycles.<br>Note:\
+            \ When the account does not have any arrears for a given billing date,\
+            \ the total due amount will be same as the current due amount."
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        BillingPeriods:
+          description: The system will store the last x number of billing period past
+            dues.<br>(where x is the DelinquencyManagement (MaxCyclesForAging) Capability
+            setting).
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingPeriodDto'
+        Positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DueOnPositionByBillingPeriods'
+    PaymentInstrument:
+      type: object
+      properties:
+        paymentInstrument:
+          description: payment Instrument
+          type: string
+        pan:
+          description: pan
+          type: string
+        account:
+          description: account
+          type: string
+        cardholder:
+          description: card holder
+          type: string
+        product:
+          description: product
+          type: string
+    PointOfServiceContext:
+      type: object
+      properties:
+        cardPresent:
+          description: card Present
+          type: boolean
+        cardHolderPresent:
+          description: card Holder Present
+          type: boolean
+        ecommerceIndicator:
+          description: ecommerce Indicator
+          type: boolean
+        attendedIndicator:
+          description: attended Indicator
+          type: boolean
+        unAttendedIndicator:
+          description: unAttended Indicator
+          type: string
+        motoCode:
+          description: moto Code
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/MOTOCode'
+        cardDataEntryMode:
+          description: card Data Entry Mode
+          type: string
+    Position:
+      type: object
+      properties:
+        Type:
+          description: Position Type impacted by this Transaction
+          type: string
+        Component:
+          description: Position Component impacted by this Transaction
+          type: string
+    PositionBalanceDto:
+      type: object
+      properties:
+        PositionType:
+          type: string
+        BalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        BalancePeriods:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalancePeriodsDto'
     PositionComponentDueDto:
       type: object
       properties:
@@ -1155,6 +1649,49 @@ components:
           type: string
         CurrentDueAmount:
           $ref: '#/components/schemas/AmountDto'
+    PositionDueBillingPeriodDto:
+      type: object
+      properties:
+        DueRequestedDate:
+          description: Date of the billing cycle.
+          type: string
+        DueAmount:
+          description: DueAmount
+          default: |-
+            Represents the position type level total amount owed that has not been settled by the customer for this particular billing date.
+
+            Final Aggregated Total Past Due Bucket:
+            Any past dues from billing periods greater than x are added into a final aggregated total past due amount bucket denoted by x+1 DueAmount entry.
+            (where x is the DelinquencyManagement (MaxCyclesForAging) Capability setting).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        AggregatedPeriod:
+          description: "Indicates whether this is the final aggregated total past\
+            \ due period for totalling due amounts that have aged beyond the MaxCyclesForAging(DelinquencyManagement)\
+            \ capability setting and therefore not stored as an individual billing\
+            \ period due amount anymore.\n\nValid Value:\n\nYes - Aggregated Period\n\
+            \n<No tag returned> - Standard individual billing period due amount. "
+          type: string
+    PositionDueDto:
+      type: object
+      properties:
+        PositionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ \nValid values: See Payment Type list parameter."
+          type: string
+        DueAmount:
+          description: "The Position Type level current due amount, plus the sum of\
+            \ all the Position Type due amounts."
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+        BillingPeriods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionDueBillingPeriodDto'
     PositionLifeCycleEvent:
       type: object
       properties:
@@ -1178,10 +1715,38 @@ components:
           type: string
         PositionComponent:
           type: string
-        EffectiveDate:
+        EffectiveDateTime:
           type: string
-        ClearingDate:
+        ClearingDateTime:
           type: string
+        BookingType:
+          $ref: '#/components/schemas/BookingType'
+    PriorAccruedDto:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
+    ProcessingResult:
+      type: object
+      properties:
+        approvalData:
+          description: approval Data
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ApprovalData'
+        additionalInformation:
+          description: additional Information
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AdditionalInformation'
+    Receiver:
+      type: object
+      properties:
+        receiverId:
+          description: receiver Id
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Identification'
     RepaymentAmountResponse:
       type: object
       properties:
@@ -1202,7 +1767,13 @@ components:
             billing date.
           type: object
           allOf:
-          - $ref: '#/components/schemas/AmountDto'
+            - $ref: '#/components/schemas/AmountDto'
+        PastDueAmount:
+          description: The sum of all the past due amounts at the agreement level
+            (excludes the current due amount).
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
         TotalDueAmount:
           description: "The contractual minimum payment due to be made for an account,\
             \ including any balance in arrears from prior billing cycles.<br>Note:\
@@ -1210,156 +1781,88 @@ components:
             \ the total due amount will be same as the current due amount."
           type: object
           allOf:
-          - $ref: '#/components/schemas/AmountDto'
-    RetrieveAccountBalanceResponse:
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)."
-          maxLength: 36
-          type: string
-        FinancialInstitution:
-          description: Financial Institution to which the Agreement belongs.
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Agreement belongs.
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Agreement belongs.
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Agreement entity in the system. <br> Valid values\
-            \ are: <UL><LI><EM> Enabled </EM></LI> <LI><EM> Disabled </EM></LI> <LI><EM>\
-            \ Deleted </EM></LI> <LI><EM> ProForma </EM></LI> <LI><EM> Pending </EM></LI></UL>"
-          type: string
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
+            - $ref: '#/components/schemas/AmountDto'
+        BillingPeriods:
+          description: The system will store the last x number of billing period past
+            dues.<br>(where x is the DelinquencyManagement (MaxCyclesForAging) Capability
+            setting).
           type: array
           items:
-            type: string
-        CreditLimit:
-          description: "Credit limit assigned to an account. This object will be always\
-            \ available when querying a credit type product, and is optional for other\
-            \ product types. The currency code value will match the brand level reporting\
-            \ currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        CurrentBalance:
-          description: "The total Amount of cleared transaction balance on the customer's\
-            \ account. This object will be always available when querying a credit\
-            \ type product, and is optional for other product types. The currency\
-            \ code value will match the brand level reporting currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        PendingBalance:
-          description: "The total amount of pending transactions for which clearing\
-            \ transactions are expected on the account. This object will be always\
-            \ available when querying a credit type product, and is optional for other\
-            \ product types. The currency code value will match the brand level reporting\
-            \ currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        BalanceAvailability:
-          description: "The total amount available credit balance on the account for\
-            \ spending. This object will be always available when querying a credit\
-            \ type product, and is optional for other product types. The currency\
-            \ code value will match the brand level reporting currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-    RetrieveAgreementFacilityAndFeatureResponse:
-      type: object
-      properties:
-        Agreement:
-          $ref: '#/components/schemas/RetrieveAgreementResponse'
-        AgreementFeature:
-          $ref: '#/components/schemas/AgreementFeatureResponse'
-    RetrieveAgreementFeatureAndFacilityRequest:
+            $ref: '#/components/schemas/BillingPeriodDto'
+    RepaymentTransactionBooking:
       required:
-      - FacilityIdentification
-      - Capability
+        - PaymentInstrumentId
+        - AgreementId
+        - TransactionCode
+        - EffectiveDateTime
+        - Amount
+        - RepaymentMode
+        - RepaymentProcessingStatus
       type: object
       properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          minLength: 1
+        PartyId:
+          description: Party Identification
           type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          minLength: 1
+        PaymentInstrumentId:
+          description: Payment Instrument Identification
+          pattern: \S
           type: string
-    RetrieveAgreementFeatureParameterResponse:
-      type: object
-      properties:
-        Id:
-          description: Agreement Feature Identification
-          type: string
-        Agreement:
+        AgreementId:
           description: Agreement Identification
+          pattern: \S
           type: string
-        Feature:
-          description: Feature Identification
+        TransactionCode:
+          description: Transaction Code
+          pattern: \S
           type: string
-        Capability:
-          description: Name of the system capability linked to a feature
+        TransactionType:
+          description: Transaction Type
           type: string
-        DefaultIndicator:
-          description: Default indicator indicates this is default feature on Agreement.
-            i.e. default on Product while initiating Agreement
-          type: boolean
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-        Status:
-          description: Status of the Agreement in the system
+        TransactionCategory:
+          description: Transaction category
           type: string
-        agreementClosed:
-          description: Indicates if the agreement is closed.
-          type: boolean
-        agreementEnabled:
-          type: boolean
-    RetrieveAgreementFeatureRequest:
+        Position:
+          description: Position with type and component
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Position'
+        EffectiveDateTime:
+          description: Effective Date and Time
+          pattern: \S
+          type: string
+        Amount:
+          description: Amount with value and currency
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+        RepaymentMode:
+          description: Repayment Mode
+          pattern: \S
+          type: string
+        RepaymentProcessingStatus:
+          description: Repayment Processing Status
+          pattern: \S
+          type: string
+    RepaymentTransactionBookingResponse:
       type: object
       properties:
-        capabilityName:
-          description: Name of the capability
+        TransactionReferenceId:
+          description: Transaction Reference ID - A unique ID for the persisted transactions
           type: string
-    RetrieveAgreementFeatureResponse:
+    ResidualAccruedDto:
       type: object
       properties:
-        Identification:
-          description: Agreement Identification
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
+    ResultDetails:
+      type: object
+      properties:
+        type:
+          description: Result Details Type
           type: string
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
+        value:
+          description: value
           type: string
-        Brand:
-          description: Brand to which the Agreement belongs
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          type: string
-        Status:
-          description: Status of the Agreement in the system
-          type: string
-        AgreementFeature:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeature'
     RetrieveAgreementRepaymentResponse:
       type: object
       properties:
@@ -1381,229 +1884,10 @@ components:
           $ref: '#/components/schemas/LocalDate'
         BillingStatus:
           type: string
-    RetrieveAgreementResponse:
-      required:
-      - AgreementInvolvement
-      type: object
-      properties:
-        Identification:
-          description: "Unique identifier of a Agreement, as assigned by the account\
-            \ servicer (FEAID)"
-          maxLength: 37
-          type: string
-        FinancialInstitution:
-          description: FI to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Brand:
-          description: Brand to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Product:
-          description: Product to which the Agreement belongs
-          maxLength: 37
-          type: string
-        Status:
-          description: "Status of the Agreement entity in the system <br> Valid values\
-            \ are : <br> Enabled <br>Disabled <br>Deleted <br>ProForma <br>Pending"
-          type: string
-        AgreementInvolvement:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementInvolvement'
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner <br/> Format must be ISO
-            Date format (YYYY-MM-DD)
-          type: string
-        ExternalAccount:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalAccount'
-        IsClosed:
-          description: This field identifies if an account is closed or not. Valid
-            values are True and False. This field will be set to True if an account
-            is closed and it will be set to False if an account is open.
-          type: boolean
-        ClosureRequestDate:
-          description: The date that was sent through on the account closure API to
-            indicate when the account was closed on the host system. Format must be
-            ISO Date format (YYYY-MM-DD).
-          type: string
-        ClosingDate:
-          description: Date and Time on which the Account was closed by the system.
-            Format must be (YYYY-MM-DDThh:mm:ss.sssZ).
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/Instant'
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder is currently opted-out or
-            opted-in for the Network Account Updater. The opt out option affects all
-            cards under the account. The valid values are OptOut and OptIn.
-          type: string
-        BlockedReasonCode:
-          description: Blocked reason codes updated on the agreement.
-          type: array
-          items:
-            type: string
-        CreditLimit:
-          description: "Credit limit assigned to an account. This object will be always\
-            \ available when querying a credit type product, and is optional for other\
-            \ product types. The currency code value will match the brand level reporting\
-            \ currency."
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/Amount'
-        enabled:
-          type: boolean
-    RetrieveCardFeeDetailsResponse:
-      type: object
-      properties:
-        PaymentInstrument:
-          description: Unique identifier of a card
-          type: string
-        LastCardMaintenanceFeeDate:
-          description: |-
-            Date when Card maintenance fee was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: ISO Date (YYYY-MM-DD)
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-        LastCardMaintenanceFeeAmount:
-          description: |-
-            Card maintenance fee amount that was last assessed on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: Amount
-          type: string
-        NextCardMaintenanceFeeDate:
-          description: "Date when card maintenance fee (initial or recurring) would\
-            \ be next assessed on the card. This date may also be applicable for initial\
-            \ Card aintenance Fee, when the initial fee is configured to be assessed\
-            \ one month after the Card open date. \nType: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-        LastLostOrStolenReplacementCardFeeDate:
-          description: "Date when Lost or Stolen card replacement fee was last assessed\
-            \ on the card. \nType: ISO Date (YYYY-MM-DD)"
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-        LastLostOrStolenReplacementCardFeeAmount:
-          description: "Lost or Stolen card replacement fee amount that was last assessed\
-            \ on the card. \nType: Amount"
-          type: string
-        TotalCardFeeAmountLifeToDate:
-          description: |-
-            The total amount of card fees (Card maintenance feeand Lost or Stolen card replacement fee) that has been assessed on the card till date. This field will also include any card fees that was assessed on the old card, if the current one was created from Lost or Stolen replacement process.
-            Type: Amount
-          type: string
-        CardMaintenanceFeeWaiveFlag:
-          description: |-
-            Identifies the type of waive option, if applicable for the Card maintenance fee.
-            Valid values are:
-
-            PERM - Permanently waive card maintenance fee
-            ONCE - Waive the next card maintenance fee once
-          type: string
-        CardMaintenanceFeeWaiveFlagUpdateDate:
-          description: |-
-            Date when Card Maintenance Fee Waive Flag was updated last time.
-            Type: ISO Date (YYYY-MM-DD)
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-        LastCardMaintenanceFeeWaiveAmount:
-          description: |-
-            Card maintenance fee amount that was last waived for the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: Amount
-          type: string
-        LastCardMaintenanceFeeWaiveDate:
-          description: |-
-            Date when Card maintenance fee was last waived on the card. This value is also carried forward from an older Payment instrument, if the card was created as part of Lost or Stolen replacement process).
-            Type: ISO Date (YYYY-MM-DD)
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-        LastLostOrStolenReplacementCardFeeWaiveAmount:
-          description: |-
-            Lost or Stolen fee amount that was last waived for the card.
-            Type: Amount
-          type: string
-        LastLostOrStolenReplacementCardFeeWaiveDate:
-          description: |-
-            Date when Lost or Stolen fee was last waived on the card.
-            Type: ISO Date (YYYY-MM-DD)
-          type: string
-          allOf:
-          - $ref: '#/components/schemas/LocalDate'
-    RetrieveFacilityAllocationFeatureParameterRequest:
-      required:
-      - FacilityIdentification
-      - Capability
-      type: object
-      properties:
-        FacilityIdentification:
-          description: Identification of Facility
-          maxLength: 37
-          minLength: 1
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
-          type: string
-        Capability:
-          description: Name of the system capability linked to a Facility
-          minLength: 1
-          type: string
-    RetrieveFacilityAllocationFeatureParameterRequest1:
-      type: object
-      properties:
-        Id:
-          format: int64
-          description: Id of Facility
-          type: integer
-        AgreementFeature:
-          format: int64
-          description: Identification of Agreement Feature
-          type: integer
-        FacilityIdentification:
-          description: Identification of Facility
-          type: string
-        FacilityStatus:
-          description: Status of Facility
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        Agreement:
-          description: Identification of Agreement
-          type: string
-        AgreementFeatureParameter:
-          description: List of Feature Parameter
-          type: array
-          items:
-            $ref: '#/components/schemas/AgreementFeatureParameter'
-    RetrieveFacilityAllocationResponse:
-      type: object
-      properties:
-        Id:
-          format: int64
-          type: integer
-        Agreement:
-          type: string
-        AgreementFeature:
-          format: int64
-          type: integer
-        Capability:
-          type: string
-        Facility:
-          type: string
-        CreationDateTime:
-          type: string
-        Status:
-          type: string
     RetrieveStatementSummaryResponse:
       type: object
       properties:
-        StatementDate:
+        StatementedDate:
           type: string
         PaymentDueDate:
           type: string
@@ -1622,65 +1906,749 @@ components:
           allOf:
             - $ref: '#/components/schemas/AmountDto'
         TotalDueAmount:
-            description: "The contractual minimum payment due to be made for an account,\
-                    \ including any balance in arrears from prior billing cycles.Note: When\
-                    \ the account does not have any arrears for a given billing date, the\
-                    \ total due amount will be same as the current due amount."
-            type: object
-            allOf:
-              - $ref: '#/components/schemas/AmountDto'
+          description: "The contractual minimum payment due to be made for an account,\
+            \ including any balance in arrears from prior billing cycles.Note: When\
+            \ the account does not have any arrears for a given billing date, the\
+            \ total due amount will be same as the current due amount."
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
         OpeningBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalInterestAmount:
           $ref: '#/components/schemas/AmountDto'
         ClosingBalanceAmount:
           $ref: '#/components/schemas/AmountDto'
-    SystemUpdateRequest:
+    RetrieveStatementWithPositionResponse:
       type: object
       properties:
-        OpeningDate:
-          description: Date on which the Agreement and related basic services are
-            effectively operational for the Account owner.Format must be ISO Date
-            format (YYYY-MM-DD).
+        StatementDate:
           type: string
-        IsClosed:
-          description: Flag to be used to set an account to closed status. This API
-            only accepts value "true".
-          pattern: (^$|true)
+        PaymentDueDate:
           type: string
-        ClosureRequestDate:
-          description: The date that the account was closed on the host system. This
-            optional date may be a present or past date. Closure Request Date Format
-            must be ISO Date format (YYYY-MM-DD).
+        PeriodStartDateTime:
           type: string
-        AgreementInvolvement:
+        PeriodEndDateTime:
+          type: string
+        NextStatementDate:
+          type: string
+        CurrentDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        PastDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalDueAmount:
+          $ref: '#/components/schemas/AmountDto'
+        OpeningBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        TotalInterestAmount:
+          $ref: '#/components/schemas/AmountDto'
+        ClosingBalanceAmount:
+          $ref: '#/components/schemas/AmountDto'
+        BillingPeriods:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
-        BlockedReasonCodes:
-          $ref: '#/components/schemas/BlockedReasonUpdateRequest'
+            $ref: '#/components/schemas/BillingPeriodSnapshotDto'
+        PositionDue:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionDueDto'
+        PositionBalance:
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionBalanceDto'
+    RetrieveTransactionRequest:
+      type: object
+      properties:
+        agreementId:
+          description: agreement Id
+          maxLength: 37
+          type: string
+        paymentInstrumentId:
+          description: payment Instrument Id
+          maxLength: 37
+          type: string
+        positionType:
+          description: " A filter to retrieve transactions associated with positions\
+            \ of a specific type. Only transactions matching the specified position\
+            \ type will be returned in the response. Valid values are: <UL><LI> RETL\
+            \ (Retail) </LI><LI> CASH (Cash) </LI></UL> "
+          type: string
+        positionComponent:
+          description: "A filter to retrieve transactions associated with a specific\
+            \ position component. Only transactions matching the specified position\
+            \ component will be returned in the response. The valid values are: <UL><LI>\
+            \ PEND (Pending) </LI><LI> PRPL (Principal)</LI><LI> INTR (Interest) </LI>\
+            \ </UL> "
+          type: string
+        minAmount:
+          description: minimum Amount
+          minLength: 1
+          type: string
+        maxAmount:
+          description: maximum amount
+          minLength: 1
+          type: string
+        stEffectiveDate:
+          description: Start Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+        endEffectiveDate:
+          description: End Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+        transactionStatus:
+          description: transaction Status
+          type: string
+        pageStartIndex:
+          format: int32
+          description: page Start Index
+          type: integer
+        pageLimit:
+          format: int32
+          description: page Limit
+          type: integer
+        startPostingDate:
+          description: Posting Start Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+        endPostingDate:
+          description: Posting End Date and Time.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+    RetrieveTransactionResponse:
+      type: object
+      properties:
+        data:
+          description: transaction details
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionRetrievalResponse'
+    Sender:
+      type: object
+      properties:
+        senderId:
+          description: sender Id
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Identification'
+    SettlementService:
+      type: object
+      properties:
+        settlementServiceApplied:
+          description: settlement Service Applied
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/SettlementServiceApplied'
+        settlementServiceDates:
+          description: settlement Service Dates
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/SettlementServiceDates'
+    SettlementServiceApplied:
+      type: object
+      properties:
+        settlementId:
+          description: settlement Id
+          type: string
+        type:
+          description: settlement Service type
+          type: string
+    SettlementServiceDates:
+      type: object
+      properties:
+        settlementDate:
+          description: settlement Date
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        settlementPeriod:
+          description: settlement Period
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+    SponsoredMerchant:
+      type: object
+      properties:
+        sponsoredMerchantId:
+          description: sponsored Merchant Id
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Identification'
+    Terminal:
+      type: object
+      properties:
+        terminalId:
+          description: terminal Id
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Identification'
+        type:
+          description: type
+          type: string
+        capabilities:
+          description: capabilities
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Capabilities'
+    Transaction:
+      type: object
+      properties:
+        TransactionCode:
+          description: ""
+          type: string
+        PositionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CRRT (Current) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ BAL  (Total Cleared Balance for the account)</LI></UL> Note: The Current\
+            \ (CRRT) position's, BAL (Balance) component holds the account level cleared\
+            \ balance across all the positions."
+          type: string
+        TransactionReferenceID:
+          description: Identification of Transaction Reference provided by transaction
+            capture service.
+          type: string
+        EffectiveDate:
+          description: Date when Transaction was Created
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDate'
+        Amount:
+          description: Transaction Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AmountDto'
+    Transaction1:
+      type: object
+      properties:
+        TransactionCode:
+          description: Transaction code
+          type: string
+        PositionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the account. The position type provides\
+            \ a classification for grouping similar types of positions, such as Retail.\
+            \ Valid values are: <UL><LI> RETL (Retail) </LI><LI> CASH (Cash) </LI><LI>\
+            \ CRRT (Current) </LI></UL> "
+          type: string
+        PositionComponent:
+          description: "Identifies the type of position component, representing a\
+            \ sub-category of balances associated with the position. The position\
+            \ component provides further classification for distinguishing different\
+            \ types of balances within a position, such as Principal. Valid values\
+            \ are: <UL><LI> PRPL (Principal)</LI><LI> PEND (Pending Balance) </LI><LI>\
+            \ INTR (Interest) </LI><LI> BAL  (Total Cleared Balance for the account)</LI></UL>\
+            \ Note: The Current (CRRT) position's, BAL (Balance) component holds the\
+            \ account level cleared balance across all the positions."
+          type: string
+        TransactionReferenceId:
+          description: Identification of Transaction Reference provided by transaction
+            capture service.
+          type: string
+        EffectiveDateTime:
+          description: Date and Time when Transaction was Created
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        Amount:
+          description: Transaction Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount'
+    TransactionAmounts:
+      type: object
+      properties:
+        transactionAmount:
+          description: transaction Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+        reconciliationAmount:
+          description: reconciliation Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+        cardholderBillingAmount:
+          description: cardholder Billing Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+    TransactionBookingExecuteEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        Product:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        PartyID:
+          type: string
+        Status:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PositionType:
+          type: string
+        PositionComponent:
+          type: string
+        AuthorisationReferenceID:
+          type: string
+        TransactionReferenceID:
+          type: string
+        ClearingMatchStatusCode:
+          type: string
+        EffectiveDateTime:
+          type: string
+    TransactionContext:
+      type: object
+      properties:
+        merchantCategoryCode:
+          description: merchant Category Code
+          type: string
+        cardProgramme:
+          description: card Programme
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/CardProgramme'
+        transactionInitiatorType:
+          description: transaction Initiator Type
+          type: string
+        settlementService:
+          description: settlement Service
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/SettlementService'
+    TransactionIdentification:
+      type: object
+      properties:
+        lifeCycleSupport:
+          description: life Cycle Support
+          type: string
+        lifeCycleTraceIdentificationData:
+          description: life Cycle Trace Identification Data
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/LifeCycleTraceIdentificationData'
+        systemTraceAuditNumber:
+          description: system Trace Audit Number
+          type: string
+        acquirerReferenceNumber:
+          description: acquirer Reference Number
+          type: string
+        retrievalReferenceNumber:
+          description: retrieval Reference Number
+          type: string
+        transactionDateTime:
+          description: transaction Date Time
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        transmissionDateTime:
+          description: transmission Date Time
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+    TransactionInitiation:
+      type: object
+      properties:
+        messageFunction:
+          description: message Function
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/MessageFunction'
+        association:
+          description: association
+          type: string
+        acquirer:
+          description: acquirer
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Acquirer'
+        acceptor:
+          description: acceptor
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Acceptor'
+        terminal:
+          description: terminal
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Terminal'
+        sender:
+          description: sender
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Sender'
+        receiver:
+          description: receiver
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Receiver'
+        paymentInstrument:
+          description: payment Instrument
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PaymentInstrument'
+        customerDevice:
+          description: customer Device
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/CustomerDevice'
+        pointOfServiceContext:
+          description: point Of Service Context
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PointOfServiceContext'
+        transactionContext:
+          description: transaction Context
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/TransactionContext'
+        verification:
+          description: verification
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Verification'
+        transactionType:
+          description: transaction Type
+          type: string
+        transactionSubType:
+          description: transaction SubType
+          type: string
+        transactionAttribute:
+          description: transaction Attribute
+          type: string
+        otherTransactionAttribute:
+          description: other Transaction Attribute
+          type: string
+        messageReason:
+          format: int32
+          description: message Reason
+          type: integer
+        transactionAmount:
+          description: transaction Amount
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/TransactionAmounts'
+        transactionIdentification:
+          description: transaction Identification
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/TransactionIdentification'
+        additionalService:
+          description: additional Service
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AdditionalService'
+        additionalData:
+          description: additional Data
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/AdditionalData'
+        processingResult:
+          description: processing Result
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ProcessingResult'
+    TransactionInitiationResponse:
+      type: object
+      properties:
+        TransactionCaptureId:
+          description: TransactionCaptureId of the Transaction Capture Request.
+          type: string
+    TransactionLifeCycleEvent:
+      type: object
+      properties:
+        EventId:
+          type: string
+        EventName:
+          type: string
+        AgreementID:
+          type: string
+        PaymentInstrumentID:
+          type: string
+        TransactionDate:
+          type: string
+        PostingDate:
+          type: string
+        BillingAmount:
+          $ref: '#/components/schemas/Amount1'
+        TransactionDescription:
+          type: string
+        MerchantName:
+          type: string
+        MerchantCountry:
+          type: string
+        MerchantCategoryCode:
+          type: string
+        TransactionCode:
+          type: string
+        TransactionCaptureID:
+          type: string
+        LinkedTransactionCaptureID:
+          type: string
+    TransactionRetrievalResponse:
+      type: object
+      properties:
+        transactionId:
+          description: Unique Id to identify transaction in TransactionCapture
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/UUID'
+        financialInstitution:
+          description: FI to which the Transaction belongs
+          type: string
+        brand:
+          description: Brand to which the Transaction belongs
+          type: string
+        product:
+          description: Product to which the Transaction belongs
+          type: string
+        agreementId:
+          description: Agreement ID to which this Transaction belongs
+          type: string
+        paymentInstrumentId:
+          description: Payment Instrument ID used to perform the transaction
+          type: string
+        partyId:
+          description: Associated Party ID to which this Transaction Belongs
+          type: string
+        status:
+          description: Status of the Transaction Record
+          type: string
+        creationDateTime:
+          description: Date when Transaction was Created
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        effectiveDateTime:
+          description: Transmission Date Time
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        transactionCode:
+          description: Transaction Code assigned/provided for the transaction
+          type: string
+        positionType:
+          description: "Identifies the type of position, representing a specific category\
+            \ of balances associated with the transaction. The position type provides\
+            \ a classification for grouping similar types of transactions, such as\
+            \ Retail. Valid values are:<UL><LI> RETL (Retail) </LI><LI> CASH (Cash)\
+            \ </LI></UL> The valid combinations of Positions and Position Components\
+            \ are: <UL> <LI> RETL and PRPL </LI><LI> RETL and INTR </LI> <LI> RETL\
+            \ and PEND </LI> <LI> CASH and PRPL </LI> <LI> CASH and INTR </LI> <LI>\
+            \ CASH and PEND </LI> </UL>"
+          type: string
+        positionComponent:
+          description: "The position component field within a transaction is used\
+            \ to identify the specific type of balance associated with the transaction.\
+            \ This field provides a further classification to distinguish the position\
+            \ component affected by a transaction, such as Principal. Valid values\
+            \ are:<UL> <LI> PRPL (Principal)</LI><LI> INTR (Interest) </LI> <LI> PEND\
+            \ (Pending) </LI> </UL>"
+          type: string
+        networkReferenceId:
+          description: Network Reference ID - Network Reference ID captured in Authorisation
+            Domain during Authorisation Process which is passed by Scheme. Mandatory
+            for all pending transactions ( transactions approved but not settled)
+            Bank network Reference Number - DE 63.2 for MC Transaction Identifier
+            - DE 62.2 for Visa
+          type: string
+        authorisationReferenceId:
+          description: Authorisation Reference ID - Reference ID captured in Authorisation
+            Domain during Authorisation Process. Mandatory for all pending transactions
+            ( transactions approved but not settled) System Trace Audit Number (STAN)
+            DE 11
+          type: string
+        cardClearingReferenceId:
+          description: CardClearing ID - Reference ID captured in Card Clearing Domain
+            during Card Clearing process Retrieval Reference Number - DE 37.
+          type: string
+        settlementStatusCode:
+          description: Provides the status of settlement of an instruction.
+          type: string
+        clearingMatchStatusCode:
+          description: Provides the status of Clearing Match.
+          type: string
+        billingStatusCode:
+          description: Provides the status of Billing of an instruction.
+          type: string
+        transactionTypeCode:
+          description: "Specifies the type, or nature, of the payment."
+          type: string
+        paymentFunctionCode:
+          description: Identifies the message function
+          type: string
+        merchantId:
+          description: AcceptorID DE 42
+          type: string
+        merchantName:
+          description: Acceptor Name - DE 43.1
+          type: string
+        merchantLocation:
+          description: "Address of the merchant location Acceptor Street Address,\
+            \ Acceptor Postal Code, Acceptor City Name, Acceptor Country Subdivision,\
+            \ Acceptor Address - separated by a delimiter"
+          type: string
+        merchantCountry:
+          description: Acceptor Country DE 43.6
+          type: string
+        merchantCategoryCode:
+          description: classifies the type of business applicable to the card acceptor.
+          type: string
+        terminalId:
+          description: Terminal ID DE 41
+          type: string
+        terminalTypeCode:
+          description: Terminal Type Code PDS 0023
+          type: string
+        terminalCapabilityCode:
+          description: Terminal Card Data Input
+          type: string
+        approvalCode:
+          description: authorization code assigned by institutions indicating that
+            the auth is approved
+          type: string
+        cardPresentIndicator:
+          description: "Point of Service Context, Card Present"
+          type: boolean
+        cardholderPresentIndicator:
+          description: "Point of Service Context, Cardholder Present"
+          type: boolean
+        ecommerceIndicator:
+          description: Ecommerce Indicator
+          type: boolean
+        motoInd:
+          description: Mail or Telephone Order
+          type: boolean
+        cardDataInput:
+          description: Terminal Card Data Input Method Code
+          type: string
+        transactionInitiatorType:
+          description: Transaction Initiator Type
+          type: string
+        description:
+          description: Transaction Description
+          type: string
+        originalAmount:
+          description: originalAmount details
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+        actualAmount:
+          description: actualAmount details
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Amount2'
+        postingDateTime:
+          description: Date when Transaction is Settled
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDateTime'
+        billingDate:
+          description: Date when Transaction is Billed
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LocalDate'
+        transactionEntry:
+          description: Transaction Entry
+          enum:
+            - "CRED, DEBT"
+          type: string
+        transactionStatus:
+          description: Transaction Status
+          enum:
+            - PENDING
+            - POSTED
+            - BILLED
+          type: string
+        panLastFourDigits:
+          description: Last four digits of Primary Account Number linked to transaction
+          type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
-    UpdateNetworkAccountOptionRequest:
-      required:
-      - NetworkAccountUpdaterOption
+    Value:
       type: object
       properties:
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder is requesting opt-out or
-            opt-in for the Network Account Updater. The valid values are OptOut or
-            OptIn.
-          minLength: 1
-          pattern: (^$|OptOut|OptIn)
+        verificationDataValue:
+          description: verification Data Value
           type: string
-    UpdateNetworkAccountOptionResponse:
+    Verification:
       type: object
       properties:
-        NetworkAccountUpdaterOption:
-          description: Identifies whether the cardholder has requested opt-out or
-            opt-in for the Network Account Updater. This contains the value set in
-            the request.
+        verificationInformation:
+          description: verification Information
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/VerificationInformation'
+        verificationResult:
+          description: verification Result
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/VerificationResult'
+    VerificationInformation:
+      type: object
+      properties:
+        type:
+          description: Verification Data Type
           type: string
+        value:
+          description: Verification Data value
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Value'
+    VerificationResult:
+      type: object
+      properties:
+        entityType:
+          description: Verification entity Type
+          type: string
+        otherEntityType:
+          description: Verification other Entity Type
+          type: string
+        resultDetails:
+          description: Verification result Details
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/ResultDetails'
+    WaiveTreatment:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/AmountDto'
   securitySchemes:
     SecurityScheme:
       type: http
