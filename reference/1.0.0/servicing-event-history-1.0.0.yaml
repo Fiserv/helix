@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: servicing-event-history
-  version: 1.1.0-8
+  version: 1.1.0-9
 tags:
 - name: Customer Servicing
 paths:
@@ -146,7 +146,8 @@ paths:
     post:
       tags:
       - Customer Servicing
-      summary: This method is used to create a new Agent note
+      summary: "This API is used to add a new note onto the Customer, Account or Card\
+        \ level."
       operationId: register
       parameters:
       - name: idempotency-id
@@ -259,7 +260,7 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "200":
           description: OK
-      x-proxy-name: Add a new Servicing Event
+      x-proxy-name: Add a Note
       x-group-name: Customer Servicing
 components:
   schemas:
@@ -284,22 +285,26 @@ components:
         instance:
           type: string
     ServicingRecordCreationRequest:
+      required:
+      - Description
+      - PartyID
       type: object
       properties:
         Description:
-          description: Description of the Servicing Event.
+          description: A note or servicing event description.
           type: string
         Product:
-          description: Product to which the Servicing Event belongs.
+          description: Product to which the agreement belongs.
           type: string
         AgreementID:
-          description: AgreementID to which the Servicing Event belongs (FEAID).
+          description: AgreementID to which the note or servicing event belongs (FEAID).
           type: string
         PaymentInstrumentID:
-          description: PaymentInstrumentID to which the Servicing Event belongs (FEPID).
+          description: PaymentInstrumentID to which the note or servicing event belongs
+            (FEPID).
           type: string
         PartyID:
-          description: PartyID to which the Servicing Event belongs (FECID).
+          description: PartyID to which the note or servicing event belongs (FECID).
           type: string
         UserID:
           description: The User ID of the Agent who creates the Servicing Event.
@@ -309,16 +314,19 @@ components:
           type: string
         Category:
           description: "Category of the Servicing Event. Valid values are: <UL><LI>\
-            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
-            \ </UL>"
+            \ AUTO (Auto) - Automatically generated servicing event. </LI><LI> MNUL\
+            \ (Manual) - Notes added manually. </LI><LI> EXTR (External) - Notes generated\
+            \ by external systems. </LI> </UL>"
           type: string
         Channel:
           description: "Originating channel of the Servicing Event. Valid values are:\
-            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
-            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
-            \ </LI></UL>"
+            \ <UL><LI> UINT (Agent UI) </LI><LI> MBAP (Mobile App) </LI><LI> INTR\
+            \ (External Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System\
+            \ Generated) </LI></UL>"
           type: string
     ServicingRecordRetrievalRequest:
+      required:
+      - PartyID
       type: object
       properties:
         Product:
@@ -342,18 +350,19 @@ components:
           type: string
         Category:
           description: "Category of the Servicing Event. Valid values are: <UL><LI>\
-            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
-            \ </UL>"
+            \ AUTO (Auto) - Automatically generated servicing event. </LI><LI> MNUL\
+            \ (Manual) - Notes added manually. </LI><LI> EXTR (External) - Notes generated\
+            \ by external systems. </LI> </UL>"
           type: string
         Channel:
           description: "Originating channel of the Servicing Event. Valid values are:\
-            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
-            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
-            \ </LI></UL>"
+            \ <UL><LI> UINT (Agent UI) </LI><LI> MBAP (Mobile App) </LI><LI> INTR\
+            \ (External Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System\
+            \ Generated) </LI></UL>"
           type: string
         Description:
-          description: This field is used to perform a wildcard search based on the
-            provided Description value of a servicing event.
+          description: This field is used to perform a keyword search within the Description
+            of a note or servicing event.
           type: string
         PageStartIndex:
           description: "The page start index is an optional field which specifies\
@@ -375,14 +384,14 @@ components:
             \ range for filtering. Only records with a CreationDateTime later than\
             \ or equal to this value will be included in the filtered results. If\
             \ FromCreationDateTime is provided in the request, ToCreationDateTime\
-            \ must also be provided."
+            \ must also be provided.<br/>ISO Format (YYYY-MM-DD'T'HH:MM:SS)."
           type: string
         ToCreationDateTime:
           description: "This field is used to specify the ending point of the CreationDateTime\
             \ range for filtering. Only records with a CreationDateTime earlier than\
             \ or equal to this value will be included in the filtered results. If\
             \ ToCreationDateTime is provided in the request, FromCreationDateTime\
-            \ must also be provided."
+            \ must also be provided.<br/>ISO Format (YYYY-MM-DD'T'HH:MM:SS)."
           type: string
         SortOrder:
           description: "Specifies the sorting order(Ascending or Descending) to perform\
@@ -405,10 +414,10 @@ components:
             and reference purposes.
           type: string
         FinancialInstitution:
-          description: FinancialInstitution of servicing event.
+          description: Financial Institution Identification.
           type: string
         Brand:
-          description: Brand of servicing event.
+          description: Brand Identification.
           type: string
         Product:
           description: Product to which the Servicing Event belongs.
@@ -430,20 +439,22 @@ components:
           type: string
         Category:
           description: "Category of the Servicing Event. Valid values are: <UL><LI>\
-            \ AUTO (Auto) </LI><LI> MNUL (Manual) </LI><LI> EXTR (External) </LI>\
-            \ </UL>"
+            \ AUTO (Auto) - Automatically generated servicing event. </LI><LI> MNUL\
+            \ (Manual) - Notes added manually. </LI><LI> EXTR (External) - Notes generated\
+            \ by external systems. </LI> </UL>"
           type: string
         Channel:
           description: "Originating channel of the Servicing Event. Valid values are:\
-            \ <UL><LI> UINT (User Interface) </LI><LI> MBAP (Mobile App) </LI><LI>\
-            \ INTR (Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System Generated)\
-            \ </LI></UL>"
+            \ <UL><LI> UINT (Agent UI) </LI><LI> MBAP (Mobile App) </LI><LI> INTR\
+            \ (External Interface) </LI> <LI> EVNT (Event) </LI> <LI> SYGN (System\
+            \ Generated) </LI></UL>"
           type: string
         Description:
           description: Description of the servicing event.
           type: string
         CreationDateTime:
-          description: Creation date and time of the servicing event.
+          description: Creation date and time of the servicing event.<br/>ISO Format
+            (YYYY-MM-DD'T'HH:MM:SS).
           type: string
   securitySchemes:
     SecurityScheme:
