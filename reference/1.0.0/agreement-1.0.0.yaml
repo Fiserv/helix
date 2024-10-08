@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: agreement
-  version: 1.1.0-306
+  version: 1.1.0-402
 tags:
 - name: Account Management
 - name: Agreement Feature Management
@@ -270,10 +270,10 @@ paths:
                   $ref: '#/components/schemas/RetrieveAgreementResponse'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul>Clearing\
-            \ System Identification Code is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Identification Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Member Identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Member Identification must be a combination of A-Z,\
+            \ system identification code is not valid, please provide valid value.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing system identification code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing system member identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing system member identification must be a combination of A-Z,\
             \ a-z, 0-9 with spaces or '-'.</em></li><li><em>HLXAGDTAD001 : Account\
             \ Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTEI001\
             \ : Clearing System Identification Code is not valid for Account Identification\
@@ -422,11 +422,11 @@ paths:
             \ : Opening Date can't be a future date.</em></li><li><em>HLXAGDTAD001\
             \ : Party (FECID) required, please provide value.</em></li><li><em>HLXAGDTAD001\
             \ : Party role required, please provide value.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Identification Code is not valid, please provide valid\
-            \ value.</em></li><li><em>HLXAGDTAD001 : Clearing System Identification\
-            \ Code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Member Identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
-            \ : Clearing System Member Identification must be a combination of A-Z,\
+            \ : Clearing system identification code is not valid, please provide valid\
+            \ value.</em></li><li><em>HLXAGDTAD001 : Clearing system identification\
+            \ code exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing system member identification exceeds maximum 13 length allowed.</em></li><li><em>HLXAGDTAD001\
+            \ : Clearing system member identification must be a combination of A-Z,\
             \ a-z, 0-9 with spaces or '-'.</em></li><li><em>HLXAGDTAD001 : Account\
             \ Identification exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTEI001\
             \ : Clearing System Identification Code is not valid for Account Identification\
@@ -773,6 +773,12 @@ paths:
         description: Name of the Capability to be used as a filter
         schema:
           type: string
+      - name: featureCategory
+        in: query
+        description: Category of feature to be used as a filter
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -918,6 +924,136 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Inquire on an Agreement Feature Parameter
       x-group-name: Agreement Feature Management
+  /CustomerAgreement/V1/Agreement/{agreementId}/AgreementFeaturesOverride/Register:
+    post:
+      tags:
+      - Agreement Feature Management
+      summary: Register a new Agreement Feature with Bundle Override
+      description: "This service is used to update an Agreement Feature with Bundle\
+        \ Override. This service will return a unique ID, which is the ID that will\
+        \ identify the agreement feature within the system."
+      operationId: registerOverriddenFeatures
+      parameters:
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterOverriddenFeaturesRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InitiateAgreementFeatureResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
+            \ : Agreement ID exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Feature required, please provide value.</em></li><li><em>HLXAGDTBR001\
+            \ : Feature is not valid, please provide valid value.</em></li><li><em>HLXAGDTBR001\
+            \ : Feature exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTBR001\
+            \ : Agreement Feature Parameter required, please provide value.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <b>Error codes list:</b><br/><ul><li><em>HLXAGDTGT009\
+            \ : Agreement Feature already exists for Feature.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Register an Agreement Feature with bundle override
+      x-group-name: Agreement Feature Management
   /CustomerAgreement/V1/Agreement/{agreementId}/AgreementInvolvement/Update:
     patch:
       tags:
@@ -954,7 +1090,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/AgreementInvolvement'
+                $ref: '#/components/schemas/AgreementInvolvement1'
       responses:
         "200":
           description: OK
@@ -963,7 +1099,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AgreementInvolvement'
+                  $ref: '#/components/schemas/AgreementInvolvement1'
         "400":
           description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTBR001\
             \ : AgreementInvolvementId accepts numbers only.</em></li><li><em>HLXAGDTBR001\
@@ -1451,6 +1587,143 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Close an account
+      x-group-name: Account Management
+  /CustomerAgreement/V1/Agreement/{agreementId}/CreditLimitUpdate/Execute:
+    post:
+      tags:
+      - Account Management
+      summary: Update Credit Limit
+      description: This service is used to update credit limit of Agreement.
+      operationId: updateCreditLimit
+      parameters:
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: agreementId
+        in: path
+        description: Unique identifier of an Agreement
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditLimitUpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTCL001\
+            \ : Financial Institution required, please provide value.</em></li><li><em>HLXAGDTCL001\
+            \ : Financial Institution is not valid, please provide valid value.</em></li><li><em>HLXAGDTCL001\
+            \ : Financial Institution exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTCL001\
+            \ : Brand required, please provide value.</em></li><li><em>HLXAGDTCL001\
+            \ : Brand is not valid, please provide valid value.</em></li><li><em>HLXAGDTCL001\
+            \ : Brand exceeds maximum 37 length allowed.</em></li><li><em>HLXAGDTCL001\
+            \ : credit limit currency required, please provide value.</em></li><li><em>HLXAGDTCL001\
+            \ : credit limit currency Currency code must be a valid ISO 4217 currency\
+            \ code.</em></li><li><em>HLXAGDTAD001 : Account Identification exceeds\
+            \ maximum 37 length allowed.</em></li><li><em>HLXAGDTEI001 : Clearing\
+            \ System Identification Code is not valid for Account Identification <account-id>.</em></li><li><em>HLXAGDTEI004\
+            \ : Account Identification is required for Clearing System Identification\
+            \ Code <clearing-system-id>.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTUN001\
+            \ : Financial Institution not found.</em></li><li><em>HLXAGDTUN002 : Brand\
+            \ not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "413":
+          description: Payload Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTAC002\
+            \ : Account is closed.</em></li><li><em>HLXAGDTNE006 : Account not enabled.</em></li><li><em>HLXAGDTNE005\
+            \ : Product not enabled.</em></li><li><em>HLXAGDTGT013 : Product not found\
+            \ under Financial Institution and Brand.</em></li><li><em>HLXAGDTUN002\
+            \ : Brand not found.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: "Internal Server Error <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXAGDTCL001\
+            \ : There is an error while updating credit limit, please try again.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Update Credit Limit
       x-group-name: Account Management
   /CustomerAgreement/V1/Agreement/{agreementId}/FacilityAllocation/AgreementAndFeature/Request:
     post:
@@ -1975,6 +2248,23 @@ paths:
         required: true
         schema:
           maxLength: 37
+          type: string
+      - name: capability
+        in: query
+        schema:
+          type: string
+      - name: facilityId
+        in: query
+        schema:
+          type: string
+      - name: featureCategory
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: productFeature
+        in: query
+        schema:
           type: string
       responses:
         "200":
@@ -2520,6 +2810,168 @@ paths:
                 $ref: '#/components/schemas/HelixErrorDetails'
       x-proxy-name: Validate account status
       x-group-name: Account Management
+  /CustomerAgreement/V1/ui:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: theme
+        in: query
+        schema:
+          type: string
+      - name: userPassword
+        in: query
+        schema:
+          type: string
+      - name: usernameEmail
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/accountBalances:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/accountInquiry:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      - name: entityId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/cardFee:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: paymentInstrumentId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/cardFeeModal:
+    get:
+      tags:
+      - Agreement Ui Resource
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/changeTheme:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: theme
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/closeAccountModal:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/closeAgreementPost:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      - name: closureDate
+        in: query
+        schema:
+          type: string
+      - name: entityId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/feature/retrieveFeature:
+    get:
+      tags:
+      - Agreement Feature Ui Resource
+      parameters:
+      - name: agreementFeatureId
+        in: query
+        schema:
+          type: string
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/networkOptInOut:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: agreementId
+        in: query
+        schema:
+          type: string
+      - name: optInOut
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/retrieveAgreementList:
+    get:
+      tags:
+      - Agreement Ui Resource
+      parameters:
+      - name: personId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /CustomerAgreement/V1/ui/showLinks:
+    get:
+      tags:
+      - Agreement Ui Resource
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     AgreementFeature:
@@ -2541,11 +2993,38 @@ components:
           description: Default indicator indicates this is default feature on Agreement.
             i.e. default on Product while initiating Agreement
           type: boolean
+        FeatureCategory:
+          description: Name of the category linked to a feature
+          type: string
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
           items:
             $ref: '#/components/schemas/AgreementFeatureParameter'
+    AgreementFeatureOverrideRequestDto:
+      required:
+      - Feature
+      - OverridingProductDefault
+      type: object
+      properties:
+        Feature:
+          description: Identification of Agreement Feature
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
+          type: string
+        AgreementFeatureParameter:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementFeatureParameter'
+        OverridingProductDefault:
+          description: Flag to say if feature is overridden
+          type: boolean
+        BundleIdentification:
+          description: Identification of Bundle
+          maxLength: 37
+          pattern: \A(?!\s*$).+
+          type: string
     AgreementFeatureParameter:
       type: object
       properties:
@@ -2556,10 +3035,15 @@ components:
           description: Value of Agreement Feature Parameter
           type: string
     AgreementFeatureRequestDto:
+      required:
+      - Feature
       type: object
       properties:
         Feature:
           description: Identification of Agreement Feature
+          maxLength: 37
+          minLength: 1
+          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)|(^$)"
           type: string
         AgreementFeatureParameter:
           type: array
@@ -2580,6 +3064,9 @@ components:
         Capability:
           description: Name of the system capability linked to a feature
           type: string
+        FeatureCategory:
+          description: Name of the category to which the feature belongs
+          type: string
         Agreement:
           description: Agreement
           type: string
@@ -2594,25 +3081,6 @@ components:
             $ref: '#/components/schemas/AgreementFeatureParameter'
     AgreementInvolvement:
       description: Role played by a party in the context of Agreement operations.
-      type: object
-      properties:
-        AgreementInvolvementId:
-          description: Identifies the agreement involvement.
-          type: string
-        PartyIdentification:
-          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
-            \ Person assigned to a Brand, can only be used when adding accounts under\
-            \ the same Brand."
-          type: string
-        PartyRole:
-          description: "Specifies the role of the party in the transaction <br> Valid\
-            \ values are : <br> AccountHolder"
-          type: string
-        IsActive:
-          description: Specifies the agreement involvement is active or inactive.
-          type: boolean
-    AgreementInvolvement1:
-      description: Role played by a party in the context of Agreement operations.
       required:
       - PartyIdentification
       - PartyRole
@@ -2626,12 +3094,31 @@ components:
           description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
             \ Person assigned to a Brand, can only be used when adding accounts under\
             \ the same Brand."
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
           type: string
         PartyRole:
           description: "Specifies the role of the party in the transaction <br> Valid\
             \ values are : <br> AccountHolder"
           pattern: \S
+          type: string
+        IsActive:
+          description: Specifies the agreement involvement is active or inactive.
+          type: boolean
+    AgreementInvolvement1:
+      description: Role played by a party in the context of Agreement operations.
+      type: object
+      properties:
+        AgreementInvolvementId:
+          description: Identifies the agreement involvement.
+          type: string
+        PartyIdentification:
+          description: "Identifies the person which plays the role of contact (FECID).<br/><b>Note:</b>\
+            \ Person assigned to a Brand, can only be used when adding accounts under\
+            \ the same Brand."
+          type: string
+        PartyRole:
+          description: "Specifies the role of the party in the transaction <br> Valid\
+            \ values are : <br> AccountHolder"
           type: string
         IsActive:
           description: Specifies the agreement involvement is active or inactive.
@@ -2642,12 +3129,9 @@ components:
         Person:
           description: "<em> maxLength: 37 </em> <br> Identifies the person which\
             \ plays the role of contact (FECID)"
-          pattern: "(^[a-zA-Z0-9](.*[a-zA-Z0-9])?$)"
           type: string
         ExternalAccount:
           $ref: '#/components/schemas/ExternalAccount'
-        validRequest:
-          type: boolean
     Amount:
       type: object
       properties:
@@ -2673,23 +3157,39 @@ components:
     Balance:
       type: object
       properties:
-        balanceType:
+        BalanceType:
           description: "This refers to the category for which various types of balances\
-            \ are retrieved. If the balance type is Total, all position types will\
-            \ be considered during balance calculation. If the balance type is Cash\
-            \ then position type Cash will be considered during balance calculation.\
-            \ Possible Values are Total, Cash"
+            \ are retrieved. If the balance type is TOTAL, all position types will\
+            \ be considered during balance calculation. If the balance type is CASH,\
+            \ then only the position type CASH will be considered during balance calculation.\
+            \ Possible values are: <ul> <li>TOTAL </li> <li> CASH. </li> </ul>"
           type: string
           allOf:
           - $ref: '#/components/schemas/BalanceType'
-        currentBalance:
-          $ref: '#/components/schemas/Amount'
-        pendingBalance:
-          $ref: '#/components/schemas/Amount'
-        availableBalance:
-          $ref: '#/components/schemas/Amount'
-        limit:
-          $ref: '#/components/schemas/Amount'
+        CurrentBalance:
+          description: This field represents the total outstanding balance for an
+            account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+        PendingBalance:
+          description: This field represents the pending (uncleared) balance for an
+            account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+        AvailableBalance:
+          description: This field represents the available to spend balance for an
+            account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+        Limit:
+          description: This field represents the maximum limit for a given balance
+            type associated with an account.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
     BalanceType:
       enum:
       - TOTAL
@@ -2753,35 +3253,6 @@ components:
           type: array
           items:
             type: string
-    Bundle:
-      type: object
-      properties:
-        Identification:
-          type: string
-    BundleCommonDto:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Identification:
-          description: Identification of a bundle
-          type: string
-        Name:
-          description: Name of the bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        Status:
-          description: Status of a bundle
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature1'
     CardFeeGeneratedEvent:
       type: object
       properties:
@@ -2837,12 +3308,6 @@ components:
           description: Name of a configuration option
           pattern: \S
           type: string
-        Specification:
-          description: Description of a configuration option
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
         ConfigurationParameter:
           minItems: 1
           type: array
@@ -2857,6 +3322,12 @@ components:
         Name:
           description: Name of a configuration option
           pattern: \S
+          type: string
+        Specification:
+          description: Description of a configuration option
+          type: string
+        Value:
+          description: Value of a configuration option
           type: string
         ConfigurationParameter:
           minItems: 1
@@ -2880,26 +3351,17 @@ components:
           maxLength: 40000
           pattern: \S
           type: string
-    DefaultFeatureChangedEvent:
+    CreditLimitUpdateRequest:
       type: object
       properties:
-        EventId:
-          type: string
-        EventName:
-          type: string
-        RequestId:
-          type: string
-        FIID:
-          description: Financial Institution Identification
-          type: string
-        Product:
-          description: Product Identification
-          type: string
-        ProductFeatures:
-          description: List of Product Features
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductFeatureDefaults'
+        CreditLimit:
+          description: "Credit limit to be assigned to the account. This field is\
+            \ mandatory for all credit type products, and optional for other product\
+            \ types. It must be a valid ISO 4217 currency code and match the reporting\
+            \ currency at the brand level."
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
     ExecuteClosureRequest:
       type: object
       properties:
@@ -2948,36 +3410,6 @@ components:
         FacilityIdentification:
           description: Identification of Facility
           type: string
-    ExecuteUnlinkBundleFeatureRequest:
-      type: object
-      properties:
-        Feature:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-    ExecuteUnlinkProductFeatureRequest:
-      required:
-      - RequestType
-      type: object
-      properties:
-        Feature:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-        RequestType:
-          description: Request Type of Unlink Feature
-          minLength: 1
-          type: string
-    ExecuteUnlinkProductFeatureResponse:
-      type: object
-      properties:
-        Feature:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-        RequestType:
-          description: Request Type of Unlink Feature
-          type: string
     ExternalAccount:
       description: Provide Link to External Accounts
       required:
@@ -2999,127 +3431,6 @@ components:
           description: ' Specifies the clearing system member identification associated
             with the external account.'
           type: string
-    FacilityLifeCycleEvent:
-      type: object
-      properties:
-        EventId:
-          type: string
-        EventName:
-          type: string
-        EventDescription:
-          type: string
-        ServiceDomain:
-          type: string
-        Timestamp:
-          type: string
-        ProductId:
-          type: string
-        EntityId:
-          type: string
-        SubEntityId:
-          type: string
-        TraceId:
-          type: string
-        FiId:
-          type: string
-        BrandId:
-          type: string
-        AgreementId:
-          type: string
-        AgreementFeatureId:
-          format: int64
-          type: integer
-        Capability:
-          type: string
-        FeatureId:
-          type: string
-        FacilityIdentification:
-          type: string
-        FacilityStatus:
-          type: string
-        OldFacilityId:
-          type: string
-    Feature:
-      required:
-      - Identification
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          maxLength: 37
-          minLength: 1
-          type: string
-    Feature1:
-      type: object
-      properties:
-        Identification:
-          description: Identification of the feature
-          type: string
-        Name:
-          description: Name of the feature
-          type: string
-        Specification:
-          description: Specification of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        CapabilityVersion:
-          description: Version of the system capability linked to a feature
-          type: string
-    Feature2:
-      type: object
-      properties:
-        Identification:
-          description: Identification of the feature
-          type: string
-        Name:
-          description: Name of a feature
-          type: string
-        Specification:
-          description: Description of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        DefaultIndicator:
-          description: Flag to indicate default feature
-          type: boolean
-        FeatureCategory:
-          description: Optional. Category under which the feature is created.
-          type: string
-    Feature3:
-      required:
-      - Identification
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          maxLength: 37
-          minLength: 1
-          pattern: ^\S*$
-          type: string
-        DefaultIndicator:
-          description: Default feature indicator
-          type: string
-        RatificationMethod:
-          description: Ratification Method
-          type: string
-    FeatureToProductLinkingRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature3'
-    FeatureToProductLinkingResponse:
-      type: object
-      properties:
-        Warning:
-          $ref: '#/components/schemas/Warning'
     HelixErrorDetails:
       type: object
       properties:
@@ -3181,7 +3492,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement1'
+            $ref: '#/components/schemas/AgreementInvolvement'
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -3216,6 +3527,9 @@ components:
         FacilityIdentification:
           description: Identification of Facility
           type: string
+        ProductFeature:
+          description: Identification of Product Feature
+          type: string
         AgreementFeature:
           description: Feature ID of Agreement Feature
           type: string
@@ -3232,16 +3546,6 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T16:15:50Z
-    LinkBundleFeatureRequest:
-      required:
-      - Feature
-      type: object
-      properties:
-        Feature:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
     LocalDate:
       format: date
       type: string
@@ -3259,164 +3563,17 @@ components:
         ConfigurationOption:
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption1'
-    ProductFeatureDefaults:
-      type: object
-      properties:
-        DefaultIndicator:
-          type: boolean
-        RatificationMethod:
-          $ref: '#/components/schemas/RatificationMethod'
-        RatificationLevel:
-          $ref: '#/components/schemas/RatificationLevel'
-        Identification:
-          type: string
-        Capability:
-          type: string
-    RatificationLevel:
-      enum:
-      - NONE
-      - AGREEMENT
-      - AGREEMENT_FACILITY
-      type: string
-    RatificationMethod:
-      enum:
-      - NEW_ONLY
-      - ALL
-      - NONE
-      - ALL_EXCLUDING_OVERRIDES
-      type: string
-    RegisterBundleRequest:
+            $ref: '#/components/schemas/ConfigurationOption'
+    RegisterOverriddenFeaturesRequest:
       required:
-      - Identification
-      - Name
+      - AgreementFeatures
       type: object
       properties:
-        Identification:
-          description: Identification of a bundle
-          maxLength: 37
-          minLength: 1
-          pattern: ^\S*$
-          type: string
-        Name:
-          description: Name of a bundle
-          maxLength: 35
-          pattern: \S
-          type: string
-        Description:
-          description: Description of a bundle
-          maxLength: 140
-          type: string
-        Feature:
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature'
-    RegisterBundleResponse:
-      type: object
-      properties:
-        Identification:
-          description: Identification of a bundle
-          type: string
-    RegisterConfigurationOptionRequest:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of a configuration option
-          maxLength: 35
-          pattern: \S
-          type: string
-        Specification:
-          description: Description of a configuration option
-          maxLength: 140
-          type: string
-        Value:
-          description: Value of a configuration option
-          type: string
-        ConfigurationParameter:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigurationParameter'
-    RegisterConfigurationOptionResponse:
-      type: object
-      properties:
-        Id:
-          format: int64
-          type: integer
-    RegisterFeatureRequest:
-      required:
-      - Identification
-      - Name
-      - Capability
-      - ConfigurationOption
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          maxLength: 37
-          minLength: 1
-          pattern: ^\S*$
-          type: string
-        Name:
-          description: Name of a feature
-          maxLength: 140
-          pattern: \S
-          type: string
-        Specification:
-          description: Description of a feature
-          maxLength: 140
-          type: string
-        FeatureCategory:
-          description: Feature category of a feature
-          maxLength: 255
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          maxLength: 35
-          pattern: \S
-          type: string
-        ConfigurationOption:
+        AgreementFeatures:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ConfigurationOption'
-    RegisterFeatureResponse:
-      type: object
-      properties:
-        Identification:
-          description: Identification of a feature
-          type: string
-    RegisterProductRequest:
-      required:
-      - Name
-      - Brand
-      - Identification
-      type: object
-      properties:
-        Name:
-          description: Name of a product
-          maxLength: 70
-          pattern: \S
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          maxLength: 37
-          minLength: 1
-          type: string
-        Type:
-          description: Specifies the type of product category
-          type: string
-        Identification:
-          description: Unique identifier for the product
-          maxLength: 37
-          minLength: 1
-          type: string
-    RegisterProductResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
+            $ref: '#/components/schemas/AgreementFeatureOverrideRequestDto'
     RetrieveAccountBalanceResponse:
       type: object
       properties:
@@ -3461,29 +3618,29 @@ components:
         PaymentDueDate:
           format: YYYY-MM-DD
           description: Date by when the payment should be received for the current
-            due amount.
+            due amount. Format must be ISO Date format (YYYY-MM-DD).
           type: string
         CurrentDueAmount:
           description: The minimum payment amount still unpaid from the previous billing
-              cycle.
+            cycle.
           type: object
           allOf:
-          - $ref: '#/components/schemas/Amount1'
+          - $ref: '#/components/schemas/Amount'
         PastDueAmount:
           description: The amount by which the customer has failed to pay the minimum
-              payment amount from the previous billing cycles. (Excludes any current
-              due amount)
+            payment amount from the previous billing cycles. (Excludes any current
+            due amount)
           type: object
           allOf:
-          - $ref: '#/components/schemas/Amount1'
+          - $ref: '#/components/schemas/Amount'
         TotalDueAmount:
           description: "The contractual minimum payment due to be made for an account,\
-                    \ including any balance in arrears from prior billing cycles.Note: When\
-                    \ the account does not have any arrears for a given billing date, the\
-                    \ total due amount will be same as the current due amount."
+            \ including any balance in arrears from prior billing cycles.Note: When\
+            \ the account does not have any arrears for a given billing date, the\
+            \ total due amount will be same as the current due amount."
           type: object
           allOf:
-          - $ref: '#/components/schemas/Amount1'
+          - $ref: '#/components/schemas/Amount'
     RetrieveAgreementFacilityAndFeatureResponse:
       type: object
       properties:
@@ -3524,6 +3681,9 @@ components:
           description: Default indicator indicates this is default feature on Agreement.
             i.e. default on Product while initiating Agreement
           type: boolean
+        FeatureCategory:
+          description: Name of the category linked to a feature
+          type: string
         AgreementFeatureParameter:
           description: List of Feature Parameter
           type: array
@@ -3535,13 +3695,14 @@ components:
         agreementClosed:
           description: Indicates if the agreement is closed.
           type: boolean
-        agreementEnabled:
-          type: boolean
     RetrieveAgreementFeatureRequest:
       type: object
       properties:
         capabilityName:
           description: Name of the capability
+          type: string
+        featureCategory:
+          description: Category of the feature
           type: string
     RetrieveAgreementFeatureResponse:
       type: object
@@ -3595,7 +3756,7 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: '#/components/schemas/AgreementInvolvement1'
         OpeningDate:
           description: Date on which the Agreement and related basic services are
             effectively operational for the Account owner <br/> Format must be ISO
@@ -3649,37 +3810,6 @@ components:
           - $ref: '#/components/schemas/Amount'
         enabled:
           type: boolean
-    RetrieveBundleListRequest:
-      type: object
-      properties:
-        Bundle:
-          type: array
-          items:
-            $ref: '#/components/schemas/Bundle'
-    RetrieveBundleResponse:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Identification:
-          description: Identification of a bundle
-          type: string
-        Name:
-          description: Name of the bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        Status:
-          description: Status of a bundle
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature1'
     RetrieveCardFeeDetailsResponse:
       type: object
       properties:
@@ -3772,6 +3902,9 @@ components:
         Capability:
           description: Name of the system capability linked to a Facility
           type: string
+        FeatureCategory:
+          description: Category of the feature
+          type: string
     RetrieveFacilityAllocationFeatureParameterRequest1:
       type: object
       properties:
@@ -3791,6 +3924,9 @@ components:
           type: string
         Capability:
           description: Name of the system capability linked to a feature
+          type: string
+        FeatureCategory:
+          description: Name of the category to which the feature belongs
           type: string
         Agreement:
           description: Identification of Agreement
@@ -3813,100 +3949,15 @@ components:
           type: integer
         Capability:
           type: string
+        FeatureCategory:
+          type: string
         Facility:
           type: string
         CreationDateTime:
           type: string
         Status:
           type: string
-    RetrieveFeatureResponse:
-      type: object
-      properties:
-        Id:
-          description: Id of the feature
-          type: string
-        Identification:
-          description: Identification of the feature
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Name:
-          description: Name of a feature
-          type: string
-        Specification:
-          description: Description of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        FeatureCategory:
-          description: Name of the feature category assigned to feature
-          type: string
-        Status:
-          description: Status of the feature record in the system
-          type: string
-        ConfigurationOption:
-          description: Configuration Option of the feature record in the system
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigurationOption'
-        CreateAgreementFeature:
-          type: string
-        CreateFacility:
-          type: string
-    RetrieveProductFeatureListRequest:
-      type: object
-      properties:
-        CapabilityName:
-          maxLength: 35
-          type: string
-        FeatureCategory:
-          type: string
-        CreateAgreementFeature:
-          type: string
-        CreateFacility:
-          type: string
-    RetrieveProductFeatureResponse:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Brand:
-          description: Identification of the brand associated with the product
-          type: string
-        Product:
-          description: Identification of the product
-          type: string
-        Type:
-          description: Type of the product
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature2'
-    RetrieveProductResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
-        ExternalIdentification:
-          type: string
-        Name:
-          type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        BrandName:
-          type: string
-        Type:
-          type: string
-        Status:
+        ProductFeature:
           type: string
     SystemUpdateRequest:
       type: object
@@ -3928,97 +3979,9 @@ components:
         AgreementInvolvement:
           type: array
           items:
-            $ref: '#/components/schemas/AgreementInvolvement'
+            $ref: '#/components/schemas/AgreementInvolvement1'
         BlockedReasonCodes:
           $ref: '#/components/schemas/BlockedReasonUpdateForSystemUpdateRequest'
-    UpdateBundleRequest:
-      type: object
-      properties:
-        Name:
-          description: Name of a bundle
-          maxLength: 35
-          pattern: \A(?!\s*$).+
-          type: string
-        Description:
-          description: Description of a bundle
-          maxLength: 140
-          pattern: \A(?!\s*$).+|^$
-          type: string
-    UpdateBundleResponse:
-      type: object
-      properties:
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Identification:
-          description: Identification of a bundle
-          type: string
-        Name:
-          description: Name of the bundle
-          type: string
-        Description:
-          description: Description of a bundle
-          type: string
-        Status:
-          description: Status of a bundle
-          type: string
-        Feature:
-          description: List of linked features
-          type: array
-          items:
-            $ref: '#/components/schemas/Feature1'
-    UpdateFeatureRequest:
-      required:
-      - Name
-      type: object
-      properties:
-        Name:
-          description: Name of a feature
-          maxLength: 140
-          pattern: \S
-          type: string
-        Specification:
-          description: Description of a feature
-          maxLength: 140
-          type: string
-        ConfigurationOption:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigurationOption'
-    UpdateFeatureResponse:
-      type: object
-      properties:
-        Id:
-          description: Id of the feature
-          type: string
-        Identification:
-          description: Identification of the feature
-          type: string
-        FinancialInstitution:
-          description: Identification of the financial institution associated with
-            the product
-          type: string
-        Name:
-          description: Name of a feature
-          type: string
-        Specification:
-          description: Description of a feature
-          type: string
-        Capability:
-          description: Name of the system capability linked to a feature
-          type: string
-        FeatureCategory:
-          description: Name of the feature category assigned to feature
-          type: string
-        Status:
-          description: Status of the feature record in the system
-          type: string
-        ConfigurationOption:
-          description: Configuration Option of the feature record in the system
-          type: array
-          items:
-            $ref: '#/components/schemas/ConfigurationOption'
     UpdateNetworkAccountOptionRequest:
       required:
       - NetworkAccountUpdaterOption
@@ -4038,51 +4001,6 @@ components:
           description: Identifies whether the cardholder has requested opt-out or
             opt-in for the Network Account Updater. This contains the value set in
             the request.
-          type: string
-    UpdateProductRequest:
-      type: object
-      properties:
-        Name:
-          description: Name of a product
-          maxLength: 70
-          pattern: \A(?!\s*$).+
-          type: string
-        Type:
-          description: Specifies the type of product category
-          type: string
-    UpdateProductResponse:
-      type: object
-      properties:
-        Identification:
-          type: string
-        ExternalIdentification:
-          type: string
-        Name:
-          type: string
-        FinancialInstitution:
-          type: string
-        Brand:
-          type: string
-        BrandName:
-          type: string
-        Type:
-          type: string
-        Status:
-          type: string
-    Warning:
-      type: object
-      properties:
-        responseCode:
-          format: int32
-          type: integer
-        message:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningMessage'
-    WarningMessage:
-      type: object
-      properties:
-        message:
           type: string
   securitySchemes:
     SecurityScheme:
