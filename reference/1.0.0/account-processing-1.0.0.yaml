@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: account-processing
-  version: 1.1.0-189
+  version: 1.1.0-193
 tags:
 - name: Account Pricing
 - name: Agreement Repayment Information
@@ -529,9 +529,8 @@ paths:
       - Statement Information
       summary: This API is used to retrieve all the Agreement Level and Position Type
         Level outstanding repayment billing information for an agreement.
-      description: "This API allows a user to inquire about the outstanding payment\
-        \ due amounts and payment due date for a given account, using AgreementID.\
-        \ This API is relevant for credit product accounts only."
+      description: This API is used to retrieve all the Agreement Level and Position
+        Type Level outstanding repayment billing information for an agreement.
       operationId: retrieveOutstandingDueAmountsWithPositions
       parameters:
       - name: fi-id
@@ -1457,7 +1456,7 @@ components:
           description: List of generated transactions.
           type: array
           items:
-            $ref: '#/components/schemas/Transaction1'
+            $ref: '#/components/schemas/Transaction'
     GeneratedTransactionsBookingResponse:
       type: object
       properties:
@@ -1468,7 +1467,7 @@ components:
           description: List of generated transactions.
           type: array
           items:
-            $ref: '#/components/schemas/Transaction1'
+            $ref: '#/components/schemas/Transaction'
     HelixErrorDetails:
       type: object
       properties:
@@ -1657,8 +1656,7 @@ components:
             outstanding account balance for a given billing date.
           type: string
         CurrentDueAmount:
-          description: The minimum payment to be made for an account for specific
-            billing date.
+          description: The current due amount from the most recent billing cycle.
           type: object
           allOf:
           - $ref: '#/components/schemas/AmountDto'
@@ -1683,6 +1681,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillingPeriodDto'
+        DelinquencyLevel:
+          format: int32
+          description: The level of delinquency that is assigned to an account
+          type: integer
+        BilledCount:
+          format: int32
+          description: Total number of times an account is billed
+          type: integer
+        EffectiveMissedRepaymentDate:
+          description: First due date for which the party missed repayment
+          type: string
+        EffectiveDelinquentDate:
+          description: First date when the agreement got marked as delinquent
+          type: string
+        EffectiveMissedRepaymentDays:
+          format: int32
+          description: Total number of days from when the party missed repayment
+          type: integer
+        EffectiveDelinquentDays:
+          format: int32
+          description: Total number of days from when the agreement got marked as
+            delinquent
+          type: integer
         Positions:
           type: array
           items:
@@ -1765,8 +1786,7 @@ components:
           description: Date of the billing cycle.
           type: string
         DueAmount:
-          description: DueAmount
-          default: |-
+          description: |-
             Represents the position type level total amount owed that has not been settled by the customer for this particular billing date.
 
             Final Aggregated Total Past Due Bucket:
@@ -1792,8 +1812,8 @@ components:
             \ \nValid values: See Payment Type list parameter."
           type: string
         DueAmount:
-          description: "The Position Type level current due amount, plus the sum of\
-            \ all the Position Type due amounts."
+          description: "The Position Type level total due amount, plus the sum of\
+            \ all the Position Type past dues."
           type: object
           allOf:
           - $ref: '#/components/schemas/AmountDto'
@@ -1872,8 +1892,7 @@ components:
             outstanding account balance for a given billing date.
           type: string
         CurrentDueAmount:
-          description: The minimum payment to be made for an account for specific
-            billing date.
+          description: The current due amount from the most recent billing cycle.
           type: object
           allOf:
           - $ref: '#/components/schemas/AmountDto'
@@ -1898,6 +1917,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillingPeriodDto'
+        DelinquencyLevel:
+          format: int32
+          description: The level of delinquency that is assigned to an account
+          type: integer
+        BilledCount:
+          format: int32
+          description: Total number of times an account is billed
+          type: integer
+        EffectiveMissedRepaymentDate:
+          description: First due date for which the party missed repayment
+          type: string
+        EffectiveDelinquentDate:
+          description: First date when the agreement got marked as delinquent
+          type: string
+        EffectiveMissedRepaymentDays:
+          format: int32
+          description: Total number of days from when the party missed repayment
+          type: integer
+        EffectiveDelinquentDays:
+          format: int32
+          description: Total number of days from when the agreement got marked as
+            delinquent
+          type: integer
     RepaymentTransactionBooking:
       required:
       - PaymentInstrumentId
