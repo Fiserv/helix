@@ -3023,7 +3023,7 @@ components:
         BundleIdentification:
           description: Identification of Bundle
           maxLength: 37
-          pattern: \A(?!\s*$).+
+          pattern: \A(!\s*$).+
           type: string
     AgreementFeatureParameter:
       type: object
