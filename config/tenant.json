@@ -24,7 +24,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["party-directory-1.0.0", "agreement-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "customer-access-entitlement-1.0.0", "account-servicing-1.0.0", "exception-management-1.0.0", "position-keeping-1.0.0", "account-processing-1.0.0", "transaction-capture-1.0.0", "servicing-event-history-1.0.0", "direct-debit-1.0.0"]
+        "apiSpecFileNames": ["party-directory-1.0.0", "agreement-1.0.0", "issued-device-admin-1.0.0", "payment-authorisation-1.0.0", "customer-access-entitlement-1.0.0", "account-servicing-1.0.0", "exception-management-1.0.0", "position-keeping-1.0.0", "account-processing-1.0.0", "transaction-capture-1.0.0", "servicing-event-history-1.0.0", "direct-debit-1.0.0", "transaction-classification-1.0.0"]
       }
   ],
   "product": {
