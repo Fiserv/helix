@@ -1,0 +1,852 @@
+---
+openapi: 3.0.3
+info:
+  title: transaction-classification
+  version: 1.1.0-57
+tags:
+- name: Initiate Transaction Adjustment
+paths:
+  /TransactionClassification/V1/TransactionClassification/Adjustment/Initiate:
+    post:
+      tags:
+      - Initiate Transaction Adjustment
+      summary: This service is used to apply a manual credit or debit transaction
+        to an account.
+      operationId: initiate
+      parameters:
+      - name: fi-id
+        in: header
+        description: Financial Institution Identification
+        required: true
+        schema:
+          maxLength: 37
+          type: string
+      - name: brand-id
+        in: header
+        description: Brand Identification
+        schema:
+          maxLength: 37
+          type: string
+      - name: idempotency-id
+        in: header
+        description: Idempotency ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustmentInitiationRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdjustmentsInitiationResponse'
+        "204":
+          description: No Content
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+      x-proxy-name: Initiate Transaction Adjustment
+      x-group-name: Transaction Management
+components:
+  schemas:
+    Acceptor:
+      type: object
+      properties:
+        Id:
+          description: Acceptor Identification details.
+          type: string
+        NmAndLctn:
+          description: Name and Location details.
+          type: string
+        Ctry:
+          description: Country details.
+          type: string
+        SpnsrdMrchnt:
+          description: Sponsored Merchant details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SponsoredMerchant'
+    Acquirer:
+      type: object
+      properties:
+        Id:
+          description: Acquirer Identification details.
+          type: string
+    AdditionalData:
+      type: object
+      properties:
+        TxCode:
+          description: Transaction Code detail.
+          type: string
+    AdditionalInformation:
+      type: object
+      properties:
+        Tp:
+          description: Additional Information Type detail.
+          type: string
+    AdditionalService:
+      type: object
+      properties:
+        Tp:
+          description: Additional Service Type details.
+          type: string
+    AdjustmentInitiationRequest:
+      required:
+      - AgreementId
+      - Amount
+      - EffectiveDateTime
+      - TransactionCode
+      type: object
+      properties:
+        AgreementId:
+          description: Unique identifier of an Agreement. Agreement must be not closed
+            and enabled.
+          maxLength: 37
+          type: string
+        PAN:
+          description: Indicates the PAN to be associated with the transaction. The
+            PAN must exist and be associated to the corresponding Account.
+          maxLength: 16
+          pattern: "^[0-9]{16}$"
+          type: string
+        Amount:
+          description: Group contains the transaction amount and the associated currency.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount1'
+        EffectiveDateTime:
+          description: The system date and time of the adjustment transaction request
+            in ISO Format (YYYY-MM-DDTHH:MM:SS).
+          maxLength: 19
+          type: string
+        TransactionCode:
+          description: "The transaction code to be used to post the transaction to\
+            \ the account. A valid transaction code should be used, as configured\
+            \ in Vision Next for the Financial Institution."
+          maxLength: 37
+          type: string
+        TransactionDescription:
+          description: Transaction Description. If no transaction description is provided
+            Vision Next will apply the default transaction description as configured
+            for the transaction code.
+          maxLength: 40
+          type: string
+        OriginalTransactionId:
+          description: Used for transaction adjustments where the adjustment is to
+            be associated to another transaction on the account.
+          maxLength: 37
+          type: string
+    AdjustmentsInitiationResponse:
+      type: object
+      properties:
+        TransactionId:
+          description: Unique identifier associated with the transaction.
+          type: string
+        Status:
+          description: "This status field indicates whether it was possible to post\
+            \ the transaction to the account or whether the account was cleared only\
+            \ due to the billing in progress on the account and will be posted once\
+            \ complete. Valid values are: <UL><LI> POST - Transaction was posted to\
+            \ the account. </LI><LI> CLRD - Transaction was only cleared and will\
+            \ be posted to the account once billing is complete. </LI></UL>"
+          type: string
+    Amount:
+      type: object
+      properties:
+        Amt:
+          description: Amount detail.
+          type: number
+        Ccy:
+          description: Currency detail.
+          type: string
+    Amount1:
+      required:
+      - Value
+      - Currency
+      type: object
+      properties:
+        Value:
+          description: Transaction amount. The amount provided must be numeric and
+            include the correct number of decimals for the currency indicated.
+          maxLength: 15
+          type: string
+        Currency:
+          description: The currency must be the same as the brand currency of the
+            account.
+          type: string
+    ApprovalData:
+      type: object
+      properties:
+        ApprvlCd:
+          description: Approval Code details.
+          type: string
+    Body:
+      type: object
+      properties:
+        Envt:
+          description: Environment details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Environment'
+        Cntxt:
+          description: Context details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Context'
+        Tx:
+          description: Transaction details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Transaction'
+        PrcgRslt:
+          description: Processing Result details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ProcessingResult'
+    Capabilities:
+      type: object
+      properties:
+        CardRdngCpblty:
+          description: Card Reading Capability details.
+          type: string
+    Card:
+      required:
+      - Pan
+      type: object
+      properties:
+        Pan:
+          description: Pan details.
+          pattern: \S
+          type: string
+        CardSeqNb:
+          description: Card Sequence Number details.
+          type: string
+        XpryDt:
+          description: Card Expiry Date details.
+          type: string
+        CardPdctTp:
+          description: Card product type details.
+          type: string
+    CardProgramme:
+      type: object
+      properties:
+        CardPrgrmmApld:
+          description: Card Programme Applied Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    Context:
+      type: object
+      properties:
+        PtOfSvcCntxt:
+          description: Point Of Service Context details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PointOfServiceContext'
+        TxCntxt:
+          description: Transaction Context details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionContext'
+        Vrfctn:
+          description: Verification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Verification'
+    CreditTransferTransactionInformation:
+      required:
+      - PaymentMethod
+      - SettlementAmount
+      type: object
+      properties:
+        PaymentIdentification:
+          description: payment Identification details
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/PaymentIdentification'
+        PaymentMethod:
+          description: payment Method
+          minLength: 1
+          type: string
+        SettlementAmount:
+          description: settlement amount
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+        SettlementDateTime:
+          description: settlement Date Time
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+        DebtorAccount:
+          description: debtor Account
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/DebtorAccount'
+        Creditor:
+          description: creditor
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Creditor'
+        CreditorAccount:
+          description: creditor Account
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CreditorAccount'
+        Purpose:
+          description: purpose
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Purpose'
+    Creditor:
+      type: object
+      properties:
+        Identification:
+          description: creditor Identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CreditorIdentification'
+    CreditorAccount:
+      type: object
+      properties:
+        Identification:
+          description: identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RepaymentIdentification'
+    CreditorIdentification:
+      type: object
+      properties:
+        PrivateIdentification:
+          description: private identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RepaymentIdentification'
+    CustomerCreditTransfer:
+      type: object
+      properties:
+        CustomerCreditTransferHeader:
+          description: customer Credit TransferHeader details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CustomerCreditTransferHeader'
+        CreditTransferTransactionInformation:
+          description: credit Transfer Transaction Information details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CreditTransferTransactionInformation'
+    CustomerCreditTransferHeader:
+      required:
+      - MessageIdentification
+      type: object
+      properties:
+        MessageIdentification:
+          description: message Identification.
+          minLength: 1
+          type: string
+        CreationDateTime:
+          description: creation DateTime.
+          minLength: 1
+          pattern: "^((?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:.\\d{0,3}\\b)?)?$"
+          type: string
+          example: 2016-09-06T12:45:30
+    CustomerDevice:
+      type: object
+      properties:
+        Dvc:
+          description: Device details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Device'
+    DebtorAccount:
+      type: object
+      properties:
+        Identification:
+          description: identification
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/RepaymentIdentification'
+    Device:
+      type: object
+      properties:
+        Tp:
+          description: Device Type detail.
+          type: string
+        OthrTp:
+          description: Other Device Type detail.
+          type: string
+    Environment:
+      type: object
+      properties:
+        Accptr:
+          description: Acceptor details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acceptor'
+        Acqrr:
+          description: Acquirer details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Acquirer'
+        Termnl:
+          description: Terminal details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Terminal'
+        Card:
+          description: Card details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Card'
+        CstmrDvc:
+          description: Customer Device details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CustomerDevice'
+        Sndr:
+          description: Sender details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Sender'
+        Rcvr:
+          description: Receiver details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Receiver'
+    Header:
+      type: object
+      properties:
+        MsgFctn:
+          description: Message Function details
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/MessageFunction'
+        Association:
+          description: Association
+          type: string
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelixMessage'
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    Identification:
+      type: object
+      properties:
+        Id:
+          description: Identification details.
+          type: string
+    InitiateTransactionRequest:
+      type: object
+      properties:
+        Hdr:
+          description: Header details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Header'
+        Body:
+          description: Body details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Body'
+    InitiateTransactionResponse:
+      type: object
+      properties:
+        TransactionReferenceID:
+          description: Identification of Transaction Reference provided by transaction
+            capture service.
+          type: string
+    LifeCycleTraceIdentificationData:
+      type: object
+      properties:
+        Id:
+          description: Life Cycle Trace Identification.
+          type: string
+    MessageFunction:
+      type: object
+      properties:
+        MsgFctnCd:
+          description: Indicate if this is a normal request (REQU) or an Advice (ADVC)
+          type: string
+    Other:
+      type: object
+      properties:
+        Identification:
+          description: Identification.
+          type: string
+    PaymentIdentification:
+      type: object
+      properties:
+        EndToEndIdentification:
+          description: end To End Identification
+          type: string
+    PointOfServiceContext:
+      type: object
+      properties:
+        CardPres:
+          description: Card Present indicator.
+          type: boolean
+        CrdhldrPres:
+          description: Card Holder Present indicator.
+          type: boolean
+        AttnddInd:
+          description: Attended indicator.
+          type: boolean
+        UattnddLvlCtgy:
+          description: Unattended indicator.
+          type: string
+        EComrcInd:
+          description: Ecommerce indicator.
+          type: boolean
+        MotoInd:
+          description: Moto Indicator details.
+          type: string
+        CardDataNtryMd:
+          description: Card Data Entry Mode details.
+          type: string
+    ProcessingResult:
+      type: object
+      properties:
+        ApprvlData:
+          description: Approval Data details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ApprovalData'
+        AddtlInf:
+          description: Additional Information details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalInformation'
+    Purpose:
+      type: object
+      properties:
+        Code:
+          description: CreditCardPayment.
+          type: string
+    Receiver:
+      type: object
+      properties:
+        RcvrId:
+          description: Receiver Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    RepaymentIdentification:
+      type: object
+      properties:
+        Other:
+          description: other
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Other'
+    RepaymentInitiationRequest:
+      type: object
+      properties:
+        CustomerCreditTransfer:
+          description: customer Credit Transfer details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CustomerCreditTransfer'
+    ResultDetails:
+      type: object
+      properties:
+        Tp:
+          description: Result detail type.
+          type: string
+        Val:
+          description: Result detail value.
+          type: string
+    Sender:
+      type: object
+      properties:
+        SndrId:
+          description: Sender Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    SettlementService:
+      type: object
+      properties:
+        SttlmSvcApId:
+          description: Settlement Service Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementServiceApplied'
+        SttlmSvcDts:
+          description: Settlement Service Date details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementServiceDates'
+    SettlementServiceApplied:
+      type: object
+      properties:
+        Id:
+          description: Identification details.
+          type: string
+        Tp:
+          description: Settlement Service Applied Type detail.
+          type: string
+    SettlementServiceDates:
+      type: object
+      properties:
+        SttlmDt:
+          description: Settlement Service Date detail.
+          type: string
+        SttlmPrd:
+          description: Settlement Service Period detail.
+          type: string
+    SponsoredMerchant:
+      type: object
+      properties:
+        SpnsrdMrchntId:
+          description: Sponsored Merchant Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+    Terminal:
+      type: object
+      properties:
+        TermnlId:
+          description: Terminal identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Identification'
+        Tp:
+          description: Terminal type details.
+          type: string
+        Cpblties:
+          description: Capabilities details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Capabilities'
+    Transaction:
+      type: object
+      properties:
+        TxTp:
+          description: Transaction Type details.
+          type: string
+        TxSubTp:
+          description: Transaction Sub Type details.
+          type: string
+        TxAttr:
+          description: Transaction Attribute details.
+          type: string
+        OthrTxAttr:
+          description: Other Transaction Attribute details.
+          type: string
+        MsgRsn:
+          format: int32
+          description: Message Reason details.
+          type: integer
+        TxAmts:
+          description: Transaction Amounts details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionAmounts'
+        TxId:
+          description: Transaction Identification details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TransactionIdentification'
+        AddtlSvc:
+          description: Additional Service details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalService'
+        TxAddtlData:
+          description: Transaction Additional Data details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/AdditionalData'
+    TransactionAmounts:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/Amount'
+    TransactionContext:
+      type: object
+      properties:
+        MrchntCtgyCd:
+          description: Merchant Category Code detail.
+          type: string
+        TxInitr:
+          description: Transaction Initiator Type detail.
+          type: string
+        CardPrgrmm:
+          description: Card Programme details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/CardProgramme'
+        SttlmSvc:
+          description: Settlement Service details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SettlementService'
+    TransactionIdentification:
+      type: object
+      properties:
+        LifeCyclSpprt:
+          description: Life Cycle Code.
+          type: string
+        LifeCyclTracIdData:
+          description: LifeCycle Identification Data details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/LifeCycleTraceIdentificationData'
+        SysTracAudtNb:
+          description: System Trace Audit Number.
+          type: string
+        AcqrrRefNb:
+          description: Acquirer Reference Number.
+          type: string
+        RtrvlRefNb:
+          description: Retrieve Reference Number.
+          type: string
+        LclDtTm:
+          description: Transaction Date Time.
+          type: string
+        TrnsmssnDtTm:
+          description: Transmission Date Time.
+          type: string
+    Value:
+      type: object
+      properties:
+        TxtVal:
+          description: Verification Data Value.
+          type: string
+    Verification:
+      type: object
+      properties:
+        VrfctnInf:
+          description: Verification Information details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/VerificationInformation'
+        VrfctnRslt:
+          description: Verification Result details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/VerificationResult'
+    VerificationInformation:
+      type: object
+      properties:
+        Tp:
+          description: Verification Information type.
+          type: string
+        Val:
+          description: Value details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Value'
+    VerificationResult:
+      type: object
+      properties:
+        Ntty:
+          description: Verification Entity Type Code.
+          type: string
+        OthrNtty:
+          description: Verification Entity Other Type Code.
+          type: string
+        RsltDtls:
+          description: Result details.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ResultDetails'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
