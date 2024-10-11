@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: servicing-event-history
-  version: 1.1.0-9
+  version: 1.1.0-10
 tags:
 - name: Customer Servicing
 paths:
@@ -10,8 +10,8 @@ paths:
     post:
       tags:
       - Customer Servicing
-      summary: This method is used to retrieve a list of Agent notes based on the
-        given filter criteria
+      summary: "This method is used to retrieve a list of notes added onto the Customer,\
+        \ Account or Card level, based on the given filter criteria"
       operationId: retrieve
       parameters:
       - name: fi-id
@@ -140,7 +140,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
-      x-proxy-name: Retrieve a list of Servicing Events
+      x-proxy-name: Retrieve Notes
       x-group-name: Customer Servicing
   /ServicingEventHistory/V1/ServicingEvent/Initiate:
     post:
