@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: transaction-classification
-  version: 1.1.0-57
+  version: 1.1.0-58
 tags:
 - name: Initiate Transaction Adjustment
 paths:
@@ -44,17 +44,34 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdjustmentsInitiationResponse'
-        "204":
-          description: No Content
-          content:
-            application/json:
-              schema:
                 type: object
+                properties:
+                  TransactionId:
+                    description: Unique identifier associated with the transaction.
+                    type: string
+                  Status:
+                    description: "This status field indicates whether it was possible\
+                      \ to post the transaction to the account or whether the account\
+                      \ was cleared only due to the billing in progress on the account\
+                      \ and will be posted once complete. Valid values are: <UL><LI>\
+                      \ POST - Transaction was posted to the account. </LI><LI> CLRD\
+                      \ - Transaction was only cleared and will be posted to the account\
+                      \ once billing is complete. </LI></UL>"
+                    type: string
         "400":
-          description: Bad Request
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTRCLBR001\
+            \ : Agreement ID is required, please provide a value.</em></li><li><em>HLXTRCLBR001\
+            \ : Transaction Amount is required, please provide a value.</em></li><li><em>HLXTRCLBR001\
+            \ : Effective Date is required, please provide a value.</em></li><li><em>HLXTRCLBR001\
+            \ : Transaction Code is required, please provide a value.</em></li><li><em>HLXTRCLIV004\
+            \ : Transaction Amount must be numeric.</em></li><li><em>HLXTRCLBR001\
+            \ : Currency: %s, Amount: %s - is not valid.</em></li><li><em>HLXTRCLBR001\
+            \ : Effective Date must be in ISO format, YYYY-MM-DDTHH:MM:SS</em></li><li><em>HLXTRCLBR001\
+            \ : Card Number is invalid.</em></li><li><em>HLXTRCLBR001 : Amount value\
+            \ is not valid, please provide valid value.</em></li><li><em>HLXTRCLBR001\
+            \ : Amount currency is not valid, please provide valid value.</em></li><li><em>HLXTRCLBR001\
+            \ : Amount value is required, please provide a value.</em></li><li><em>HLXTRCLBR001\
+            \ : Amount currency is required, please provide a value.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -72,7 +89,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "404":
-          description: Not Found
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTRCLFN001\
+            \ : Card not found.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -84,7 +102,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/HelixErrorDetails'
         "422":
-          description: Unprocessable Entity
+          description: "Unprocessable Entity <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXTRCLIV002\
+            \ : Account is not enabled.</em></li><li><em>HLXTRCLIV002 : Account is\
+            \ closed.</em></li><li><em>HLXTRCLNL001 : Card Number is not associated\
+            \ to the Account provided on the request.</em></li><li><em>HLXTRCLIV003\
+            \ : Transaction Code is not valid for the associated FI.</em></li><li><em>HLXTRCLIV005\
+            \ : Authorisation amount has invalid currency code.</em></li><li><em>HLXTRCLIV001\
+            \ : Invalid payment instrument, its not enabled.</em></li></ul>"
           content:
             application/json:
               schema:
@@ -179,7 +203,9 @@ components:
           type: string
         PAN:
           description: Indicates the PAN to be associated with the transaction. The
-            PAN must exist and be associated to the corresponding Account.
+            PAN must exist and be associated to the corresponding Account. Where no
+            PAN is provided the system will use the oldest active primary card on
+            the account to generate any associated fees.
           maxLength: 16
           pattern: "^[0-9]{16}$"
           type: string
@@ -245,8 +271,9 @@ components:
           maxLength: 15
           type: string
         Currency:
-          description: The currency must be the same as the brand currency of the
-            account.
+          description: Currency of the transaction amount. Must be the three character
+            alpha ISO 4217 Country Code. The currency must be the same as the brand
+            currency of the account.
           type: string
     ApprovalData:
       type: object
