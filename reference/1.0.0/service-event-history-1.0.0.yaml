@@ -1,0 +1,436 @@
+---
+openapi: 3.0.3
+info:
+  title: servicing-event-history
+  version: 1.1.0-6
+tags:
+  - name: ServicingEvent Rest API
+  - name: ServicingRecord Rest API
+paths:
+  /ServicingEventHistory/V1/ServicingEvent/GetList/Request:
+    post:
+      tags:
+        - ServicingEvent Rest API
+      summary: This method is used to return a list of all servicingEvent details
+      operationId: retrieve
+      parameters:
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicingRecordRetrievalRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServicingRecordRetrievalResponse'
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXSNEHBR001\
+            \ : PartyID required, please provide value.</em></li><li><em>HLXSNEHBR001\
+            \ : PartyID must be a valid UUID of exactly 36 characters, please provide\
+            \ a valid value.</em></li><li><em>HLXSNEHBR001 : Product exceeds maximum\
+            \ 37 length allowed.</em></li><li><em>HLXSNEHBR001 : AgreementID must\
+            \ be a valid UUID of exactly 36 characters, please provide a valid value.</em></li><li><em>HLXSNEHBR001\
+            \ : PaymentInstrumentID must be a valid UUID of exactly 36 characters,\
+            \ please provide a valid value.</em></li><li><em>HLXSNEHBR001 : Category\
+            \ has to be either MNUL, AUTO or EXTR.</em></li><li><em>HLXSNEHBR001 :\
+            \ Channel has to be either UINT, MBAP, INTR, EVNT or SYGN.</em></li><li><em>HLXSNEHBR001\
+            \ : FromCreationDateTime must be valid and in YYYY-MM-DD'T'HH:MM:SS format.</em></li><li><em>HLXSNEHBR001\
+            \ : FromCreationDateTimeFromCreationDateTime or ToCreationDateTime cannot\
+            \ be a future date and time.</em></li><li><em>HLXSNEHBR001 : FromCreationDateTimeInvalid\
+            \ API request. The request contains a ToCreationDateTime value, but the\
+            \ FromCreationDateTime value is missing.</em></li><li><em>HLXSNEHBR001\
+            \ : ToCreationDateTime must be valid and in YYYY-MM-DD'T'HH:MM:SS format.</em></li><li><em>HLXSNEHBR001\
+            \ : ToCreationDateTimeFromCreationDateTime or ToCreationDateTime cannot\
+            \ be a future date and time.</em></li><li><em>HLXSNEHBR001 : ToCreationDateTimeInvalid\
+            \ API request. The request contains a FromCreationDateTime value, but\
+            \ the ToCreationDateTime value is missing.</em></li><li><em>HLXSNEHBR001\
+            \ : ToCreationDateTimeToCreationDateTime must be greater than FromCreationDateTime.</em></li><li><em>HLXSNEHBR001\
+            \ : PageStartIndex has an invalid value. It must be an integer.</em></li><li><em>HLXSNEHBR001\
+            \ : PageStartIndexPageStartIndex cannot be less than 0. Please provide\
+            \ a valid value.</em></li><li><em>HLXSNEHBR001 : PageStartIndexInvalid\
+            \ API request. The request contains a PageLimit value, but the PageStartIndex\
+            \ value is missing.</em></li><li><em>HLXSNEHBR001 : PageLimit has an invalid\
+            \ value. It must be an integer.</em></li><li><em>HLXSNEHBR001 : PageLimitPageLimit\
+            \ cannot be less than 1. Please provide a valid value.</em></li><li><em>HLXSNEHBR001\
+            \ : PageLimitInvalid API request. The request contains a PageStartIndex\
+            \ value, but the PageLimit value is missing.</em></li><li><em>HLXSNEHBR001\
+            \ : SortOrder has to be either ASCN or DESC.</em></li><li><em>HLXSNEHBR001\
+            \ : SortOrderInvalid API request. The request contains a SortField value,\
+            \ but the SortOrder value is missing.</em></li><li><em>HLXSNEHBR001 :\
+            \ SortField has to be either USID, USNM, CDTM or CHAN.</em></li><li><em>HLXSNEHBR001\
+            \ : SortFieldInvalid API request. The request contains a SortOrder value,\
+            \ but the SortField value is missing.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: "Not Found <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXSNEHBR001\
+            \ : There are no records present for the given criteria.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+  /ServicingEventHistory/V1/ServicingEvent/Initiate:
+    post:
+      tags:
+        - ServicingRecord Rest API
+      summary: Add a new Servicing Event
+      operationId: register
+      parameters:
+        - name: idempotency-id
+          in: header
+          description: Idempotency ID
+          required: true
+          schema:
+            type: string
+        - name: fi-id
+          in: header
+          description: Financial Institution Identification
+          required: true
+          schema:
+            maxLength: 37
+            type: string
+        - name: brand-id
+          in: header
+          description: Brand Identification
+          schema:
+            maxLength: 37
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicingRecordCreationRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: "Bad Request <br/><br/> <b>Error codes list:</b><br/><ul><li><em>HLXSNEHBR001\
+            \ : Description less than minimum 2 length allowed.</em></li><li><em>HLXSNEHBR001\
+            \ : Description exceeds maximum 2000 length allowed.</em></li><li><em>HLXSNEHBR001\
+            \ : PartyID required, please provide value.</em></li><li><em>HLXSNEHBR001\
+            \ : PartyID must be a valid UUID of exactly 36 characters, please provide\
+            \ a valid value.</em></li><li><em>HLXSNEHBR001 : Product exceeds maximum\
+            \ 37 length allowed.</em></li><li><em>HLXSNEHBR001 : AgreementID must\
+            \ be a valid UUID of exactly 36 characters, please provide a valid value.</em></li><li><em>HLXSNEHBR001\
+            \ : PaymentInstrumentID must be a valid UUID of exactly 36 characters,\
+            \ please provide a valid value.</em></li><li><em>HLXSNEHBR001 : UserID\
+            \ less than minimum 2 length allowed.</em></li><li><em>HLXSNEHBR001 :\
+            \ UserID exceeds maximum 320 length allowed.</em></li><li><em>HLXSNEHBR001\
+            \ : UserName less than minimum 2 length allowed.</em></li><li><em>HLXSNEHBR001\
+            \ : UserName exceeds maximum 320 length allowed.</em></li><li><em>HLXSNEHBR001\
+            \ : Category has to be either MNUL, AUTO or EXTR.</em></li><li><em>HLXSNEHBR001\
+            \ : Channel has to be either UINT, MBAP, INTR, EVNT or SYGN.</em></li></ul>"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "401":
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "429":
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelixErrorDetails'
+        "200":
+          description: OK
+components:
+  schemas:
+    HelixErrorDetails:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelixMessage'
+    HelixMessage:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+    ServicingRecordCreationRequest:
+      type: object
+      properties:
+        Description:
+          description: Description of the Servicing Event.
+          type: string
+        Product:
+          description: Product to which the Servicing Event belongs.
+          type: string
+        AgreementID:
+          description: AgreementID to which the Servicing Event belongs (FEAID).
+          type: string
+        PaymentInstrumentID:
+          description: PaymentInstrumentID to which the Servicing Event belongs (FEPID).
+          type: string
+        PartyID:
+          description: PartyID to which the Servicing Event belongs (FECID).
+          type: string
+        UserID:
+          description: The User ID of the Agent who creates the Servicing Event.
+          type: string
+        UserName:
+          description: The User Name of the Agent who creates the Servicing Event.
+          type: string
+        Category:
+          description: Category of the Servicing Event.
+          type: string
+        Channel:
+          description: Originating channel of the Servicing Event.
+          type: string
+    ServicingRecordRetrievalRequest:
+      type: object
+      properties:
+        Product:
+          description: Product to which the Servicing Event belongs.
+          type: string
+        AgreementID:
+          description: AgreementID to which the Servicing Event belongs (FEAID).
+          type: string
+        PaymentInstrumentID:
+          description: PaymentInstrumentID to which the Servicing Event belongs (FEPID).
+          type: string
+        PartyID:
+          description: PartyID to which the Servicing Event belongs (FECID). This
+            is the required field while retrieving servicing events.
+          type: string
+        UserID:
+          description: The User ID of the Agent who creates the Servicing Event.
+          type: string
+        UserName:
+          description: The User Name of the Agent who creates the Servicing Event.
+          type: string
+        Category:
+          description: Category of the Servicing Event.
+          type: string
+        Channel:
+          description: Originating channel of the Servicing Event.
+          type: string
+        Description:
+          description: This field is used to perform a wildcard search based on the
+            provided Description value of a servicing event.
+          type: string
+        PageStartIndex:
+          description: "The page start index is an optional field which specifies\
+            \ the starting index for the page of results. It is an integer that represents\
+            \ the index of the page. The first page corresponds to the PageStartIndex\
+            \ value of 0. If PageStartIndex is provided in the request, PageLimit\
+            \ must also be provided."
+          type: string
+        PageLimit:
+          description: "The page limit is an optional parameter which specifies the\
+            \ maximum number of records to return in the page of results. It is an\
+            \ integer that represents the total number of records on a single page.\
+            \ The PageLimit must have a minimum value of 1, indicating at least one\
+            \ record per page. If PageLimit is provided in the request, PageStartIndex\
+            \ must also be provided."
+          type: string
+        FromCreationDateTime:
+          description: "This field is used to specify the starting point of the CreationDateTime\
+            \ range for filtering. Only records with a CreationDateTime later than\
+            \ or equal to this value will be included in the filtered results. If\
+            \ FromCreationDateTime is provided in the request, ToCreationDateTime\
+            \ must also be provided."
+          type: string
+        ToCreationDateTime:
+          description: "This field is used to specify the ending point of the CreationDateTime\
+            \ range for filtering. Only records with a CreationDateTime earlier than\
+            \ or equal to this value will be included in the filtered results. If\
+            \ ToCreationDateTime is provided in the request, FromCreationDateTime\
+            \ must also be provided."
+          type: string
+        SortOrder:
+          description: "Specifies the sorting order(Ascending or Descending) to perform\
+            \ on requested SortField. If SortOrder is provided in the request, SortField\
+            \ must also be provided. Valid values are: <UL><LI> ASCN (Ascending) </LI><LI>\
+            \ DESC (Descending) </LI></UL>"
+          type: string
+        SortField:
+          description: "Specifies the field based on which sorting is performed on\
+            \ servicing event list. If SortOrder is provided in the request, SortField\
+            \ must also be provided. Valid values are: <UL><LI> USID (UserId) </LI><LI>\
+            \ USNM (UserName) </LI><LI> CDTM (CreationDateTime) </LI><LI> CHAN (Channel)\
+            \ </LI></UL> "
+          type: string
+    ServicingRecordRetrievalResponse:
+      type: object
+      properties:
+        Identification:
+          description: A unique identifier assigned to each servicing event for identification
+            and reference purposes.
+          type: string
+        FinancialInstitution:
+          description: FinancialInstitution of servicing event.
+          type: string
+        Brand:
+          description: Brand of servicing event.
+          type: string
+        Product:
+          description: Product to which the Servicing Event belongs.
+          type: string
+        AgreementID:
+          description: AgreementID to which the Servicing Event belongs (FEAID).
+          type: string
+        PaymentInstrumentID:
+          description: PaymentInstrumentID to which the Servicing Event belongs (FEPID).
+          type: string
+        PartyID:
+          description: PartyID to which the Servicing Event belongs (FECID).
+          type: string
+        UserID:
+          description: The User ID of the Agent who creates the Servicing Event.
+          type: string
+        UserName:
+          description: The User Name of the Agent who creates the Servicing Event.
+          type: string
+        Category:
+          description: Category of the Servicing Event.
+          type: string
+        Channel:
+          description: Originating channel of the Servicing Event.
+          type: string
+        Description:
+          description: Description of the servicing event.
+          type: string
+        CreationDateTime:
+          description: Creation date and time of the servicing event.
+          type: string
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
